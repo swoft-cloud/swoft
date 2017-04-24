@@ -3,6 +3,7 @@
 namespace app\models\logic;
 
 use app\models\data\UserData;
+use app\models\data\UserExtData;
 
 /**
  *
@@ -22,9 +23,19 @@ class IndexLogic
      */
     private $userData;
 
+    /**
+     *
+     * @Inject
+     * @var UserExtData
+     */
+    private $userExtData;
+
     public function getUser()
     {
-        return $this->userData->getUserInfo();
+        $base = $this->userData->getUserInfo();
+        $ext = $this->userExtData->getExtInfo();
+
+        return array_merge($base, $ext);
     }
 
 
