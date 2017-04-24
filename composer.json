@@ -1,0 +1,20 @@
+{
+    "require": {
+        "phpseclib/phpseclib": "2.0.0",
+        "php-di/php-di": "^5.4",
+        "doctrine/annotations": "^1.4"
+    },
+    "autoload": {
+        "classmap": [
+        ],
+        "psr-4": {
+       		"app\\": "app/"
+        }
+    },
+    "repositories": {
+	    "packagist": {
+	        "type": "composer",
+	        "url": "https://packagist.phpcomposer.com"
+	    }
+	}
+}

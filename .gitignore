@@ -1,0 +1,14 @@
+.buildpath
+.settings/*
+.settings
+.project
+/public/logs/*
+.env
+.idea/
+.git/
+.phpintel/
+*.patch
+runtime/
+docs/
+temp/
+vendor/
