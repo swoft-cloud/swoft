@@ -11,6 +11,10 @@ class ComposerStaticInit606391b823e3430bd14f70fcbdf3de12
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'swoft\\' => 6,
+        ),
         'p' => 
         array (
             'phpseclib\\' => 10,
@@ -37,6 +41,10 @@ class ComposerStaticInit606391b823e3430bd14f70fcbdf3de12
     );
 
     public static $prefixDirsPsr4 = array (
+        'swoft\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/swoft',
+        ),
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',

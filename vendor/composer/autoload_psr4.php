@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'swoft\\' => array($vendorDir . '/swoft'),
     'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'app\\' => array($baseDir . '/app'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
