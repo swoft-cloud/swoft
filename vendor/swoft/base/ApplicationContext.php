@@ -1,6 +1,6 @@
 <?php
 
-namespace swoft\helpers;
+namespace swoft\base;
 
 use DI\Container;
 use swoft\web\Application;
@@ -8,13 +8,13 @@ use swoft\web\Application;
 /**
  *
  *
- * @uses      BeanFactory
+ * @uses      ApplicationContext
  * @version   2017年04月25日
  * @author    lilin <lilin@ugirls.com>
  * @copyright Copyright 2010-2016 北京尤果网文化传媒有限公司
  * @license   PHP Version 5.x {@link http://www.php.net/license/3_0.txt}
  */
-class BeanFactory
+class ApplicationContext
 {
     /**
      * @var Container
@@ -28,10 +28,10 @@ class BeanFactory
      * below are some examples:
      *
      * // create with class name
-     * BeanFactory::BeanFactory('\swoft\web\UrlManage');
+     * ApplicationContext::ApplicationContext('\swoft\web\UrlManage');
      *
      * // crreate with class configures
-     * BeanFactory::BeanFactory(
+     * ApplicationContext::ApplicationContext(
      *  [
      *      'class' => '\swoft\web\UrlManage',
      *      'field' => 'value1',

@@ -4,8 +4,7 @@ namespace swoft;
 
 use DI\Container;
 use DI\ContainerBuilder;
-use DI\Definition\Source\DefinitionSource;
-use swoft\helpers\BeanFactory;
+use swoft\base\ApplicationContext;
 
 /**
  *
@@ -32,8 +31,8 @@ class SwoftInitializer
         $containerBuilder->useAnnotations(true);
         $container = $containerBuilder->build();
         $container = $this->annotationBeans($container);
-        BeanFactory::setContainer($container);
-        BeanFactory::createBean('application', $config);
+        ApplicationContext::setContainer($container);
+        ApplicationContext::createBean('application', $config);
         return $container;
     }
 

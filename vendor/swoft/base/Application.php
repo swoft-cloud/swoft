@@ -3,7 +3,6 @@
 namespace swoft\base;
 
 use swoft\helpers\ArrayHelper;
-use swoft\helpers\BeanFactory;
 
 /**
  *
@@ -28,7 +27,7 @@ abstract class Application
     {
         $beans = ArrayHelper::merge($this->coreBeans(), $this->beans);
         foreach ($beans as $beanName => $definition){
-            BeanFactory::createBean($beanName, $definition);
+            ApplicationContext::createBean($beanName, $definition);
         }
     }
     public function run()

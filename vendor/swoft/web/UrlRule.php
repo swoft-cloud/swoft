@@ -16,6 +16,7 @@ class UrlRule implements UrlRuleInterface
     private $verb;
     private $route;
     private $suffix;
+    private $pattern;
     private $_routeRule;
     private $defaults = [];
     private $placeholders = [];
