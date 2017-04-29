@@ -22,21 +22,18 @@ class SwoftInitializer
     /**
      * Add definitions to the container.
      *
-     * @param string|array|DefinitionSource $definitions Can be an array of definitions, the
-     *                                                   name of a file containing definitions
-     *                                                   or a DefinitionSource object.
+     * @param array bean configures
      *
      * @return Container
      */
-    public function init($definitions)
+    public function init($config)
     {
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->useAnnotations(true);
-        $containerBuilder->addDefinitions($definitions);
         $container = $containerBuilder->build();
         $container = $this->annotationBeans($container);
         BeanFactory::setContainer($container);
-
+        BeanFactory::createBean('application', $config);
         return $container;
     }
 

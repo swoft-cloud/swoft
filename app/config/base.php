@@ -5,15 +5,21 @@
 !defined('SETTING_PATH') && define('SETTING_PATH',  APP_PATH.'bin/swoft.ini');
 
 $config = \swoft\helpers\ArrayHelper::merge(
-    require_once __DIR__. '/beans.php',
+    [],
     [
         'id' => SYSTEM_NAME,
         'name' => SYSTEM_NAME,
         'runtimePath' => RUNTIME_PATH,
         'settingPath' => SETTING_PATH,
         'basePath' =>dirname( __DIR__),
-        'beansNamespace' => 'app\controllers',
-
+        'beans' => [
+            'urlManager' => [
+                'rules' => [
+                    '/home/data' => '/index',
+                    '/post/<id:\d+>' => 'post/view'
+                ],
+            ]
+        ],
         'params' =>[
             'version' => '1.1.0'
         ]
