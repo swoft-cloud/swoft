@@ -25,14 +25,21 @@ abstract class Application
 
     public function init()
     {
+        $this->loadCoreBeans();
+    }
+
+    public function run()
+    {
+        global $argv;
+        $this->parseCommand($argv);
+    }
+
+    public function loadCoreBeans()
+    {
         $beans = ArrayHelper::merge($this->coreBeans(), $this->beans);
         foreach ($beans as $beanName => $definition){
             ApplicationContext::createBean($beanName, $definition);
         }
-    }
-    public function run()
-    {
-        $this->parseCommand();
     }
 
     public function coreBeans()
@@ -42,5 +49,5 @@ abstract class Application
         ];
     }
 
-    abstract function parseCommand();
+    abstract function parseCommand($argv);
 }

@@ -7,3 +7,5 @@ $config = \swoft\helpers\ArrayHelper::merge(
         ]
     ]
 );
+
+return $config;
