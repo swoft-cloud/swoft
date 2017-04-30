@@ -56,7 +56,6 @@ class Application extends \swoft\base\Application
         $bTime = microtime(true);
         $this->beginRequest($request, $response);
         $eTime = microtime(true);
-        $response->end('hello swoft!'.sprintf("%.2f", (($eTime-$bTime))*1000));
 
         try {
 
@@ -64,9 +63,15 @@ class Application extends \swoft\base\Application
             $urlMnanger = ApplicationContext::getBean('urlManager');
             list($route, $params) = $urlMnanger->parseRequest($request);
 
-            var_dump($route, $params);
+            /* @var Controller $controller */
+            list($controller, $actionId) = $this->createController($route);
+
+            var_dump($controller, $actionId);
+
+            $response->end('hello swoft2!'.sprintf("%.2f", (($eTime-$bTime))*1000));
 
         } catch (\Exception $e) {
+            $response->end($e->getMessage().sprintf("%.2f", (($eTime-$bTime))*1000));
         }
 
         $this->afterRequest();

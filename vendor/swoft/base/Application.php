@@ -22,6 +22,8 @@ abstract class Application
     protected $basePath;
     protected $runtimePath;
     protected $settingPath;
+    protected $defaultRoute = "index";
+    protected $controllerNamespace = "app\\controllers";
 
     public function init()
     {
@@ -40,6 +42,104 @@ abstract class Application
         foreach ($beans as $beanName => $definition){
             ApplicationContext::createBean($beanName, $definition);
         }
+    }
+
+    public function createController(string $route)
+    {
+        if ($route === '') {
+            $route = $this->defaultRoute;
+        }
+
+        // double slashes or leading/ending slashes may cause substr problem
+        $route = trim($route, '/');
+        if (strpos($route, '//') !== false) {
+            return false;
+        }
+
+        if (strpos($route, '/') !== false) {
+            list ($id, $route) = explode('/', $route, 2);
+        } else {
+            $id = $route;
+            $route = '';
+        }
+
+        if (($pos = strrpos($route, '/')) !== false) {
+            $id .= '/' . substr($route, 0, $pos);
+            $route = substr($route, $pos + 1);
+        }
+
+        $controller = $this->getControllerById($id);
+        if ($controller === null && $route !== '') {
+            $controller = $this->getControllerById($id . '/' . $route);
+            $route = '';
+        }
+
+        return $controller === null ? false : [$controller, $route];
+    }
+
+    public function getControllerById(string $id)
+    {
+        $pos = strrpos($id, '/');
+        if ($pos === false) {
+            $prefix = '';
+            $className = $id;
+        } else {
+            $prefix = substr($id, 0, $pos + 1);
+            $className = substr($id, $pos + 1);
+        }
+
+
+        // 匹配正则修改兼容controller LoginUser/testOne loginUser/testOne login-user/testOne
+        if (!preg_match('%^[a-zA-Z][a-zA-Z0-9\\-_]*$%', $className)) {
+            return null;
+        }
+        if ($prefix !== '' && !preg_match('%^[a-z0-9_/]+$%i', $prefix)) {
+            return null;
+        }
+        // namespace和prefix保持一致，搜字母都大写或都小写，namespace app\controllers\SecurityKey; prefix=SecurityKey
+        $className = str_replace(' ', '', ucwords(str_replace('-', ' ', $className))) . 'Controller';
+        $className = ltrim($this->controllerNamespace . '\\' . str_replace('/', '\\', $prefix)  . $className, '\\');
+
+        if (strpos($className, '-') !== false || !class_exists($className)) {
+            return null;
+        }
+
+        if (is_subclass_of($className, 'swoft\base\Controller')) {
+            return ApplicationContext::getBean($className);
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * @param string $route
+     *
+     * @return array|bool
+     */
+    public function getPathRoute(string $route)
+    {
+        if ($route === '') {
+            $route = $this->defaultRoute;
+        }
+
+        $route = trim($route, '/');
+        if (strpos($route, '//') !== false) {
+            return false;
+        }
+
+        if (strpos($route, '/') !== false) {
+            list ($id, $route) = explode('/', $route, 2);
+        } else {
+            $id = $route;
+            $route = '';
+        }
+
+        if (($pos = strrpos($route, '/')) !== false) {
+            $id .= '/' . substr($route, 0, $pos);
+            $route = substr($route, $pos + 1);
+        }
+
+        return [$id, $route];
     }
 
     public function coreBeans()
