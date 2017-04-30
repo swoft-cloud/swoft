@@ -4,6 +4,7 @@ namespace swoft\web;
 
 use swoft\helpers\ArrayHelper;
 use swoft\base\ApplicationContext;
+use Swoole\Http\Response;
 
 /**
  *
@@ -18,7 +19,7 @@ class UrlManager
 {
     private $rules = [];
 
-    private $suffix;
+    public $suffix;
 
     public function init()
     {
@@ -57,7 +58,7 @@ class UrlManager
         return $compiledRules;
     }
 
-    public function parseRequest($request){
+    public function parseRequest(\Swoole\Http\Request $request){
         /* @var $rule UrlRule */
         foreach ($this->rules as $rule) {
             if (($result = $rule->parseRequest($this, $request)) !== false) {
@@ -65,7 +66,7 @@ class UrlManager
             }
         }
 
-        $pathInfo = 'post/test';
+        $pathInfo = $request->server['path_info'];
         if (substr($pathInfo, 0, 1) === '/') {
             $pathInfo = substr($pathInfo, 1);
         }

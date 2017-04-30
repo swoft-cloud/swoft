@@ -2,6 +2,9 @@
 
 namespace swoft\web;
 
+use swoft\base\ApplicationContext;
+use swoft\base\RequestAttributes;
+use swoft\base\RequestContextHolder;
 use swoft\console\Console;
 
 /**
@@ -45,7 +48,28 @@ class Application extends \swoft\base\Application
 
     public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        $response->end('hello swoft!');
+        // chrome两次请求bug修复
+        if(isset($request->server['request_uri']) && $request->server['request_uri'] == '/favicon.ico'){
+            $response->end("favicon.ico");
+            return false;
+        }
+        $bTime = microtime(true);
+        $this->beginRequest($request, $response);
+        $eTime = microtime(true);
+        $response->end('hello swoft!'.sprintf("%.2f", (($eTime-$bTime))*1000));
+
+        try {
+
+            /* @var UrlManager $urlMnanger*/
+            $urlMnanger = ApplicationContext::getBean('urlManager');
+            list($route, $params) = $urlMnanger->parseRequest($request);
+
+            var_dump($route, $params);
+
+        } catch (\Exception $e) {
+        }
+
+        $this->afterRequest();
     }
 
     public function onStart(\Swoole\Http\Server $server)
@@ -69,5 +93,15 @@ class Application extends \swoft\base\Application
         } else {
             swoole_set_process_name($this->server['pname']. " worker process");
         }
+    }
+
+    private function beginRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
+    {
+        RequestContextHolder::set($request, $response);
+    }
+
+    private function afterRequest()
+    {
+        RequestContextHolder::destory();
     }
 }

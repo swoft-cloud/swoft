@@ -16,9 +16,10 @@ class RequestAttributes
     private $request;
     private $response;
 
-    public function __construct()
+    public function __construct(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-
+        var_dump($request->get);
+        var_dump($request->post);
     }
 
     public function getRequest()
