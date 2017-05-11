@@ -4,7 +4,7 @@ namespace swoft\web;
 
 use swoft\base\ApplicationContext;
 use swoft\base\RequestAttributes;
-use swoft\base\RequestContextHolder;
+use swoft\base\RequestContext;
 use swoft\console\Console;
 
 /**
@@ -65,8 +65,8 @@ class Application extends \swoft\base\Application
 
             /* @var Controller $controller */
             list($controller, $actionId) = $this->createController($route);
-
-            var_dump($controller, $actionId);
+            $controller->runAction($actionId, $params);
+//            var_dump($controller, $actionId);
 
             $response->end('hello swoft2!'.sprintf("%.2f", (($eTime-$bTime))*1000));
 
@@ -102,11 +102,12 @@ class Application extends \swoft\base\Application
 
     private function beginRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        RequestContextHolder::set($request, $response);
+        RequestContext::setRequest($request);
+        RequestContext::setResponse($response);
     }
 
     private function afterRequest()
     {
-        RequestContextHolder::destory();
+        RequestContext::destory();
     }
 }

@@ -13,8 +13,9 @@ namespace swoft\web;
  */
 class Controller extends \swoft\base\Controller
 {
-    public function runAction()
+    public function render()
     {
 
     }
+
 }

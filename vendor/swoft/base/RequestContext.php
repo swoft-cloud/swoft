@@ -5,13 +5,13 @@ namespace swoft\base;
 /**
  *
  *
- * @uses      RequestContextHolder
+ * @uses      RequestContext
  * @version   2017年04月29日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 5.x {@link http://www.php.net/license/3_0.txt}
  */
-class RequestContextHolder
+class RequestContext
 {
     const COROUTINE_DATA = "data";
     const COROUTINE_REQUEST = "request";
@@ -20,7 +20,7 @@ class RequestContextHolder
     private static $coroutineLocal;
 
     /**
-     * @return \Swoole\Http\Request
+     * @return \swoft\web\Request
      */
     public static function getRequest()
     {
@@ -28,7 +28,7 @@ class RequestContextHolder
     }
 
     /**
-     * @return \Swoole\Http\Response
+     * @return \swoft\web\Response
      */
     public static function getResponse()
     {
@@ -43,16 +43,6 @@ class RequestContextHolder
         return self::getCoroutineContext(self::COROUTINE_DATA);
     }
 
-    public static function set(\Swoole\Http\Request $request, \Swoole\Http\Response $response, array $contextData = [])
-    {
-        $coroutineId = self::getcoroutine();
-        self::$coroutineLocal[$coroutineId] = [
-            self::COROUTINE_REQUEST => $request,
-            self::COROUTINE_DATA => $contextData,
-            self::COROUTINE_RESPONSE => $response,
-        ];
-    }
-
     public static function destory()
     {
         $coroutineId = self::getcoroutine();
@@ -61,7 +51,7 @@ class RequestContextHolder
         }
     }
 
-    private function getCoroutineContext(string $name)
+    private static function getCoroutineContext(string $name)
     {
         $coroutineId = self::getcoroutine();
         if(!isset(self::$coroutineLocal[$coroutineId])){
@@ -73,6 +63,25 @@ class RequestContextHolder
             return $coroutineContext[$name];
         }
         return [];
+    }
+
+    public static function setRequest(\Swoole\Http\Request $request)
+    {
+        $coroutineId = self::getcoroutine();
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_REQUEST] = new \swoft\web\Request($request);
+    }
+
+    public static function setResponse(\Swoole\Http\Response $response)
+    {
+        $coroutineId = self::getcoroutine();
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_RESPONSE] = new \swoft\web\Request($response);
+    }
+
+
+    public static function setContextData(array $contextData = [])
+    {
+        $coroutineId = self::getcoroutine();
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = new \swoft\web\Request(COROUTINE_DATA);
     }
 
     private static function getcoroutine()
