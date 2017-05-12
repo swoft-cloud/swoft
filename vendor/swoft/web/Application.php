@@ -54,7 +54,7 @@ class Application extends \swoft\base\Application
             return false;
         }
         $bTime = microtime(true);
-        $this->beginRequest($request, $response);
+        $this->beforeRequest($request, $response);
         $eTime = microtime(true);
 
         try {
@@ -65,8 +65,9 @@ class Application extends \swoft\base\Application
 
             /* @var Controller $controller */
             list($controller, $actionId) = $this->createController($route);
-            $controller->runAction($actionId, $params);
+            $controller->run($actionId, $params);
 //            var_dump($controller, $actionId);
+            var_dump($params);
 
             $response->end('hello swoft2!'.sprintf("%.2f", (($eTime-$bTime))*1000));
 
@@ -100,7 +101,7 @@ class Application extends \swoft\base\Application
         }
     }
 
-    private function beginRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
+    private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         RequestContext::setRequest($request);
         RequestContext::setResponse($response);

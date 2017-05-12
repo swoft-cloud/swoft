@@ -13,8 +13,14 @@ namespace swoft\base;
  */
 class Controller
 {
+    protected $actionPrefix = "action";
+    protected $defaultAction = "index";
+
     public function run(string $actionId, array $params = [])
     {
+        if(empty($actionId)){
+            $actionId = $this->defaultAction;
+        }
         $this->runAction($actionId, $params);
     }
 
@@ -33,7 +39,8 @@ class Controller
     public function runActionWithParams(string $actionId, array $params = [])
     {
         $bindParams = [];
-        $method = new \ReflectionMethod($this, $actionId);
+        $methodName = $this->getMethodName($actionId);
+        $method = new \ReflectionMethod($this, $methodName);
         $reflectionParams = $method->getParameters();
         foreach ($reflectionParams as $reflectionParam) {
             $paramType = $reflectionParam->getType();
@@ -44,6 +51,15 @@ class Controller
             }
         }
         $method->invokeArgs($this, $bindParams);
+    }
+
+    public function getMethodName(string $actionId)
+    {
+        $methodName = $this->actionPrefix.ucfirst($actionId);
+        if(method_exists($this, $methodName)){
+
+        }
+        return $methodName;
     }
 
     protected function beforeAction()

@@ -13,9 +13,13 @@ namespace swoft\web;
  */
 class Controller extends \swoft\base\Controller
 {
-    public function render()
+    public function redirect(string $uri, array $params = [])
     {
 
     }
 
+    public function render()
+    {
+
+    }
 }

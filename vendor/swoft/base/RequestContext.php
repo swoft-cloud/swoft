@@ -74,7 +74,7 @@ class RequestContext
     public static function setResponse(\Swoole\Http\Response $response)
     {
         $coroutineId = self::getcoroutine();
-        self::$coroutineLocal[$coroutineId][self::COROUTINE_RESPONSE] = new \swoft\web\Request($response);
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_RESPONSE] = new \swoft\web\Response($response);
     }
 
 

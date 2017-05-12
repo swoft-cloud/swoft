@@ -13,5 +13,15 @@ namespace swoft\base;
  */
 class Response
 {
+    protected $response = null;
 
+    public function __construct(\Swoole\Http\Response $response)
+    {
+        $this->response = $response;
+    }
+
+    public function send()
+    {
+
+    }
 }

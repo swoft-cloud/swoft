@@ -16,6 +16,7 @@ $config = \swoft\helpers\ArrayHelper::merge(
             'urlManager' => [
                 'rules' => [
                     '/home/data' => '/index',
+                    '/index/index/1' => '/index/index',
                     '/post/<id:\d+>' => 'post/view'
                 ],
             ]

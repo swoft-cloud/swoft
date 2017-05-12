@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\logic\IndexLogic;
 use swoft\web\Controller;
+use swoft\web\Request;
 
 /**
  *
@@ -22,8 +23,9 @@ class IndexController extends Controller
      */
     private $logic;
 
-    public function actionIndex()
+    public function actionIndex(Request $request)
     {
+        var_dump($request);
         return $this->logic->getUser();
     }
 }
