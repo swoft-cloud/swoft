@@ -1,0 +1,12 @@
+{
+    "Version": "2.1.27.99",
+    "Names": {
+        "Deva": "devanagari",
+        "Gujr": "gujarati",
+        "Hanb": "hanb",
+        "Hrkt": "syllabaires japonais",
+        "Jamo": "jamo",
+        "Orya": "odia",
+        "Zsye": "zsye"
+    }
+}

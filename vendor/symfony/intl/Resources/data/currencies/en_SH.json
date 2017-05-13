@@ -1,0 +1,13 @@
+{
+    "Version": "2.1.27.40",
+    "Names": {
+        "GBP": [
+            "GB£",
+            "British Pound"
+        ],
+        "SHP": [
+            "£",
+            "St. Helena Pound"
+        ]
+    }
+}
