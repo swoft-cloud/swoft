@@ -26,11 +26,11 @@ class Request
     {
         $this->request = $request;
         $this->get = $request->get;
-        $this->post = $request->post == null ? [] : $request->post;
+        $this->post = !property_exists($request, 'post') ? [] : $request->post;
         $this->header = $request->header == null ? [] : $request->header;
         $this->server = $request->server == null ? [] : $request->server;
-        $this->cookie = $request->cookie == null ? [] : $request->cookie;
-        $this->files = $request->files == null ? [] : $request->files;
+        $this->cookie = !property_exists($request, 'cookie') ? [] : $request->cookie;
+        $this->files = !property_exists($request, 'files') ? [] : $request->files;
     }
 
     public function getCharacterEncoding(): string

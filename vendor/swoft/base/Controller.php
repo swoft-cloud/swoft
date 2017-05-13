@@ -21,19 +21,26 @@ class Controller
         if(empty($actionId)){
             $actionId = $this->defaultAction;
         }
-        $this->runAction($actionId, $params);
+        $response = $this->runAction($actionId, $params);
+        if(!($response instanceof \swoft\web\Response)){
+            $response = RequestContext::getResponse();
+        }
+
+        $response->send();
     }
 
     public function runAction(string $actionId, array $params = [])
     {
-        $this->runActionWithFilters($actionId, $params);
+        return $this->runActionWithFilters($actionId, $params);
     }
 
     public function runActionWithFilters(string $actionId, array $params = [])
     {
         $this->beforeAction();
-        $this->runActionWithParams($actionId, $params);
+        $response = $this->runActionWithParams($actionId, $params);
         $this->afterAction();
+
+        return $response;
     }
 
     public function runActionWithParams(string $actionId, array $params = [])
@@ -46,11 +53,16 @@ class Controller
             $paramType = $reflectionParam->getType();
             if($paramType == \swoft\web\Request::class){
                 $bindParams[] = RequestContext::getRequest();
+            }elseif($paramType == \swoft\web\Response::class){
+                $bindParams[] = RequestContext::getResponse();
             }else{
                 $bindParams[] = array_shift($params);
             }
         }
-        $method->invokeArgs($this, $bindParams);
+
+        /* @var \swoft\web\Response|null $response*/
+        $response = $method->invokeArgs($this, $bindParams);
+        return $response;
     }
 
     public function getMethodName(string $actionId)

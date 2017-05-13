@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
+use swoft\Swf;
 use swoft\web\Controller;
 use swoft\web\Request;
 
@@ -25,7 +26,8 @@ class IndexController extends Controller
 
     public function actionIndex(Request $request)
     {
-        var_dump($request);
-        return $this->logic->getUser();
+        $data = $this->logic->getUser();
+        $data['params'] = Swf::$app->params();
+        $this->outputJson($data, 'suc');
     }
 }

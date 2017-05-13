@@ -13,47 +13,64 @@ namespace swoft\web;
  */
 class Response extends \swoft\base\Response
 {
-    const FORMAT_RAW = 'raw';
     const FORMAT_HTML = 'html';
     const FORMAT_JSON = 'json';
-    const FORMAT_JSONP = 'jsonp';
     const FORMAT_XML = 'xml';
 
-    private $format = self::FORMAT_HTML;
-    private $charset = "UTF-8";
     private $status = 200;
-    private $headers;
+    private $charset = "utf-8";
+    private $responseContent = "";
+    private $format = self::FORMAT_HTML;
+    private $contentTypes = [
+        self::FORMAT_XML => 'text/xml',
+        self::FORMAT_HTML => 'text/html',
+        self::FORMAT_JSON => 'application/json',
+    ];
 
+    public function send()
+    {
+        $this->formatContentType();
+        $this->response->status($this->status);
+        $this->response->end($this->responseContent);
+    }
 
     public function addHeader(string $name, string $value)
     {
-
+        $this->response->header($name, $value);
     }
 
     public function setStatus(int $status)
     {
-
+        $this->status = $status;
     }
 
-    public function setContentType(string $type)
+    public function setFormat(string $format)
     {
-
+        $this->format = $format;
     }
 
     public function setCharset(string $charset){
-
-    }
-
-    public function addCookie(string $name, string $value)
-    {
-
+        $this->charset = $charset;
     }
 
     /**
-     *
+     * @param string $responseContent
      */
-    public function send()
+    public function setResponseContent(string $responseContent)
     {
+        $this->responseContent = $responseContent;
+    }
 
+    public function addCookie($key, $value, $expire = 0, $path = '/', $domain = '')
+    {
+        $this->response->cookie($key, $value, $expire, $path, $domain);
+    }
+
+    private function formatContentType()
+    {
+        // contentType
+        $contentType = $this->contentTypes[$this->format];
+        $contentType .= ";charset=".$this->charset;
+        $this->response->header('Content-Type', $contentType);
     }
 }

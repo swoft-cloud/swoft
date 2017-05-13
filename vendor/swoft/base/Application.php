@@ -20,6 +20,7 @@ abstract class Application
     protected $beans;
     protected $params;
     protected $basePath;
+    protected $viewsPath;
     protected $runtimePath;
     protected $settingPath;
     protected $defaultRoute = "index";

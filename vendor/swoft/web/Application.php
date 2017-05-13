@@ -6,6 +6,7 @@ use swoft\base\ApplicationContext;
 use swoft\base\RequestAttributes;
 use swoft\base\RequestContext;
 use swoft\console\Console;
+use swoft\Swf;
 
 /**
  *
@@ -27,6 +28,9 @@ class Application extends \swoft\base\Application
     use Console;
 
     public function start(){
+
+        Swf::$app = $this;
+
         $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
 
         $this->swoft->set($this->setting);
@@ -66,11 +70,8 @@ class Application extends \swoft\base\Application
             /* @var Controller $controller */
             list($controller, $actionId) = $this->createController($route);
             $controller->run($actionId, $params);
-//            var_dump($controller, $actionId);
-            var_dump($params);
 
-            $response->end('hello swoft2!'.sprintf("%.2f", (($eTime-$bTime))*1000));
-
+//            $response->end("hello world".sprintf("%.2f", (($eTime-$bTime))*1000));
         } catch (\Exception $e) {
             $response->end($e->getMessage().sprintf("%.2f", (($eTime-$bTime))*1000));
         }
@@ -110,5 +111,27 @@ class Application extends \swoft\base\Application
     private function afterRequest()
     {
         RequestContext::destory();
+    }
+
+    public function params()
+    {
+        return $this->params;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getViewsPath()
+    {
+        return $this->viewsPath;
     }
 }
