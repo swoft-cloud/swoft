@@ -30,4 +30,12 @@ class IndexController extends Controller
         $data['params'] = Swf::$app->params();
         $this->outputJson($data, 'suc');
     }
+
+    public function actionHtml()
+    {
+        $data = [
+            'name' => 'stelin'
+        ];
+        $this->render('/main/layout.html', $data);
+    }
 }

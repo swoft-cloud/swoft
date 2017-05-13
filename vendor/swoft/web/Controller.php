@@ -3,6 +3,7 @@
 namespace swoft\web;
 
 use swoft\base\RequestContext;
+use swoft\Swf;
 
 /**
  *
@@ -22,7 +23,10 @@ class Controller extends \swoft\base\Controller
 
     public function render(string $templateId, array $data = [])
     {
-        $content = "hellow twigs !";
+        $viewsPath = Swf::$app->getViewsPath();
+
+        $this->checkTemplateFile($viewsPath, $templateId);
+        $content = $this->renderContent($viewsPath, $templateId, $data);
         RequestContext::getResponse()->setResponseContent($content);
     }
 
@@ -38,5 +42,20 @@ class Controller extends \swoft\base\Controller
         $response = RequestContext::getResponse();
         $response->setFormat(Response::FORMAT_JSON);
         $response->setResponseContent($json);
+    }
+
+    private function renderContent(string $viewsPath, string $templateId, array $data)
+    {
+        $loader = new \Twig_Loader_Filesystem($viewsPath);
+        $twig = new \Twig_Environment($loader);
+        return $twig->render($templateId, $data);
+    }
+
+    private function checkTemplateFile(string $viewsPath, string $templateId)
+    {
+        $file = $viewsPath.$templateId;
+        if(!file_exists($file)){
+            throw new \Exception($file.' is not founded!');
+        }
     }
 }
