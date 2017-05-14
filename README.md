@@ -6,10 +6,10 @@
 [![php version](https://img.shields.io/badge/php-7.0-blue.svg)](http://php.net/)
 ------------
 
-swoft依赖
+依赖项
 ------------
 
-| 名称 | 介绍 |
+||  |
 |:---:|:---:|
 |PHP-DI|依赖注入|
 
