@@ -1,10 +1,10 @@
-<p align="center">
+<p align="center" style="font-size:30">
     <a href="#" target="_blank">
         swoft
     </a>
 </p>
 
-swoft是基于swoole协程的高性能PHP框架。
+swoft 是一个基于swoole协程的高性能PHP框架。
 
 It is fast, secure and efficient and works right out of the box pre-configured with reasonable defaults.
 The framework is easy to adjust to meet your needs, because Yii has been designed to be flexible.
