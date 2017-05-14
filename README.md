@@ -3,8 +3,7 @@
 </p>
 
 
-
-[![Monthly Downloads](https://poser.pugx.org/phpunit/phpunit/d/monthly)](https://packagist.org/packages/phpunit/phpunit)
+[![php version](https://img.shields.io/badge/php-7.0-blue.svg)](http://php.net/)
 ------------
 
 简介(Introduction)
