@@ -1,5 +1,5 @@
-<p align="center" style="font-size:30">
-    <a href="#" target="_blank">
+<p align="center">
+    <a href="#" style="color: black;font-size: 40px;" target="_blank">
         swoft
     </a>
 </p>
