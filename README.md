@@ -1,7 +1,5 @@
-<p align="center">
-    <a href="#" style="color: black;font-size: 40px;" target="_blank">
-        swoft
-    </a>
+<p align="center" style="color: black;font-size: 40px;">
+     swoft
 </p>
 
 swoft 是一个基于swoole协程的高性能PHP框架。
