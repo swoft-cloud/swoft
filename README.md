@@ -6,6 +6,14 @@
 [![php version](https://img.shields.io/badge/php-7.0-blue.svg)](http://php.net/)
 ------------
 
+swoft依赖
+------------
+
+| 名称 | 介绍 |
+|:---:|:---:|
+|PHP-DI|依赖注入|
+
+
 简介(Introduction)
 ------------
 swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器。框架全协程实现，性能完胜传统的php-fpm模式。
