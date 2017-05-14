@@ -5,6 +5,7 @@
 </p>
 
 swoft 是一个基于swoole协程的高性能PHP框架。
+------------
 
 简介(Introduction)
 ------------
