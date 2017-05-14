@@ -9,9 +9,10 @@
 依赖项
 ------------
 
-||  |
+|PHP-DI|  依赖注入|
 |:---:|:---:|
-|PHP-DI|依赖注入|
+|annotations|注解注入|
+|twig|渲染模板|
 
 
 简介(Introduction)
