@@ -106,15 +106,15 @@ class UrlRule implements UrlRuleInterface
      *
      * @return array|bool
      */
-    public function parseRequest(UrlManager $manager, \Swoole\Http\Request $request){
+    public function parseRequest(UrlManager $manager, Request $request){
 
-        $method = $request->server['request_method'];
+        $method = $request->getMethod();
 
         if (!empty($this->verb) && !in_array($method, $this->verb, true)) {
             return false;
         }
 
-        $pathInfo = $request->server['path_info'];
+        $pathInfo = $request->getPathInfo();
         if (substr($pathInfo, 0, 1) === '/') {
             $pathInfo = substr($pathInfo, 1);
         }

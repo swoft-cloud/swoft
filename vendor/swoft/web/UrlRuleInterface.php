@@ -13,5 +13,5 @@ namespace swoft\web;
  */
 interface UrlRuleInterface
 {
-    public function parseRequest(UrlManager $manager, \Swoole\Http\Request $request);
+    public function parseRequest(UrlManager $manager, Request $request);
 }

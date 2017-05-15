@@ -6,6 +6,7 @@ use app\models\logic\IndexLogic;
 use swoft\Swf;
 use swoft\web\Controller;
 use swoft\web\Request;
+use swoft\web\Response;
 
 /**
  *
@@ -24,8 +25,10 @@ class IndexController extends Controller
      */
     private $logic;
 
-    public function actionIndex(Request $request)
+    public function actionIndex(Request $request, Response $response)
     {
+        $response->addCookie('stelin', 'stelinCookie');
+
         $data = $this->logic->getUser();
         $data['params'] = Swf::$app->params();
         $this->outputJson($data, 'suc');

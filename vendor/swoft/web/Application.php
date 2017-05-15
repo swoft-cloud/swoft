@@ -6,6 +6,7 @@ use swoft\base\ApplicationContext;
 use swoft\base\RequestAttributes;
 use swoft\base\RequestContext;
 use swoft\console\Console;
+use swoft\filter\FilterChain;
 use swoft\Swf;
 
 /**
@@ -61,19 +62,30 @@ class Application extends \swoft\base\Application
         $this->beforeRequest($request, $response);
         $eTime = microtime(true);
 
+        $swfRequest = RequestContext::getRequest();
+        $swfResponse = RequestContext::getResponse();
+
         try {
 
             /* @var UrlManager $urlMnanger*/
             $urlMnanger = ApplicationContext::getBean('urlManager');
-            list($route, $params) = $urlMnanger->parseRequest($request);
+            list($route, $params) = $urlMnanger->parseRequest($swfRequest);
 
             /* @var Controller $controller */
             list($controller, $actionId) = $this->createController($route);
-            $controller->run($actionId, $params);
 
-//            $response->end("hello world".sprintf("%.2f", (($eTime-$bTime))*1000));
+            /* @var FilterChain $filter */
+            $filter = ApplicationContext::getBean('filter');
+            $filterHandler = $filter->doFilter($swfRequest, $swfResponse, $filter);
+            if($filterHandler instanceof Response){
+                $filterHandler->send();
+            }else{
+                $responseHandler = $controller->run($actionId, $params);
+                $responseHandler->send();
+            }
         } catch (\Exception $e) {
-            $response->end($e->getMessage().sprintf("%.2f", (($eTime-$bTime))*1000));
+            $swfResponse->setResponseContent($e->getMessage());
+            $swfResponse->send();
         }
 
         $this->afterRequest();

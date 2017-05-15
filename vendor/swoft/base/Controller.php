@@ -16,7 +16,7 @@ class Controller
     protected $actionPrefix = "action";
     protected $defaultAction = "index";
 
-    public function run(string $actionId, array $params = [])
+    public function run(string $actionId, array $params = []): \swoft\web\Response
     {
         if(empty($actionId)){
             $actionId = $this->defaultAction;
@@ -25,8 +25,7 @@ class Controller
         if(!($response instanceof \swoft\web\Response)){
             $response = RequestContext::getResponse();
         }
-
-        $response->send();
+        return $response;
     }
 
     public function runAction(string $actionId, array $params = [])

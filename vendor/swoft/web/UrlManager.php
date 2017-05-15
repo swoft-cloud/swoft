@@ -58,7 +58,7 @@ class UrlManager
         return $compiledRules;
     }
 
-    public function parseRequest(\Swoole\Http\Request $request){
+    public function parseRequest(Request $request){
         /* @var $rule UrlRule */
         foreach ($this->rules as $rule) {
             if (($result = $rule->parseRequest($this, $request)) !== false) {
@@ -66,7 +66,7 @@ class UrlManager
             }
         }
 
-        $pathInfo = $request->server['path_info'];
+        $pathInfo = $request->getPathInfo();
         if (substr($pathInfo, 0, 1) === '/') {
             $pathInfo = substr($pathInfo, 1);
         }

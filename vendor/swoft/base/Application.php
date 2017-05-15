@@ -146,7 +146,8 @@ abstract class Application
     public function coreBeans()
     {
         return [
-            'urlManager' => ['class' => 'swoft\web\urlManager']
+            'urlManager' => ['class' => 'swoft\web\urlManager'],
+            'filter' => ['class' => 'swoft\filter\FilterChain'],
         ];
     }
 

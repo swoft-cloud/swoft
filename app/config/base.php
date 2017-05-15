@@ -21,6 +21,18 @@ $config = \swoft\helpers\ArrayHelper::merge(
                     '/index/index/1' => '/index/index',
                     '/post/<id:\d+>' => 'post/view'
                 ],
+            ],
+            'filter' => [
+                'filters' =>[
+                    'commonParamsFilter' => [
+                        'class' => 'app\beans\filters\CommonParamsFilter',
+                        'uriPattern' => '.*',
+                    ],
+                    'loginFilter' => [
+                        'class' => 'app\beans\filters\LoginFilter',
+                        'uriPattern' => '^login',
+                    ]
+                ]
             ]
         ],
         'params' =>[
