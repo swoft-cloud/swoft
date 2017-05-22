@@ -1,5 +1,7 @@
-<p align="center" style="color: black;font-size: 40px;">
-     swoft
+<p align="center">
+    <a href="https://github.com/stelin/swoft" target="_blank">
+        <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
+    </a>
 </p>
 
 
