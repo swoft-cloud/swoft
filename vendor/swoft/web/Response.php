@@ -71,6 +71,7 @@ class Response extends \swoft\base\Response
         // contentType
         $contentType = $this->contentTypes[$this->format];
         $contentType .= ";charset=".$this->charset;
+
         $this->response->header('Content-Type', $contentType);
     }
 }

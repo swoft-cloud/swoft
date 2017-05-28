@@ -26,11 +26,11 @@ $config = \swoft\helpers\ArrayHelper::merge(
                 'filters' =>[
                     'commonParamsFilter' => [
                         'class' => 'app\beans\filters\CommonParamsFilter',
-                        'uriPattern' => '.*',
+                        'uriPattern' => '/*',
                     ],
                     'loginFilter' => [
                         'class' => 'app\beans\filters\LoginFilter',
-                        'uriPattern' => '^login',
+                        'uriPattern' => '/index/login',
                     ]
                 ]
             ]

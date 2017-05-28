@@ -46,6 +46,8 @@ class FilterChain implements Filter
         if(empty($filterAry)){
             return true;
         }
+
+        /* @var Filter $currentFilter*/
         list($currentFilter, $currentIndex) = $filterAry;
 
         $nextIndex = $currentIndex + 1;
@@ -60,30 +62,18 @@ class FilterChain implements Filter
 
         $filter = $this->filters[$currentIndex];
         $uriPattern = $filter['uriPattern'];
-        if($this->isMatchUriPattern($uri, $uriPattern)){
+
+        /* @var  $filterUriPattern FilterUriPattern*/
+        $filterUriPattern = ApplicationContext::getBean(FilterUriPattern::class);
+        if($filterUriPattern->match($uri, $uriPattern)){
             $filterObject = $filter['class'];
             return array($filterObject, $currentIndex);
         }
         return $this->getCurrentFilter($uri, $currentIndex +1);
     }
 
-    private function isMatchUriPattern(string $uri, string $uriPattern): bool {
-        return true;
-    }
-
-
-    public function preFilter()
+    public function denyFilter(Request $request, Response $response): Response
     {
-        return true;
-    }
-
-    public function postFilter()
-    {
-
-    }
-
-    public function denyFilter(Request $request, Response $response)
-    {
-
+        return $response;
     }
 }

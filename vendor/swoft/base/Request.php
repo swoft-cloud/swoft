@@ -25,7 +25,7 @@ class Request
     public function __construct(\Swoole\Http\Request $request)
     {
         $this->request = $request;
-        $this->get = $request->get;
+        $this->get = !property_exists($request, 'get') ? [] : $request->get;
         $this->post = !property_exists($request, 'post') ? [] : $request->post;
         $this->header = $request->header == null ? [] : $request->header;
         $this->server = $request->server == null ? [] : $request->server;

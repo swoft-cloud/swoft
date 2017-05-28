@@ -58,10 +58,8 @@ class Application extends \swoft\base\Application
             $response->end("favicon.ico");
             return false;
         }
-        $bTime = microtime(true);
-        $this->beforeRequest($request, $response);
-        $eTime = microtime(true);
 
+        $this->beforeRequest($request, $response);
         $swfRequest = RequestContext::getRequest();
         $swfResponse = RequestContext::getResponse();
 
@@ -77,12 +75,9 @@ class Application extends \swoft\base\Application
             /* @var FilterChain $filter */
             $filter = ApplicationContext::getBean('filter');
             $filterHandler = $filter->doFilter($swfRequest, $swfResponse, $filter);
-            if($filterHandler instanceof Response){
-                $filterHandler->send();
-            }else{
-                $responseHandler = $controller->run($actionId, $params);
-                $responseHandler->send();
-            }
+
+            /* run controller */
+            $this->runController($filterHandler, $controller, $actionId, $params);
         } catch (\Exception $e) {
             $swfResponse->setResponseContent($e->getMessage());
             $swfResponse->send();
@@ -118,6 +113,16 @@ class Application extends \swoft\base\Application
     {
         RequestContext::setRequest($request);
         RequestContext::setResponse($response);
+    }
+
+    private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)
+    {
+        if($filterHandler instanceof Response){
+            $filterHandler->send();
+        }else{
+            $responseHandler = $controller->run($actionId, $params);
+            $responseHandler->send();
+        }
     }
 
     private function afterRequest()

@@ -34,6 +34,11 @@ class IndexController extends Controller
         $this->outputJson($data, 'suc');
     }
 
+    public function actionLogin()
+    {
+        $this->outputJson(array('login suc'), 'suc');
+    }
+
     public function actionHtml()
     {
         $data = [

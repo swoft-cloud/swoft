@@ -18,29 +18,19 @@ use swoft\web\Response;
  */
 class LoginFilter implements Filter
 {
-
-    public function preFilter()
-    {
-        return true;
-    }
-
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0)
     {
-        if($this->preFilter() != true){
+        $uid = $request->getParameter('uid');
+        if($uid != 666666){
             return $this->denyFilter($request, $response);
         }
-        // 验证 @todo
-        $filterChain->doFilter($request, $response, $filterChain, $currentIndex);
-        $this->postFilter();
+        return $filterChain->doFilter($request, $response, $filterChain, $currentIndex);
     }
 
-    public function postFilter()
+    public function denyFilter(Request $request, Response $response): Response
     {
-
-    }
-
-    public function denyFilter(Request $request, Response $response)
-    {
+        $response->setResponseContent(json_encode(array('status' => 403, 'msg' => 'need login!')));
+        $response->setFormat(Response::FORMAT_JSON);
         return $response;
     }
 }

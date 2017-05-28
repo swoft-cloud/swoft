@@ -18,23 +18,19 @@ use swoft\web\Response;
  */
 class CommonParamsFilter implements Filter
 {
-
-    public function preFilter()
-    {
-        return true;
-    }
-
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0)
     {
+        // 过滤验证
+        $result = true;
+        if($result == true){
+            return $filterChain->doFilter($request, $response, $filterChain, $currentIndex);
+        }
 
+        return $this->denyFilter($request, $response);
     }
 
-    public function postFilter()
+    public function denyFilter(Request $request, Response $response): Response
     {
-
-    }
-
-    public function denyFilter(Request $request, Response $response)
-    {
+        return $response;
     }
 }
