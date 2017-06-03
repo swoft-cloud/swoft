@@ -1,0 +1,51 @@
+{
+    "name": "php-di/php-di",
+    "type": "library",
+    "description": "The dependency injection container for humans",
+    "keywords": ["di", "dependency injection", "container"],
+    "homepage": "http://php-di.org/",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "DI\\": "src/DI/"
+        },
+        "files": [
+            "src/DI/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DI\\Test\\IntegrationTest\\": "tests/IntegrationTest/",
+            "DI\\Test\\UnitTest\\": "tests/UnitTest/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "container-interop/container-interop": "~1.2",
+        "psr/container": "~1.0",
+        "php-di/invoker": "^1.3.2",
+        "php-di/phpdoc-reader": "^2.0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5",
+        "mnapoli/phpunit-easymock": "~0.2.0",
+        "doctrine/cache": "~1.4",
+        "doctrine/annotations": "~1.2",
+        "ocramius/proxy-manager": "~1.0|~2.0"
+    },
+    "replace": {
+        "mnapoli/php-di": "*"
+    },
+    "provide": {
+        "container-interop/container-interop-implementation": "^1.0",
+        "psr/container-implementation": "^1.0"
+    },
+    "suggest": {
+        "doctrine/cache": "Install it if you want to use the cache (version ~1.4)",
+        "doctrine/annotations": "Install it if you want to use annotations (version ~1.2)",
+        "ocramius/proxy-manager": "Install it if you want to use lazy injection (version ~1.0 or ~2.0)"
+    }
+}

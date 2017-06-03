@@ -1,0 +1,134 @@
+baseUrl: http://php-di.org
+
+scripts:
+    before:
+        - lessc --clean-css website/less/main.less website/css/all.min.css
+
+exclude:
+    - vendor
+    - website
+    - src
+    - tests
+    - logo
+
+menu:
+    items:
+        introduction:
+            section: Introduction
+            items:
+                getting-started:
+                    text: Getting started
+                    url: doc/getting-started.html
+                understanding-di:
+                    text: Understanding dependency injection
+                    url: doc/understanding-di.html
+                best-practices:
+                    text: "\"Best practices\" guide"
+                    url: doc/best-practices.html
+        usage:
+            section: Usage
+            items:
+                container-configuration:
+                    text: Configuring the container
+                    url: doc/container-configuration.html
+                container:
+                    text: Using the container
+                    url: doc/container.html
+        definition:
+            section: Definitions
+            items:
+                definition-introduction:
+                    text: Introduction
+                    url: doc/definition.html
+                autowiring:
+                    text: Autowiring
+                    url: doc/autowiring.html
+                php-definitions:
+                    text: PHP definitions
+                    url: doc/php-definitions.html
+                annotations:
+                    text: Annotations
+                    url: doc/annotations.html
+                definition-overriding:
+                    text: Definition extensions and overriding
+                    url: doc/definition-overriding.html
+        frameworks:
+            section: Frameworks
+            items:
+                symfony:
+                    text: Symfony
+                    url: doc/frameworks/symfony2.html
+                silex:
+                    text: Silex
+                    url: doc/frameworks/silex.html
+                zf2:
+                    text: Zend Framework 2
+                    url: doc/frameworks/zf2.html
+                zf1:
+                    text: Zend Framework 1
+                    url: doc/frameworks/zf1.html
+                slim:
+                    text: Slim
+                    url: doc/frameworks/slim.html
+                silly:
+                    text: Silly
+                    url: doc/frameworks/silly.html
+                demo:
+                    text: Demo application
+                    absoluteUrl: https://github.com/PHP-DI/demo
+        advanced:
+            section: Advanced topics
+            items:
+                performances:
+                    text: Performances
+                    url: doc/performances.html
+                scopes:
+                    text: Scopes
+                    url: doc/scopes.html
+                lazy-injection:
+                    text: Lazy injection
+                    url: doc/lazy-injection.html
+                inject-on-instance:
+                    text: Inject on an existing instance
+                    url: doc/inject-on-instance.html
+                environments:
+                    text: Injections depending on the environment
+                    url: doc/environments.html
+                ide-integration:
+                    text: IDE integration
+                    url: doc/ide-integration.html
+        migration:
+            section: Migration guides
+            items:
+                v4:
+                    text: From PHP-DI 3.x to 4.0
+                    url: doc/migration/4.0.html
+                v5:
+                    text: From PHP-DI 4.x to 5.0
+                    url: doc/migration/5.0.html
+        internals:
+            section: Internals
+            items:
+                contributing:
+                    text: Contributing
+                    url: contributing.html
+                how-it-works:
+                    text: How PHP-DI works
+                    url: doc/how-it-works.html
+        versions:
+            section: Old documentation
+            items:
+                v3:
+                    text: PHP-DI 3.x
+                    absoluteUrl: https://github.com/PHP-DI/PHP-DI/tree/3.x/doc
+                v4:
+                    text: PHP-DI 4.x
+                    absoluteUrl: https://github.com/PHP-DI/PHP-DI/tree/4.x/doc
+
+frameworks:
+    zf1: Zend Framework 1
+    zf2: Zend Framework 2
+    symfony2: Symfony
+    silex: Silex
+    slim: Slim
+    silly: Silly

@@ -1,0 +1,8 @@
+# .gitattributes
+tests/ export-ignore
+website/ export-ignore
+doc/ export-ignore
+news/ export-ignore
+
+# Auto detect text files and perform LF normalization
+* text=auto

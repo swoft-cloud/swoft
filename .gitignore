@@ -6,7 +6,6 @@
 .env
 .idea/
 .git/
-vendor/*
 .phpintel/
 *.patch
 runtime/

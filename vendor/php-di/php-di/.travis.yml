@@ -1,0 +1,27 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
+
+matrix:
+  include:
+    - php: 5.5
+      env: dependencies=lowest
+
+before_script:
+  - if [[ $(phpenv version-name) == '5.6' ]]; then composer require satooshi/php-coveralls:dev-master -n ; fi
+  - if [[ $(phpenv version-name) != '5.6' ]]; then composer install -n ; fi
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
+
+script:
+  - if [[ $(phpenv version-name) == '5.6' ]]; then vendor/bin/phpunit --coverage-clover clover.xml ; fi
+  - if [[ $(phpenv version-name) != '5.6' ]]; then vendor/bin/phpunit ; fi
+
+after_script:
+  - if [[ $(phpenv version-name) == '5.6' ]]; then php vendor/bin/coveralls -v ; fi
