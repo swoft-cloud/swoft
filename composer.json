@@ -1,12 +1,13 @@
 {
-    "require": {
+  "require": {
         "phpseclib/phpseclib": "2.0.0",
         "php-di/php-di": "^5.4",
         "doctrine/annotations": "^1.4",
 
         "symfony/polyfill": "1.3.0",
         "symfony/intl": "3.2.8",
-        "twig/twig": "2.3.2"
+        "twig/twig": "2.3.2",
+        "swoft/swoft":"dev-master"
     },
     "autoload": {
         "classmap": [
@@ -20,6 +21,10 @@
 	    "packagist": {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
+        },
+        "swoft/swoft": {
+          "type": "git",
+          "url": "https://github.com/stelin/swoft-src"
         }
 	}
 }

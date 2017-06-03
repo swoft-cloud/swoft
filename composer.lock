@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c07be22e4c4fe29b49fe47bf30d5eb62",
+    "content-hash": "71461c9ce41559174c068cdcc7f66357",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -529,6 +529,23 @@
             "time": "2017-02-14T16:28:37+00:00"
         },
         {
+            "name": "swoft/swoft",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stelin/swoft-src",
+                "reference": "032373d3698dd7abdfcd2c363ec931e17290f256"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "swoft\\": "./"
+                }
+            },
+            "description": "swoft src",
+            "time": "2017-06-03 10:06:23"
+        },
+        {
             "name": "symfony/intl",
             "version": "v3.2.8",
             "source": {
@@ -759,7 +776,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "swoft/swoft": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

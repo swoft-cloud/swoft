@@ -1,4 +1,0 @@
-escaped{
-    "EntryWith:Colon"{"Value"}
-    "Entry With Spaces"{"Value"}
-}
