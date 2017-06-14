@@ -1,6 +1,0 @@
-root{
-    /**
-     * so genrb doesn't issue warnings
-     */
-    ___{""}
-}
