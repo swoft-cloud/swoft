@@ -13,7 +13,7 @@
         ],
         "psr-4": {
        		"app\\": "app/",
-            "swoft\\":"src/swoft/"
+            "swoft\\":"src/"
         }
     },
     "repositories": {
