@@ -3,6 +3,7 @@
 namespace swoft\base;
 
 use swoft\helpers\ArrayHelper;
+use swoft\rpc\RpcClient;
 
 /**
  *
@@ -26,8 +27,21 @@ abstract class Application
     protected $defaultRoute = "index";
     protected $controllerNamespace = "app\\controllers";
 
+    /**
+     * @var \swoole_lock
+     */
+    public $lock = null;
+
+    /**
+     * @var RpcClient
+     */
+    public $rpcClient = null;
+
+    public $count = 0;
+
     public function init()
     {
+        $this->lock = new \swoole_lock(SWOOLE_MUTEX);
         $this->loadCoreBeans();
     }
 
@@ -43,6 +57,8 @@ abstract class Application
         foreach ($beans as $beanName => $definition){
             ApplicationContext::createBean($beanName, $definition);
         }
+
+        $this->rpcClient = ApplicationContext::getBean('rpcClient');
     }
 
     public function createController(string $route)

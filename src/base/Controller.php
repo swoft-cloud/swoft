@@ -46,21 +46,24 @@ class Controller
     {
         $bindParams = [];
         $methodName = $this->getMethodName($actionId);
-        $method = new \ReflectionMethod($this, $methodName);
-        $reflectionParams = $method->getParameters();
-        foreach ($reflectionParams as $reflectionParam) {
-            $paramType = $reflectionParam->getType();
-            if($paramType == \swoft\web\Request::class){
-                $bindParams[] = RequestContext::getRequest();
-            }elseif($paramType == \swoft\web\Response::class){
-                $bindParams[] = RequestContext::getResponse();
-            }else{
-                $bindParams[] = array_shift($params);
-            }
-        }
+//        $method = new \ReflectionMethod($this, $methodName);
+//        $reflectionParams = $method->getParameters();
+//        foreach ($reflectionParams as $reflectionParam) {
+//            $paramType = $reflectionParam->getType();
+//            if($paramType == \swoft\web\Request::class){
+//                $bindParams[] = RequestContext::getRequest();
+//            }elseif($paramType == \swoft\web\Response::class){
+//                $bindParams[] = RequestContext::getResponse();
+//            }else{
+//                $bindParams[] = array_shift($params);
+//            }
+//        }
 
         /* @var \swoft\web\Response|null $response*/
-        $response = $method->invokeArgs($this, $bindParams);
+//        $response = $method->invokeArgs($this, $bindParams);
+
+        $response = $this->$methodName();
+
         return $response;
     }
 

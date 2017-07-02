@@ -33,6 +33,17 @@ $config = \swoft\helpers\ArrayHelper::merge(
                         'uriPattern' => '/index/login',
                     ]
                 ]
+            ],
+            'rpcClient' =>[
+                'class' => \swoft\rpc\RpcClient::class,
+                'services' =>[
+                    \swoft\rpc\RpcClient::USER_SERVICE => [
+                        'host' => '127.0.0.1',
+                        'port' => 8099,
+                        'timeout' => 0.5,
+                        'size' => 10
+                    ]
+                ]
             ]
         ],
         'params' =>[

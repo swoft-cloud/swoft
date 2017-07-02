@@ -42,13 +42,36 @@ class Application extends \swoft\base\Application
 
         if($this->tcp['enable'] == 1){
             $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
+            $this->listen->set([
+                "open_eof_check"=>false,
+                "package_max_length"=>20480
+            ]);
             $this->listen->on('connect', [$this, 'onConnect']);
             $this->listen->on('receive', [$this, 'onReceive']);
             $this->listen->on('close', [$this, 'onClose']);
-            $this->listen->on('Packet', [$this, 'onPacket']);
         }
 
         $this->swoft->start();
+    }
+
+    public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
+    {
+        var_dump("connnect------");
+    }
+
+    public function onReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
+    {
+        var_dump("receiver---------*******************************__________________". $data);
+
+        $data  = json_decode($data, true);
+        $data['receiver'] = "ok";
+        $data = json_encode($data);
+
+        $server->send($fd, $data);
+    }
+    public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
+    {
+        var_dump("close------");
     }
 
     public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)

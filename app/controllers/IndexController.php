@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
+use swoft\base\ApplicationContext;
+use swoft\rpc\RpcClient;
 use swoft\Swf;
 use swoft\web\Controller;
 use swoft\web\Request;
@@ -25,10 +27,8 @@ class IndexController extends Controller
      */
     private $logic;
 
-    public function actionIndex(Request $request, Response $response)
+    public function actionIndex()
     {
-        $response->addCookie('stelin', 'stelinCookie');
-
         $data = $this->logic->getUser();
         $data['params'] = Swf::$app->params();
         $this->outputJson($data, 'suc');
@@ -45,5 +45,13 @@ class IndexController extends Controller
             'name' => 'stelin'
         ];
         $this->render('/main/layout.html', $data);
+    }
+
+    public function actionRpc()
+    {
+        /* @var RpcClient $client*/
+        $client = ApplicationContext::getBean('rpcClient');
+        $data = $client->rpcCall(RpcClient::USER_SERVICE, '/inner/uri', []);
+        $this->outputJson($data);
     }
 }
