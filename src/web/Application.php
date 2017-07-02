@@ -82,6 +82,10 @@ class Application extends \swoft\base\Application
             return false;
         }
 
+        $this->count = $this->count + 1;
+
+        echo "count= ".$this->count."---------\n";
+
         $this->beforeRequest($request, $response);
         $swfRequest = RequestContext::getRequest();
         $swfResponse = RequestContext::getResponse();

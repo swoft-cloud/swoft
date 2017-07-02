@@ -31,6 +31,7 @@ class IndexController extends Controller
     {
         $data = $this->logic->getUser();
         $data['params'] = Swf::$app->params();
+        $data['count'] = Swf::$app->count;
         $this->outputJson($data, 'suc');
     }
 
@@ -52,6 +53,9 @@ class IndexController extends Controller
         /* @var RpcClient $client*/
         $client = ApplicationContext::getBean('rpcClient');
         $data = $client->rpcCall(RpcClient::USER_SERVICE, '/inner/uri', []);
+        $data = json_decode($data, true);
+
+        $data['count'] = Swf::$app->count;
         $this->outputJson($data);
     }
 }

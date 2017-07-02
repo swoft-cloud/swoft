@@ -42,6 +42,9 @@ class RpcClient
         $server->send(RpcHelper::rpcPack($uri, $params));
         $data = $server->recv();
 
+        $count = Swf::$app->count + 1;
+        Swf::$app->count = $count;
+
 //        $server->close();
         $client->release($server);
 

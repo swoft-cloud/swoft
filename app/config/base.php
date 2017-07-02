@@ -41,7 +41,7 @@ $config = \swoft\helpers\ArrayHelper::merge(
                         'host' => '127.0.0.1',
                         'port' => 8099,
                         'timeout' => 0.5,
-                        'size' => 10
+                        'size' => 6
                     ]
                 ]
             ]

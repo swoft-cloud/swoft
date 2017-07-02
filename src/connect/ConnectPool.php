@@ -16,8 +16,8 @@ use swoft\Swf;
 abstract class ConnectPool implements Pool
 {
 
-    public $max = 50;
-    public $size = 20;
+    public $max = 66;
+    public $size = 6;
     public $model = 1;
     public $count = 0;
 
@@ -26,21 +26,31 @@ abstract class ConnectPool implements Pool
      */
     public $queue = null;
 
+    public function initConnect()
+    {
+        for ($i = 0; $i < $this->size; $i++) {
+            $connect = $this->createConnect();
+            $this->queue->push($connect);
+        }
+    }
+
     public function getConnect()
     {
-        $this->count++;
-        $connect = null;
-        if($this->queue->isEmpty() == false){
-            $connect = $this->queue->pop();
-            if($connect->isConnected() == false){
-                $connect = $this->reConnect($connect);
-            }
-            echo "retry connect------------------------------------------";
-        }else{
-            echo "new connect------------------------------------------".$this->queue->count();
-            $connect = $this->createConnect();
-        }
 
+        $connect = null;
+        if($this->queue->isEmpty()){
+            $this->initConnect();
+        }
+//        if ($this->queue->count() > 0) {
+//            $connect = $this->queue->pop();
+//            if ($connect->isConnected() == false) {
+//                $connect = $this->reConnect($connect);
+//            }
+//
+//            return $connect;
+//        }
+
+        $connect = $this->createConnect();
         return $connect;
 
     }
@@ -48,8 +58,10 @@ abstract class ConnectPool implements Pool
 
     public function release($connect)
     {
-        echo "release-----------------------------------------------------------";
-        $this->queue->push($connect);
+        if($this->queue->count() < $this->max){
+            $this->queue->push($connect);
+        }
+        echo "release-----------------------------------------------------------count=".$this->queue->count()," size=".$this->size;
     }
 
     abstract public function createConnect();

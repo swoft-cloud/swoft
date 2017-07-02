@@ -38,6 +38,7 @@ class ClientPool extends ConnectPool
         {
             echo "connect failed. Error: {$client->errCode}\n $this->host $this->port";
         }
+        $this->count++;
 
         return $client;
     }

@@ -1,4 +1,9 @@
 <?php
+
+$a = new SplQueue();
+
+var_dump($a->shift());
+exit();
 // 全匹配
 
 $str = "/login/index/";
