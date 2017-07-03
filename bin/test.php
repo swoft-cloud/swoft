@@ -1,8 +1,70 @@
 <?php
 
-$a = new SplQueue();
+class Breaker{
+    public $state = null;
+    public function __construct()
+    {
+        $this->state = new StateA($this);
+    }
 
-var_dump($a->shift());
+    public function mvToB()
+    {
+        $this->state = new StateB($this);
+    }
+
+    public function doCall()
+    {
+        $this->state->doCall();
+    }
+
+}
+class State{
+    /**
+     * @var Breaker
+     */
+    public $breaker = null;
+    function __construct($breaker)
+    {
+        $this->breaker = $breaker;
+    }
+}
+
+class StateA extends State {
+    public function doCall()
+    {
+        $this->breaker->mvToB();
+        echo "stateA\n";
+    }
+}
+
+class StateB extends State {
+    public function doCall()
+    {
+        echo "stateB\n";
+    }
+}
+
+$b = new Breaker();
+
+$b->state->doCall();
+$b->state->doCall();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//$a = new SplQueue();
+//
+//var_dump($a->shift());
 exit();
 // 全匹配
 

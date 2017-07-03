@@ -27,16 +27,18 @@ class IndexController extends Controller
      */
     private $logic;
 
-    public function actionIndex()
+    public function actionIndex(Request $request, Response $response)
     {
         $data = $this->logic->getUser();
         $data['params'] = Swf::$app->params();
         $data['count'] = Swf::$app->count;
+        $data['request'] = $request->getRequestUri();
         $this->outputJson($data, 'suc');
     }
 
     public function actionLogin()
     {
+
         $this->outputJson(array('login suc'), 'suc');
     }
 
