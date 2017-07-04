@@ -34,16 +34,22 @@ $config = \swoft\helpers\ArrayHelper::merge(
                     ]
                 ]
             ],
-            'rpcClient' =>[
-                'class' => \swoft\rpc\RpcClient::class,
+            'managerPool' =>[
+                'class' => \swoft\pool\ManagerPool::class,
                 'services' =>[
-                    \swoft\rpc\RpcClient::USER_SERVICE => [
-                        'host' => '127.0.0.1',
-                        'port' => 8099,
-                        'timeout' => 0.5,
-                        'size' => 6
+                    "user" => [
+                        "class" => \swoft\pool\ServicePool::class,
+                        "maxIdel" => 6,
+                        "maxActive" => 10,
+                        "timeout" => 200,
                     ]
                 ]
+            ],
+            "circuitBreakerManager" =>[
+                'class' => \swoft\circuit\CircuitBreakerManager::class,
+                'swithToFailCount' => 10,
+                'swithToSuccessCount' => 10,
+                'delaySwithTimer' => 20000
             ]
         ],
         'params' =>[

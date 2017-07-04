@@ -2,6 +2,9 @@
 
 namespace swoft;
 
+use swoft\base\ApplicationContext;
+use swoft\circuit\CircuitBreakerManager;
+use swoft\pool\ManagerPool;
 use swoft\web\Application;
 
 /**
@@ -20,12 +23,35 @@ class Swf
      */
     public static $app;
 
+    /**
+     * @return ManagerPool
+     */
+    public static function getMangerPool()
+    {
+        return ApplicationContext::getBean("managerPool");
+    }
+
+    /**
+     * @return CircuitBreakerManager
+     */
+    public static function getCricuitBreakerManager(){
+        return ApplicationContext::getBean('circuitBreakerManager');
+    }
+
+    public static function getMysqlPool()
+    {
+        return self::getMangerPool()->getPool("mysql");
+    }
+
+    public static function getRedisPool()
+    {
+        return self::getMangerPool()->getPool("redis");
+    }
 
     public static function trace()
     {
 
     }
-
     public static function error()
     {
 

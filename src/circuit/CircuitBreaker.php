@@ -14,60 +14,58 @@ use swoft\rpc\RpcClient;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class CircuitBreaker
+class CircuitBreaker  extends AbstractCircuitBreaker
 {
+    /**
+     * @var int 错误请求计数
+     */
+    public $failCounter = 0;
+
+    /**
+     * @var int 成功请求计数
+     */
+    public $successCounter = 0;
+
+
+    /**
+     * @var int 开启状态切换到半开状态时间
+     */
+    public $swithOpenToHalfOpenTime = 0;
+
     /**
      * @var CircuitBreakerState 熔断器状态，开启、半开、关闭
      */
     private $circuitState = null;
 
     /**
-     * @var int 错误请求计数
+     * @var \swoole_lock 半开状态锁
      */
-    private $failCounter = 0;
-
-    /**
-     * @var int 成功请求计数
-     */
-    private $successCounter = 0;
-
-    /**
-     * @var int 连续失败次数，如果到达，状态切换为open
-     */
-    private $swithToFailCount = 10;
-
-    /**
-     * @var int 连续成功次数，如果到达，状态切换为close
-     */
-    private $swithToSuccessCount = 10;
-
-    /**
-     * @var int 开启状态切换到半开状态时间
-     */
-    private $swithOpenToHalfOpenTime = 0;
-
-    /**
-     * @var int 单位毫秒
-     */
-    private $delaySwithTimer = 5000;
-
     private $halfOpenLock = null;
 
-    public function __construct()
+    public function __construct(CircuitBreakerManager $cbm)
     {
+        // 配置初始化
+        $this->swithToSuccessCount = $cbm->swithToSuccessCount;
+        $this->swithToFailCount = $cbm->swithToFailCount;
+        $this->delaySwithTimer = $cbm->delaySwithTimer;
+
+        // 状态初始化
         $this->swithToCloseState();
         $this->halfOpenLock = new \swoole_lock(SWOOLE_MUTEX);
     }
 
-    public function call($callback, $params= [], $fallback = null){
+    public function call($callback, $params = [], $fallback = null)
+    {
         return $this->circuitState->doCall($callback, $params, $fallback);
     }
 
-    public function incFailCount(){
+    public function incFailCount()
+    {
         $this->failCounter++;
     }
 
-    public function incSuccessCount(){
+    public function incSuccessCount()
+    {
         $this->successCounter++;
     }
 
@@ -90,10 +88,12 @@ class CircuitBreaker
     {
         $this->circuitState = new CloseState($this);
     }
+
     public function swithToOpenState()
     {
         $this->circuitState = new OpenState($this);
     }
+
     public function swithToHalfState()
     {
         $this->circuitState = new HalfOpenState($this);
@@ -101,10 +101,10 @@ class CircuitBreaker
 
     public function fallback($fallback = null)
     {
-        if($fallback == null){
+        if ($fallback == null) {
             return false;
         }
-        return call_user_func($fallback);
+        return \Swoole\Coroutine::call_user_func($fallback);
     }
 
     public function initCounter()
@@ -177,41 +177,3 @@ class CircuitBreaker
         return $this->halfOpenLock;
     }
 }
-
-class CircuitBreakerManager
-{
-    public $cricuitBreakerList = [];
-
-    public function init(){
-        $sersvice = [];
-        foreach ($sersvice as $name => $config){
-
-        }
-    }
-
-    public function getCricuitBreaker()
-    {
-        return new CircuitBreaker();
-    }
-
-
-}
-
-//$c = new CircuitBreaker();
-//
-//function call($service, $uri, $prams, $fallback = null){
-//    $c = new CircuitBreaker();
-//    $r = new RpcClient();
-//    $params = [
-//        $service,
-//        $uri,
-//    ];
-//
-//    $c->call("user", [$r, "rpcCall"], $params, $fallback);
-//}
-//
-//function post($service, $url, $params, $fallback = null){
-//    /* @var $c CircuitBreaker*/
-//    $c = ApplicationContext::getBean('circuitBreakerManager');
-//    $c->call("user", "post", $params, $fallback);
-//}

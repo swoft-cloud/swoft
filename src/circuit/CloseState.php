@@ -19,21 +19,30 @@ class CloseState extends CircuitBreakerState
 {
     function doCall($callback, $params = [], $fallback = null)
     {
-        $data = false;
-        try {
-            $data = call_user_func_array($callback, $params);
-        } catch (\Exception $e) {
-            if($this->circuitBreaker->isClose()){
-                $this->circuitBreaker->incFailCount();
-            }
-            $data = $this->circuitBreaker->$fallback($fallback);
-        }
+//        $data = "some data";
+//        $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+//        \Swoole\Coroutine::call_user_func_array([$client, 'send'], data);
 
-        $failCount = $this->circuitBreaker->getFailCounter();
-        $swithToFailCount = $this->circuitBreaker->getSwithToFailCount();
-        if($failCount >= $swithToFailCount && $this->circuitBreaker->isClose()){
-            $this->circuitBreaker->swithToOpenState();
-        }
-        return $data;
+
+//        var_dump($callback);
+//        \Swoole\Coroutine::call_user_func_array($callback, $params);
+//        list($class ,$method) = $callback;
+//        $class->$method();
+//        $data = false;
+//        try {
+//            $data = \Swoole\Coroutine::call_user_func_array($callback, $params);
+//        } catch (\Exception $e) {
+//            if($this->circuitBreaker->isClose()){
+//                $this->circuitBreaker->incFailCount();
+//            }
+//            $data = $this->circuitBreaker->$fallback($fallback);
+//        }
+//
+//        $failCount = $this->circuitBreaker->getFailCounter();
+//        $swithToFailCount = $this->circuitBreaker->getSwithToFailCount();
+//        if($failCount >= $swithToFailCount && $this->circuitBreaker->isClose()){
+//            $this->circuitBreaker->swithToOpenState();
+//        }
+//        return $data;
     }
 }

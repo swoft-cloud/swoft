@@ -2,7 +2,7 @@
 
 namespace swoft\rpc;
 
-use swoft\connect\ClientPool;
+use swoft\connect\ServicePool;
 use swoft\helpers\RpcHelper;
 use swoft\Swf;
 
@@ -30,13 +30,13 @@ class RpcClient
             $port = $service['port'];
             $size = $service['size'];
 
-            $this->pools[$name] = new ClientPool($host, $port, $size);
+            $this->pools[$name] = new ServicePool($host, $port, $size);
         }
     }
 
     public function rpcCall($service, $uri, $params)
     {
-        /* @var ClientPool $client*/
+        /* @var ServicePool $client*/
         $client = $this->pools[$service];
         $server = $client->getConnect();
         $server->send(RpcHelper::rpcPack($uri, $params));

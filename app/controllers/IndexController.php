@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\logic\IndexLogic;
 use swoft\base\ApplicationContext;
 use swoft\rpc\RpcClient;
+use swoft\service\Service;
 use swoft\Swf;
 use swoft\web\Controller;
 use swoft\web\Request;
@@ -52,10 +53,14 @@ class IndexController extends Controller
 
     public function actionRpc()
     {
-        /* @var RpcClient $client*/
-        $client = ApplicationContext::getBean('rpcClient');
-        $data = $client->rpcCall(RpcClient::USER_SERVICE, '/inner/uri', []);
-        $data = json_decode($data, true);
+//        /* @var RpcClient $client*/
+//        $client = ApplicationContext::getBean('rpcClient');
+//        $data = $client->rpcCall(RpcClient::USER_SERVICE, '/inner/uri', []);
+//        $data = json_decode($data, true);
+
+        $service = new Service("user");
+        $ret = $service->call('/inner/uri', []);
+//        $result = $ret->getResult();
 
         $data['count'] = Swf::$app->count;
         $this->outputJson($data);

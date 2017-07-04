@@ -1,6 +1,6 @@
 <?php
 
-namespace swoft\connect;
+namespace swoft\pool;
 
 /**
  *

@@ -32,11 +32,6 @@ abstract class Application
      */
     public $lock = null;
 
-    /**
-     * @var RpcClient
-     */
-    public $rpcClient = null;
-
     public $count = 0;
 
     public function init()
@@ -57,8 +52,6 @@ abstract class Application
         foreach ($beans as $beanName => $definition){
             ApplicationContext::createBean($beanName, $definition);
         }
-
-        $this->rpcClient = ApplicationContext::getBean('rpcClient');
     }
 
     public function createController(string $route)

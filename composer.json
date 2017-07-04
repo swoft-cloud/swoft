@@ -6,7 +6,8 @@
 
         "symfony/polyfill": "1.3.0",
         "symfony/intl": "3.2.8",
-        "twig/twig": "2.3.2"
+        "twig/twig": "2.3.2",
+        "monolog/monolog": "^1.23"
     },
     "autoload": {
         "classmap": [
