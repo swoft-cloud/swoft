@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\logic\IndexLogic;
 use swoft\base\ApplicationContext;
+use swoft\log\FileHandler;
+use swoft\log\Logger;
 use swoft\rpc\RpcClient;
 use swoft\service\Service;
 use swoft\Swf;
@@ -48,6 +50,27 @@ class IndexController extends Controller
         $data = [
             'name' => 'stelin'
         ];
+
+
+        $dateFormat = "Y/m/d H:i:s";
+        $output = "%datetime% [%level_name%] [%channel%] [logid:ac135959afa9004e8617] [445(ms)] [4(MB)] [/Web/vrOrder/Order] [%extra%] [status=200] [] profile[] counting[]\n";
+        // finally, create a formatter
+        $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+
+        $logPath = RUNTIME_PATH."/my_app.log";
+
+        $stream = new FileHandler($logPath);
+        $stream->setFormatter($formatter);
+
+        // Create the logger
+        $logger = new Logger("user");
+        $logger->pushHandler($stream);
+
+        $logger->info("this is info");
+        $logger->info("this is info");
+        $logger->info("this is info");
+        $logger->flushLog();
+
         $this->render('/main/layout.html', $data);
     }
 
