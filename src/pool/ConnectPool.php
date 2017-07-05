@@ -9,9 +9,9 @@ use swoft\Swf;
  *
  * @uses      ConnectPool
  * @version   2017年06月15日
- * @author    lilin <lilin@ugirls.com>
+ * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 5.x {@link http://www.php.net/license/3_0.txt}
+ * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 abstract class ConnectPool implements Pool
 {
