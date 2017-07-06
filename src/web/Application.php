@@ -138,8 +138,12 @@ class Application extends \swoft\base\Application
 
     private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
+        // 复制一份日志上下文
+        $logger = clone ApplicationContext::getBean('logger');
+
         RequestContext::setRequest($request);
         RequestContext::setResponse($response);
+        RequestContext::setLogger($logger);
     }
 
     private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)

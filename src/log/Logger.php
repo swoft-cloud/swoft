@@ -14,8 +14,21 @@ namespace swoft\log;
 class Logger extends \Monolog\Logger
 {
 
+    public $name = "swoft";
     private $flushInterval = 100;
+    public $targets = [];
 
+
+    protected static $levels = array(
+        self::DEBUG     => 'debug',
+        self::INFO      => 'info',
+        self::NOTICE    => 'notice',
+        self::WARNING   => 'warning',
+        self::ERROR     => 'error',
+        self::CRITICAL  => 'critical',
+        self::ALERT     => 'alert',
+        self::EMERGENCY => 'emergency',
+    );
 
     /**
      * @var array 记录请求日志
@@ -23,6 +36,30 @@ class Logger extends \Monolog\Logger
     public $messages = [];
 
 
+    public function init()
+    {
+//        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [445(ms)] [4(MB)] [/Web/vrOrder/Order] [%extra%] [status=200] [] profile[] counting[]\n";
+        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] %message%";
+
+        // finally, create a formatter
+        $formatter = new \Monolog\Formatter\LineFormatter($output, "Y/m/d H:i:s");
+
+        foreach ($this->targets as $target){
+            if(!isset($target['class']) || !isset($target['logFile']) || !isset($target['levels']) || !is_array($target['levels'])){
+                continue;
+            }
+
+            $class = $target['class'];
+            $logFile = $target['logFile'];
+            $levels = $target['levels'];
+
+            if($class == FileHandler::class){
+                $handler = new FileHandler($logFile, $levels);
+                $handler->setFormatter($formatter);
+                $this->pushHandler($handler);
+            }
+        }
+    }
 
 
     public function addRecord($level, $message, array $context = array())
@@ -43,7 +80,8 @@ class Logger extends \Monolog\Logger
         $ts->setTimezone(static::$timezone);
 
         $record = array(
-            'message' => (string) $message,
+            "logid" => "12345678",
+            'message' => $this->getTrace($message),
             'context' => $context,
             'level' => $level,
             'level_name' => $levelName,
@@ -61,16 +99,48 @@ class Logger extends \Monolog\Logger
         return true;
     }
 
+    public function getTrace($message)
+    {
+        $traces = debug_backtrace();
+        $count = count($traces);
+        $ex = '';
+        if ($count >= 2) {
+            $info = $traces[1];
+            if (isset($info['file'], $info['line'])) {
+                $filename = basename($info['file']);
+                $linenum = $info['line'];
+                $ex = "$filename:$linenum";
+            }
+        }
+        if ($count >= 3) {
+            $info = $traces[2];
+            if (isset($info['class'], $info['type'], $info['function'])) {
+                $ex .= ',' . $info['class'] . $info['type'] . $info['function'];
+            } elseif (isset($info['function'])) {
+                $ex .= ',' . $info['function'];
+            }
+        }
+
+        if (!empty($ex)) {
+            $message = "trace[$ex] " . $message;
+        }
+        return $message;
+    }
+
     public function flushLog($final = false)
     {
         if($final == true){
             $this->messages = $this->appendNoticeLog();
         }
         reset($this->handlers);
+
         while ($handler = current($this->handlers)) {
             $handler->handleBatch($this->messages);
             next($this->handlers);
         }
+
+        // 清空数组
+        $this->messages = [];
     }
 
     public function appendNoticeLog()

@@ -3,6 +3,7 @@
 namespace swoft;
 
 use swoft\base\ApplicationContext;
+use swoft\base\RequestContext;
 use swoft\circuit\CircuitBreakerManager;
 use swoft\pool\ManagerPool;
 use swoft\web\Application;
@@ -48,17 +49,36 @@ class Swf
         return self::getMangerPool()->getPool("redis");
     }
 
-    public static function trace()
+    /**
+     * @return log\Logger
+     */
+    public static function getLogger()
+    {
+        return RequestContext::getLogger();
+    }
+
+    public static function trace($message, array $context = array())
     {
 
     }
-    public static function error()
-    {
 
+    public static function error($message, array $context = array())
+    {
+        self::getLogger()->error($message, $context);
     }
 
-    public static function info()
+    public static function info($message, array $context = array())
     {
+        self::getLogger()->info($message, $context);
+    }
 
+    public static function warning($message, array $context = array())
+    {
+        self::getLogger()->warning($message, $context);
+    }
+
+    public static function debug($message, array $context = array())
+    {
+        self::getLogger()->debug($message, $context);
     }
 }

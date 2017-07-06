@@ -51,28 +51,29 @@ $config = \swoft\helpers\ArrayHelper::merge(
                 'swithToSuccessCount' => 10,
                 'delaySwithTimer' => 20000
             ],
-//            "logger" =>[
-//                'class' => \swoft\log\Logger::class,
-//                "targets" => [
-//                    [
-//                        "class" => \swoft\log\FileHandler::class,
-//                        "logFile" => RUNTIME_PATH."/notice.log",
-//                        "levels" => [
-//                            \swoft\log\Logger::NOTICE,
-//                            \swoft\log\Logger::INFO,
-//                            \swoft\log\Logger::DEBUG,
-//                        ]
-//                    ],
-//                    [
-//                        "class" => \swoft\log\FileHandler::class,
-//                        "logFile" => RUNTIME_PATH."/error.log",
-//                        "levels" => [
-//                            \swoft\log\Logger::ERROR,
-//                            \swoft\log\Logger::WARNING
-//                        ]
-//                    ]
-//                ]
-//            ]
+            "logger" =>[
+                'class' => \swoft\log\Logger::class,
+                'name' => SYSTEM_NAME,
+                "targets" => [
+                    [
+                        "class" => \swoft\log\FileHandler::class,
+                        "logFile" => RUNTIME_PATH."/notice.log",
+                        "levels" => [
+                            \swoft\log\Logger::NOTICE,
+                            \swoft\log\Logger::INFO,
+                            \swoft\log\Logger::DEBUG,
+                        ]
+                    ],
+                    [
+                        "class" => \swoft\log\FileHandler::class,
+                        "logFile" => RUNTIME_PATH."/error.log",
+                        "levels" => [
+                            \swoft\log\Logger::ERROR,
+                            \swoft\log\Logger::WARNING
+                        ]
+                    ]
+                ]
+            ]
         ],
         'params' =>[
             'version' => '1.1.0'

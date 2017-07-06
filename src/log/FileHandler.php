@@ -17,9 +17,10 @@ use Monolog\Logger;
 class FileHandler extends AbstractProcessingHandler
 {
 
+    protected $level = [];
     protected $filePath = "";
 
-    public function __construct($filePath, $level = Logger::DEBUG, $bubble = true)
+    public function __construct($filePath, $level = [], $bubble = true)
     {
         parent::__construct($level, $bubble);
 
@@ -29,6 +30,9 @@ class FileHandler extends AbstractProcessingHandler
     public function handleBatch(array $records)
     {
         $records = $this->recordFilter($records);
+        if(empty($records)){
+            return true;
+        }
         $lines = array_column($records, 'formatted');
         $this->write($lines);
     }
@@ -73,5 +77,21 @@ class FileHandler extends AbstractProcessingHandler
                 throw new \UnexpectedValueException(sprintf('There is no existing directory at "%s" and its not buildable: ', $dir));
             }
         }
+    }
+
+    public function isHandling(array $record)
+    {
+        if(empty($this->level)){
+            return true;
+        }
+
+        return  in_array($record['level'], $this->level);
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
     }
 }

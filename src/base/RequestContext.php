@@ -2,6 +2,8 @@
 
 namespace swoft\base;
 
+use swoft\log\Logger;
+
 /**
  *
  *
@@ -16,6 +18,7 @@ class RequestContext
     const COROUTINE_DATA = "data";
     const COROUTINE_REQUEST = "request";
     const COROUTINE_RESPONSE = "response";
+    const COROUTINE_LOGGER = "logger";
 
     private static $coroutineLocal;
 
@@ -32,6 +35,14 @@ class RequestContext
      */
     public static function getResponse()
     {
+        return self::getCoroutineContext(self::COROUTINE_RESPONSE);
+    }
+
+    /**
+     * @return Logger
+     */
+    public static function getLogger(){
+        $coroutineId = self::getcoroutine();
         return self::getCoroutineContext(self::COROUTINE_RESPONSE);
     }
 
@@ -62,7 +73,7 @@ class RequestContext
         if(isset($coroutineContext[$name])){
             return $coroutineContext[$name];
         }
-        return [];
+        return null;
     }
 
     public static function setRequest(\Swoole\Http\Request $request)
@@ -84,6 +95,11 @@ class RequestContext
         self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = new \swoft\web\Request(COROUTINE_DATA);
     }
 
+    public static function setLogger(Logger $logger)
+    {
+        $coroutineId = self::getcoroutine();
+        return self::getCoroutineContext(self::COROUTINE_LOGGER);
+    }
     private static function getcoroutine()
     {
         $coroutineId = \Swoole\Coroutine::getuid();
