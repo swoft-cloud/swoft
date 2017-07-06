@@ -17,9 +17,9 @@ class Request extends \swoft\base\Request
      * @param string $key
      * @return string
      */
-    public function getHeader(string $key): string
+    public function getHeader(string $key, $default = ""): string
     {
-
+        return $default;
     }
 
     /**

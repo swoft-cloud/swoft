@@ -7,6 +7,7 @@ use swoft\base\RequestAttributes;
 use swoft\base\RequestContext;
 use swoft\console\Console;
 use swoft\filter\FilterChain;
+use swoft\log\Logger;
 use swoft\Swf;
 
 /**
@@ -138,12 +139,22 @@ class Application extends \swoft\base\Application
 
     private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        // 复制一份日志上下文
-        $logger = clone ApplicationContext::getBean('logger');
 
         RequestContext::setRequest($request);
         RequestContext::setResponse($response);
+
+        // header获取日志ID和spanid请求跨度ID
+        $logid = RequestContext::getRequest()->getHeader('logid', uniqid());
+        $spanid = RequestContext::getRequest()->getHeader('spanid', 0);
+
+        // 复制一份日志上下文
+        /* @var  $logger Logger*/
+        $logger = clone ApplicationContext::getBean('logger');
+        $logger->setLogid($logid);
+        $logger->setSpanid($spanid);
+
         RequestContext::setLogger($logger);
+
     }
 
     private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)

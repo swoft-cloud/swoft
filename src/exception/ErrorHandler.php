@@ -1,5 +1,8 @@
 <?php
 namespace swoft\exception;
+
+use swoft\base\RequestContext;
+
 /**
  *
  *
@@ -15,7 +18,7 @@ class ErrorHandler
         ini_set('display_errors', false);
         set_exception_handler([$this, 'handlerException']);
         set_error_handler([$this, 'handlerError']);
-        register_shutdown_function([$this, 'handlerError']);
+        register_shutdown_function([$this, 'handlerFataError']);
     }
 
     public function handlerException($exception)
@@ -31,5 +34,8 @@ class ErrorHandler
     {
         $error = error_get_last();
         var_dump($error);
+
+        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
+        RequestContext::getResponse()->send();
     }
 }

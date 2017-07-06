@@ -18,6 +18,10 @@ class Logger extends \Monolog\Logger
     private $flushInterval = 100;
     public $targets = [];
 
+    private $logid = "";
+    private $spanid = 0;
+
+
 
     protected static $levels = array(
         self::DEBUG     => 'debug',
@@ -39,7 +43,7 @@ class Logger extends \Monolog\Logger
     public function init()
     {
 //        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [445(ms)] [4(MB)] [/Web/vrOrder/Order] [%extra%] [status=200] [] profile[] counting[]\n";
-        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] %message%";
+        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%";
 
         // finally, create a formatter
         $formatter = new \Monolog\Formatter\LineFormatter($output, "Y/m/d H:i:s");
@@ -80,7 +84,8 @@ class Logger extends \Monolog\Logger
         $ts->setTimezone(static::$timezone);
 
         $record = array(
-            "logid" => "12345678",
+            "logid" => $this->logid,
+            "spanid" => $this->spanid,
             'message' => $this->getTrace($message),
             'context' => $context,
             'level' => $level,
@@ -151,4 +156,25 @@ class Logger extends \Monolog\Logger
     {
         return $messages;
     }
+
+
+    /**
+     * @param string $logid
+     */
+    public function setLogid(string $logid)
+    {
+        $this->logid = $logid;
+    }
+
+
+
+    /**
+     * @param int $spanid
+     */
+    public function setSpanid(int $spanid)
+    {
+        $this->spanid = $spanid;
+    }
+
+
 }
