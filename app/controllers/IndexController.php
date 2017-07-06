@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
+use DI\Annotation\Inject;
 use swoft\base\ApplicationContext;
 use swoft\log\FileHandler;
 use swoft\log\Logger;
@@ -25,7 +26,7 @@ use swoft\web\Response;
 class IndexController extends Controller
 {
     /**
-     * @Inject
+     * @Inject()
      * @var IndexLogic
      */
     private $logic;
@@ -76,7 +77,6 @@ class IndexController extends Controller
         Swf::info("my info log");
         Swf::error("my error log");
         Swf::warning("my warning log");
-        Swf::trace("my trace log");
 
         $this->render('/main/layout.html', $data);
     }

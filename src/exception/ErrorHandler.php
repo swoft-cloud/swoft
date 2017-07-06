@@ -24,10 +24,14 @@ class ErrorHandler
     public function handlerException($exception)
     {
         var_dump($exception);
+        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
+        RequestContext::getResponse()->send();
     }
 
     public function handlerError($code, $message, $file, $line){
         var_dump($code, $message);
+        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
+        RequestContext::getResponse()->send();
     }
 
     public function handlerFataError()
