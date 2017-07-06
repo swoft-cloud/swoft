@@ -130,7 +130,11 @@ class Logger extends \Monolog\Logger
     public function flushLog($final = false)
     {
         if($final == true){
-            $this->messages = $this->appendNoticeLog();
+            $this->messages = $this->appendNoticeLog($this->messages);
+        }
+
+        if(empty($this->messages)){
+            return ;
         }
         reset($this->handlers);
 
@@ -143,8 +147,8 @@ class Logger extends \Monolog\Logger
         $this->messages = [];
     }
 
-    public function appendNoticeLog()
+    public function appendNoticeLog($messages)
     {
-
+        return $messages;
     }
 }

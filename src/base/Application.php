@@ -157,6 +157,7 @@ abstract class Application
         return [
             'urlManager' => ['class' => 'swoft\web\urlManager'],
             'filter' => ['class' => 'swoft\filter\FilterChain'],
+            'errorHanlder' => ['class' => 'swoft\exception\ErrorHandler'],
         ];
     }
 

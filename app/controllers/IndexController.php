@@ -66,12 +66,17 @@ class IndexController extends Controller
 //        $logger = new Logger("user");
 //        $logger->pushHandler($stream);
 
-        $logger = ApplicationContext::getBean('logger');
+//        $logger = ApplicationContext::getBean('logger');
+//
+//        $logger->info("this is info");
+//        $logger->info("this is info");
+//        $logger->info("this is info");
+//        $logger->flushLog();
 
-        $logger->info("this is info");
-        $logger->info("this is info");
-        $logger->info("this is info");
-        $logger->flushLog();
+        Swf::info("my info log");
+        Swf::error("my error log");
+        Swf::warning("my warning log");
+        Swf::trace("my trace log");
 
         $this->render('/main/layout.html', $data);
     }

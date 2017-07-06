@@ -158,6 +158,7 @@ class Application extends \swoft\base\Application
 
     private function afterRequest()
     {
+        Swf::getLogger()->flushLog(true);
         RequestContext::destory();
     }
 

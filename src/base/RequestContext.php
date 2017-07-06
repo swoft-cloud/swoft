@@ -43,7 +43,7 @@ class RequestContext
      */
     public static function getLogger(){
         $coroutineId = self::getcoroutine();
-        return self::getCoroutineContext(self::COROUTINE_RESPONSE);
+        return self::getCoroutineContext(self::COROUTINE_LOGGER);
     }
 
     /**
@@ -98,7 +98,7 @@ class RequestContext
     public static function setLogger(Logger $logger)
     {
         $coroutineId = self::getcoroutine();
-        return self::getCoroutineContext(self::COROUTINE_LOGGER);
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_LOGGER] = $logger;
     }
     private static function getcoroutine()
     {
