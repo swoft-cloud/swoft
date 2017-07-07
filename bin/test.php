@@ -1,5 +1,13 @@
 <?php
 
+// *.开头文件扩展匹配
+$reg = '/^\{(.*)\}$/';
+$str = "{stelin\}";
+
+$result = preg_match($reg,$str, $match);
+var_dump($result, $match);
+exit();
+
 class Breaker{
     public $state = null;
     public function __construct()
@@ -72,6 +80,7 @@ $str = "/login/index/";
 $str = str_replace('/', '\/', $str);
 $str = '/^'.$str.'$/';
 var_dump(preg_match($str, '/login/index/'));
+var_dump($result);
 
 exit();
 

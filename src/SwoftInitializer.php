@@ -33,6 +33,7 @@ class SwoftInitializer
         $container = $this->annotationBeans($container);
         ApplicationContext::setContainer($container);
         ApplicationContext::createBean('application', $config);
+
         return $container;
     }
 
@@ -47,4 +48,5 @@ class SwoftInitializer
     {
         return $container;
     }
+
 }

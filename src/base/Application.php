@@ -37,21 +37,12 @@ abstract class Application
     public function init()
     {
         $this->lock = new \swoole_lock(SWOOLE_MUTEX);
-        $this->loadCoreBeans();
     }
 
     public function run()
     {
         global $argv;
         $this->parseCommand($argv);
-    }
-
-    public function loadCoreBeans()
-    {
-        $beans = ArrayHelper::merge($this->coreBeans(), $this->beans);
-        foreach ($beans as $beanName => $definition){
-            ApplicationContext::createBean($beanName, $definition);
-        }
     }
 
     public function createController(string $route)
@@ -150,15 +141,6 @@ abstract class Application
         }
 
         return [$id, $route];
-    }
-
-    public function coreBeans()
-    {
-        return [
-            'urlManager' => ['class' => 'swoft\web\urlManager'],
-            'filter' => ['class' => 'swoft\filter\FilterChain'],
-            'errorHanlder' => ['class' => 'swoft\exception\ErrorHandler'],
-        ];
     }
 
     abstract function parseCommand($argv);

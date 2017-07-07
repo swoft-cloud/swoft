@@ -2,6 +2,7 @@
 
 namespace swoft\web;
 
+use swoft\di\BeanFactory;
 use swoft\helpers\ArrayHelper;
 use swoft\base\ApplicationContext;
 use Swoole\Http\Response;
@@ -47,7 +48,7 @@ class UrlManager
                     'class' => 'swoft\web\UrlRule'
                 ];
                 $type = ArrayHelper::merge($type, $rule);
-                $rule = ApplicationContext::createBean($beanName, $type);
+                $rule = BeanFactory::createBean($beanName, $type);
             }
             if (!$rule instanceof UrlRuleInterface) {
 
