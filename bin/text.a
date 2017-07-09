@@ -1,0 +1,739 @@
+object(ReflectionException)#98 (7) {
+  ["message":protected]=>
+  string(51) "Property swoft\base\Config::$version does not exist"
+  ["string":"Exception":private]=>
+  string(0) ""
+  ["code":protected]=>
+  int(0)
+  ["file":protected]=>
+  string(93) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ObjectCreator.php"
+  ["line":protected]=>
+  int(200)
+  ["trace":"Exception":private]=>
+  array(11) {
+    [0]=>
+    array(6) {
+      ["file"]=>
+      string(93) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ObjectCreator.php"
+      ["line"]=>
+      int(200)
+      ["function"]=>
+      string(11) "__construct"
+      ["class"]=>
+      string(18) "ReflectionProperty"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        string(17) "swoft\base\Config"
+        [1]=>
+        string(7) "version"
+      }
+    }
+    [1]=>
+    array(6) {
+      ["file"]=>
+      string(93) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ObjectCreator.php"
+      ["line"]=>
+      int(173)
+      ["function"]=>
+      string(14) "injectProperty"
+      ["class"]=>
+      string(36) "DI\Definition\Resolver\ObjectCreator"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        object(swoft\base\Config)#110 (1) {
+          ["params"]=>
+          array(0) {
+          }
+        }
+        [1]=>
+        object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+          ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+          string(7) "version"
+          ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+          string(3) "1.0"
+          ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+          NULL
+        }
+      }
+    }
+    [2]=>
+    array(6) {
+      ["file"]=>
+      string(93) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ObjectCreator.php"
+      ["line"]=>
+      int(143)
+      ["function"]=>
+      string(26) "injectMethodsAndProperties"
+      ["class"]=>
+      string(36) "DI\Definition\Resolver\ObjectCreator"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        object(swoft\base\Config)#110 (1) {
+          ["params"]=>
+          array(0) {
+          }
+        }
+        [1]=>
+        object(DI\Definition\ObjectDefinition)#66 (9) {
+          ["name":"DI\Definition\ObjectDefinition":private]=>
+          string(6) "config"
+          ["className":"DI\Definition\ObjectDefinition":private]=>
+          string(18) "\swoft\base\Config"
+          ["constructorInjection":"DI\Definition\ObjectDefinition":private]=>
+          object(DI\Definition\ObjectDefinition\MethodInjection)#113 (2) {
+            ["methodName":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            string(11) "__construct"
+            ["parameters":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            array(1) {
+              [0]=>
+              array(0) {
+              }
+            }
+          }
+          ["propertyInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(2) {
+            ["version"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(7) "version"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "1.0"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+            ["env"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#111 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "env"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(4) "base"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+          }
+          ["methodInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(0) {
+          }
+          ["scope":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["lazy":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["classExists":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+          ["isInstantiable":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+        }
+      }
+    }
+    [3]=>
+    array(6) {
+      ["file"]=>
+      string(93) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ObjectCreator.php"
+      ["line"]=>
+      int(70)
+      ["function"]=>
+      string(14) "createInstance"
+      ["class"]=>
+      string(36) "DI\Definition\Resolver\ObjectCreator"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        object(DI\Definition\ObjectDefinition)#66 (9) {
+          ["name":"DI\Definition\ObjectDefinition":private]=>
+          string(6) "config"
+          ["className":"DI\Definition\ObjectDefinition":private]=>
+          string(18) "\swoft\base\Config"
+          ["constructorInjection":"DI\Definition\ObjectDefinition":private]=>
+          object(DI\Definition\ObjectDefinition\MethodInjection)#113 (2) {
+            ["methodName":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            string(11) "__construct"
+            ["parameters":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            array(1) {
+              [0]=>
+              array(0) {
+              }
+            }
+          }
+          ["propertyInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(2) {
+            ["version"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(7) "version"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "1.0"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+            ["env"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#111 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "env"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(4) "base"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+          }
+          ["methodInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(0) {
+          }
+          ["scope":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["lazy":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["classExists":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+          ["isInstantiable":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+        }
+        [1]=>
+        array(0) {
+        }
+      }
+    }
+    [4]=>
+    array(6) {
+      ["file"]=>
+      string(98) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Definition/Resolver/ResolverDispatcher.php"
+      ["line"]=>
+      int(58)
+      ["function"]=>
+      string(7) "resolve"
+      ["class"]=>
+      string(36) "DI\Definition\Resolver\ObjectCreator"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        object(DI\Definition\ObjectDefinition)#66 (9) {
+          ["name":"DI\Definition\ObjectDefinition":private]=>
+          string(6) "config"
+          ["className":"DI\Definition\ObjectDefinition":private]=>
+          string(18) "\swoft\base\Config"
+          ["constructorInjection":"DI\Definition\ObjectDefinition":private]=>
+          object(DI\Definition\ObjectDefinition\MethodInjection)#113 (2) {
+            ["methodName":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            string(11) "__construct"
+            ["parameters":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            array(1) {
+              [0]=>
+              array(0) {
+              }
+            }
+          }
+          ["propertyInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(2) {
+            ["version"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(7) "version"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "1.0"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+            ["env"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#111 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "env"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(4) "base"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+          }
+          ["methodInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(0) {
+          }
+          ["scope":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["lazy":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["classExists":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+          ["isInstantiable":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+        }
+        [1]=>
+        array(0) {
+        }
+      }
+    }
+    [5]=>
+    array(6) {
+      ["file"]=>
+      string(69) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Container.php"
+      ["line"]=>
+      int(287)
+      ["function"]=>
+      string(7) "resolve"
+      ["class"]=>
+      string(41) "DI\Definition\Resolver\ResolverDispatcher"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(2) {
+        [0]=>
+        object(DI\Definition\ObjectDefinition)#66 (9) {
+          ["name":"DI\Definition\ObjectDefinition":private]=>
+          string(6) "config"
+          ["className":"DI\Definition\ObjectDefinition":private]=>
+          string(18) "\swoft\base\Config"
+          ["constructorInjection":"DI\Definition\ObjectDefinition":private]=>
+          object(DI\Definition\ObjectDefinition\MethodInjection)#113 (2) {
+            ["methodName":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            string(11) "__construct"
+            ["parameters":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            array(1) {
+              [0]=>
+              array(0) {
+              }
+            }
+          }
+          ["propertyInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(2) {
+            ["version"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(7) "version"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "1.0"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+            ["env"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#111 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "env"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(4) "base"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+          }
+          ["methodInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(0) {
+          }
+          ["scope":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["lazy":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["classExists":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+          ["isInstantiable":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+        }
+        [1]=>
+        array(0) {
+        }
+      }
+    }
+    [6]=>
+    array(6) {
+      ["file"]=>
+      string(69) "/home/worker/data/www/swoft/vendor/php-di/php-di/src/DI/Container.php"
+      ["line"]=>
+      int(124)
+      ["function"]=>
+      string(17) "resolveDefinition"
+      ["class"]=>
+      string(12) "DI\Container"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(1) {
+        [0]=>
+        object(DI\Definition\ObjectDefinition)#66 (9) {
+          ["name":"DI\Definition\ObjectDefinition":private]=>
+          string(6) "config"
+          ["className":"DI\Definition\ObjectDefinition":private]=>
+          string(18) "\swoft\base\Config"
+          ["constructorInjection":"DI\Definition\ObjectDefinition":private]=>
+          object(DI\Definition\ObjectDefinition\MethodInjection)#113 (2) {
+            ["methodName":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            string(11) "__construct"
+            ["parameters":"DI\Definition\ObjectDefinition\MethodInjection":private]=>
+            array(1) {
+              [0]=>
+              array(0) {
+              }
+            }
+          }
+          ["propertyInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(2) {
+            ["version"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#112 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(7) "version"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "1.0"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+            ["env"]=>
+            object(DI\Definition\ObjectDefinition\PropertyInjection)#111 (3) {
+              ["propertyName":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(3) "env"
+              ["value":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              string(4) "base"
+              ["className":"DI\Definition\ObjectDefinition\PropertyInjection":private]=>
+              NULL
+            }
+          }
+          ["methodInjections":"DI\Definition\ObjectDefinition":private]=>
+          array(0) {
+          }
+          ["scope":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["lazy":"DI\Definition\ObjectDefinition":private]=>
+          NULL
+          ["classExists":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+          ["isInstantiable":"DI\Definition\ObjectDefinition":private]=>
+          bool(true)
+        }
+      }
+    }
+    [7]=>
+    array(6) {
+      ["file"]=>
+      string(50) "/home/worker/data/www/swoft/src/di/BeanFactory.php"
+      ["line"]=>
+      int(74)
+      ["function"]=>
+      string(3) "get"
+      ["class"]=>
+      string(12) "DI\Container"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(1) {
+        [0]=>
+        string(6) "config"
+      }
+    }
+    [8]=>
+    array(6) {
+      ["file"]=>
+      string(50) "/home/worker/data/www/swoft/src/di/BeanFactory.php"
+      ["line"]=>
+      int(29)
+      ["function"]=>
+      string(4) "init"
+      ["class"]=>
+      string(20) "swoft\di\BeanFactory"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(1) {
+        [0]=>
+        array(8) {
+          ["application"]=>
+          array(7) {
+            ["class"]=>
+            string(21) "swoft\web\Application"
+            ["id"]=>
+            string(5) "swoft"
+            ["name"]=>
+            string(5) "swoft"
+            ["viewsPath"]=>
+            string(54) "/home/worker/data/www/swoft/app/config/../../app/views"
+            ["runtimePath"]=>
+            string(58) "/home/worker/data/www/swoft/app/config/../../runtime/swoft"
+            ["settingPath"]=>
+            string(58) "/home/worker/data/www/swoft/app/config/../../bin/swoft.ini"
+            ["basePath"]=>
+            string(31) "/home/worker/data/www/swoft/app"
+          }
+          ["urlManager"]=>
+          array(2) {
+            ["class"]=>
+            string(20) "swoft\web\urlManager"
+            ["rules"]=>
+            array(3) {
+              ["/home/data"]=>
+              string(6) "/index"
+              ["/index/index/1"]=>
+              string(12) "/index/index"
+              ["/post/<id:\d+>"]=>
+              string(9) "post/view"
+            }
+          }
+          ["filter"]=>
+          array(2) {
+            ["class"]=>
+            string(24) "swoft\filter\FilterChain"
+            ["filters"]=>
+            array(2) {
+              ["commonParamsFilter"]=>
+              array(2) {
+                ["class"]=>
+                string(36) "app\beans\filters\CommonParamsFilter"
+                ["uriPattern"]=>
+                string(2) "/*"
+              }
+              ["loginFilter"]=>
+              array(2) {
+                ["class"]=>
+                string(29) "app\beans\filters\LoginFilter"
+                ["uriPattern"]=>
+                string(12) "/index/login"
+              }
+            }
+          }
+          ["errorHanlder"]=>
+          array(1) {
+            ["class"]=>
+            string(28) "swoft\exception\ErrorHandler"
+          }
+          ["managerPool"]=>
+          array(2) {
+            ["class"]=>
+            string(23) "\swoft\pool\ManagerPool"
+            ["services"]=>
+            array(1) {
+              ["user"]=>
+              array(4) {
+                ["class"]=>
+                string(22) "swoft\pool\ServicePool"
+                ["maxIdel"]=>
+                int(6)
+                ["maxActive"]=>
+                int(10)
+                ["timeout"]=>
+                int(200)
+              }
+            }
+          }
+          ["circuitBreakerManager"]=>
+          array(4) {
+            ["class"]=>
+            string(36) "\swoft\circuit\CircuitBreakerManager"
+            ["swithToFailCount"]=>
+            int(10)
+            ["swithToSuccessCount"]=>
+            int(10)
+            ["delaySwithTimer"]=>
+            int(20000)
+          }
+          ["logger"]=>
+          array(3) {
+            ["class"]=>
+            string(17) "\swoft\log\Logger"
+            ["name"]=>
+            string(5) "swoft"
+            ["targets"]=>
+            array(2) {
+              [0]=>
+              array(3) {
+                ["class"]=>
+                string(21) "swoft\log\FileHandler"
+                ["logFile"]=>
+                string(69) "/home/worker/data/www/swoft/app/config/../../runtime/swoft/notice.log"
+                ["levels"]=>
+                array(3) {
+                  [0]=>
+                  int(250)
+                  [1]=>
+                  int(200)
+                  [2]=>
+                  int(100)
+                }
+              }
+              [1]=>
+              array(3) {
+                ["class"]=>
+                string(21) "swoft\log\FileHandler"
+                ["logFile"]=>
+                string(68) "/home/worker/data/www/swoft/app/config/../../runtime/swoft/error.log"
+                ["levels"]=>
+                array(2) {
+                  [0]=>
+                  int(400)
+                  [1]=>
+                  int(300)
+                }
+              }
+            }
+          }
+          ["config"]=>
+          array(3) {
+            ["class"]=>
+            string(18) "\swoft\base\Config"
+            ["version"]=>
+            string(3) "1.0"
+            ["env"]=>
+            string(4) "base"
+          }
+        }
+      }
+    }
+    [9]=>
+    array(6) {
+      ["file"]=>
+      string(45) "/home/worker/data/www/swoft/bin/bootstrap.php"
+      ["line"]=>
+      int(7)
+      ["function"]=>
+      string(11) "__construct"
+      ["class"]=>
+      string(20) "swoft\di\BeanFactory"
+      ["type"]=>
+      string(2) "->"
+      ["args"]=>
+      array(1) {
+        [0]=>
+        array(7) {
+          ["config"]=>
+          array(2) {
+            ["version"]=>
+            string(3) "1.0"
+            ["env"]=>
+            string(4) "base"
+          }
+          ["application"]=>
+          array(6) {
+            ["id"]=>
+            string(5) "swoft"
+            ["name"]=>
+            string(5) "swoft"
+            ["viewsPath"]=>
+            string(54) "/home/worker/data/www/swoft/app/config/../../app/views"
+            ["runtimePath"]=>
+            string(58) "/home/worker/data/www/swoft/app/config/../../runtime/swoft"
+            ["settingPath"]=>
+            string(58) "/home/worker/data/www/swoft/app/config/../../bin/swoft.ini"
+            ["basePath"]=>
+            string(31) "/home/worker/data/www/swoft/app"
+          }
+          ["urlManager"]=>
+          array(1) {
+            ["rules"]=>
+            array(3) {
+              ["/home/data"]=>
+              string(6) "/index"
+              ["/index/index/1"]=>
+              string(12) "/index/index"
+              ["/post/<id:\d+>"]=>
+              string(9) "post/view"
+            }
+          }
+          ["filter"]=>
+          array(1) {
+            ["filters"]=>
+            array(2) {
+              ["commonParamsFilter"]=>
+              array(2) {
+                ["class"]=>
+                string(36) "app\beans\filters\CommonParamsFilter"
+                ["uriPattern"]=>
+                string(2) "/*"
+              }
+              ["loginFilter"]=>
+              array(2) {
+                ["class"]=>
+                string(29) "app\beans\filters\LoginFilter"
+                ["uriPattern"]=>
+                string(12) "/index/login"
+              }
+            }
+          }
+          ["managerPool"]=>
+          array(1) {
+            ["services"]=>
+            array(1) {
+              ["user"]=>
+              array(4) {
+                ["class"]=>
+                string(22) "swoft\pool\ServicePool"
+                ["maxIdel"]=>
+                int(6)
+                ["maxActive"]=>
+                int(10)
+                ["timeout"]=>
+                int(200)
+              }
+            }
+          }
+          ["circuitBreakerManager"]=>
+          array(3) {
+            ["swithToFailCount"]=>
+            int(10)
+            ["swithToSuccessCount"]=>
+            int(10)
+            ["delaySwithTimer"]=>
+            int(20000)
+          }
+          ["logger"]=>
+          array(2) {
+            ["name"]=>
+            string(5) "swoft"
+            ["targets"]=>
+            array(2) {
+              [0]=>
+              array(3) {
+                ["class"]=>
+                string(21) "swoft\log\FileHandler"
+                ["logFile"]=>
+                string(69) "/home/worker/data/www/swoft/app/config/../../runtime/swoft/notice.log"
+                ["levels"]=>
+                array(3) {
+                  [0]=>
+                  int(250)
+                  [1]=>
+                  int(200)
+                  [2]=>
+                  int(100)
+                }
+              }
+              [1]=>
+              array(3) {
+                ["class"]=>
+                string(21) "swoft\log\FileHandler"
+                ["logFile"]=>
+                string(68) "/home/worker/data/www/swoft/app/config/../../runtime/swoft/error.log"
+                ["levels"]=>
+                array(2) {
+                  [0]=>
+                  int(400)
+                  [1]=>
+                  int(300)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    [10]=>
+    array(4) {
+      ["file"]=>
+      string(41) "/home/worker/data/www/swoft/bin/swoft.php"
+      ["line"]=>
+      int(2)
+      ["args"]=>
+      array(1) {
+        [0]=>
+        string(45) "/home/worker/data/www/swoft/bin/bootstrap.php"
+      }
+      ["function"]=>
+      string(12) "require_once"
+    }
+  }
+  ["previous":"Exception":private]=>
+  NULL
+}
+NULL

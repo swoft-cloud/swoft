@@ -11,14 +11,9 @@ namespace swoft\base;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Config
+class Config implements \ArrayAccess, \Iterator
 {
-    public $params = [];
-
-    public function init()
-    {
-
-    }
+    public $properties = [];
 
     /**
      * Return the current element
@@ -29,7 +24,7 @@ class Config
      */
     public function current()
     {
-        return current($this->params);
+        return current($this->properties);
     }
 
     /**
@@ -41,7 +36,7 @@ class Config
      */
     public function next()
     {
-        next($this->params);
+        next($this->properties);
     }
 
     /**
@@ -53,7 +48,7 @@ class Config
      */
     public function key()
     {
-        return key($this->params);
+        return key($this->properties);
     }
 
     /**
@@ -78,7 +73,7 @@ class Config
      */
     public function rewind()
     {
-        reset($this->params);
+        reset($this->properties);
     }
 
     /**
@@ -98,7 +93,7 @@ class Config
      */
     public function offsetExists($offset)
     {
-        return isset($this->params[$offset]);
+        return isset($this->properties[$offset]);
     }
 
     /**
@@ -115,7 +110,7 @@ class Config
      */
     public function offsetGet($offset)
     {
-        return isset($this->params[$offset]) ? $this->params[$offset] : null;
+        return isset($this->properties[$offset]) ? $this->properties[$offset] : null;
     }
 
     /**
@@ -136,7 +131,7 @@ class Config
     public function offsetSet($offset, $value)
     {
         if (is_string($offset) || is_int($offset)) {
-            $this->params[$offset] = $value;
+            $this->properties[$offset] = $value;
         }
     }
 
@@ -154,8 +149,8 @@ class Config
      */
     public function offsetUnset($offset)
     {
-        if (isset($this->params[$offset])) {
-            unset($this->params[$offset]);
+        if (isset($this->properties[$offset])) {
+            unset($this->properties[$offset]);
         }
     }
 
@@ -167,8 +162,8 @@ class Config
      */
     public function get($name, $defalut = null)
     {
-        if (isset($this->params[$name])) {
-            return $this->params[$name];
+        if (isset($this->properties[$name])) {
+            return $this->properties[$name];
         }
         return $defalut;
     }
@@ -179,6 +174,11 @@ class Config
      */
     public function set($name, $value)
     {
-        $this->params[$name] = $value;
+        $this->properties[$name] = $value;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->properties[$name] = $value;
     }
 }

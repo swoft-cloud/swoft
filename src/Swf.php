@@ -24,6 +24,8 @@ class Swf
      */
     public static $app;
 
+    public static $properties;
+
     /**
      * @return ManagerPool
      */
@@ -47,6 +49,19 @@ class Swf
     public static function getRedisPool()
     {
         return self::getMangerPool()->getPool("redis");
+    }
+
+    public static function setProperties($properties = null)
+    {
+        if($properties == null){
+            $properties = self::getProperties();
+        }
+        self::$properties = $properties;
+    }
+
+    public static function getProperties()
+    {
+        return ApplicationContext::getBean('config');
     }
 
     /**

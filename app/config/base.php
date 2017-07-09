@@ -1,5 +1,8 @@
 <?php
 return [
+    'config' => [
+        'properties' => require_once __DIR__ . '/'.APP_ENV.'/properties.php',
+    ],
     'application'           => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
@@ -8,7 +11,6 @@ return [
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
     ],
-    'config' => require_once __DIR__ . '/params.php',
     'urlManager'            => [
         'rules' => [
             '/home/data'     => '/index',

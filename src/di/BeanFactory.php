@@ -6,6 +6,7 @@ use DI\Container;
 use DI\ContainerBuilder;
 use swoft\base\ApplicationContext;
 use swoft\helpers\ArrayHelper;
+use swoft\Swf;
 
 /**
  *
@@ -27,6 +28,7 @@ class BeanFactory implements BeanFactoryInterface
     {
         $coreBeans = ArrayHelper::merge($this->coreBeans(), $config);
         self::$container = $this->init($coreBeans);
+        Swf::setProperties();
     }
 
     private function init($coreBeans)
@@ -193,6 +195,7 @@ class BeanFactory implements BeanFactoryInterface
             'managerPool'           => ['class' => '\swoft\pool\ManagerPool'],
             'circuitBreakerManager' => ['class' => '\swoft\circuit\CircuitBreakerManager'],
             'logger'                => ['class' => '\swoft\log\Logger'],
+            'config'                => ['class' => '\swoft\base\Config']
         ];
     }
 }

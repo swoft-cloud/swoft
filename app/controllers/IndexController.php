@@ -34,9 +34,10 @@ class IndexController extends Controller
     public function actionIndex(Request $request, Response $response)
     {
         $data = $this->logic->getUser();
-        $data['params'] = Swf::$app->params();
+        $data['properties'] = Swf::$properties['env'];
         $data['count'] = Swf::$app->count;
         $data['request'] = $request->getRequestUri();
+
         $this->outputJson($data, 'suc');
     }
 
