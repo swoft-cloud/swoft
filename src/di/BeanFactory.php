@@ -39,7 +39,12 @@ class BeanFactory implements BeanFactoryInterface
         self::$container = $container;
         ApplicationContext::setContainer($container);
 
+        if(!isset($coreBeans['config'])){
+            throw new \Exception("config must be configed");
+        }
+
         foreach ($coreBeans as $beanName => $pros) {
+
             $className = $pros;
             if (is_string($className)) {
                 $object = \DI\object($className);
@@ -49,7 +54,6 @@ class BeanFactory implements BeanFactoryInterface
             if (!is_array($className) || !isset($pros['class'])) {
                 continue;
             }
-
             $constructorArgs = [];
             $className = $pros['class'];
             unset($pros['class']);
@@ -57,12 +61,11 @@ class BeanFactory implements BeanFactoryInterface
             foreach ($pros as $proName => $proVale) {
                 if (is_array($proVale) && $proName === 0) {
                     unset($proName);
-                    $constructorArgs = $this->formateFieldOrArgs($proVale);
+                    $constructorArgs = $this->formateRefFields($proVale);
                     continue;
                 }
             }
-
-            $fields = $this->formateFieldOrArgs($pros);
+            $fields = $this->formateRefFields($pros);
 
             $object = \DI\object($className);
             $object = $object->constructor($constructorArgs);
@@ -156,38 +159,10 @@ class BeanFactory implements BeanFactoryInterface
         return self::$container->get($name);
     }
 
-    private function formateFieldOrArgs(array $fieldsOrArgs)
-    {
-        if (empty($fieldsOrArgs)) {
-            return [];
-        }
-
-        $formateAry = [];
-        $refReg = '\'/^\{(.*)\}$/\'';
-        foreach ($fieldsOrArgs as $name => $value) {
-            if(!is_string($value)){
-                $formateAry[$name] = $value;
-                continue;
-            }
-            $result = preg_match($refReg, $value, $match);
-            if (!$result) {
-                $formateAry[$name] = $value;
-                continue;
-            }
-
-            $refBean = $match;
-            if (!self::$container->has($refBean)) {
-                throw new \Exception("bean is not inject ,name=" . $refBean);
-            }
-            $formateAry[$name] = self::$container->get($refBean);
-        }
-        return $formateAry;
-    }
-
-
     private function coreBeans()
     {
         return [
+            'config'                => ['class' => '\swoft\base\Config'],
             'application'           => ['class' => 'swoft\web\Application'],
             'urlManager'            => ['class' => 'swoft\web\urlManager'],
             'filter'                => ['class' => 'swoft\filter\FilterChain'],
@@ -195,7 +170,63 @@ class BeanFactory implements BeanFactoryInterface
             'managerPool'           => ['class' => '\swoft\pool\ManagerPool'],
             'circuitBreakerManager' => ['class' => '\swoft\circuit\CircuitBreakerManager'],
             'logger'                => ['class' => '\swoft\log\Logger'],
-            'config'                => ['class' => '\swoft\base\Config']
         ];
+    }
+
+
+    private function formateRefFields(array $fields){
+
+        $formateRef = [];
+        $refReg = '/^\$\{(.*)\}$/';
+        foreach ($fields as $key => $field){
+            if(is_array($field)){
+                $formateRef[$key] = $this->formateRefFields($field);
+                continue;
+            }
+
+            $refField = $field;
+            $result = preg_match($refReg, $field, $match);
+            if (!$result) {
+                $formateRef[$key] = $field;
+                continue;
+            }
+
+            $refConfigProperties = explode(".", $match[1]);
+            // 配置属性引用
+            if(count($refConfigProperties) > 1){
+                $refField = $this->getConfigPropertiesByRef($refConfigProperties);
+                //  bean引用
+            }elseif (self::$container->has($refConfigProperties[0])) {
+                $refField = self::$container->get($refConfigProperties[0]);
+            }
+            $formateRef[$key] = $refField;
+        }
+        return $formateRef;
+    }
+
+    private function getConfigPropertiesByRef(array $refConfigProperties)
+    {
+        $configName = "config";
+        if($refConfigProperties[0] == $configName){
+            unset($refConfigProperties[0]);
+        }
+
+        $propertyVal = null;
+        $config = self::$container->get($configName);
+
+        foreach ($refConfigProperties as $refProName){
+            if ($propertyVal == null && isset($config[$refProName])){
+                $propertyVal = $config[$refProName];
+                continue;
+            }
+
+            if(!isset($propertyVal[$refProName])){
+                throw new \Exception("$refConfigProperties is not exisit configed");
+            }
+
+            $propertyVal = $propertyVal[$refProName];
+        }
+
+        return $propertyVal;
     }
 }

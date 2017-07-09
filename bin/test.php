@@ -1,8 +1,8 @@
 <?php
 
 // *.开头文件扩展匹配
-$reg = '/^\{(.*)\}$/';
-$str = "{stelin\}";
+$reg = '/^\$\{(.*)\}$/';
+$str = '{stelin}';
 
 $result = preg_match($reg,$str, $match);
 var_dump($result, $match);
@@ -110,3 +110,42 @@ if($result){
 }
 
 var_dump(preg_match($reg2, '/afa/afafa/fafa.htm'));
+
+
+//private function formateFieldOrArgs(array $fieldsOrArgs)
+//{
+//    if (empty($fieldsOrArgs)) {
+//        return [];
+//    }
+//
+//    $formateAry = [];
+//    foreach ($fieldsOrArgs as $name => $value) {
+//        if(!is_string($value)){
+//            if(is_int($name)){
+//                $formateAry[$name] = $value;
+//                continue;
+//            }
+//
+//        }
+//
+//        $refReg = '/^\$\{(.*)\}$/';
+//        $result = preg_match($refReg, $value, $match);
+//        if (!$result) {
+//            $formateAry[$name] = $value;
+//            continue;
+//        }
+//
+//        $refField = $match;
+//        $refConfigProperties = explode(".", $refField);
+//
+//        // 配置属性引用
+//        if(count($refConfigProperties) > 1){
+//            $refField = $this->getConfigPropertiesByRef($refConfigProperties);
+//            //  bean引用
+//        }elseif (!self::$container->has($refField)) {
+//            throw new \Exception("bean is not inject ,name=" . $refField);
+//        }
+//        $formateAry[$name] = self::$container->get($refField);
+//    }
+//    return $formateAry;
+//}

@@ -36,14 +36,14 @@ return [
                 "class"     => \swoft\pool\ServicePool::class,
                 "maxIdel"   => 6,
                 "maxActive" => 10,
-                "timeout"   => 200,
+                "timeout"   => '${config.service.user.timeout}',
             ]
         ]
     ],
     "circuitBreakerManager" => [
         'swithToFailCount'    => 10,
         'swithToSuccessCount' => 10,
-        'delaySwithTimer'     => 20000
+        'delaySwithTimer'     => 20000,
     ],
     "logger"                => [
         'name'    => SYSTEM_NAME,

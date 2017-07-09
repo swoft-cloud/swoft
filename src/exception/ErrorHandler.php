@@ -21,9 +21,9 @@ class ErrorHandler
         register_shutdown_function([$this, 'handlerFataError']);
     }
 
-    public function handlerException($exception)
+    public function handlerException(\Exception $exception)
     {
-        var_dump($exception);
+        var_dump($exception->getMessage());
 //        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
 //        RequestContext::getResponse()->send();
     }
