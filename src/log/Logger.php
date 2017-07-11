@@ -15,7 +15,7 @@ class Logger extends \Monolog\Logger
 {
 
     public $name = "swoft";
-    private $flushInterval = 100;
+    public $flushInterval = 1;
     public $targets = [];
 
     private $logid = "";
@@ -101,7 +101,9 @@ class Logger extends \Monolog\Logger
 
         $this->messages[] = $record;
 
-        return true;
+        if(count($this->messages) >= $this->flushInterval){
+            $this->flushLog();
+        }
     }
 
     public function getTrace($message)

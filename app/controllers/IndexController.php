@@ -76,6 +76,7 @@ class IndexController extends Controller
 //        $logger->flushLog();
 
         Swf::info("my info log");
+        Swf::info("my2 info log");
         Swf::error("my error log");
         Swf::warning("my warning log");
 
