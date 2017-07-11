@@ -5,6 +5,7 @@ namespace swoft;
 use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
 use swoft\circuit\CircuitBreakerManager;
+use swoft\log\Logger;
 use swoft\pool\ManagerPool;
 use swoft\web\Application;
 
@@ -65,11 +66,11 @@ class App
     }
 
     /**
-     * @return log\Logger
+     * @return Logger
      */
     public static function getLogger()
     {
-        return RequestContext::getLogger();
+        return ApplicationContext::getBean('logger');
     }
 
     public static function trace($message, array $context = array())
@@ -110,6 +111,10 @@ class App
     public static function profileEnd($name)
     {
         self::getLogger()->profileEnd($name);
+    }
+
+    public static function getCoroutineId(){
+        return \Swoole\Coroutine::getuid();
     }
 
     public static function counting($name, $hit, $total = null)

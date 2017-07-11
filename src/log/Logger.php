@@ -2,6 +2,10 @@
 
 namespace swoft\log;
 
+use Monolog\Formatter\LineFormatter;
+use swoft\App;
+use swoft\base\RequestContext;
+
 /**
  *
  *
@@ -17,11 +21,6 @@ class Logger extends \Monolog\Logger
     public $name = "swoft";
     public $flushInterval = 100;
     public $targets = [];
-
-    private $uri = "";
-    private $beginTime;
-    private $logid = "";
-    private $spanid = 0;
 
     // 性能日志
     public $profiles = [];
@@ -50,18 +49,15 @@ class Logger extends \Monolog\Logger
     /**
      * @var array 记录请求日志
      */
-    public $messages = [
-
-    ];
+    public $messages = [];
 
 
     public function init()
     {
-//        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [445(ms)] [4(MB)] [/Web/vrOrder/Order] [%extra%] [status=200] [] profile[] counting[]\n";
         $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%";
 
         // finally, create a formatter
-        $formatter = new \Monolog\Formatter\LineFormatter($output, "Y/m/d H:i:s");
+        $formatter = new LineFormatter($output, "Y/m/d H:i:s");
 
         foreach ($this->targets as $target){
             if(!isset($target['class']) || !isset($target['logFile']) || !isset($target['levels']) || !is_array($target['levels'])){
@@ -115,15 +111,15 @@ class Logger extends \Monolog\Logger
     public function formateRecord($message, $context, $level, $levelName, $ts, $extra)
     {
         $record = array(
-            "logid" => $this->logid,
-            "spanid" => $this->spanid,
+            "logid" => $this->getLogid(),
+            "spanid" => $this->getSpanid(),
             'message' => $message,
             'context' => $context,
             'level' => $level,
             'level_name' => $levelName,
             'channel' => $this->name,
             'datetime' => $ts,
-            'extra' => array(),
+            'extra' => $extra,
         );
 
         return $record;
@@ -142,14 +138,15 @@ class Logger extends \Monolog\Logger
         }
 
         $key = urlencode($key);
+        $cid = App::getCoroutineId();
         if (is_array($val)) {
-            $this->pushlogs[] = "$key=" . json_encode($val);
+            $this->pushlogs[$cid][] = "$key=" . json_encode($val);
         } elseif (is_bool($val)) {
-            $this->pushlogs[] = "$key=" . var_export($val, true);
+            $this->pushlogs[$cid][] = "$key=" . var_export($val, true);
         } elseif (is_string($val) || is_numeric($val)) {
-            $this->pushlogs[] = "$key=" . urlencode($val);
+            $this->pushlogs[$cid][] = "$key=" . urlencode($val);
         } elseif (is_null($val)) {
-            $this->pushlogs[] = "$key=";
+            $this->pushlogs[$cid][] = "$key=";
         }
     }
 
@@ -163,7 +160,8 @@ class Logger extends \Monolog\Logger
         if(is_string($name) == false || empty($name)){
             return ;
         }
-        $this->profileStacks[$name]['start'] = microtime(true);
+        $cid = App::getCoroutineId();
+        $this->profileStacks[$cid][$name]['start'] = microtime(true);
     }
 
     /**
@@ -177,15 +175,16 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        if (! isset($this->profiles[$name])) {
+        $cid = App::getCoroutineId();
+        if (! isset($this->profiles[$cid][$name])) {
             $this->profiles[$name] = [
                 'cost' => 0,
                 'total' => 0
             ];
         }
 
-        $this->profiles[$name]['cost'] += microtime(true) - $this->profileStacks[$name]['start'];
-        $this->profiles[$name]['total'] = $this->profiles[$name]['total'] + 1;
+        $this->profiles[$cid][$name]['cost'] += microtime(true) - $this->profileStacks[$cid][$name]['start'];
+        $this->profiles[$cid][$name]['total'] = $this->profiles[$cid][$name]['total'] + 1;
     }
 
     /**
@@ -194,12 +193,14 @@ class Logger extends \Monolog\Logger
     public function getProfilesInfos()
     {
         $profileAry = [];
-        foreach ($this->profiles as $key => $profile){
-            if(!isset($profile['cost']) || !isset($profile['total'])){
+        $cid = App::getCoroutineId();
+        $profiles = $this->profiles[$cid]?? [];
+        foreach ($profiles as $key => $profile) {
+            if (!isset($profile['cost']) || !isset($profile['total'])) {
                 continue;
             }
             $cost = sprintf("%.2f", $profile['cost'] * 1000);
-            $profileAry[] = "$key=" .  $cost. '(ms)/' . $profile['total'];
+            $profileAry[] = "$key=" . $cost . '(ms)/' . $profile['total'];
         }
 
         return implode(",", $profileAry);
@@ -217,12 +218,14 @@ class Logger extends \Monolog\Logger
         if (!is_string($name) || empty($name)) {
             return;
         }
-        if (!isset($this->countings[$name])) {
-            $this->countings[$name] = ['hit' => 0, 'total' => 0];
+
+        $cid = App::getCoroutineId();
+        if (!isset($this->countings[$cid][$name])) {
+            $this->countings[$cid][$name] = ['hit' => 0, 'total' => 0];
         }
-        $this->countings[$name]['hit'] += intval($hit);
+        $this->countings[$cid][$name]['hit'] += intval($hit);
         if ($total !== null) {
-            $this->countings[$name]['total'] += intval($total);
+            $this->countings[$cid][$name]['total'] += intval($total);
         }
     }
 
@@ -231,12 +234,14 @@ class Logger extends \Monolog\Logger
      */
     public function getCountingInfo()
     {
-        if(empty($this->countings)){
+        $cid = App::getCoroutineId();
+        if (!isset($this->countings[$cid]) || empty($this->countings[$cid])) {
             return "";
         }
 
         $countAry = [];
-        foreach ($this->countings as $name => $counter){
+        $countings = $this->countings[$cid];
+        foreach ($countings as $name => $counter){
             if(isset($counter['hit'], $counter['total']) && $counter['total'] != 0){
                 $countAry[] = "$name=".$counter['hit']."/".$counter['total'];
             }elseif(isset($counter['hit'])){
@@ -297,6 +302,45 @@ class Logger extends \Monolog\Logger
 
     public function appendNoticeLog()
     {
+        $cid = App::getCoroutineId();
+        $ts = $this->getLoggerTime();
+
+        // php耗时单位ms毫秒
+        $timeUsed = sprintf("%.0f", (microtime(true)-$this->getRequestTime())*1000);
+
+        // php运行内存大小单位M
+        $memUsed = sprintf("%.0f", memory_get_peak_usage()/(1024*1024));
+
+        $profileInfo = $this->getProfilesInfos();
+        $countingInfo = $this->getCountingInfo();
+        $pushlogs = $this->pushlogs[$cid]??[];
+
+        $messageAry = array(
+            "[$timeUsed(ms)]",
+            "[$memUsed(MB)]",
+            "[{$this->getUri()}]",
+            "[".implode(" ", $pushlogs)."]",
+            "profile[".$profileInfo."]",
+            "counting[".$countingInfo."]"
+        );
+
+
+        $message = implode(" ", $messageAry);
+
+        unset($this->profiles[$cid]);
+        unset($this->countings[$cid]);
+        unset($this->pushlogs[$cid]);
+        unset($this->profileStacks[$cid]);
+
+        $levelName = self::$levels[self::NOTICE];
+        $message = $this->formateRecord($message, [], self::NOTICE, $levelName, $ts, []);
+
+        $this->messages[] = $message;
+
+    }
+
+    private function getLoggerTime()
+    {
         if (!static::$timezone) {
             static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
         }
@@ -309,73 +353,35 @@ class Logger extends \Monolog\Logger
         }
 
         $ts->setTimezone(static::$timezone);
-
-        // php耗时单位ms毫秒
-        $timeUsed = sprintf("%.0f", (microtime(true)-$this->beginTime)*1000);
-
-        // php运行内存大小单位M
-        $memUsed = sprintf("%.0f", memory_get_peak_usage()/(1024*1024));
-
-        $profileInfo = $this->getProfilesInfos();
-        $countingInfo = $this->getCountingInfo();
-
-        $messageAry = array(
-            "[$timeUsed(ms)]",
-            "[$memUsed(MB)]",
-            "[{$this->uri}]",
-            "[".implode(" ", $this->pushlogs)."]",
-            "profile[".$profileInfo."]",
-            "counting[".$countingInfo."]"
-        );
-
-
-        $message = implode(" ", $messageAry);
-
-        $this->profiles = [];
-        $this->countings = [];
-        $this->pushlogs = [];
-        $this->profileStacks = [];
-
-        $levelName = self::$levels[self::NOTICE];
-        $message = $this->formateRecord($message, [], self::NOTICE, $levelName, $ts, []);
-
-        $this->messages[] = $message;
-
+        return $ts;
     }
 
-
-    /**
-     * @param string $logid
-     */
-    public function setLogid(string $logid)
+    private function getLogid()
     {
-        $this->logid = $logid;
+        $contextData = RequestContext::getContextData();
+        $logid = $contextData['logid']?? "";
+        return $logid;
     }
 
-
-
-    /**
-     * @param int $spanid
-     */
-    public function setSpanid(int $spanid)
+    private function getSpanid()
     {
-        $this->spanid = $spanid;
+        $contextData = RequestContext::getContextData();
+        $spanid = $contextData['spanid']?? "";
+        return $spanid;
     }
 
-    /**
-     * @param string $uri
-     */
-    public function setUri(string $uri)
+    private function getUri()
     {
-        $this->uri = $uri;
+        $contextData = RequestContext::getContextData();
+        $uri = $contextData['uri']?? "";
+        return $uri;
     }
 
-
-    /**
-     * @param int $beginTime
-     */
-    public function setBeginTime($beginTime)
+    private function getRequestTime()
     {
-        $this->beginTime = $beginTime;
+        $contextData = RequestContext::getContextData();
+        $requestTime = $contextData['requestTime']?? 0;
+        return $requestTime;
     }
+
 }

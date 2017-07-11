@@ -18,7 +18,6 @@ class RequestContext
     const COROUTINE_DATA = "data";
     const COROUTINE_REQUEST = "request";
     const COROUTINE_RESPONSE = "response";
-    const COROUTINE_LOGGER = "logger";
 
     private static $coroutineLocal;
 
@@ -36,14 +35,6 @@ class RequestContext
     public static function getResponse()
     {
         return self::getCoroutineContext(self::COROUTINE_RESPONSE);
-    }
-
-    /**
-     * @return Logger
-     */
-    public static function getLogger(){
-        $coroutineId = self::getcoroutine();
-        return self::getCoroutineContext(self::COROUTINE_LOGGER);
     }
 
     /**
@@ -92,13 +83,7 @@ class RequestContext
     public static function setContextData(array $contextData = [])
     {
         $coroutineId = self::getcoroutine();
-        self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = new \swoft\web\Request(COROUTINE_DATA);
-    }
-
-    public static function setLogger(Logger $logger)
-    {
-        $coroutineId = self::getcoroutine();
-        self::$coroutineLocal[$coroutineId][self::COROUTINE_LOGGER] = $logger;
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = $contextData;
     }
     private static function getcoroutine()
     {

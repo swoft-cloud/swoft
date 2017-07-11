@@ -39,6 +39,7 @@ class IndexController extends Controller
         $data['request'] = $request->getRequestUri();
 
         App::profileStart("logger");
+        App::profileStart("logger1");
 
         App::info("my info log");
         App::info("my2 info log");
@@ -46,11 +47,16 @@ class IndexController extends Controller
         App::error("my error log");
         App::warning("my warning log");
 
-        App::pushlog("status", 200);
+        App::pushlog("pushlogKey", "pushlogVal");
+        App::pushlog("pushlogKey2", "pushlogVal2");
 
         App::profileEnd("logger");
+        App::profileEnd("logger2");
 
         App::counting("redis.get", 1, 10);
+        App::counting("redis.get", 1, 10);
+        App::counting("redis.set", 1, 10);
+
 
         $this->outputJson($data, 'suc');
     }

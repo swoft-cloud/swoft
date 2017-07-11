@@ -147,18 +147,14 @@ class Application extends \swoft\base\Application
         $logid = RequestContext::getRequest()->getHeader('logid', uniqid());
         $spanid = RequestContext::getRequest()->getHeader('spanid', 0);
         $uri = RequestContext::getRequest()->getRequestUri();
-        $beginTime = microtime(true);
 
-        // 复制一份日志上下文
-        /* @var  $logger Logger*/
-        $logger = clone ApplicationContext::getBean('logger');
-        $logger->setLogid($logid);
-        $logger->setSpanid($spanid);
-        $logger->setUri($uri);
-        $logger->setBeginTime($beginTime);
-
-        RequestContext::setLogger($logger);
-
+        $contextData = [
+            'logid' => $logid,
+            'spanid' => $spanid,
+            'uri' => $uri,
+            'requestTime' => microtime(true)
+        ];
+        RequestContext::setContextData($contextData);
     }
 
     private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)
