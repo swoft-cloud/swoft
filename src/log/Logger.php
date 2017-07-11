@@ -110,17 +110,18 @@ class Logger extends \Monolog\Logger
     {
         $traces = debug_backtrace();
         $count = count($traces);
+
         $ex = '';
-        if ($count >= 2) {
-            $info = $traces[1];
+        if ($count >= 4) {
+            $info = $traces[3];
             if (isset($info['file'], $info['line'])) {
                 $filename = basename($info['file']);
                 $linenum = $info['line'];
                 $ex = "$filename:$linenum";
             }
         }
-        if ($count >= 3) {
-            $info = $traces[2];
+        if ($count >= 5) {
+            $info = $traces[4];
             if (isset($info['class'], $info['type'], $info['function'])) {
                 $ex .= ',' . $info['class'] . $info['type'] . $info['function'];
             } elseif (isset($info['function'])) {
