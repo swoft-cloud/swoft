@@ -4,7 +4,7 @@ namespace swoft\rpc;
 
 use swoft\connect\ServicePool;
 use swoft\helpers\RpcHelper;
-use swoft\Swf;
+use swoft\App;
 
 /**
  *
@@ -42,8 +42,8 @@ class RpcClient
         $server->send(RpcHelper::rpcPack($uri, $params));
         $data = $server->recv();
 
-        $count = Swf::$app->count + 1;
-        Swf::$app->count = $count;
+        $count = App::$app->count + 1;
+        App::$app->count = $count;
 
 //        $server->close();
         $client->release($server);

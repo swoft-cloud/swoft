@@ -8,7 +8,7 @@ use swoft\base\RequestContext;
 use swoft\console\Console;
 use swoft\filter\FilterChain;
 use swoft\log\Logger;
-use swoft\Swf;
+use swoft\App;
 
 /**
  *
@@ -31,7 +31,7 @@ class Application extends \swoft\base\Application
 
     public function start(){
 
-        Swf::$app = $this;
+        App::$app = $this;
 
         $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
 
@@ -173,7 +173,7 @@ class Application extends \swoft\base\Application
 
     private function afterRequest()
     {
-        Swf::getLogger()->flushLog(true);
+        App::getLogger()->flushLog(true);
         RequestContext::destory();
     }
 

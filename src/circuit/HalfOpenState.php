@@ -27,8 +27,9 @@ class HalfOpenState extends CircuitBreakerState
         $lock = $this->circuitBreaker->getHalfOpenLock();
         $lock->lock();
         $data = false;
+        list($class ,$method) = $callback;
         try {
-            $data = \Swoole\Coroutine::call_user_func_array($callback, $params);
+            $data = $class->$method(...$params);
             $this->circuitBreaker->incSuccessCount();
         } catch (\Exception $e) {
             $this->circuitBreaker->incFailCount();

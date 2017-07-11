@@ -3,7 +3,7 @@
 namespace swoft\web;
 
 use swoft\base\RequestContext;
-use swoft\Swf;
+use swoft\App;
 
 /**
  *
@@ -23,7 +23,7 @@ class Controller extends \swoft\base\Controller
 
     public function render(string $templateId, array $data = [])
     {
-        $viewsPath = Swf::$app->getViewsPath();
+        $viewsPath = App::$app->getViewsPath();
 
         $this->checkTemplateFile($viewsPath, $templateId);
         $content = $this->renderContent($viewsPath, $templateId, $data);

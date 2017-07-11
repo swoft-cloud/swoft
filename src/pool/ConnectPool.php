@@ -2,7 +2,7 @@
 
 namespace swoft\pool;
 
-use swoft\Swf;
+use swoft\App;
 
 /**
  *

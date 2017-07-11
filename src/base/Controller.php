@@ -60,8 +60,7 @@ class Controller
         }
 
         /* @var \swoft\web\Response|null $response*/
-        $response = \Swoole\Coroutine::call_user_func_array([$this, $methodName], $bindParams);
-//        $response = $this->$methodName();
+        $response = $this->$methodName(...$bindParams);
 
         return $response;
     }

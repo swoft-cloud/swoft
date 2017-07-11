@@ -6,7 +6,7 @@ use DI\Container;
 use DI\ContainerBuilder;
 use swoft\base\ApplicationContext;
 use swoft\helpers\ArrayHelper;
-use swoft\Swf;
+use swoft\App;
 
 /**
  *
@@ -28,7 +28,7 @@ class BeanFactory implements BeanFactoryInterface
     {
         $coreBeans = ArrayHelper::merge($this->coreBeans(), $config);
         self::$container = $this->init($coreBeans);
-        Swf::setProperties();
+        App::setProperties();
     }
 
     private function init($coreBeans)

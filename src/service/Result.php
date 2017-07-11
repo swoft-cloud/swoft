@@ -3,6 +3,7 @@
 namespace swoft\service;
 
 use swoft\circuit\CircuitBreaker;
+use swoft\pool\ConnectPool;
 
 
 /**
@@ -16,20 +17,8 @@ use swoft\circuit\CircuitBreaker;
  */
 class Result
 {
-    private $service = null;
-    public function __construct(Service $service)
+    public function __construct(ConnectPool $connectPoll, $connect)
     {
-        $this->service = $service;
-    }
-
-    public function getResult()
-    {
-        $criuitBreaker = $this->service->criuitBreaker;
-        $client = $this->service->client;
-        $fallback = $this->service->fallback;
-        $result = $criuitBreaker->call([$client, 'recv'], [], $fallback);
-        $this->service->connectPool->release($client);
-
-        return $result;
+        
     }
 }

@@ -1,5 +1,19 @@
 <?php
+class A{
+    public function test($a, $b)
+    {
+        echo "test=".$b."-".$a;
+    }
+}
 
+
+$method = "test";
+$params = [1,2];
+$a = new A();
+$a->$method(...$params);
+
+
+exit();
 // *.开头文件扩展匹配
 $reg = '/^\$\{(.*)\}$/';
 $str = '{stelin}';

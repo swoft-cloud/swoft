@@ -9,7 +9,7 @@ use swoft\log\FileHandler;
 use swoft\log\Logger;
 use swoft\rpc\RpcClient;
 use swoft\service\Service;
-use swoft\Swf;
+use swoft\App;
 use swoft\web\Controller;
 use swoft\web\Request;
 use swoft\web\Response;
@@ -34,23 +34,23 @@ class IndexController extends Controller
     public function actionIndex(Request $request, Response $response)
     {
         $data = $this->logic->getUser();
-        $data['properties'] = Swf::$properties['env'];
-        $data['count'] = Swf::$app->count;
+        $data['properties'] = App::$properties['env'];
+        $data['count'] = App::$app->count;
         $data['request'] = $request->getRequestUri();
 
-        Swf::profileStart("logger");
+        App::profileStart("logger");
 
-        Swf::info("my info log");
-        Swf::info("my2 info log");
+        App::info("my info log");
+        App::info("my2 info log");
 
-        Swf::error("my error log");
-        Swf::warning("my warning log");
+        App::error("my error log");
+        App::warning("my warning log");
 
-        Swf::pushlog("status", 200);
+        App::pushlog("status", 200);
 
-        Swf::profileEnd("logger");
+        App::profileEnd("logger");
 
-        Swf::counting("redis.get", 1, 10);
+        App::counting("redis.get", 1, 10);
 
         $this->outputJson($data, 'suc');
     }
@@ -89,35 +89,29 @@ class IndexController extends Controller
 //        $logger->info("this is info");
 //        $logger->flushLog();
 
-        Swf::profileStart("logger");
+        App::profileStart("logger");
 
-        Swf::info("my info log");
-        Swf::info("my2 info log");
+        App::info("my info log");
+        App::info("my2 info log");
 
-        Swf::error("my error log");
-        Swf::warning("my warning log");
+        App::error("my error log");
+        App::warning("my warning log");
 
-        Swf::pushlog("status", 200);
+        App::pushlog("status", 200);
 
-        Swf::profileEnd("logger");
+        App::profileEnd("logger");
 
-        Swf::counting("redis.get", 1, 10);
+        App::counting("redis.get", 1, 10);
 
         $this->render('/main/layout.html', $data);
     }
 
     public function actionRpc()
     {
-//        /* @var RpcClient $client*/
-//        $client = ApplicationContext::getBean('rpcClient');
-//        $data = $client->rpcCall(RpcClient::USER_SERVICE, '/inner/uri', []);
-//        $data = json_decode($data, true);
+        $ret = Service::call("user", '/inner/uri', []);
 
-        $service = new Service("user");
-        $ret = $service->call('/inner/uri', []);
-//        $result = $ret->getResult();
-
-        $data['count'] = Swf::$app->count;
+        $data['count'] = App::$app->count;
+        $data['ret'] = $ret;
         $this->outputJson($data);
     }
 }

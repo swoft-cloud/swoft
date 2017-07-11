@@ -9,7 +9,7 @@ use swoft\pool\ConnectPool;
 use swoft\pool\ManagerPool;
 use swoft\pool\ServicePool;
 use swoft\helpers\RpcHelper;
-use swoft\Swf;
+use swoft\App;
 
 
 /**
@@ -23,49 +23,24 @@ use swoft\Swf;
  */
 class Service
 {
-    /**
-     * @var \Swoole\Coroutine\Client
-     */
-    public $client = null;
-    /**
-     * @var CircuitBreaker
-     */
-    public $criuitBreaker = null;
-    public $serviceName = "";
-    /**
-     * @var ConnectPool
-     */
-    public $connectPool = null;
-    public $uri = "";
-    public $params = [];
-    public $fallback = null;
+    public static function call($serviceName, $func, array $params, $fallback = null){
 
-    public function __construct($serviceName)
-    {
-        $cricuitBreakerManager = Swf::getCricuitBreakerManager();
-        $this->criuitBreaker = $cricuitBreakerManager->getCricuitBreaker($serviceName);
-        $this->serviceName = $serviceName;
-    }
+        $cricuitBreakerManager = App::getCricuitBreakerManager();
 
-    public function call($uri, array $params, $fallback = null){
+        /* @var $criuitBreaker CircuitBreaker*/
+        $criuitBreaker = $cricuitBreakerManager->getCricuitBreaker($serviceName);
 
-        $this->uri = $uri;
-        $this->params = $params;
-        $this->fallback = $fallback;
+        $mangerPool = App::getMangerPool();
+        $connectPool = $mangerPool->getPool($serviceName);
 
-        $mangerPool = Swf::getMangerPool();
-        $this->connectPool = $mangerPool->getPool($this->serviceName);
-        $this->client = $this->connectPool->getConnect();
+        /* @var $client \Swoole\Coroutine\Client*/
+        $client = $connectPool->getConnect();
 
-        $this->client->send("stelin boy");
-        $this->client->recv();
+        $packData = RpcHelper::rpcPack($func, $params);
+        $criuitBreaker->call([$client, 'send'], [$packData]);
 
-        $packData = RpcHelper::rpcPack($uri, $params);
-        $this->client->send($packData);
-        $this->client->recv();
-
-//        $this->criuitBreaker->call([$this->client, 'send'], [$packData]);
-//        return new Result($this);
-        return "";
+        $result = $client->recv();
+        $connectPool->release($client);
+        return $result;
     }
 }

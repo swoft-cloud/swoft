@@ -3,10 +3,10 @@ namespace swoft\helpers;
 
 class RpcHelper
 {
-    public static function rpcPack($uri, $params)
+    public static function rpcPack($func, $params)
     {
         $data = [
-            'uri' => $uri,
+            'uri' => $func,
             'params' => $params
         ];
 
