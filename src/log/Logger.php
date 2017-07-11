@@ -15,12 +15,25 @@ class Logger extends \Monolog\Logger
 {
 
     public $name = "swoft";
-    public $flushInterval = 1;
+    public $flushInterval = 100;
     public $targets = [];
 
+    private $uri = "";
+    private $beginTime;
     private $logid = "";
     private $spanid = 0;
 
+    // 性能日志
+    public $profiles = [];
+
+    // 计算日志
+    public $countings= [];
+
+    // 标记日志
+    public $pushlogs = [];
+
+    // 标记栈
+    public $profileStacks = [];
 
 
     protected static $levels = array(
@@ -83,17 +96,8 @@ class Logger extends \Monolog\Logger
 
         $ts->setTimezone(static::$timezone);
 
-        $record = array(
-            "logid" => $this->logid,
-            "spanid" => $this->spanid,
-            'message' => $this->getTrace($message),
-            'context' => $context,
-            'level' => $level,
-            'level_name' => $levelName,
-            'channel' => $this->name,
-            'datetime' => $ts,
-            'extra' => array(),
-        );
+        $message = $this->getTrace($message);
+        $record = $this->formateRecord($message, $context, $level, $levelName, $ts, []);
 
         foreach ($this->processors as $processor) {
             $record = \Swoole\Coroutine::call_user_func($processor, $record);
@@ -104,6 +108,140 @@ class Logger extends \Monolog\Logger
         if(count($this->messages) >= $this->flushInterval){
             $this->flushLog();
         }
+    }
+
+    public function formateRecord($message, $context, $level, $levelName, $ts, $extra)
+    {
+        $record = array(
+            "logid" => $this->logid,
+            "spanid" => $this->spanid,
+            'message' => $message,
+            'context' => $context,
+            'level' => $level,
+            'level_name' => $levelName,
+            'channel' => $this->name,
+            'datetime' => $ts,
+            'extra' => array(),
+        );
+
+        return $record;
+    }
+
+    /**
+     * pushlog日志
+     *
+     * @param string $key
+     * @param mixed $val
+     */
+    public function pushLog($key, $val)
+    {
+        if (!(is_string($key) || is_numeric($key))) {
+            return;
+        }
+
+        $key = urlencode($key);
+        if (is_array($val)) {
+            $this->pushlogs[] = "$key=" . json_encode($val);
+        } elseif (is_bool($val)) {
+            $this->pushlogs[] = "$key=" . var_export($val, true);
+        } elseif (is_string($val) || is_numeric($val)) {
+            $this->pushlogs[] = "$key=" . urlencode($val);
+        } elseif (is_null($val)) {
+            $this->pushlogs[] = "$key=";
+        }
+    }
+
+    /**
+     * 标记开始
+     *
+     * @param string $name
+     */
+    public function profileStart($name)
+    {
+        if(is_string($name) == false || empty($name)){
+            return ;
+        }
+        $this->profileStacks[$name]['start'] = microtime(true);
+    }
+
+    /**
+     * 标记开始
+     *
+     * @param string $name
+     */
+    public function profileEnd($name)
+    {
+        if (is_string($name) == false || empty($name)) {
+            return;
+        }
+
+        if (! isset($this->profiles[$name])) {
+            $this->profiles[$name] = [
+                'cost' => 0,
+                'total' => 0
+            ];
+        }
+
+        $this->profiles[$name]['cost'] += microtime(true) - $this->profileStacks[$name]['start'];
+        $this->profiles[$name]['total'] = $this->profiles[$name]['total'] + 1;
+    }
+
+    /**
+     * 组装profiles
+     */
+    public function getProfilesInfos()
+    {
+        $profileAry = [];
+        foreach ($this->profiles as $key => $profile){
+            if(!isset($profile['cost']) || !isset($profile['total'])){
+                continue;
+            }
+            $cost = sprintf("%.2f", $profile['cost'] * 1000);
+            $profileAry[] = "$key=" .  $cost. '(ms)/' . $profile['total'];
+        }
+
+        return implode(",", $profileAry);
+    }
+
+    /**
+     * 缓存命中率计算
+     *
+     * @param string $name
+     * @param int    $hit
+     * @param int    $total
+     */
+    public function counting($name, $hit, $total = null)
+    {
+        if (!is_string($name) || empty($name)) {
+            return;
+        }
+        if (!isset($this->countings[$name])) {
+            $this->countings[$name] = ['hit' => 0, 'total' => 0];
+        }
+        $this->countings[$name]['hit'] += intval($hit);
+        if ($total !== null) {
+            $this->countings[$name]['total'] += intval($total);
+        }
+    }
+
+    /**
+     * 组装字符串
+     */
+    public function getCountingInfo()
+    {
+        if(empty($this->countings)){
+            return "";
+        }
+
+        $countAry = [];
+        foreach ($this->countings as $name => $counter){
+            if(isset($counter['hit'], $counter['total']) && $counter['total'] != 0){
+                $countAry[] = "$name=".$counter['hit']."/".$counter['total'];
+            }elseif(isset($counter['hit'])){
+                $countAry[] = "$name=".$counter['hit'];
+            }
+        }
+        return implode(',', $countAry);
     }
 
     public function getTrace($message)
@@ -138,7 +276,7 @@ class Logger extends \Monolog\Logger
     public function flushLog($final = false)
     {
         if($final == true){
-            $this->messages = $this->appendNoticeLog($this->messages);
+            $this->appendNoticeLog();
         }
 
         if(empty($this->messages)){
@@ -155,9 +293,52 @@ class Logger extends \Monolog\Logger
         $this->messages = [];
     }
 
-    public function appendNoticeLog($messages)
+    public function appendNoticeLog()
     {
-        return $messages;
+        if (!static::$timezone) {
+            static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
+        }
+
+        // php7.1+ always has microseconds enabled, so we do not need this hack
+        if ($this->microsecondTimestamps && PHP_VERSION_ID < 70100) {
+            $ts = \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone);
+        } else {
+            $ts = new \DateTime(null, static::$timezone);
+        }
+
+        $ts->setTimezone(static::$timezone);
+
+        // php耗时单位ms毫秒
+        $timeUsed = sprintf("%.0f", (microtime(true)-$this->beginTime)*1000);
+
+        // php运行内存大小单位M
+        $memUsed = sprintf("%.0f", memory_get_peak_usage()/(1024*1024));
+
+        $profileInfo = $this->getProfilesInfos();
+        $countingInfo = $this->getCountingInfo();
+
+        $messageAry = array(
+            "[$timeUsed(ms)]",
+            "[$memUsed(MB)]",
+            "[{$this->uri}]",
+            "[".implode(" ", $this->pushlogs)."]",
+            "profile[".$profileInfo."]",
+            "counting[".$countingInfo."]"
+        );
+
+
+        $message = implode(" ", $messageAry);
+
+        $this->profiles = [];
+        $this->countings = [];
+        $this->pushlogs = [];
+        $this->profileStacks = [];
+
+        $levelName = self::$levels[self::NOTICE];
+        $message = $this->formateRecord($message, [], self::NOTICE, $levelName, $ts, []);
+
+        $this->messages[] = $message;
+
     }
 
 
@@ -179,5 +360,20 @@ class Logger extends \Monolog\Logger
         $this->spanid = $spanid;
     }
 
+    /**
+     * @param string $uri
+     */
+    public function setUri(string $uri)
+    {
+        $this->uri = $uri;
+    }
 
+
+    /**
+     * @param int $beginTime
+     */
+    public function setBeginTime($beginTime)
+    {
+        $this->beginTime = $beginTime;
+    }
 }

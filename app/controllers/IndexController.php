@@ -38,6 +38,20 @@ class IndexController extends Controller
         $data['count'] = Swf::$app->count;
         $data['request'] = $request->getRequestUri();
 
+        Swf::profileStart("logger");
+
+        Swf::info("my info log");
+        Swf::info("my2 info log");
+
+        Swf::error("my error log");
+        Swf::warning("my warning log");
+
+        Swf::pushlog("status", 200);
+
+        Swf::profileEnd("logger");
+
+        Swf::counting("redis.get", 1, 10);
+
         $this->outputJson($data, 'suc');
     }
 
@@ -75,10 +89,19 @@ class IndexController extends Controller
 //        $logger->info("this is info");
 //        $logger->flushLog();
 
+        Swf::profileStart("logger");
+
         Swf::info("my info log");
         Swf::info("my2 info log");
+
         Swf::error("my error log");
         Swf::warning("my warning log");
+
+        Swf::pushlog("status", 200);
+
+        Swf::profileEnd("logger");
+
+        Swf::counting("redis.get", 1, 10);
 
         $this->render('/main/layout.html', $data);
     }

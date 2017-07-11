@@ -96,4 +96,24 @@ class Swf
     {
         self::getLogger()->debug($message, $context);
     }
+
+    public static function pushlog($key, $val)
+    {
+        self::getLogger()->pushLog($key, $val);
+    }
+
+    public static function profileStart($name)
+    {
+        self::getLogger()->profileStart($name);
+    }
+
+    public static function profileEnd($name)
+    {
+        self::getLogger()->profileEnd($name);
+    }
+
+    public static function counting($name, $hit, $total = null)
+    {
+        self::getLogger()->counting($name, $hit, $total);
+    }
 }
