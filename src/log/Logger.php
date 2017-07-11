@@ -50,7 +50,9 @@ class Logger extends \Monolog\Logger
     /**
      * @var array 记录请求日志
      */
-    public $messages = [];
+    public $messages = [
+
+    ];
 
 
     public function init()

@@ -2,6 +2,7 @@
 
 namespace swoft\service;
 
+use swoft\App;
 use swoft\circuit\CircuitBreaker;
 use swoft\pool\ConnectPool;
 
@@ -17,8 +18,24 @@ use swoft\pool\ConnectPool;
  */
 class Result
 {
-    public function __construct(ConnectPool $connectPoll, $connect)
+    private $connectPool;
+    private $client;
+    private $profileKey;
+
+
+    public function __construct(ConnectPool $connectPool, \Swoole\Coroutine\Client $client, $profileKey)
     {
-        
+        $this->connectPool = $connectPool;
+        $this->client = $client;
+        $this->profileKey = $profileKey;
+    }
+
+    public function getResult()
+    {
+        App::profileStart($this->profileKey);
+        $result = $this->client->recv();
+        App::profileEnd($this->profileKey);
+        $this->connectPool->release($this->client);
+        return $result;
     }
 }

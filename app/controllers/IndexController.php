@@ -108,10 +108,15 @@ class IndexController extends Controller
 
     public function actionRpc()
     {
-        $ret = Service::call("user", '/inner/uri', []);
+        $result = Service::call("user", '/inner/uri', []);
+        $ret = $result->getResult();
+
+        $result2 = Service::call("user", '/inner/uri', []);
+        $ret2 = $result2->getResult();
 
         $data['count'] = App::$app->count;
         $data['ret'] = $ret;
+        $data['ret2'] = $ret2;
         $this->outputJson($data);
     }
 }

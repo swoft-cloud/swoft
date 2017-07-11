@@ -25,6 +25,7 @@ class Service
 {
     public static function call($serviceName, $func, array $params, $fallback = null){
 
+        $profile = "$serviceName->".$func;
         $cricuitBreakerManager = App::getCricuitBreakerManager();
 
         /* @var $criuitBreaker CircuitBreaker*/
@@ -39,8 +40,6 @@ class Service
         $packData = RpcHelper::rpcPack($func, $params);
         $criuitBreaker->call([$client, 'send'], [$packData]);
 
-        $result = $client->recv();
-        $connectPool->release($client);
-        return $result;
+        return new Result($connectPool, $client, $profile);
     }
 }
