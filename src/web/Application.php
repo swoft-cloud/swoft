@@ -169,7 +169,7 @@ class Application extends \swoft\base\Application
 
     private function afterRequest()
     {
-        App::getLogger()->flushLog(true);
+        App::getLogger()->appendNoticeLog();
         RequestContext::destory();
     }
 

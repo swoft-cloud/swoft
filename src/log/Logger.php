@@ -19,7 +19,7 @@ class Logger extends \Monolog\Logger
 {
 
     public $name = "swoft";
-    public $flushInterval = 100;
+    public $flushInterval = 1000;
     public $targets = [];
 
     // 性能日志
@@ -280,12 +280,8 @@ class Logger extends \Monolog\Logger
         return $message;
     }
 
-    public function flushLog($final = false)
+    public function flushLog()
     {
-        if($final == true){
-            $this->appendNoticeLog();
-        }
-
         if(empty($this->messages)){
             return ;
         }
