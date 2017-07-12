@@ -51,7 +51,7 @@ class IndexController extends Controller
         App::pushlog("pushlogKey2", "pushlogVal2");
 
         App::profileEnd("logger");
-        App::profileEnd("logger2");
+        App::profileEnd("logger1");
 
         App::counting("redis.get", 1, 10);
         App::counting("redis.get", 1, 10);
