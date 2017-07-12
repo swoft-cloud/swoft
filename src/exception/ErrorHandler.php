@@ -29,7 +29,7 @@ class ErrorHandler
     }
 
     public function handlerError($code, $message, $file, $line){
-        var_dump($code, $message);
+        var_dump($code, $message, $file, $line);
 //        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
 //        RequestContext::getResponse()->send();
     }

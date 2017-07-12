@@ -177,7 +177,7 @@ class Logger extends \Monolog\Logger
 
         $cid = App::getCoroutineId();
         if (! isset($this->profiles[$cid][$name])) {
-            $this->profiles[$name] = [
+            $this->profiles[$cid][$name] = [
                 'cost' => 0,
                 'total' => 0
             ];
