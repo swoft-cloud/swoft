@@ -164,7 +164,7 @@ class BeanFactory implements BeanFactoryInterface
         return [
             'config'                => ['class' => '\swoft\base\Config'],
             'application'           => ['class' => 'swoft\web\Application'],
-            'urlManager'            => ['class' => 'swoft\web\urlManager'],
+            'urlManager'            => ['class' => 'swoft\web\UrlManager'],
             'filter'                => ['class' => 'swoft\filter\FilterChain'],
             'errorHanlder'          => ['class' => 'swoft\exception\ErrorHandler'],
             'managerPool'           => ['class' => '\swoft\pool\ManagerPool'],
