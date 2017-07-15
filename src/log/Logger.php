@@ -19,7 +19,7 @@ class Logger extends \Monolog\Logger
 {
 
     public $name = "swoft";
-    public $flushInterval = 1000;
+    public $flushInterval = 1;
     public $targets = [];
 
     // 性能日志
@@ -333,6 +333,10 @@ class Logger extends \Monolog\Logger
 
         $this->messages[] = $message;
 
+        if(count($this->messages) >= $this->flushInterval){
+            $this->flushLog();
+        }
+
     }
 
     private function getLoggerTime()
@@ -362,7 +366,7 @@ class Logger extends \Monolog\Logger
     private function getSpanid()
     {
         $contextData = RequestContext::getContextData();
-        $spanid = $contextData['spanid']?? "";
+        $spanid = $contextData['spanid']?? 0;
         return $spanid;
     }
 

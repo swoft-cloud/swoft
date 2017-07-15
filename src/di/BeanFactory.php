@@ -170,6 +170,7 @@ class BeanFactory implements BeanFactoryInterface
             'managerPool'           => ['class' => '\swoft\pool\ManagerPool'],
             'circuitBreakerManager' => ['class' => '\swoft\circuit\CircuitBreakerManager'],
             'logger'                => ['class' => '\swoft\log\Logger'],
+            "packer"                => ['class' => '\swoft\service\JsonPacker'],
         ];
     }
 

@@ -62,12 +62,19 @@ class Application extends \swoft\base\Application
 
     public function onReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
     {
-        var_dump("receiver---------*******************************__________________". $data);
+        // 解包
+        $packer = App::getPacker();
+        $data = $packer->unpack($data);
 
-        $data  = json_decode($data, true);
-        $data['receiver'] = "ok";
-        $data = json_encode($data);
+        // 初始化
+        $this->beforeReceiver($data);
 
+        // 执行函数调用
+        $response = $this->runService($data);
+        $data = $packer->pack($response);
+
+        // 处理完成
+        $this->after();
         $server->send($fd, $data);
     }
     public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
@@ -111,7 +118,7 @@ class Application extends \swoft\base\Application
             $swfResponse->send();
         }
 
-        $this->afterRequest();
+        $this->after();
     }
 
     public function onStart(\Swoole\Http\Server $server)
@@ -135,6 +142,21 @@ class Application extends \swoft\base\Application
         } else {
             swoole_set_process_name($this->server['pname']. " worker process");
         }
+    }
+
+    private function beforeReceiver($data)
+    {
+        $logid = $data['logid']?? uniqid();
+        $spanid = $data['spanid']?? 0;
+        $uri = $data['func']?? "null";
+
+        $contextData = [
+            'logid' => $logid,
+            'spanid' => $spanid,
+            'uri' => $uri,
+            'requestTime' => microtime(true)
+        ];
+        RequestContext::setContextData($contextData);
     }
 
     private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
@@ -167,7 +189,7 @@ class Application extends \swoft\base\Application
         }
     }
 
-    private function afterRequest()
+    private function after()
     {
         App::getLogger()->appendNoticeLog();
         RequestContext::destory();

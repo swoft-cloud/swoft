@@ -1,40 +1,49 @@
 <?php
 
-namespace swoft\service;
+namespace swoft\web;
 
 use swoft\App;
-use swoft\circuit\CircuitBreaker;
 use swoft\pool\ConnectPool;
-
 
 /**
  *
  *
- * @uses      ServicePool
- * @version   2017年05月11日
+ * @uses      AbstractResult
+ * @version   2017年07月15日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Result
+abstract class AbstractResult implements IResult
 {
-    private $connectPool;
-    private $client;
-    private $profileKey;
+    /**
+     * @var ConnectPool
+     */
+    protected $connectPool;
+    protected $client;
+    /**
+     * @var string
+     */
+    protected $profileKey;
 
 
-    public function __construct(ConnectPool $connectPool, \Swoole\Coroutine\Client $client, $profileKey)
+    public function __construct(ConnectPool $connectPool, $client, $profileKey)
     {
         $this->connectPool = $connectPool;
         $this->client = $client;
         $this->profileKey = $profileKey;
     }
 
-    public function getResult()
+    public function recv($defer = false)
     {
         App::profileStart($this->profileKey);
         $result = $this->client->recv();
         App::profileEnd($this->profileKey);
+
+        // 重置延迟设置
+        if($defer){
+            $this->client->setDefer(false);
+        }
         $this->connectPool->release($this->client);
         return $result;
     }

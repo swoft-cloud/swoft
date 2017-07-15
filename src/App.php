@@ -7,6 +7,7 @@ use swoft\base\RequestContext;
 use swoft\circuit\CircuitBreakerManager;
 use swoft\log\Logger;
 use swoft\pool\ManagerPool;
+use swoft\service\IPack;
 use swoft\web\Application;
 
 /**
@@ -33,6 +34,17 @@ class App
     public static function getMangerPool()
     {
         return ApplicationContext::getBean("managerPool");
+    }
+
+    /**
+     * @param string $serviceName
+     *
+     * @return pool\ConnectPool
+     */
+    public static function getConnectPool(string $serviceName)
+    {
+        $managePool = self::getMangerPool();
+        return $managePool->getPool($serviceName);
     }
 
     /**
@@ -71,6 +83,14 @@ class App
     public static function getLogger()
     {
         return ApplicationContext::getBean('logger');
+    }
+
+    /**
+     * @return IPack
+     */
+    public static function getPacker()
+    {
+        return ApplicationContext::getBean('packer');
     }
 
     public static function trace($message, array $context = array())

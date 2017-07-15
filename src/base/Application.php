@@ -4,6 +4,7 @@ namespace swoft\base;
 
 use swoft\helpers\ArrayHelper;
 use swoft\rpc\RpcClient;
+use swoft\web\InnerService;
 
 /**
  *
@@ -26,6 +27,7 @@ abstract class Application
     protected $settingPath;
     protected $defaultRoute = "index";
     protected $controllerNamespace = "app\\controllers";
+    protected $serviceNameSpace = "app\\controllers\\services";
 
     /**
      * @var \swoole_lock
@@ -141,6 +143,27 @@ abstract class Application
         }
 
         return [$id, $route];
+    }
+
+    public function runService($data)
+    {
+        $func = $data['func']?? "";
+        $params = $data['params']?? [];
+
+        list($servicePrefix, $method) = explode("::", $func);
+
+        $namespace = $this->serviceNameSpace;
+        $class = $servicePrefix."Service";
+        $className = $namespace."\\".$class;
+        if(!class_exists($className) || empty($method)){
+
+        }
+
+        /* @var $service InnerService*/
+        $service = ApplicationContext::getBean($className);
+        $data = $service->run($method, $params);
+
+        return $data;
     }
 
     abstract function parseCommand($argv);
