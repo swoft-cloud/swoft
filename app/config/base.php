@@ -55,6 +55,7 @@ return [
                     \swoft\log\Logger::NOTICE,
                     \swoft\log\Logger::INFO,
                     \swoft\log\Logger::DEBUG,
+                    \swoft\log\Logger::TRACE,
                 ]
             ],
             [

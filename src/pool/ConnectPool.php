@@ -40,7 +40,7 @@ abstract class ConnectPool implements Pool
     {
         $connect = null;
         if($this->currentCounter > $this->maxActive){
-            return false;
+            return null;
         }
         if(!$this->queue->isEmpty()){
             $connect = $this->queue->shift();
@@ -48,7 +48,9 @@ abstract class ConnectPool implements Pool
         }
 
         $connect = $this->createConnect();
-        $this->currentCounter++;
+        if($connect !== null){
+            $this->currentCounter++;
+        }
         return $connect;
 
     }

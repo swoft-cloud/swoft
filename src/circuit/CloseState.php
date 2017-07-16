@@ -21,22 +21,35 @@ class CloseState extends CircuitBreakerState
 {
     function doCall($callback, $params = [], $fallback = null)
     {
-        $data = false;
         list($class ,$method) = $callback;
+
         try {
+            if($class == null){
+                throw new \Exception($this->circuitBreaker->serviceName."服务,连接建立失败(null)");
+            }
+
+            if($class instanceof  \Swoole\Coroutine\Client && $class->isConnected() == false){
+                throw new \Exception($this->circuitBreaker->serviceName."服务,当前连接已断开");
+            }
             $data = $class->$method(...$params);
+
         } catch (\Exception $e) {
             if($this->circuitBreaker->isClose()){
                 $this->circuitBreaker->incFailCount();
             }
-            $data = $this->circuitBreaker->$fallback($fallback);
+
+            App::error($this->circuitBreaker->serviceName."服务，当前[关闭状态]，服务端调用失败，开始服务降级容错处理，error=".$e->getMessage());
+            $data = $this->circuitBreaker->fallback($fallback);
         }
 
         $failCount = $this->circuitBreaker->getFailCounter();
         $swithToFailCount = $this->circuitBreaker->getSwithToFailCount();
         if($failCount >= $swithToFailCount && $this->circuitBreaker->isClose()){
+            App::trace($this->circuitBreaker->serviceName."服务，当前[关闭状态]，服务失败次数达到上限，开始切换为开启状态，failCount=".$failCount);
             $this->circuitBreaker->swithToOpenState();
         }
+
+        App::trace($this->circuitBreaker->serviceName."服务，当前[关闭状态]，failCount=".$this->circuitBreaker->getFailCounter());
         return $data;
     }
 }

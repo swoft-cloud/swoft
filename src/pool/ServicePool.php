@@ -2,6 +2,8 @@
 
 namespace swoft\pool;
 
+use swoft\App;
+
 /**
  *
  *
@@ -20,7 +22,8 @@ class ServicePool extends ConnectPool
         list($host, $port) = $this->getConnectInfo();
         if (!$client->connect($host, $port, $this->timeout))
         {
-            echo "connect failed. Error: {$client->errCode}\n";
+            App::error("service connect fail errorCode=".$client->errCode." host=".$host." port=".$port);
+            return null;
         }
 
         return $client;

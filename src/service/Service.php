@@ -41,7 +41,12 @@ class Service
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);
         $packData = $packer->pack($data);
-        $criuitBreaker->call([$client, 'send'], [$packData], $fallback);
+        $result = $criuitBreaker->call([$client, 'send'], [$packData], $fallback);
+
+        // 错误处理
+        if($result === null || $result === false){
+            return null;
+        }
 
         App::profileStart($profileKey);
         $result = $client->recv();
@@ -77,8 +82,8 @@ class Service
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);
         $packData = $packer->pack($data);
-        $criuitBreaker->call([$client, 'send'], [$packData], $fallback);
+        $result = $criuitBreaker->call([$client, 'send'], [$packData], $fallback);
 
-        return new ServiceResult($connectPool, $client, $profile);
+        return new ServiceResult($connectPool, $client, $profile, $result);
     }
 }

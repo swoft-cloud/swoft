@@ -24,5 +24,10 @@ abstract class CircuitBreakerState
         $this->circuitBreaker->initCounter();
     }
 
+    protected function getServiceName()
+    {
+        return $this->circuitBreaker->serviceName;
+    }
+
     abstract function doCall($callback, $params= [], $fallback = null);
 }

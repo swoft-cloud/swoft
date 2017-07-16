@@ -18,6 +18,12 @@ use swoft\base\RequestContext;
 class Logger extends \Monolog\Logger
 {
 
+    /**
+     * trace log
+     */
+    const TRACE = 650;
+
+
     public $name = "swoft";
     public $flushInterval = 1;
     public $targets = [];
@@ -44,6 +50,7 @@ class Logger extends \Monolog\Logger
         self::CRITICAL  => 'critical',
         self::ALERT     => 'alert',
         self::EMERGENCY => 'emergency',
+        self::TRACE     => 'trace'
     );
 
     /**
@@ -354,6 +361,11 @@ class Logger extends \Monolog\Logger
 
         $ts->setTimezone(static::$timezone);
         return $ts;
+    }
+
+    public function addTrace($message, array $context = array())
+    {
+        return $this->addRecord(static::TRACE, $message, $context);
     }
 
     private function getLogid()

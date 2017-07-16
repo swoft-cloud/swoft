@@ -25,7 +25,7 @@ class CircuitBreakerManager extends AbstractCircuitBreaker
     public function getCricuitBreaker($serviceName)
     {
         if (!isset($this->cricuitBreakerList[$serviceName])) {
-            $this->cricuitBreakerList[$serviceName] = new CircuitBreaker($this);
+            $this->cricuitBreakerList[$serviceName] = new CircuitBreaker($this, $serviceName);
         }
 
         return $this->cricuitBreakerList[$serviceName];

@@ -26,12 +26,15 @@ abstract class AbstractResult implements IResult
      */
     protected $profileKey;
 
+    protected $sendResult = true;
 
-    public function __construct(ConnectPool $connectPool, $client, $profileKey)
+
+    public function __construct(ConnectPool $connectPool, $client, $profileKey, $result)
     {
         $this->connectPool = $connectPool;
         $this->client = $client;
         $this->profileKey = $profileKey;
+        $this->sendResult = $result;
     }
 
     public function recv($defer = false)

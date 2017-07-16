@@ -94,8 +94,8 @@ trait Console
         }
 
         if($masterIslive && $this->command == 'start'){
-            echo("ysf ".$this->status['startFile']." is already running \n");
-            exit;
+//            echo("ysf ".$this->status['startFile']." is already running \n");
+//            exit;
         }
 
         if($masterIslive == false && $this->command != "start"){

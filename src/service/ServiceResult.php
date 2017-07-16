@@ -22,6 +22,9 @@ class ServiceResult extends AbstractResult
 {
     public function getResult()
     {
+        if($this->sendResult === null || $this->sendResult === false){
+            return null;
+        }
         $result = $this->recv();
         $packer = App::getPacker();
         $result = $packer->unpack($result);

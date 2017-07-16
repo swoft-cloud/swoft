@@ -2,6 +2,8 @@
 
 namespace swoft\circuit;
 
+use swoft\App;
+
 /**
  * 开启状态及切换(open)
  *
@@ -21,6 +23,7 @@ class OpenState extends CircuitBreakerState
     {
         $data = $this->circuitBreaker->fallback();
 
+        App::trace($this->getServiceName()."服务，当前[开启状态]，执行服务fallback服务降级容错处理");
         // 开启定时器
         $nowTime = time();
 
@@ -28,7 +31,13 @@ class OpenState extends CircuitBreakerState
             && $nowTime > $this->circuitBreaker->getSwithOpenToHalfOpenTime()
         ) {
             $delayTime = $this->circuitBreaker->getDelaySwithTimer();
+
+            // 定时器不是严格的，新增3s,容错时间
+            $swithToHalfStateTime = $nowTime + ($delayTime / 1000) + 3;
             swoole_timer_after($delayTime, [$this, 'delayCallback']);
+            $this->circuitBreaker->setSwithOpenToHalfOpenTime($swithToHalfStateTime);
+
+            App::trace($this->getServiceName()."服务，当前[开启状态]，创建延迟触发器，一段时间后状态切换为半开状态");
         }
 
         return $data;
@@ -36,6 +45,7 @@ class OpenState extends CircuitBreakerState
 
     public function delayCallback(){
         if($this->circuitBreaker->isOpen()){
+            App::debug($this->getServiceName()."服务,当前服务[开启状态]，延迟触发器已触发，准备开始切换到半开状态");
             $this->circuitBreaker->swithToHalfState();
         }
     }

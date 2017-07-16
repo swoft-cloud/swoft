@@ -87,6 +87,8 @@ class IndexController extends Controller
 
         App::counting("redis.get", 1, 10);
 
+        App::trace("trace log");
+
         $this->render('/main/layout.html', $data);
     }
 

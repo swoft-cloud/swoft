@@ -2,6 +2,7 @@
 
 namespace swoft\circuit;
 
+use swoft\App;
 use swoft\base\ApplicationContext;
 use swoft\rpc\RpcClient;
 
@@ -16,6 +17,14 @@ use swoft\rpc\RpcClient;
  */
 class CircuitBreaker  extends AbstractCircuitBreaker
 {
+    const CLOSE = "close";
+
+    const OPEN = "open";
+
+    const HALF_OPEN_STATE = "halfOpenState";
+
+    const UNINIT = "uninit";
+
     /**
      * @var int 错误请求计数
      */
@@ -33,6 +42,11 @@ class CircuitBreaker  extends AbstractCircuitBreaker
     public $swithOpenToHalfOpenTime = 0;
 
     /**
+     * @var string 服务名称
+     */
+    public $serviceName = "breakerService";
+
+    /**
      * @var CircuitBreakerState 熔断器状态，开启、半开、关闭
      */
     private $circuitState = null;
@@ -42,12 +56,13 @@ class CircuitBreaker  extends AbstractCircuitBreaker
      */
     private $halfOpenLock = null;
 
-    public function __construct(CircuitBreakerManager $cbm)
+    public function __construct(CircuitBreakerManager $cbm, string $serviceName)
     {
         // 配置初始化
         $this->swithToSuccessCount = $cbm->swithToSuccessCount;
         $this->swithToFailCount = $cbm->swithToFailCount;
         $this->delaySwithTimer = $cbm->delaySwithTimer;
+        $this->serviceName = $serviceName;
 
         // 状态初始化
         $this->swithToCloseState();
@@ -86,25 +101,52 @@ class CircuitBreaker  extends AbstractCircuitBreaker
 
     public function swithToCloseState()
     {
+        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[关闭]状态");
         $this->circuitState = new CloseState($this);
     }
 
     public function swithToOpenState()
     {
+        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[开启]状态");
         $this->circuitState = new OpenState($this);
     }
 
     public function swithToHalfState()
     {
+        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[半开]状态");
+
         $this->circuitState = new HalfOpenState($this);
     }
 
     public function fallback($fallback = null)
     {
         if ($fallback == null) {
-            return false;
+            App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，服务降级处理，fallback未定义");
+            return null;
         }
-        return \Swoole\Coroutine::call_user_func($fallback);
+
+        if(is_array($fallback) && count($fallback) == 2){
+            list($className, $method) = $fallback;
+            App::debug($this->serviceName."服务，服务降级处理，执行fallback, class=".$className." method=".$method);
+            return $className->$method();
+        }
+
+        return null;
+    }
+
+    public function getCurrrentState()
+    {
+        if ($this->circuitState instanceof CloseState) {
+            return self::CLOSE;
+        }
+        if ($this->circuitState instanceof HalfOpenState) {
+            return self::HALF_OPEN_STATE;
+        }
+
+        if ($this->circuitState instanceof OpenState) {
+            return self::OPEN;
+        }
+        return self::UNINIT;
     }
 
     public function initCounter()

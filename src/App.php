@@ -95,7 +95,7 @@ class App
 
     public static function trace($message, array $context = array())
     {
-
+        self::getLogger()->addTrace($message,$context);
     }
 
     public static function error($message, array $context = array())
