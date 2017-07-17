@@ -57,8 +57,17 @@ class IndexController extends Controller
         App::counting("redis.get", 1, 10);
         App::counting("redis.set", 1, 10);
 
+        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
 
         $this->outputJson($data, 'suc');
+    }
+
+    public function testA()
+    {
+        App::trace("this trace timer");
+        App::info("this trace info");
+        App::debug("this trace debug");
+        echo "after time do.................................\n";
     }
 
     public function actionLogin()

@@ -4,6 +4,7 @@ namespace swoft;
 
 use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
+use swoft\base\Timer;
 use swoft\circuit\CircuitBreakerManager;
 use swoft\log\Logger;
 use swoft\pool\ManagerPool;
@@ -91,6 +92,14 @@ class App
     public static function getPacker()
     {
         return ApplicationContext::getBean('packer');
+    }
+
+    /**
+     * @return Timer
+     */
+    public static function getTimer()
+    {
+        return ApplicationContext::getBean('timer');
     }
 
     public static function trace($message, array $context = array())

@@ -35,6 +35,8 @@ swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器�
 - 服务熔断、降级、限流(后续)
 - 服务监控(后续)
 
+
+
 未完成
 ------------
 
@@ -45,6 +47,7 @@ swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器�
 - 路由重构及缓存
 - mysql封装(ORM)
 - 服务注册和发现(mysql)
+- crontab定时任务
 - inotify文件监控，自动reload
 - rpc协议实现
 - 服务监控

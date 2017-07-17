@@ -34,7 +34,7 @@ class OpenState extends CircuitBreakerState
 
             // 定时器不是严格的，新增3s,容错时间
             $swithToHalfStateTime = $nowTime + ($delayTime / 1000) + 3;
-            swoole_timer_after($delayTime, [$this, 'delayCallback']);
+            App::getTimer()->addAfterTimer('openState', $delayTime, [$this, 'delayCallback']);
             $this->circuitBreaker->setSwithOpenToHalfOpenTime($swithToHalfStateTime);
 
             App::trace($this->getServiceName()."服务，当前[开启状态]，创建延迟触发器，一段时间后状态切换为半开状态");

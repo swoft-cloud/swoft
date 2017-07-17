@@ -171,6 +171,7 @@ class BeanFactory implements BeanFactoryInterface
             'circuitBreakerManager' => ['class' => '\swoft\circuit\CircuitBreakerManager'],
             'logger'                => ['class' => '\swoft\log\Logger'],
             "packer"                => ['class' => '\swoft\service\JsonPacker'],
+            'timer'                 => ['class' => '\swoft\base\Timer'],
         ];
     }
 
