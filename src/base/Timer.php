@@ -95,7 +95,9 @@ class Timer
     private function afterTimer(string $name)
     {
         unset($this->timers[$name]);
-        App::getLogger()->appendNoticeLog();
+
+        // 目前有bug,协程发生切换，先忽略
+//        App::getLogger()->appendNoticeLog();
         RequestContext::destory();
     }
 
