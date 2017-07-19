@@ -34,6 +34,7 @@ swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器�
 - inotify自动reload
 - 服务监控
 - 日志统计分析
+- 统一配置中心
 
 优化
 ------------
