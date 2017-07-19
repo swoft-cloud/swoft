@@ -29,7 +29,7 @@ class RedisPool extends ConnectPool
     public function getConnectInfo(){
         return [
             "127.0.0.1",
-            8099
+            6379
         ];
     }
 }

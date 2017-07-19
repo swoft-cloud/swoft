@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\logic\IndexLogic;
 use DI\Annotation\Inject;
 use swoft\base\ApplicationContext;
+use swoft\cache\RedisClient;
 use swoft\log\FileHandler;
 use swoft\log\Logger;
 use swoft\rpc\RpcClient;
@@ -68,6 +69,21 @@ class IndexController extends Controller
         App::info("this trace info");
         App::debug("this trace debug");
         echo "after time do.................................\n";
+    }
+
+    public function actionRedis()
+    {
+        RedisClient::set('name', 'redis client stelin', 180);
+        $name = RedisClient::get('name');
+        RedisClient::get($name);
+
+        $ret = RedisClient::deferCall('get', ['name']);
+        $result = $ret->getResult();
+        $data = [
+            'redis' => $name,
+            'defer' => $result
+        ];
+        $this->outputJson($data);
     }
 
     public function actionLogin()

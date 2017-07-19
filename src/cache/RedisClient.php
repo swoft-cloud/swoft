@@ -11,6 +11,9 @@ use swoft\App;
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ *
+ * @method static string|bool get($key)
+ * @method static bool set( $key, $value, $timeout = 0 )
  */
 class RedisClient
 {
@@ -43,13 +46,10 @@ class RedisClient
 
         /* @var $client \Swoole\Coroutine\Redis */
         $client = $connectPool->getConnect();
-        App::profileStart($profileKey);
-        $client->$method(...$params);
         $client->setDefer();
-        App::profileEnd($profileKey);
-        $connectPool->release($client);
+        $result = $client->$method(...$params);
 
-        return new RedisResult($connectPool, $client, $profileKey);
+        return new RedisResult($connectPool, $client, $profileKey, $result);
     }
 
     public static function __callStatic($method, $arguments)

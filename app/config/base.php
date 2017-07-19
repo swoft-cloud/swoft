@@ -37,6 +37,12 @@ return [
                 "maxIdel"   => 6,
                 "maxActive" => 10,
                 "timeout"   => '${config.service.user.timeout}',
+            ],
+            "redis" => [
+                "class"     => \swoft\pool\RedisPool::class,
+                "maxIdel"   => 6,
+                "maxActive" => 10,
+                "timeout"   => 200,
             ]
         ]
     ],
