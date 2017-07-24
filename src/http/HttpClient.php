@@ -15,6 +15,10 @@ use swoft\App;
  */
 class HttpClient
 {
+    const GET = "GET";
+
+    const POST = "POST";
+
     /**
      * @param string     $url
      * @param string     $method
@@ -30,39 +34,54 @@ class HttpClient
      * ]
      * </pre>
      */
-    public static function call(string $url, string $method, array $data = null, int $timeout = 200, array $headers = [])
+    public static function call(string $url, string $method, array $data = array(), int $timeout = 200, array $headers = [])
     {
-        $ip = "";
-        $port = "";
-        $uri = "";
 
-        $client = new \Swoole\Coroutine\Http\Client('127.0.0.1', 80);
+        list($host, $port, $uri) = self::parseUrl($url);
+
+        $client = new \Swoole\Coroutine\Http\Client($host, $port);
         $client->setHeaders($headers);
         $client->set([ 'timeout' => $timeout]);
         $client->setMethod($method);
-        $client->setData($data);
+        $client->setData(http_build_query($data));
+        $client->execute($url);
         $result =  $client->body;
         $client->close();
-
-        $packer = App::getPacker();
-        $result = $packer->unpack($result);
-
         return $result;
     }
 
-    public static function deferCall(string $url, string $method, array $data = null, int $timeout = 200, array $headers = [])
+    public static function deferCall(string $url, string $method, array $data = array(), int $timeout = 200, array $headers = [])
     {
-        $ip = "";
-        $port = "";
-        $uri = "";
-        $profileKey = "";
-        $client = new \Swoole\Coroutine\Http\Client('127.0.0.1', 80);
+
+        $profileKey = $method.".".$url;
+        list($host, $port, $uri) = self::parseUrl($url);
+
+        $client = new \Swoole\Coroutine\Http\Client($host, $port);
         $client->setHeaders($headers);
         $client->set([ 'timeout' => $timeout]);
         $client->setMethod($method);
-        $client->setData($data);
+        $client->setData(http_build_query($data));
         $client->setDefer();
+        $result = $client->execute($url);
+        return new HttpResult(null, $client, $profileKey, $result);
+    }
 
-        return new HttpResult(null, $client, $profileKey);
+    public static function parseUrl($url)
+    {
+        $defaultPorts = [
+            'http'  => 80,
+            'https' => 443
+        ];
+
+        $parses = parse_url($url);
+        $protocol = $parses['scheme'];
+
+        $host = $parses['host'];
+        $path = $parses['path']?? "";
+        $query = $parses['query']?? "";
+        $uri = $path . "?" . $query;
+        $port = $parses['port']?? $defaultPorts[$protocol];
+
+        return [$host, $port, $uri];
     }
 }

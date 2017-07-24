@@ -1,4 +1,5 @@
 <?php
+
 class A{
     public function test($a, $b)
     {

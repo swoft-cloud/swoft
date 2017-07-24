@@ -29,7 +29,7 @@ abstract class AbstractResult implements IResult
     protected $sendResult = true;
 
 
-    public function __construct(ConnectPool $connectPool, $client, $profileKey, $result)
+    public function __construct($connectPool, $client, $profileKey, $result)
     {
         $this->connectPool = $connectPool;
         $this->client = $client;
