@@ -15,24 +15,73 @@ use swoft\App;
  */
 abstract class ConnectPool implements Pool
 {
+    /**
+     * 轮询
+     */
+    const ROUND_ROBIN = "roundRobin";
+
+    /**
+     * 随机
+     */
+    const RANDOM_SELECT = "randomSelect";
+
+    /**
+     * 一致哈希
+     */
+    const HASH_SELECT = "hashSelect";
+
+    /**
+     * 压力最小
+     */
+    const CALL_LEAST = "callLeast";
+
+    public $serviceName = "";
+
     public $maxIdel = 6;
     public $maxActive = 50;
-    public $currentCounter = 0;
+    public $maxWait = 100;
     /**
      * @var int 单位毫秒
      */
     public $timeout = 200;
 
     /**
+     * @var bool
+     */
+    public $useProvider = false;
+
+    /**
+     * @var string
+     */
+    public $uri = "";
+
+    /**
+     * @var int 负载均衡策略
+     */
+    public $balancer = self::ROUND_ROBIN;
+
+    /**
+     * @var int
+     */
+    public $currentCounter = 0;
+
+    /**
      * @var \SplQueue
      */
     public $queue = null;
 
-    public function __construct($maxIdel, $maxActive, $timeout)
+    use Balancer;
+
+    public function __construct($useProvider, $maxIdel, $maxActive, $maxWait, $timeout, $uri, $balancer)
     {
+        $this->uri = $uri;
         $this->maxIdel = $maxIdel;
+        $this->maxWait = $maxWait;
         $this->timeout = $timeout;
+        $this->balancer = $balancer;
         $this->maxActive = $maxActive;
+        $this->useProvider = $useProvider;
+
         $this->queue = new \SplQueue();
     }
 

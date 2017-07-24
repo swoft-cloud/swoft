@@ -31,9 +31,11 @@ return [
         ]
     ],
     'managerPool'           => [
+        'useProvider' => true,
         'services' => [
             "user" => [
                 "class"     => \swoft\pool\ServicePool::class,
+                "uri"       => '127.0.0.1:8099,127.0.0.1:8099',
                 "maxIdel"   => 6,
                 "maxActive" => 10,
                 "timeout"   => '${config.service.user.timeout}',

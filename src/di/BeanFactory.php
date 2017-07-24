@@ -172,6 +172,7 @@ class BeanFactory implements BeanFactoryInterface
             'logger'                => ['class' => '\swoft\log\Logger'],
             "packer"                => ['class' => '\swoft\service\JsonPacker'],
             'timer'                 => ['class' => '\swoft\base\Timer'],
+            'serviceProvider'       => ['class' => 'swoft\service\ConsulProvider']
         ];
     }
 

@@ -9,6 +9,7 @@ use swoft\circuit\CircuitBreakerManager;
 use swoft\log\Logger;
 use swoft\pool\ManagerPool;
 use swoft\service\IPack;
+use swoft\service\ServiceProvider;
 use swoft\web\Application;
 
 /**
@@ -76,6 +77,14 @@ class App
     public static function getProperties()
     {
         return ApplicationContext::getBean('config');
+    }
+
+    /**
+     * @return ServiceProvider
+     */
+    public static function getServiceProvider()
+    {
+        return ApplicationContext::getBean('serviceProvider');
     }
 
     /**

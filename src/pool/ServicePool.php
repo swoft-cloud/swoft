@@ -19,7 +19,8 @@ class ServicePool extends ConnectPool
     {
         $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
 
-        list($host, $port) = $this->getConnectInfo();
+        $address = $this->getConnectAddress();
+        list($host, $port) = explode(":", $address);
         if (!$client->connect($host, $port, $this->timeout))
         {
             App::error("service connect fail errorCode=".$client->errCode." host=".$host." port=".$port);
@@ -31,13 +32,30 @@ class ServicePool extends ConnectPool
 
     public function reConnect($client)
     {
-        list($host, $port) = $this->getConnectInfo();
+        list($host, $port) = $this->getConnectAddress();
     }
 
-    public function getConnectInfo(){
-        return [
-            "127.0.0.1",
-            8099
-        ];
+    public function getConnectAddress()
+    {
+        $balancer = $this->balancer;
+        if(!method_exists($this, $balancer)){
+
+        }
+        $serviceList = $this->getServiceList();
+
+        return $this->$balancer($serviceList);
+    }
+
+    public function getServiceList()
+    {
+        if($this->useProvider){
+            return App::getServiceProvider()->getServiceList($this->serviceName);
+        }
+
+        if(empty($this->uri)){
+
+        }
+
+        return explode(',', $this->uri);
     }
 }
