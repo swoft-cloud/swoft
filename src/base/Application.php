@@ -38,7 +38,7 @@ abstract class Application
 
     public function init()
     {
-        $this->lock = new \swoole_lock(SWOOLE_MUTEX);
+        // $this->lock = new \swoole_lock(SWOOLE_MUTEX);
     }
 
     public function run()
@@ -167,4 +167,13 @@ abstract class Application
     }
 
     abstract function parseCommand($argv);
+
+    public function getLock()
+    {
+        if (!$this->lock) {
+            $this->lock = new \swoole_lock(SWOOLE_MUTEX);
+        }
+
+        return $this->lock;
+    }
 }

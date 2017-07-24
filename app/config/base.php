@@ -11,6 +11,13 @@ return [
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
     ],
+    'router' => [
+        'class' => \inhere\sroute\ORouter::class,
+        'config' => [
+            'ignoreLastSep' => false,
+            'tmpCacheNumber' => 100,
+        ]
+    ],
     'urlManager'            => [
         'rules' => [
             '/home/data'     => '/index',
