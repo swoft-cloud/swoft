@@ -21,9 +21,18 @@ class ErrorHandler
         register_shutdown_function([$this, 'handlerFataError']);
     }
 
-    public function handlerException(\Exception $exception)
+    public function handlerException(\Throwable $e)
     {
-        var_dump($exception->getMessage());
+        $message = sprintf(
+            "Exception: %s\nCalled At %s, Line: %d\nCatch the exception by: %s\nCode Trace:\n%s\n",
+            // $e->getCode(),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine(),
+            get_class($e),
+            $e->getTraceAsString()
+        );
+        echo $message;
 //        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
 //        RequestContext::getResponse()->send();
     }
@@ -36,8 +45,9 @@ class ErrorHandler
 
     public function handlerFataError()
     {
-        $error = error_get_last();
-        var_dump($error);
+        if ($error = error_get_last()) {
+            var_dump($error);
+        }
 
 //        RequestContext::getResponse()->setResponseContent(" ERROR INFO");
 //        RequestContext::getResponse()->send();

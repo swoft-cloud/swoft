@@ -5,6 +5,7 @@ namespace swoft\base;
 use swoft\helpers\ArrayHelper;
 use swoft\rpc\RpcClient;
 use swoft\web\InnerService;
+use swoft\web\Router;
 
 /**
  *
@@ -47,71 +48,50 @@ abstract class Application
         $this->parseCommand($argv);
     }
 
-    public function createController(string $route)
+    public function createController(string $path, array $info)
     {
-        if ($route === '') {
-            $route = $this->defaultRoute;
+        $handler = $info['handler'];
+        $matches = isset($info['matches']) ? $info['matches'] : null;
+
+        // Remove $matches[0] as [1] is the first parameter.
+        if ($matches) {
+            array_shift($matches);
+            $matches = array_values($matches);
         }
 
-        // double slashes or leading/ending slashes may cause substr problem
-        $route = trim($route, '/');
-        if (strpos($route, '//') !== false) {
-            return false;
+        // is a \Closure or a callable object
+        if (is_object($handler)) {
+            return $matches ? $handler(...$matches) : $handler();
         }
 
-        if (strpos($route, '/') !== false) {
-            list ($id, $route) = explode('/', $route, 2);
+        //// $handler is string
+
+        // is array ['controller', 'action']
+        if (is_array($handler)) {
+            $segments = $handler;
+        } elseif (is_string($handler)) {
+            // e.g `controllers\Home@index` Or only `controllers\Home`
+            $segments = explode('@', trim($handler));
         } else {
-            $id = $route;
-            $route = '';
+            throw new \InvalidArgumentException('Invalid route handler for URI: ' . $path);
         }
 
-        if (($pos = strrpos($route, '/')) !== false) {
-            $id .= '/' . substr($route, 0, $pos);
-            $route = substr($route, $pos + 1);
+        $action = '';
+        $className = $segments[0];
+
+        // Already assign action
+        if (isset($segments[1])) {
+            $action = $segments[1];
+
+            // use dynamic action
+        } elseif (isset($matches[0])) {
+            $action = array_shift($matches);
         }
 
-        $controller = $this->getControllerById($id);
-        if ($controller === null && $route !== '') {
-            $controller = $this->getControllerById($id . '/' . $route);
-            $route = '';
-        }
+        $action = Router::convertNodeStr($action);
+        $controller =  ApplicationContext::getBean($className);
 
-        return $controller === null ? false : [$controller, $route];
-    }
-
-    public function getControllerById(string $id)
-    {
-        $pos = strrpos($id, '/');
-        if ($pos === false) {
-            $prefix = '';
-            $className = $id;
-        } else {
-            $prefix = substr($id, 0, $pos + 1);
-            $className = substr($id, $pos + 1);
-        }
-
-
-        // 匹配正则修改兼容controller LoginUser/testOne loginUser/testOne login-user/testOne
-        if (!preg_match('%^[a-zA-Z][a-zA-Z0-9\\-_]*$%', $className)) {
-            return null;
-        }
-        if ($prefix !== '' && !preg_match('%^[a-z0-9_/]+$%i', $prefix)) {
-            return null;
-        }
-        // namespace和prefix保持一致，搜字母都大写或都小写，namespace app\controllers\SecurityKey; prefix=SecurityKey
-        $className = str_replace(' ', '', ucwords(str_replace('-', ' ', $className))) . 'Controller';
-        $className = ltrim($this->controllerNamespace . '\\' . str_replace('/', '\\', $prefix)  . $className, '\\');
-
-        if (strpos($className, '-') !== false || !class_exists($className)) {
-            return null;
-        }
-
-        if (is_subclass_of($className, 'swoft\base\Controller')) {
-            return ApplicationContext::getBean($className);
-        }else{
-            return null;
-        }
+        return [$controller, $action, $matches];
     }
 
     /**

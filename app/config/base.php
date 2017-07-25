@@ -12,10 +12,18 @@ return [
         'basePath'    => dirname(__DIR__),
     ],
     'router' => [
-        'class' => \inhere\sroute\ORouter::class,
+        'class' => \swoft\web\Router::class,
         'config' => [
             'ignoreLastSep' => false,
             'tmpCacheNumber' => 100,
+            'matchAll' => '',
+
+            // auto route match @like yii framework
+            'autoRoute' => [
+                'enable' => true,
+                'controllerNamespace' => 'app\\controllers',
+                'controllerSuffix' => 'Controller',
+            ],
         ]
     ],
     'urlManager'            => [

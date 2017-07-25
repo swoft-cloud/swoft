@@ -3,8 +3,10 @@
 namespace swoft\console\controllers;
 
 use swoft\console\Controller;
+use swoft\base\ApplicationContext;
 
 /**
+ * ServerController
  */
 class ServerController extends Controller
 {
@@ -18,21 +20,25 @@ class ServerController extends Controller
     {
         /* @var  \swoft\web\Application $application */
         $application = \swoft\base\ApplicationContext::getBean('application');
-        $application->run();
 
-        //return $application;
+        return $application;
     }
 
     /**
-     * start the swoole application
+     * start the swoole application server
      */
     public function startCommand()
     {
         $this->write('hello start');
+        $router = ApplicationContext::getBean('router');
+
+        require APP_PATH . '/app/routes.php';
+
+        $this->createApp()->run();
     }
 
     /**
-     * restart the swoole application
+     * restart the swoole application server
      */
     public function restartCommand()
     {
@@ -40,7 +46,15 @@ class ServerController extends Controller
     }
 
     /**
-     * stop the swoole application
+     * reload the swoole application server
+     */
+    public function reloadCommand()
+    {
+        $this->write('hello restart');
+    }
+
+    /**
+     * stop the swoole application server
      */
     public function stopCommand()
     {
