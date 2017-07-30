@@ -2,7 +2,7 @@
 
 namespace swoft\pool;
 
-use swoft\App;
+use swoft\pool\balancer\IBalancer;
 
 /**
  *
@@ -35,58 +35,49 @@ abstract class ConnectPool implements Pool
      */
     const CALL_LEAST = "callLeast";
 
-    public $serviceName = "";
+    protected $serviceName = "";
 
-    public $maxIdel = 6;
-    public $maxActive = 50;
-    public $maxWait = 100;
+    protected $maxIdel = 6;
+    protected $maxActive = 50;
+    protected $maxWait = 100;
+
     /**
      * @var int 单位毫秒
      */
-    public $timeout = 200;
+    protected $timeout = 200;
 
     /**
      * @var bool
      */
-    public $useProvider = false;
+    protected $useProvider = false;
 
     /**
      * @var string
      */
-    public $uri = "";
+    protected $uri = "";
 
-    /**
-     * @var int 负载均衡策略
-     */
-    public $balancer = self::ROUND_ROBIN;
 
     /**
      * @var int
      */
-    public $currentCounter = 0;
+    protected $currentCounter = 0;
 
     /**
      * @var \SplQueue
      */
-    public $queue = null;
+    protected $queue = null;
 
-    use Balancer;
-
-    public function __construct($useProvider, $maxIdel, $maxActive, $maxWait, $timeout, $uri, $balancer)
-    {
-        $this->uri = $uri;
-        $this->maxIdel = $maxIdel;
-        $this->maxWait = $maxWait;
-        $this->timeout = $timeout;
-        $this->balancer = $balancer;
-        $this->maxActive = $maxActive;
-        $this->useProvider = $useProvider;
-
-        $this->queue = new \SplQueue();
-    }
+    /**
+     * @var IBalancer
+     */
+    protected $balancer = null;
 
     public function getConnect()
     {
+        if($this->queue == null){
+            $this->queue = new \SplQueue();
+        }
+
         $connect = null;
         if($this->currentCounter > $this->maxActive){
             return null;
@@ -111,6 +102,41 @@ abstract class ConnectPool implements Pool
             $this->currentCounter--;
         }
     }
+
+    /**
+     * @param IBalancer $balancer
+     */
+    public function setBalancer(IBalancer $balancer)
+    {
+        $this->balancer = $balancer;
+    }
+
+    /**
+     * @param string $serviceName
+     */
+    public function setServiceName(string $serviceName)
+    {
+        $this->serviceName = $serviceName;
+    }
+
+    /**
+     * @param bool $useProvider
+     */
+    public function setUseProvider(bool $useProvider)
+    {
+        $this->useProvider = $useProvider;
+    }
+
+
+    /**
+     * @param string $uri
+     */
+    public function setUri(string $uri)
+    {
+        $this->uri = $uri;
+    }
+
+
 
     public function initConnect()
     {

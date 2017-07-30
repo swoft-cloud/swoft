@@ -2,6 +2,7 @@
 namespace swoft\cache;
 
 use swoft\App;
+use swoft\base\ApplicationContext;
 
 /**
  *
@@ -17,7 +18,7 @@ use swoft\App;
  */
 class RedisClient
 {
-    const SERVICE_NAME = "redis";
+    const SERVICE_NAME = "redisPool";
 
     const redis_operations = [
         // string
@@ -27,7 +28,7 @@ class RedisClient
     public static function call(string $method, array $params)
     {
         $profileKey = self::SERVICE_NAME.".".$method;
-        $connectPool = App::getConnectPool(self::SERVICE_NAME);
+        $connectPool = ApplicationContext::getBean(self::SERVICE_NAME);
 
         /* @var $client \Swoole\Coroutine\Redis */
         $client = $connectPool->getConnect();
@@ -42,7 +43,7 @@ class RedisClient
     public static function deferCall(string $method, array $params)
     {
         $profileKey = self::SERVICE_NAME.".".$method;
-        $connectPool = App::getConnectPool(self::SERVICE_NAME);
+        $connectPool = ApplicationContext::getBean(self::SERVICE_NAME);
 
         /* @var $client \Swoole\Coroutine\Redis */
         $client = $connectPool->getConnect();

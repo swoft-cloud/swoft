@@ -167,12 +167,12 @@ class BeanFactory implements BeanFactoryInterface
             'urlManager'            => ['class' => 'swoft\web\UrlManager'],
             'filter'                => ['class' => 'swoft\filter\FilterChain'],
             'errorHanlder'          => ['class' => 'swoft\exception\ErrorHandler'],
-            'managerPool'           => ['class' => '\swoft\pool\ManagerPool'],
-            'circuitBreakerManager' => ['class' => '\swoft\circuit\CircuitBreakerManager'],
+            'balancer'              => ['class' => '\swoft\pool\balancer\RandomBalancer'],
             'logger'                => ['class' => '\swoft\log\Logger'],
             "packer"                => ['class' => '\swoft\service\JsonPacker'],
             'timer'                 => ['class' => '\swoft\base\Timer'],
-            'serviceProvider'       => ['class' => 'swoft\service\ConsulProvider']
+            'serviceProvider'       => ['class' => '\swoft\service\ConsulProvider'],
+            'redis'                 => ['class' => '\swoft\pool\RedisPool'],
         ];
     }
 

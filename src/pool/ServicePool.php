@@ -37,13 +37,8 @@ class ServicePool extends ConnectPool
 
     public function getConnectAddress()
     {
-        $balancer = $this->balancer;
-        if(!method_exists($this, $balancer)){
-
-        }
         $serviceList = $this->getServiceList();
-
-        return $this->$balancer($serviceList);
+        return $this->balancer->select($serviceList);
     }
 
     public function getServiceList()

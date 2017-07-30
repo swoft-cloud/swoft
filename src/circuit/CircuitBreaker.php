@@ -3,8 +3,6 @@
 namespace swoft\circuit;
 
 use swoft\App;
-use swoft\base\ApplicationContext;
-use swoft\rpc\RpcClient;
 
 /**
  *
@@ -15,7 +13,7 @@ use swoft\rpc\RpcClient;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class CircuitBreaker  extends AbstractCircuitBreaker
+class CircuitBreaker
 {
     const CLOSE = "close";
 
@@ -56,16 +54,25 @@ class CircuitBreaker  extends AbstractCircuitBreaker
      */
     private $halfOpenLock = null;
 
-    public function __construct(CircuitBreakerManager $cbm, string $serviceName)
-    {
-        // 配置初始化
-        $this->swithToSuccessCount = $cbm->swithToSuccessCount;
-        $this->swithToFailCount = $cbm->swithToFailCount;
-        $this->delaySwithTimer = $cbm->delaySwithTimer;
-        $this->serviceName = $serviceName;
+    /**
+     * @var int 连续失败次数，如果到达，状态切换为open
+     */
+    private $swithToFailCount = 6;
 
+    /**
+     * @var int 连续成功次数，如果到达，状态切换为close
+     */
+    private $swithToSuccessCount = 6;
+
+    /**
+     * @var int 单位毫秒
+     */
+    private $delaySwithTimer = 5000;
+
+    public function init()
+    {
         // 状态初始化
-        $this->swithToCloseState();
+        $this->circuitState = new CloseState($this);
         $this->halfOpenLock = new \swoole_lock(SWOOLE_MUTEX);
     }
 

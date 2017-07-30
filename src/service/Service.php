@@ -3,8 +3,11 @@
 namespace swoft\service;
 
 use swoft\App;
+use swoft\base\ApplicationContext;
 use swoft\circuit\CircuitBreaker;
 use swoft\helpers\RpcHelper;
+use swoft\pool\ConnectPool;
+use swoft\pool\ServicePool;
 
 /**
  *
@@ -48,13 +51,12 @@ class Service
     public static function call(string $serviceName,string $func, array $params, callable $fallback = null){
 
         $profileKey = "$serviceName->".$func;
-        $cricuitBreakerManager = App::getCricuitBreakerManager();
 
         /* @var $criuitBreaker CircuitBreaker*/
-        $criuitBreaker = $cricuitBreakerManager->getCricuitBreaker($serviceName);
+        $criuitBreaker = App::getBean($serviceName."Breaker");
 
-        $mangerPool = App::getMangerPool();
-        $connectPool = $mangerPool->getPool($serviceName);
+        /* @var  $connectPool ServicePool*/
+        $connectPool = App::getBean($serviceName."Pool");
 
         /* @var $client \Swoole\Coroutine\Client*/
         $client = $connectPool->getConnect();
@@ -89,13 +91,12 @@ class Service
     public static function deferCall($serviceName, $func, array $params, $fallback = null){
 
         $profile = "$serviceName->".$func;
-        $cricuitBreakerManager = App::getCricuitBreakerManager();
 
         /* @var $criuitBreaker CircuitBreaker*/
-        $criuitBreaker = $cricuitBreakerManager->getCricuitBreaker($serviceName);
+        $criuitBreaker = App::getBean($serviceName."Breaker");
 
-        $mangerPool = App::getMangerPool();
-        $connectPool = $mangerPool->getPool($serviceName);
+        /* @var $connectPool ServicePool*/
+        $connectPool = App::getBean($serviceName."Pool");
 
         /* @var $client \Swoole\Coroutine\Client*/
         $client = $connectPool->getConnect();

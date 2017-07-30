@@ -131,6 +131,8 @@ class Application extends \swoft\base\Application
 
     public function onManagerStart(\Swoole\Http\Server $server)
     {
+//        App::getServiceProvider()->registerService("user", '127.0.0.1', 8099);
+
         swoole_set_process_name($this->server['pname']." manager process");
     }
 

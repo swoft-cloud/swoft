@@ -30,29 +30,29 @@ return [
             ]
         ]
     ],
-    'managerPool'           => [
-        'useProvider' => true,
-        'services' => [
-            "user" => [
-                "class"     => \swoft\pool\ServicePool::class,
-                "uri"       => '127.0.0.1:8099,127.0.0.1:8099',
-                "maxIdel"   => 6,
-                "maxActive" => 10,
-                "timeout"   => '${config.service.user.timeout}',
-            ],
-            "redis" => [
-                "class"     => \swoft\pool\RedisPool::class,
-                "maxIdel"   => 6,
-                "maxActive" => 10,
-                "timeout"   => 200,
-            ]
-        ]
+    "randomBalancer" => [
+        'class' => \swoft\pool\balancer\RandomBalancer::class
     ],
-    "circuitBreakerManager" => [
-        'swithToFailCount'    => 10,
-        'swithToSuccessCount' => 10,
-        'delaySwithTimer'     => 20000,
+
+    "userPool" => [
+        "class"     => \swoft\pool\ServicePool::class,
+        "uri"       => '127.0.0.1:8099,127.0.0.1:8099',
+        "maxIdel"   => 6,
+        "maxActive" => 10,
+        "timeout"   => '${config.service.user.timeout}',
+        "balancer"  => '${randomBalancer}'
     ],
+    "redisPool" => [
+        'class' => \swoft\pool\RedisPool::class,
+        "maxIdel"   => 6,
+        "maxActive" => 10,
+        "timeout"   => 200,
+    ],
+
+    "userBreaker" =>[
+        'class' => \swoft\circuit\CircuitBreaker::class,
+    ],
+
     "logger"                => [
         'name'    => SYSTEM_NAME,
         "targets" => [
