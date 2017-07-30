@@ -17,14 +17,14 @@ use Monolog\Logger;
 class FileHandler extends AbstractProcessingHandler
 {
 
-    protected $level = [];
-    protected $filePath = "";
+    protected $levels = [];
+    protected $logFile = "";
 
     public function __construct($filePath, $level = [], $bubble = true)
     {
         parent::__construct($level, $bubble);
 
-        $this->filePath = $filePath;
+        $this->logFile = $filePath;
     }
 
     public function handleBatch(array $records)
@@ -42,7 +42,7 @@ class FileHandler extends AbstractProcessingHandler
         $messageText = implode("\n", $records) . "\n";
         $this->createDir();
         while (true) {
-            $result = \Swoole\Async::writeFile($this->filePath, $messageText, null, FILE_APPEND);
+            $result = \Swoole\Async::writeFile($this->logFile, $messageText, null, FILE_APPEND);
             if ($result == true) {
                 break;
             }
@@ -70,7 +70,7 @@ class FileHandler extends AbstractProcessingHandler
 
     private function createDir()
     {
-        $dir = dirname($this->filePath);
+        $dir = dirname($this->logFile);
         if ($dir !== null && !is_dir($dir)) {
             $status = mkdir($dir, 0777, true);
             if ($status === false) {
@@ -81,16 +81,16 @@ class FileHandler extends AbstractProcessingHandler
 
     public function isHandling(array $record)
     {
-        if(empty($this->level)){
+        if(empty($this->levels)){
             return true;
         }
 
-        return  in_array($record['level'], $this->level);
+        return  in_array($record['level'], $this->levels);
     }
 
     public function setLevel($level)
     {
-        $this->level = $level;
+        $this->levels = $level;
 
         return $this;
     }

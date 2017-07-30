@@ -26,6 +26,7 @@ abstract class Application
     protected $runtimePath;
     protected $settingPath;
     protected $defaultRoute = "index";
+    protected $useProvider = false;
     protected $controllerNamespace = "app\\controllers";
     protected $serviceNameSpace = "app\\controllers\\services";
 
@@ -164,6 +165,14 @@ abstract class Application
         $data = $service->run($method, $params);
 
         return $data;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseProvider(): bool
+    {
+        return $this->useProvider;
     }
 
     abstract function parseCommand($argv);

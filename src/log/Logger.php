@@ -58,32 +58,6 @@ class Logger extends \Monolog\Logger
      */
     public $messages = [];
 
-
-    public function init()
-    {
-        $output = "%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%";
-
-        // finally, create a formatter
-        $formatter = new LineFormatter($output, "Y/m/d H:i:s");
-
-        foreach ($this->targets as $target){
-            if(!isset($target['class']) || !isset($target['logFile']) || !isset($target['levels']) || !is_array($target['levels'])){
-                continue;
-            }
-
-            $class = $target['class'];
-            $logFile = $target['logFile'];
-            $levels = $target['levels'];
-
-            if($class == FileHandler::class){
-                $handler = new FileHandler($logFile, $levels);
-                $handler->setFormatter($formatter);
-                $this->pushHandler($handler);
-            }
-        }
-    }
-
-
     public function addRecord($level, $message, array $context = array())
     {
         $levelName = static::getLevelName($level);

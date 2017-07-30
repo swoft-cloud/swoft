@@ -38,6 +38,8 @@ class ConsulProvider implements ServiceProvider
             $uri = implode(":", [$address, $port]);
             $nodes[] = $uri;
         }
+
+        var_dump($nodes);
         return $nodes;
     }
 
@@ -55,7 +57,7 @@ class ConsulProvider implements ServiceProvider
             'Check'             => [
                 'DeregisterCriticalServiceAfter' => '90m',
                 'TCP'                            => $host . ":" . $port,
-                "Interval"                       => $timeout . "s"
+                "Interval"                       => $interval . "s"
             ]
         ];
         $this->putService($service, $url);

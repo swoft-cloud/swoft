@@ -168,7 +168,6 @@ class BeanFactory implements BeanFactoryInterface
             'filter'                => ['class' => 'swoft\filter\FilterChain'],
             'errorHanlder'          => ['class' => 'swoft\exception\ErrorHandler'],
             'balancer'              => ['class' => '\swoft\pool\balancer\RandomBalancer'],
-            'logger'                => ['class' => '\swoft\log\Logger'],
             "packer"                => ['class' => '\swoft\service\JsonPacker'],
             'timer'                 => ['class' => '\swoft\base\Timer'],
             'serviceProvider'       => ['class' => '\swoft\service\ConsulProvider'],
