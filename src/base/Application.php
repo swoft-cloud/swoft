@@ -3,7 +3,6 @@
 namespace swoft\base;
 
 use swoft\helpers\ArrayHelper;
-use swoft\rpc\RpcClient;
 use swoft\web\InnerService;
 use swoft\web\Router;
 
@@ -45,14 +44,22 @@ abstract class Application
 
     public function run()
     {
-        global $argv;
-        $this->parseCommand($argv);
+        $this->parseCommand();
     }
 
+    /**
+     * @param string $path
+     * @param array $info
+     * @return array
+     * [
+     *
+     * ]
+     * @throws \InvalidArgumentException
+     */
     public function createController(string $path, array $info)
     {
         $handler = $info['handler'];
-        $matches = isset($info['matches']) ? $info['matches'] : null;
+        $matches = $info['matches'] ?? [];
 
         // Remove $matches[0] as [1] is the first parameter.
         if ($matches) {
@@ -155,7 +162,7 @@ abstract class Application
         return $this->useProvider;
     }
 
-    abstract function parseCommand($argv);
+    abstract public function parseCommand();
 
     public function getLock()
     {

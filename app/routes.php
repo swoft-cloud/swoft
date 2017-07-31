@@ -2,6 +2,6 @@
 /**
  * @var \inhere\sroute\ORouter $router
  */
-$router->get('/', function() {
-    return 'hello';
-});
+use app\controllers\IndexController;
+
+$router->get('/', IndexController::class);

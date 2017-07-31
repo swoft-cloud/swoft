@@ -2,10 +2,12 @@
 
 namespace swoft\web;
 
+use inhere\console\utils\Show;
 use swoft\App;
 use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
 use swoft\console\Console;
+use swoft\filter\FilterChain;
 
 /**
  *
@@ -18,6 +20,8 @@ use swoft\console\Console;
  */
 class Application extends \swoft\base\Application
 {
+    const ALLOW_COMMANDS = ['start', 'stop', 'reload', 'restart', 'help'];
+
     private $tcp;
     private $http;
     private $swoft;
@@ -28,6 +32,15 @@ class Application extends \swoft\base\Application
 
     public function start()
     {
+        if ($this->isRunning()) {
+            echo "The server have been running!(PID: {$this->server['masterPid']})\n";
+            exit(0);
+        }
+
+        Show::panel([
+            'http' => $this->http,
+            'tcp' => $this->tcp,
+        ]);
 
         App::$app = $this;
 
@@ -39,11 +52,11 @@ class Application extends \swoft\base\Application
         $this->swoft->on('managerstart', [$this, 'onManagerStart']);
         $this->swoft->on('request', [$this, 'onRequest']);
 
-        if ($this->tcp['enable'] == 1) {
+        if ((int)$this->tcp['enable'] === 1) {
             $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
             $this->listen->set([
-                "open_eof_check" => false,
-                "package_max_length" => 20480,
+                'open_eof_check' => false,
+                'package_max_length' => 20480,
             ]);
             $this->listen->on('connect', [$this, 'onConnect']);
             $this->listen->on('receive', [$this, 'onReceive']);
@@ -83,8 +96,8 @@ class Application extends \swoft\base\Application
     public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         // chrome两次请求bug修复
-        if (isset($request->server['request_uri']) && $request->server['request_uri'] == '/favicon.ico') {
-            $response->end("favicon.ico");
+        if (isset($request->server['request_uri']) && $request->server['request_uri'] === '/favicon.ico') {
+            $response->end('favicon.ico');
             return false;
         }
 
@@ -122,6 +135,11 @@ class Application extends \swoft\base\Application
         }
 
         $this->after();
+    }
+
+    public function handleNotFound($path)
+    {
+        // ...
     }
 
     public function onStart(\Swoole\Http\Server $server)

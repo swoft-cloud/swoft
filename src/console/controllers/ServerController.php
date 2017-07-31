@@ -19,7 +19,7 @@ class ServerController extends Controller
     protected function createApp()
     {
         /* @var  \swoft\web\Application $application */
-        $application = \swoft\base\ApplicationContext::getBean('application');
+        $application = ApplicationContext::getBean('application');
 
         return $application;
     }

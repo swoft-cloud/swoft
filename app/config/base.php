@@ -10,7 +10,7 @@ return [
         'runtimePath' => RUNTIME_PATH,
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
-        'useProvider' => true
+        'useProvider' => false
     ],
     'router' => [
         'class' => \swoft\web\Router::class,
@@ -59,7 +59,7 @@ return [
         "timeout"     => '${config.service.user.timeout}',
         "balancer"    => '${randomBalancer}',
         "serviceName" => 'user',
-        "useProvider" => true
+        "useProvider" => false
     ],
     "redisPool" => [
         'class'     => \swoft\pool\RedisPool::class,

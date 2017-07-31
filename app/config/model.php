@@ -2,9 +2,9 @@
 mb_internal_encoding("UTF-8");
 $hostname = gethostname();
 
-if ($hostname == "newdev") {
+if (strpos($hostname, 'dev')) {
     define('APP_ENV', 'develop');
-} elseif($hostname == 'swoole') {
+} elseif($hostname === 'swoole') {
     define('APP_ENV', 'testing');
 } else {
     define('APP_ENV', 'production');
