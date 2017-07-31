@@ -2,13 +2,12 @@
 
 namespace swoft\web;
 
+use inhere\console\utils\Show;
+use swoft\App;
 use swoft\base\ApplicationContext;
-use swoft\base\RequestAttributes;
 use swoft\base\RequestContext;
 use swoft\console\Console;
 use swoft\filter\FilterChain;
-use swoft\log\Logger;
-use swoft\App;
 
 /**
  *
@@ -21,6 +20,8 @@ use swoft\App;
  */
 class Application extends \swoft\base\Application
 {
+    const ALLOW_COMMANDS = ['start', 'stop', 'reload', 'restart', 'help'];
+
     private $tcp;
     private $http;
     private $swoft;
@@ -29,7 +30,17 @@ class Application extends \swoft\base\Application
 
     use Console;
 
-    public function start(){
+    public function start()
+    {
+        if ($this->isRunning()) {
+            echo "The server have been running!(PID: {$this->server['masterPid']})\n";
+            exit(0);
+        }
+
+        Show::panel([
+            'http' => $this->http,
+            'tcp' => $this->tcp,
+        ]);
 
         App::$app = $this;
 
@@ -41,11 +52,11 @@ class Application extends \swoft\base\Application
         $this->swoft->on('managerstart', [$this, 'onManagerStart']);
         $this->swoft->on('request', [$this, 'onRequest']);
 
-        if($this->tcp['enable'] == 1){
+        if ((int)$this->tcp['enable'] === 1) {
             $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
             $this->listen->set([
-                "open_eof_check"=>false,
-                "package_max_length"=>20480
+                'open_eof_check' => false,
+                'package_max_length' => 20480,
             ]);
             $this->listen->on('connect', [$this, 'onConnect']);
             $this->listen->on('receive', [$this, 'onReceive']);
@@ -85,27 +96,32 @@ class Application extends \swoft\base\Application
     public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         // chrome两次请求bug修复
-        if(isset($request->server['request_uri']) && $request->server['request_uri'] == '/favicon.ico'){
-            $response->end("favicon.ico");
+        if (isset($request->server['request_uri']) && $request->server['request_uri'] === '/favicon.ico') {
+            $response->end('favicon.ico');
             return false;
         }
 
         $this->count = $this->count + 1;
 
-        echo "count= ".$this->count."---------\n";
+        echo "count= " . $this->count . "---------\n";
 
         $this->beforeRequest($request, $response);
         $swfRequest = RequestContext::getRequest();
         $swfResponse = RequestContext::getResponse();
 
         try {
-
             /* @var UrlManager $urlMnanger*/
-            $urlMnanger = ApplicationContext::getBean('urlManager');
-            list($route, $params) = $urlMnanger->parseRequest($swfRequest);
+            // $urlMnanger = ApplicationContext::getBean('urlManager');
+            // list($route, $params) = $urlMnanger->parseRequest($swfRequest);
+            $router = ApplicationContext::getBean('router');
+            list($path, $info) = $router->match($request->server['request_uri'], $request->server['request_method']);
+
+            if (!$info) {
+                return $this->handleNotFound($path);
+            }
 
             /* @var Controller $controller */
-            list($controller, $actionId) = $this->createController($route);
+            list($controller, $actionId, $params) = $this->createController($path, $info);
 
             /* @var FilterChain $filter */
             $filter = ApplicationContext::getBean('filter');
@@ -121,13 +137,17 @@ class Application extends \swoft\base\Application
         $this->after();
     }
 
+    public function handleNotFound($path)
+    {
+        // ...
+    }
+
     public function onStart(\Swoole\Http\Server $server)
     {
         file_put_contents($this->server['pfile'], $server->master_pid);
         file_put_contents($this->server['pfile'], ',' . $server->manager_pid, FILE_APPEND);
-        swoole_set_process_name($this->server['pname']." master process (".$this->status['startFile'].")");
+        swoole_set_process_name($this->server['pname'] . " master process (" . $this->status['startFile'] . ")");
     }
-
 
     public function onManagerStart(\Swoole\Http\Server $server)
     {
@@ -141,31 +161,30 @@ class Application extends \swoft\base\Application
     public function onWorkerStart(\Swoole\Http\Server $server, int $workerId)
     {
         $setting = $server->setting;
-        if($workerId >= $setting['worker_num']) {
-            swoole_set_process_name($this->server['pname']. " task process");
+        if ($workerId >= $setting['worker_num']) {
+            swoole_set_process_name($this->server['pname'] . " task process");
         } else {
-            swoole_set_process_name($this->server['pname']. " worker process");
+            swoole_set_process_name($this->server['pname'] . " worker process");
         }
     }
 
     private function beforeReceiver($data)
     {
-        $logid = $data['logid']?? uniqid();
-        $spanid = $data['spanid']?? 0;
-        $uri = $data['func']?? "null";
+        $logid = $data['logid'] ?? uniqid();
+        $spanid = $data['spanid'] ?? 0;
+        $uri = $data['func'] ?? "null";
 
         $contextData = [
             'logid' => $logid,
             'spanid' => $spanid,
             'uri' => $uri,
-            'requestTime' => microtime(true)
+            'requestTime' => microtime(true),
         ];
         RequestContext::setContextData($contextData);
     }
 
     private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-
         RequestContext::setRequest($request);
         RequestContext::setResponse($response);
 
@@ -178,16 +197,16 @@ class Application extends \swoft\base\Application
             'logid' => $logid,
             'spanid' => $spanid,
             'uri' => $uri,
-            'requestTime' => microtime(true)
+            'requestTime' => microtime(true),
         ];
         RequestContext::setContextData($contextData);
     }
 
     private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)
     {
-        if($filterHandler instanceof Response){
+        if ($filterHandler instanceof Response) {
             $filterHandler->send();
-        }else{
+        } else {
             $responseHandler = $controller->run($actionId, $params);
             $responseHandler->send();
         }

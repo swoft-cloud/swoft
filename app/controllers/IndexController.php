@@ -9,7 +9,6 @@ use swoft\cache\RedisClient;
 use swoft\http\HttpClient;
 use swoft\log\FileHandler;
 use swoft\log\Logger;
-use swoft\rpc\RpcClient;
 use swoft\service\Service;
 use swoft\App;
 use swoft\web\Controller;
@@ -122,12 +121,12 @@ class IndexController extends Controller
     {
         $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
 
-        $res = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
-        $users = $res->getResult();
+//        $res = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
+//        $users = $res->getResult();
 
         $data['count'] = App::$app->count;
         $data['ret'] = $result;
-        $data['deferRet'] = $users;
+//        $data['deferRet'] = $users;
         $this->outputJson($data);
     }
 

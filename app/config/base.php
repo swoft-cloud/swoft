@@ -10,8 +10,24 @@ return [
         'runtimePath' => RUNTIME_PATH,
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
-        'useProvider' => true
+        'useProvider' => false
     ],
+    'router' => [
+        'class' => \swoft\web\Router::class,
+        'config' => [
+            'ignoreLastSep' => false,
+            'tmpCacheNumber' => 100,
+            'matchAll' => '',
+
+            // auto route match @like yii framework
+            'autoRoute' => [
+                'enable' => true,
+                'controllerNamespace' => 'app\\controllers',
+                'controllerSuffix' => 'Controller',
+            ],
+        ]
+    ],
+
     'urlManager'     => [
         'rules' => [
             '/home/data'     => '/index',
@@ -43,7 +59,7 @@ return [
         "timeout"     => '${config.service.user.timeout}',
         "balancer"    => '${randomBalancer}',
         "serviceName" => 'user',
-        "useProvider" => true
+        "useProvider" => false
     ],
     "redisPool" => [
         'class'     => \swoft\pool\RedisPool::class,

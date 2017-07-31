@@ -1,0 +1,8 @@
+#!/usr/env/php
+<?php
+require __DIR__. '/bootstrap.php';
+
+$app = new \swoft\console\Application();
+exit(
+    (int)$app->runAction('server', $app->getInput()->getCommand())
+);

@@ -5,4 +5,3 @@ require_once __DIR__. '/../app/config/model.php';
 
 $config = require_once __DIR__. "/../app/config/base.php";
 $beanFactory = new \swoft\di\BeanFactory($config);
-
