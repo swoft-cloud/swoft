@@ -13,27 +13,19 @@ return [
         'useProvider' => false
     ],
     'router' => [
-        'class' => \swoft\web\Router::class,
+        'class'  => \swoft\web\Router::class,
         'config' => [
-            'ignoreLastSep' => false,
+            'ignoreLastSep'  => false,
             'tmpCacheNumber' => 100,
-            'matchAll' => '',
+            'matchAll'       => '',
 
             // auto route match @like yii framework
-            'autoRoute' => [
-                'enable' => true,
+            'autoRoute'      => [
+                'enable'              => true,
                 'controllerNamespace' => 'app\\controllers',
-                'controllerSuffix' => 'Controller',
+                'controllerSuffix'    => 'Controller',
             ],
         ]
-    ],
-
-    'urlManager'     => [
-        'rules' => [
-            '/home/data'     => '/index',
-            '/index/index/1' => '/index/index',
-            '/post/<id:\d+>' => 'post/view'
-        ],
     ],
     'filter'         => [
         'filters' => [

@@ -110,11 +110,10 @@ class Application extends \swoft\base\Application
         $swfResponse = RequestContext::getResponse();
 
         try {
-            /* @var UrlManager $urlMnanger*/
-            // $urlMnanger = ApplicationContext::getBean('urlManager');
-            // list($route, $params) = $urlMnanger->parseRequest($swfRequest);
-            $router = ApplicationContext::getBean('router');
-            list($path, $info) = $router->match($request->server['request_uri'], $request->server['request_method']);
+
+            /* @var Router $router*/
+            $router = App::getBean('router');
+            list($path, $info) = $router->match($swfRequest->getRequestUri(), $swfRequest->getMethod());
 
             if (!$info) {
                 return $this->handleNotFound($path);

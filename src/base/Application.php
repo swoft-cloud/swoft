@@ -102,37 +102,6 @@ abstract class Application
         return [$controller, $action, $matches];
     }
 
-    /**
-     * @param string $route
-     *
-     * @return array|bool
-     */
-    public function getPathRoute(string $route)
-    {
-        if ($route === '') {
-            $route = $this->defaultRoute;
-        }
-
-        $route = trim($route, '/');
-        if (strpos($route, '//') !== false) {
-            return false;
-        }
-
-        if (strpos($route, '/') !== false) {
-            list ($id, $route) = explode('/', $route, 2);
-        } else {
-            $id = $route;
-            $route = '';
-        }
-
-        if (($pos = strrpos($route, '/')) !== false) {
-            $id .= '/' . substr($route, 0, $pos);
-            $route = substr($route, $pos + 1);
-        }
-
-        return [$id, $route];
-    }
-
     public function runService($data)
     {
         $func = $data['func']?? "";
