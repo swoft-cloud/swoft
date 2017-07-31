@@ -3,12 +3,11 @@
 namespace swoft;
 
 use swoft\base\ApplicationContext;
-use swoft\base\RequestContext;
 use swoft\base\Timer;
 use swoft\circuit\CircuitBreakerManager;
 use swoft\log\Logger;
-use swoft\pool\ManagerPool;
 use swoft\service\IPack;
+use swoft\service\ServiceProvider;
 use swoft\web\Application;
 
 /**
@@ -29,40 +28,14 @@ class App
 
     public static $properties;
 
-    /**
-     * @return ManagerPool
-     */
-    public static function getMangerPool()
-    {
-        return ApplicationContext::getBean("managerPool");
-    }
-
-    /**
-     * @param string $serviceName
-     *
-     * @return pool\ConnectPool
-     */
-    public static function getConnectPool(string $serviceName)
-    {
-        $managePool = self::getMangerPool();
-        return $managePool->getPool($serviceName);
-    }
-
-    /**
-     * @return CircuitBreakerManager
-     */
-    public static function getCricuitBreakerManager(){
-        return ApplicationContext::getBean('circuitBreakerManager');
-    }
-
     public static function getMysqlPool()
     {
-        return self::getMangerPool()->getPool("mysql");
+        return self::getBean('mysql');
     }
 
     public static function getRedisPool()
     {
-        return self::getMangerPool()->getPool("redis");
+        return self::getBean('redisPool');
     }
 
     public static function setProperties($properties = null)
@@ -73,9 +46,21 @@ class App
         self::$properties = $properties;
     }
 
+    public static function getBean($name){
+        return ApplicationContext::getBean($name);
+    }
+
     public static function getProperties()
     {
         return ApplicationContext::getBean('config');
+    }
+
+    /**
+     * @return ServiceProvider
+     */
+    public static function getServiceProvider()
+    {
+        return ApplicationContext::getBean('serviceProvider');
     }
 
     /**

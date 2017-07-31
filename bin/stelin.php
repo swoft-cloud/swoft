@@ -10,10 +10,6 @@ class A{
 }
 
 $a = new A();
+$b = new A();
 
-$a->doFun();
-$a->doFun();
-$a->doFun();
-$a->doFun();
-$a->doFun();
-$a->doFun();
+var_dump(spl_object_hash($a), spl_object_hash($b));

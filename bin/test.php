@@ -1,4 +1,13 @@
 <?php
+
+function test($name, ...$params){
+    var_dump($name, $params);
+}
+test("stelin", 'name', 'age', 'desc');
+exit();
+
+$url  = "http://127.0.0.1:80/v1/health/service/user?passing";
+var_dump(parse_url($url));exit();
 class A{
     public function test($a, $b)
     {

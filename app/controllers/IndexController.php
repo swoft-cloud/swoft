@@ -6,6 +6,7 @@ use app\models\logic\IndexLogic;
 use DI\Annotation\Inject;
 use swoft\base\ApplicationContext;
 use swoft\cache\RedisClient;
+use swoft\http\HttpClient;
 use swoft\log\FileHandler;
 use swoft\log\Logger;
 use swoft\rpc\RpcClient;
@@ -127,6 +128,17 @@ class IndexController extends Controller
         $data['count'] = App::$app->count;
         $data['ret'] = $result;
         $data['deferRet'] = $users;
+        $this->outputJson($data);
+    }
+
+    public function actionHttp()
+    {
+        $result = HttpClient::call("http://127.0.0.1/index/rpc", HttpClient::GET);
+        $ret = HttpClient::deferCall("http://127.0.0.1/index/index", HttpClient::GET);
+
+        $data['result'] = $result;
+//        $data['deferResult'] = $ret->getResult();
+        $data['deferResult'] = $ret->getResult();
         $this->outputJson($data);
     }
 }

@@ -17,11 +17,9 @@ class HttpResult extends AbstractResult
 {
     public function getResult()
     {
-        $packer = App::getPacker();
-        $result = $this->client->recv();
+        $this->client->recv();
+        $result = $this->client->body;
         $this->client->close();
-        $result = $packer->unpack($result);
         return $result;
     }
-
 }
