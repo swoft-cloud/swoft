@@ -5,7 +5,7 @@ namespace swoft\cache;
 use swoft\web\AbstractResult;
 
 /**
- *
+ * redis返回数据
  *
  * @uses      RedisResult
  * @version   2017年07月15日

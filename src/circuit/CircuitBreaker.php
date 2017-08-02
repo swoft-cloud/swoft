@@ -5,7 +5,7 @@ namespace swoft\circuit;
 use swoft\App;
 
 /**
- *
+ * 熔断器
  *
  * @uses      CircuitBreaker
  * @version   2017年07月02日
@@ -69,6 +69,9 @@ class CircuitBreaker
      */
     private $delaySwithTimer = 5000;
 
+    /**
+     * 初始化
+     */
     public function init()
     {
         // 状态初始化
@@ -76,6 +79,15 @@ class CircuitBreaker
         $this->halfOpenLock = new \swoole_lock(SWOOLE_MUTEX);
     }
 
+    /**
+     * 熔断器调用
+     *
+     * @param mixed $callback   回调函数
+     * @param array $params     参数
+     * @param null  $fallback   失败回调
+     *
+     * @return mixed 返回结果
+     */
     public function call($callback, $params = [], $fallback = null)
     {
         return $this->circuitState->doCall($callback, $params, $fallback);

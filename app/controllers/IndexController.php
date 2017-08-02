@@ -32,12 +32,10 @@ class IndexController extends Controller
      */
     private $logic;
 
-    public function actionIndex(Request $request, Response $response)
+    public function actionIndex()
     {
         $data = $this->logic->getUser();
         $data['properties'] = App::$properties['env'];
-        $data['count'] = App::$app->count;
-        $data['request'] = $request->getRequestUri();
 
         App::profileStart("logger");
         App::profileStart("logger1");

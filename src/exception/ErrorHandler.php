@@ -45,6 +45,7 @@ class ErrorHandler
 
     public function handlerFataError()
     {
+
         if ($error = error_get_last()) {
             var_dump($error);
         }

@@ -8,6 +8,7 @@ use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
 use swoft\console\Console;
 use swoft\filter\FilterChain;
+use swoft\helpers\ResponseHelper;
 
 /**
  *
@@ -73,19 +74,25 @@ class Application extends \swoft\base\Application
 
     public function onReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
     {
-        // 解包
-        $packer = App::getPacker();
-        $data = $packer->unpack($data);
+        try {
+            // 解包
+            $packer = App::getPacker();
+            $data = $packer->unpack($data);
 
-        // 初始化
-        $this->beforeReceiver($data);
+            // 初始化
+            $this->beforeReceiver($data);
 
-        // 执行函数调用
-        $response = $this->runService($data);
-        $data = $packer->pack($response);
+            // 执行函数调用
+            $response = $this->runService($data);
+            $data = $packer->pack($response);
 
-        // 处理完成
-        $this->after();
+            // 处理完成
+            $this->after();
+        } catch (\Exception $e) {
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $data = ResponseHelper::formatData("", $code, $message);
+        }
         $server->send($fd, $data);
     }
     public function onClose(\Swoole\Server $server, int $fd, int $reactorId)

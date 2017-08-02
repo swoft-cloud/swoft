@@ -3,6 +3,7 @@
 namespace swoft;
 
 use swoft\base\ApplicationContext;
+use swoft\base\RequestContext;
 use swoft\base\Timer;
 use swoft\circuit\CircuitBreakerManager;
 use swoft\log\Logger;
@@ -77,6 +78,21 @@ class App
     public static function getPacker()
     {
         return ApplicationContext::getBean('packer');
+    }
+
+    /**
+     * @return web\Request
+     */
+    public static function getRequest(){
+        return RequestContext::getRequest();
+    }
+
+    /**
+     * @return web\Response
+     */
+    public static function getResponse()
+    {
+        return RequestContext::getResponse();
     }
 
     /**

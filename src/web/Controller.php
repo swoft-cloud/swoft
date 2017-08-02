@@ -4,9 +4,10 @@ namespace swoft\web;
 
 use swoft\base\RequestContext;
 use swoft\App;
+use swoft\helpers\ResponseHelper;
 
 /**
- *
+ * 控制器
  *
  * @uses      Controller
  * @version   2017年04月30日
@@ -16,11 +17,23 @@ use swoft\App;
  */
 class Controller extends \swoft\base\Controller
 {
+    /**
+     * 重定向
+     *
+     * @param string $uri
+     * @param array  $params
+     */
     public function redirect(string $uri, array $params = [])
     {
         $this->run($uri, $params);
     }
 
+    /**
+     * 数据模板显示
+     *
+     * @param string $templateId
+     * @param array  $data
+     */
     public function render(string $templateId, array $data = [])
     {
         $viewsPath = App::$app->getViewsPath();
@@ -30,20 +43,32 @@ class Controller extends \swoft\base\Controller
         RequestContext::getResponse()->setResponseContent($content);
     }
 
+    /**
+     * json格式输出
+     *
+     * @param mixed  $data      数据
+     * @param string $message   文案
+     * @param int    $status    状态，200成功，非200失败
+     */
     public function outputJson($data = "", $message = '', $status = 200)
     {
-        $json = json_encode([
-            'data'       => $data,
-            'status'     => $status,
-            'message'    => $message,
-            'serverTime' => microtime(true)
-        ]);
+        $data = ResponseHelper::formatData($data, $message, $status);
+        $json = json_encode($data);
 
         $response = RequestContext::getResponse();
         $response->setFormat(Response::FORMAT_JSON);
         $response->setResponseContent($json);
     }
 
+    /**
+     * 输出文件内容
+     *
+     * @param string $viewsPath     模板路径
+     * @param string $templateId    模板ID
+     * @param array  $data          数据
+     *
+     * @return string   返回渲染数据
+     */
     private function renderContent(string $viewsPath, string $templateId, array $data)
     {
         $loader = new \Twig_Loader_Filesystem($viewsPath);
@@ -51,11 +76,20 @@ class Controller extends \swoft\base\Controller
         return $twig->render($templateId, $data);
     }
 
+    /**
+     * 模板文件路径检查
+     *
+     * @param string $viewsPath     模板路径
+     * @param string $templateId    模板ID
+     *
+     * @throws \InvalidArgumentException
+     */
     private function checkTemplateFile(string $viewsPath, string $templateId)
     {
         $file = $viewsPath.$templateId;
         if(!file_exists($file)){
-            throw new \Exception($file.' is not founded!');
+            App::error($file."模板文件不存在");
+            throw new \InvalidArgumentException($file."模板文件不存在");
         }
     }
 }

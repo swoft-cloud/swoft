@@ -2,8 +2,10 @@
 
 namespace swoft\base;
 
+use swoft\App;
+
 /**
- *
+ * 基类控制器
  *
  * @uses      Controller
  * @version   2017年04月30日
@@ -13,9 +15,24 @@ namespace swoft\base;
  */
 class Controller
 {
+    /**
+     * @var string action方法前缀
+     */
     protected $actionPrefix = "action";
+
+    /**
+     * @var string 默认action
+     */
     protected $defaultAction = "index";
 
+    /**
+     * 执行action
+     *
+     * @param string $actionId  action ID
+     * @param array  $params    action调用参数
+     *
+     * @return \swoft\web\Response 返回response对象
+     */
     public function run(string $actionId, array $params = []): \swoft\web\Response
     {
         if(empty($actionId)){
@@ -28,59 +45,109 @@ class Controller
         return $response;
     }
 
+    /**
+     * 执行action
+     *
+     * @param string $actionId  action ID
+     * @param array  $params    action调用参数
+     *
+     * @return \swoft\web\Response 返回response对象
+     */
     public function runAction(string $actionId, array $params = [])
     {
-        return $this->runActionWithFilters($actionId, $params);
+        return $this->runActionWithParams($actionId, $params);
     }
 
-    public function runActionWithFilters(string $actionId, array $params = [])
-    {
-        $this->beforeAction();
-        $response = $this->runActionWithParams($actionId, $params);
-        $this->afterAction();
-
-        return $response;
-    }
-
+    /**
+     * 参数运行action
+     *
+     * @param string $actionId  action ID
+     * @param array  $params    action调用参数
+     *
+     * @return \swoft\web\Response 返回response对象
+     */
     public function runActionWithParams(string $actionId, array $params = [])
     {
-        $bindParams = [];
         $methodName = $this->getMethodName($actionId);
-        $method = new \ReflectionMethod($this, $methodName);
-        $reflectionParams = $method->getParameters();
-        foreach ($reflectionParams as $reflectionParam) {
-            $paramType = $reflectionParam->getType();
-            if($paramType == \swoft\web\Request::class){
-                $bindParams[] = RequestContext::getRequest();
-            }elseif($paramType == \swoft\web\Response::class){
-                $bindParams[] = RequestContext::getResponse();
-            }else{
-                $bindParams[] = array_shift($params);
-            }
-        }
+
+        // before action
+        $this->beforeAction($actionId, $params);
 
         /* @var \swoft\web\Response|null $response*/
-        $response = $this->$methodName(...$bindParams);
+        $response = $this->$methodName(...$params);
+
+        // after action
+        $this->afterAction($actionId, $params);
 
         return $response;
     }
 
+    /**
+     * action方法名称
+     *
+     * @param string $actionId action ID
+     *
+     * @return string
+     */
     public function getMethodName(string $actionId)
     {
         $methodName = $this->actionPrefix.ucfirst($actionId);
-        if(method_exists($this, $methodName)){
-
+        if(method_exists($this, $methodName) == false){
+            App::error("控制器执行action方法不存在，method=".$methodName);
+            throw new \BadMethodCallException("控制器执行action方法不存在，method=".$methodName);
         }
         return $methodName;
     }
 
-    protected function beforeAction()
+    /**
+     * action之前
+     *
+     * @param string $actionId  action ID
+     * @param array  $params    action调用参数
+     */
+    protected function beforeAction(string $actionId, array $params = [])
     {
 
     }
 
-    protected function afterAction()
+    /**
+     * action之后
+     *
+     * @param string $actionId  action ID
+     * @param array  $params    action调用参数
+     */
+    protected function afterAction(string $actionId, array $params = [])
     {
 
+    }
+
+    /**
+     * get方法参数，等同$_GET
+     *
+     * @return array
+     */
+    protected function get()
+    {
+        return App::getRequest()->getGetParameters();
+    }
+
+    /**
+     * post方法参数，等同$_GET
+     *
+     * @return array
+     */
+    protected function post()
+    {
+        return App::getRequest()->getPostParameters();
+    }
+
+    /**
+     * 请求参数，等同$_REQUEST
+     *
+     * @return array
+     */
+    protected function request()
+    {
+        return App::getRequest()->getParameters();
     }
 }

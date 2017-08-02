@@ -2,8 +2,11 @@
 
 namespace swoft\web;
 
+use swoft\App;
+use swoft\helpers\ResponseHelper;
+
 /**
- *
+ * 内部服务基类
  *
  * @uses      InnerService
  * @version   2017年07月14日
@@ -13,39 +16,50 @@ namespace swoft\web;
  */
 class InnerService
 {
-    public function run(string $method, $params)
+    /**
+     * 执行内部服务调用
+     *
+     * @param string $method 方法名称
+     * @param array  $params 调用函数参数
+     *
+     * @return array
+     */
+    public function run(string $method, array $params)
     {
-        $this->beforeService();
-        try {
-            $data = $this->$method(...$params);
-            $data = $this->formatData($data);
-        } catch (\Exception $e) {
-            $status = $e->getCode();
-            $msg = $e->getMessage();
-            $data = $this->formatData("", $status, $msg);
-        }
+        // 服务之前调用
+        $this->beforeService($method, $params);
 
-        $this->beforeService();
+        if (!method_exists($this, $method)) {
+            App::error("内部服务方法不可调用，method=" . $method);
+            throw new \BadMethodCallException("内部服务方法不可调用，method=" . $method);
+        }
+        $data = $this->$method(...$params);
+        $data = ResponseHelper::formatData($data);
+
+        // 服务之后调用
+        $this->afterService($method, $params);
 
         return $data;
     }
 
-    public function formatData($data, $status = 200, $message = "")
-    {
-        return [
-            'data' => $data,
-            'status' => $status,
-            'msg' => $message,
-            'time' => microtime(true)
-        ];
-    }
-
-    public function beforeService()
+    /**
+     * 服务之前调用
+     *
+     * @param string $method 方法名称
+     * @param array  $params 调用函数参数
+     */
+    public function beforeService(string $method, array $params)
     {
 
     }
 
-    public function afterService()
+    /**
+     * 服务之后调用
+     *
+     * @param string $method 方法名称
+     * @param array  $params 调用函数参数
+     */
+    public function afterService(string $method, array $params)
     {
 
     }

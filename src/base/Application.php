@@ -2,12 +2,12 @@
 
 namespace swoft\base;
 
-use swoft\helpers\ArrayHelper;
+use swoft\App;
 use swoft\web\InnerService;
 use swoft\web\Router;
 
 /**
- *
+ * 应用基类
  *
  * @uses      Application
  * @version   2017年04月25日
@@ -17,43 +17,70 @@ use swoft\web\Router;
  */
 abstract class Application
 {
+    /**
+     * @var string 应用ID
+     */
     protected $id;
-    protected $name;
-    protected $beans;
-    protected $params;
-    protected $basePath;
-    protected $viewsPath;
-    protected $runtimePath;
-    protected $settingPath;
-    protected $defaultRoute = "index";
-    protected $useProvider = false;
-    protected $controllerNamespace = "app\\controllers";
-    protected $serviceNameSpace = "app\\controllers\\services";
 
     /**
-     * @var \swoole_lock
+     * @var string 应用名称
      */
-    public $lock = null;
+    protected $name;
+
+    /**
+     * @var string 应用根目录
+     */
+    protected $basePath;
+
+    /**
+     * @var string 视图目录
+     */
+    protected $viewsPath;
+
+    /**
+     * @var string 运行日志目录
+     */
+    protected $runtimePath;
+
+    /**
+     * @var string http或tcp服务启动配置参数目录
+     */
+    protected $settingPath;
+
+    /**
+     * @var bool 是否使用第三方(consul/etcd/zk)注册服务
+     */
+    protected $useProvider = false;
+
+    /**
+     * @var string 控制器命令空间
+     */
+    protected $controllerNamespace = "app\\controllers";
+
+    /**
+     * @var string 内部服务命令空间
+     */
+    protected $serviceNameSpace = "app\\controllers\\services";
 
     public $count = 0;
 
-    public function init()
-    {
-        // $this->lock = new \swoole_lock(SWOOLE_MUTEX);
-    }
-
+    /**
+     * 启动服务
+     */
     public function run()
     {
         $this->parseCommand();
     }
 
     /**
-     * @param string $path
-     * @param array $info
-     * @return array
-     * [
+     * 创建控制器
      *
-     * ]
+     * @param string $path  url路径
+     * @param array  $info  url参数
+     * @return array
+     * <pre>
+     *  [$controller, $action, $matches]
+     * </pre>
      * @throws \InvalidArgumentException
      */
     public function createController(string $path, array $info)
@@ -81,6 +108,7 @@ abstract class Application
             // e.g `controllers\Home@index` Or only `controllers\Home`
             $segments = explode('@', trim($handler));
         } else {
+            App::error('Invalid route handler for URI: ' . $path);
             throw new \InvalidArgumentException('Invalid route handler for URI: ' . $path);
         }
 
@@ -97,12 +125,18 @@ abstract class Application
         }
 
         $action = Router::convertNodeStr($action);
-        $controller =  ApplicationContext::getBean($className);
+        $controller = ApplicationContext::getBean($className);
 
         return [$controller, $action, $matches];
     }
 
-    public function runService($data)
+    /**
+     * 调用内部服务
+     *
+     * @param array $data 调用参数信息
+     * @return array
+     */
+    public function runService(array $data)
     {
         $func = $data['func']?? "";
         $params = $data['params']?? [];
@@ -110,35 +144,29 @@ abstract class Application
         list($servicePrefix, $method) = explode("::", $func);
 
         $namespace = $this->serviceNameSpace;
-        $class = $servicePrefix."Service";
-        $className = $namespace."\\".$class;
-        if(!class_exists($className) || empty($method)){
-
+        $class = $servicePrefix . "Service";
+        $className = $namespace . "\\" . $class;
+        if (!class_exists($className)) {
+            App::error("内部服务调用的class不存在,class=".$className);
+            throw new \InvalidArgumentException("内部服务调用的class不存在,class=".$className);
         }
 
-        /* @var $service InnerService*/
-        $service = ApplicationContext::getBean($className);
+        if ($className instanceof InnerService) {
+            App::error("内部服务调用的class不是InnerService子类,class=".$className);
+            throw new \InvalidArgumentException("内部服务调用的class不是InnerService子类,class=".$className);
+        }
+
+        if (empty($method)) {
+            App::error("内部服务调用的class不是InnerService子类,class=".$className);
+            throw new \InvalidArgumentException("内部服务调用的method为空,method=".$method);
+        }
+
+        /* @var $service InnerService */
+        $service = App::getBean($className);
         $data = $service->run($method, $params);
 
         return $data;
     }
 
-    /**
-     * @return bool
-     */
-    public function isUseProvider(): bool
-    {
-        return $this->useProvider;
-    }
-
     abstract public function parseCommand();
-
-    public function getLock()
-    {
-        if (!$this->lock) {
-            $this->lock = new \swoole_lock(SWOOLE_MUTEX);
-        }
-
-        return $this->lock;
-    }
 }

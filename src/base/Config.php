@@ -3,7 +3,7 @@
 namespace swoft\base;
 
 /**
- * 全局配置管理
+ * 全局配置管理器
  *
  * @uses      Config
  * @version   2017年07月07日
@@ -13,14 +13,15 @@ namespace swoft\base;
  */
 class Config implements \ArrayAccess, \Iterator
 {
+    /**
+     * @var array 所有配置参数
+     */
     public $properties = [];
 
     /**
      * Return the current element
      *
-     * @link  http://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
-     * @since 5.0.0
      */
     public function current()
     {
@@ -30,9 +31,7 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Move forward to next element
      *
-     * @link  http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
-     * @since 5.0.0
      */
     public function next()
     {
@@ -54,10 +53,8 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Checks if current position is valid
      *
-     * @link  http://php.net/manual/en/iterator.valid.php
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
-     * @since 5.0.0
      */
     public function valid()
     {
@@ -67,9 +64,7 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Rewind the Iterator to the first element
      *
-     * @link  http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
-     * @since 5.0.0
      */
     public function rewind()
     {
@@ -79,17 +74,10 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Whether a offset exists
      *
-     * @link  http://php.net/manual/en/arrayaccess.offsetexists.php
-     *
-     * @param mixed $offset <p>
-     *                      An offset to check for.
-     *                      </p>
+     * @param mixed $offset An offset to check for.
      *
      * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
      * The return value will be casted to boolean if non-boolean was returned.
-     * @since 5.0.0
      */
     public function offsetExists($offset)
     {
@@ -99,14 +87,9 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Offset to retrieve
      *
-     * @link  http://php.net/manual/en/arrayaccess.offsetget.php
-     *
-     * @param mixed $offset <p>
-     *                      The offset to retrieve.
-     *                      </p>
+     * @param mixed $offset The offset to retrieve.
      *
      * @return mixed Can return all value types.
-     * @since 5.0.0
      */
     public function offsetGet($offset)
     {
@@ -116,17 +99,10 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Offset to set
      *
-     * @link  http://php.net/manual/en/arrayaccess.offsetset.php
-     *
-     * @param mixed $offset <p>
-     *                      The offset to assign the value to.
-     *                      </p>
-     * @param mixed $value  <p>
-     *                      The value to set.
-     *                      </p>
+     * @param mixed $offset The offset to assign the value to.
+     * @param mixed $value  The value to set.
      *
      * @return void
-     * @since 5.0.0
      */
     public function offsetSet($offset, $value)
     {
@@ -138,14 +114,9 @@ class Config implements \ArrayAccess, \Iterator
     /**
      * Offset to unset
      *
-     * @link  http://php.net/manual/en/arrayaccess.offsetunset.php
-     *
-     * @param mixed $offset <p>
-     *                      The offset to unset.
-     *                      </p>
+     * @param mixed $offset The offset to unset.
      *
      * @return void
-     * @since 5.0.0
      */
     public function offsetUnset($offset)
     {
@@ -155,10 +126,12 @@ class Config implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @param string|int $name
-     * @param mixed      $defalut
+     * 查询值
      *
-     * @return mixed
+     * @param string|int $name    名称
+     * @param mixed      $defalut 默认值
+     *
+     * @return mixed 返回值
      */
     public function get($name, $defalut = null)
     {
@@ -169,6 +142,8 @@ class Config implements \ArrayAccess, \Iterator
     }
 
     /**
+     * 设置值，如存在会覆盖
+     *
      * @param string|int $name
      * @param mixed      $value
      */
@@ -177,10 +152,29 @@ class Config implements \ArrayAccess, \Iterator
         $this->properties[$name] = $value;
     }
 
+    /**
+     * 初始化值
+     *
+     * @param string|int $name  key名称
+     * @param mixed      $value val值
+     */
     public function __set($name, $value)
     {
         $this->properties[$name] = $value;
     }
 
-
+    /**
+     * 查询值
+     *
+     * @param string|int $name
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (isset($this->properties[$name])) {
+            $this->properties[$name];
+        }
+        return null;
+    }
 }

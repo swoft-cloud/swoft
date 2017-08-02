@@ -6,7 +6,7 @@ use DI\Container;
 use swoft\web\Application;
 
 /**
- *
+ * 应用上下文
  *
  * @uses      ApplicationContext
  * @version   2017年04月25日
@@ -17,15 +17,15 @@ use swoft\web\Application;
 class ApplicationContext
 {
     /**
-     * @var Container
+     * @var Container 容器
      */
     private static $container;
 
 
     /**
-     * create beans by type
+     * Create beans by type
      *
-     * below are some examples:
+     * Below are some examples:
      *
      * // create with class name
      * ApplicationContext::ApplicationContext('\swoft\web\UrlManage');
@@ -67,27 +67,20 @@ class ApplicationContext
 
         return self::$container->get($beanName);
     }
+
     /**
+     * 查询一个bean
      *
-     * @param $name
-     *
+     * @param string $name bean名称
      * @return mixed
      */
-    public static function getBean($name)
+    public static function getBean(string $name)
     {
         return self::$container->get($name);
     }
 
     /**
-     * @return Container
-     */
-    public static function getContainer()
-    {
-        return self::$container;
-    }
-
-    /**
-     * whether contain a bean by name
+     * bean是否存在
      *
      * @param string $name
      * @return bool
@@ -98,7 +91,15 @@ class ApplicationContext
     }
 
     /**
-     * @param Container $container
+     * @return Container 获取容器
+     */
+    public static function getContainer()
+    {
+        return self::$container;
+    }
+
+    /**
+     * @param Container $container 初始化容器
      */
     public static function setContainer($container)
     {

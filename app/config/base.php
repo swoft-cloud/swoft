@@ -39,9 +39,6 @@ return [
             ]
         ]
     ],
-    "randomBalancer" => [
-        'class' => \swoft\pool\balancer\RandomBalancer::class
-    ],
 
     "userPool"  => [
         "class"       => \swoft\pool\ServicePool::class,
