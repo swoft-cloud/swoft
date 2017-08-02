@@ -17,7 +17,7 @@ use swoft\service\JsonPacker;
 use swoft\web\Application;
 
 /**
- *
+ * bean工厂
  *
  * @uses      BeanFactory
  * @version   2017年07月07日
@@ -33,25 +33,43 @@ class BeanFactory implements BeanFactoryInterface
     const BEAN_REF_REG = '/^\$\{(.*)\}$/';
 
     /**
-     * @var Container
+     * @var Container 容器
      */
     private static $container = null;
 
+    /**
+     * @var array bean配置数组
+     */
     private $beansConfig = [];
 
+    /**
+     * BeanFactory constructor.
+     *
+     * @param array $config 配置项
+     */
     public function __construct(array $config)
     {
+        // 合并参数及初始化
         $this->beansConfig = ArrayHelper::merge($this->coreBeans(), $config);
-        self::$container = $this->init();
+        $this->init();
+
+        // 初始化App配置
         App::setProperties();
     }
 
+
+    /**
+     * 初始化
+     */
     private function init()
     {
+        // 初始化全局容器
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->useAnnotations(true);
         $container = $containerBuilder->build();
         self::$container = $container;
+
+        // 初始化应用上下文
         ApplicationContext::setContainer($container);
 
         foreach ($this->beansConfig as $beanName => $pros) {
@@ -63,22 +81,35 @@ class BeanFactory implements BeanFactoryInterface
         }
     }
 
-    private function createBean($beanName, $beanConfig)
+    /**
+     * 注入一个bean
+     *
+     * @param string       $beanName   名称
+     * @param array|string $beanConfig 配置属性
+     *
+     * @return bool
+     */
+    public function createBean(string $beanName, $beanConfig)
     {
-        $container = self::$container;
         $className = $beanConfig;
+
+        // 直接初始化一个类
         if (is_string($className)) {
             $object = \DI\object($className);
-            $container->set($beanName, $object);
+            self::$container->set($beanName, $object);
             return true;
         }
+
+        // 配置信息不完整,忽略
         if (!is_array($className) || !isset($beanConfig['class'])) {
             return false;
         }
+
         $constructorArgs = [];
         $className = $beanConfig['class'];
         unset($beanConfig['class']);
 
+        // 构造函数初识别
         foreach ($beanConfig as $proName => $proVale) {
             if (is_array($proVale) && $proName === 0) {
                 unset($proName);
@@ -87,18 +118,20 @@ class BeanFactory implements BeanFactoryInterface
             }
         }
 
+        // 类属性识别
         $fields = $this->formateRefFields($beanConfig);
 
+        // 类初始化
         $object = \DI\object($className);
         $object = $object->constructor($constructorArgs);
         foreach ($fields as $name => $field) {
             $object->property($name, $field);
         }
 
-        $container->set($beanName, $object);
+        self::$container->set($beanName, $object);
 
         // 存在init方法初始化
-        $bean = $container->get($beanName);
+        $bean = self::$container->get($beanName);
         if (method_exists($bean, 'init')) {
             $bean->init();
         }
@@ -107,6 +140,8 @@ class BeanFactory implements BeanFactoryInterface
     }
 
     /**
+     * 返回容器
+     *
      * @return Container
      */
     public static function getContainer()
@@ -115,31 +150,24 @@ class BeanFactory implements BeanFactoryInterface
     }
 
     /**
+     * 查询Bean
      *
-     * @param $name
+     * @param  string $name 名称
      *
      * @return mixed
      */
-    public static function get($name)
+    public static function get(string $name)
     {
         return self::$container->get($name);
     }
 
-    private function coreBeans()
-    {
-        return [
-            'config'          => ['class' => Config::class],
-            'application'     => ['class' => Application::class],
-            'filter'          => ['class' => FilterChain::class],
-            'errorHanlder'    => ['class' => ErrorHandler::class],
-            "packer"          => ['class' => JsonPacker::class],
-            'timer'           => ['class' => Timer::class],
-            'serviceProvider' => ['class' => ConsulProvider::class],
-            'randomBalancer'  => ['class' => RandomBalancer::class],
-        ];
-    }
-
-
+    /**
+     * 格式化bean引用属性
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
     private function formateRefFields(array $fields)
     {
 
@@ -185,6 +213,14 @@ class BeanFactory implements BeanFactoryInterface
         return $formateRef;
     }
 
+    /**
+     * 获取属性引用bean
+     *
+     * @param array $refConfigProperties
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     private function getConfigPropertiesByRef(array $refConfigProperties)
     {
         $configName = "config";
@@ -195,19 +231,42 @@ class BeanFactory implements BeanFactoryInterface
         $propertyVal = null;
         $config = self::$container->get($configName);
 
+        // 属性解析
         foreach ($refConfigProperties as $refProName) {
+
+            // config配置propterties识别
             if ($propertyVal == null && isset($config[$refProName])) {
                 $propertyVal = $config[$refProName];
                 continue;
             }
 
+            // 不存在
             if (!isset($propertyVal[$refProName])) {
-                throw new \Exception("$refConfigProperties is not exisit configed");
+                throw new \InvalidArgumentException("$refConfigProperties is not exisit configed");
             }
 
             $propertyVal = $propertyVal[$refProName];
         }
 
         return $propertyVal;
+    }
+
+    /**
+     * 常用beans
+     *
+     * @return array
+     */
+    private function coreBeans()
+    {
+        return [
+            'config'          => ['class' => Config::class],
+            'application'     => ['class' => Application::class],
+            'filter'          => ['class' => FilterChain::class],
+            'errorHanlder'    => ['class' => ErrorHandler::class],
+            "packer"          => ['class' => JsonPacker::class],
+            'timer'           => ['class' => Timer::class],
+            'serviceProvider' => ['class' => ConsulProvider::class],
+            'randomBalancer'  => ['class' => RandomBalancer::class],
+        ];
     }
 }

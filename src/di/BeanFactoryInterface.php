@@ -13,5 +13,5 @@ namespace swoft\di;
 interface BeanFactoryInterface
 {
     public static function getContainer();
-    public static function get($name);
+    public static function get(string $name);
 }
