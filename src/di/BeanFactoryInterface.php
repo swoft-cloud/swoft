@@ -2,7 +2,7 @@
 namespace swoft\di;
 
 /**
- *
+ * bean工程
  *
  * @uses      BeanFactoryInterface
  * @version   2017年07月07日
@@ -12,6 +12,7 @@ namespace swoft\di;
  */
 interface BeanFactoryInterface
 {
-    public static function getContainer();
-    public static function get(string $name);
+    public static function getBean(string $name);
+    public static function createBean(string $beanName, array $beanConfig);
+    public static function hasBean($name);
 }

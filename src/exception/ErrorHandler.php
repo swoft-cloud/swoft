@@ -4,7 +4,7 @@ namespace swoft\exception;
 use swoft\base\RequestContext;
 
 /**
- *
+ * 错误处理
  *
  * @uses      ErrorHandler
  * @version   2017年07月06日

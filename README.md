@@ -49,3 +49,4 @@ swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器�
 
 文档(Documentation)
 -------------
+[**中文文档**](https://stelin.gitbooks.io/swoft)

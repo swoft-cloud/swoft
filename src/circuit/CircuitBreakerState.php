@@ -18,12 +18,22 @@ abstract class CircuitBreakerState
      */
     protected $circuitBreaker = null;
 
+    /**
+     * CircuitBreakerState constructor.
+     *
+     * @param CircuitBreaker $circuitBreaker 熔断器
+     */
     public function __construct(CircuitBreaker $circuitBreaker)
     {
         $this->circuitBreaker = $circuitBreaker;
         $this->circuitBreaker->initCounter();
     }
 
+    /**
+     * 熔断器服务名称
+     *
+     * @return string
+     */
     protected function getServiceName()
     {
         return $this->circuitBreaker->serviceName;

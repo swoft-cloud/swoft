@@ -7,7 +7,7 @@ use swoft\web\Request;
 use swoft\web\Response;
 
 /**
- *
+ * 过滤链
  *
  * @uses      FilterChain
  * @version   2017年05月13日

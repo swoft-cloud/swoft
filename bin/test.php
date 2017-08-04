@@ -1,5 +1,4 @@
 <?php
-
 function test($name, ...$params){
     var_dump($name, $params);
 }

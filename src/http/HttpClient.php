@@ -5,7 +5,7 @@ namespace swoft\http;
 use swoft\App;
 
 /**
- *
+ * HTTP调用
  *
  * @uses      HttpClient
  * @version   2017年07月15日

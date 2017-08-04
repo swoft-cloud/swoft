@@ -3,6 +3,7 @@
 namespace swoft\base;
 
 use DI\Container;
+use swoft\di\BeanFactory;
 use swoft\web\Application;
 
 /**
@@ -17,21 +18,15 @@ use swoft\web\Application;
 class ApplicationContext
 {
     /**
-     * @var Container 容器
-     */
-    private static $container;
-
-
-    /**
-     * Create beans by type
+     * 运行过程中创建一个Bean
      *
      * Below are some examples:
      *
-     * // create with class name
-     * ApplicationContext::ApplicationContext('\swoft\web\UrlManage');
+     * // 类名称创建
+     * ApplicationContext::createBean('name', '\swoft\web\UrlManage');
      *
-     * // crreate with class configures
-     * ApplicationContext::ApplicationContext(
+     * // 配置信息创建，切支持properties.php配置引用和bean引用
+     * ApplicationContext::createBean(
      *  [
      *      'class' => '\swoft\web\UrlManage',
      *      'field' => 'value1',
@@ -39,70 +34,42 @@ class ApplicationContext
      *  ]
      * );
      *
-     * @param string       $beanName    the name of bean
-     * @param array|string $type        class definition
-     * @param array        $params      constructor parameters
-     * @return Object
+     * @param string       $beanName the name of bean
+     * @param array|string $type     class definition
+     * @param array        $params   constructor parameters
+     *
+     * @return mixed
      */
     public static function createBean($beanName, $type, $params = [])
     {
-        $fields = [];
-        $className = $type;
-        if(is_array($type)){
-            if(isset($type['class'])){
-                $className = $type['class'];
-            }else{
-                $className = Application::class;
-            }
-            unset($type['class']);
-            $fields = $type;
+        if (!empty($params) && is_array($type)) {
+            array_unshift($type, $params);
         }
-        $object = \DI\object($className);
-        $object = $object->constructor($params);
-        foreach ($fields as $name => $value){
-            $object = $object->property($name, $value);
-        }
-        $object = $object->method('init');
-        self::$container->set($beanName, $object);
-
-        return self::$container->get($beanName);
+        return BeanFactory::createBean($beanName, $type);
     }
 
     /**
      * 查询一个bean
      *
      * @param string $name bean名称
+     *
      * @return mixed
      */
     public static function getBean(string $name)
     {
-        return self::$container->get($name);
+        return BeanFactory::getBean($name);
     }
 
     /**
      * bean是否存在
      *
-     * @param string $name
+     * @param string $name Bean名称
+     *
      * @return bool
      */
     public static function containsBean($name)
     {
-        return self::$container->has($name);
+        return BeanFactory::hasBean($name);
     }
 
-    /**
-     * @return Container 获取容器
-     */
-    public static function getContainer()
-    {
-        return self::$container;
-    }
-
-    /**
-     * @param Container $container 初始化容器
-     */
-    public static function setContainer($container)
-    {
-        self::$container = $container;
-    }
 }

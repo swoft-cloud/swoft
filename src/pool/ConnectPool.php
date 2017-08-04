@@ -3,6 +3,7 @@
 namespace swoft\pool;
 
 use swoft\pool\balancer\IBalancer;
+use swoft\service\ServiceProvider;
 
 /**
  *
@@ -71,6 +72,11 @@ abstract class ConnectPool implements Pool
      * @var IBalancer
      */
     protected $balancer = null;
+
+    /**
+     * @var ServiceProvider
+     */
+    protected $serviceprovider = null;
 
     public function getConnect()
     {

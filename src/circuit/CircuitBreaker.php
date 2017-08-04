@@ -82,9 +82,9 @@ class CircuitBreaker
     /**
      * 熔断器调用
      *
-     * @param mixed $callback   回调函数
-     * @param array $params     参数
-     * @param null  $fallback   失败回调
+     * @param mixed $callback 回调函数
+     * @param array $params   参数
+     * @param mixed $fallback 失败回调
      *
      * @return mixed 返回结果
      */
@@ -93,66 +93,108 @@ class CircuitBreaker
         return $this->circuitState->doCall($callback, $params, $fallback);
     }
 
+    /**
+     * 失败计数
+     */
     public function incFailCount()
     {
         $this->failCounter++;
     }
 
+    /**
+     * 成功计数
+     */
     public function incSuccessCount()
     {
         $this->successCounter++;
     }
 
+    /**
+     * 是否是关闭状态
+     *
+     * @return bool
+     */
     public function isClose()
     {
         return $this->circuitState instanceof CloseState;
     }
 
+    /**
+     * 是否是开启状态
+     *
+     * @return bool
+     */
     public function isOpen()
     {
         return $this->circuitState instanceof OpenState;
     }
 
+    /**
+     * 是否是半开状态
+     *
+     * @return bool
+     */
     public function isHalfOpen()
     {
         return $this->circuitState instanceof HalfOpenState;
     }
 
+    /**
+     * 切换到关闭
+     */
     public function swithToCloseState()
     {
-        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[关闭]状态");
+        App::debug($this->serviceName . "服务，当前[" . $this->getCurrrentState() . "]，熔断器状态切换，切换到[关闭]状态");
         $this->circuitState = new CloseState($this);
     }
 
+    /**
+     * 切换到开启
+     */
     public function swithToOpenState()
     {
-        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[开启]状态");
+        App::debug($this->serviceName . "服务，当前[" . $this->getCurrrentState() . "]，熔断器状态切换，切换到[开启]状态");
         $this->circuitState = new OpenState($this);
     }
 
+    /**
+     * 切换到半开
+     */
     public function swithToHalfState()
     {
-        App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，熔断器状态切换，切换到[半开]状态");
+        App::debug($this->serviceName . "服务，当前[" . $this->getCurrrentState() . "]，熔断器状态切换，切换到[半开]状态");
 
         $this->circuitState = new HalfOpenState($this);
     }
 
+    /**
+     * 降级处理
+     *
+     * @param mixed $fallback
+     *
+     * @return null
+     */
     public function fallback($fallback = null)
     {
         if ($fallback == null) {
-            App::debug($this->serviceName."服务，当前[".$this->getCurrrentState()."]，服务降级处理，fallback未定义");
+            App::debug($this->serviceName . "服务，当前[" . $this->getCurrrentState() . "]，服务降级处理，fallback未定义");
             return null;
         }
 
-        if(is_array($fallback) && count($fallback) == 2){
+        if (is_array($fallback) && count($fallback) == 2) {
             list($className, $method) = $fallback;
-            App::debug($this->serviceName."服务，服务降级处理，执行fallback, class=".$className." method=".$method);
+            App::debug($this->serviceName . "服务，服务降级处理，执行fallback, class=" . $className . " method=" . $method);
             return $className->$method();
         }
 
         return null;
     }
 
+    /**
+     * 当前状态
+     *
+     * @return string
+     */
     public function getCurrrentState()
     {
         if ($this->circuitState instanceof CloseState) {
@@ -168,6 +210,9 @@ class CircuitBreaker
         return self::UNINIT;
     }
 
+    /**
+     * 初始化计数
+     */
     public function initCounter()
     {
         $this->failCounter = 0;
@@ -175,6 +220,8 @@ class CircuitBreaker
     }
 
     /**
+     * 获取失败计数
+     *
      * @return int
      */
     public function getFailCounter(): int
@@ -183,6 +230,8 @@ class CircuitBreaker
     }
 
     /**
+     * 获取成功计数
+     *
      * @return int
      */
     public function getSuccessCounter(): int
@@ -191,6 +240,8 @@ class CircuitBreaker
     }
 
     /**
+     * 获取开始切换到失败的计数
+     *
      * @return int
      */
     public function getSwithToFailCount(): int
@@ -199,6 +250,8 @@ class CircuitBreaker
     }
 
     /**
+     * 开始切换到成功的计数
+     *
      * @return int
      */
     public function getSwithToSuccessCount(): int
@@ -207,6 +260,8 @@ class CircuitBreaker
     }
 
     /**
+     * 获取开启切换到半开的时间
+     *
      * @return int
      */
     public function getSwithOpenToHalfOpenTime(): int
@@ -215,6 +270,8 @@ class CircuitBreaker
     }
 
     /**
+     * 初始化开启切换到半开的时间
+     *
      * @param int $swithOpenToHalfOpenTime
      */
     public function setSwithOpenToHalfOpenTime(int $swithOpenToHalfOpenTime)
@@ -223,6 +280,8 @@ class CircuitBreaker
     }
 
     /**
+     * 关闭切换到开启延迟定时器时间
+     *
      * @return int
      */
     public function getDelaySwithTimer(): int
@@ -231,6 +290,8 @@ class CircuitBreaker
     }
 
     /**
+     * 半开状态锁
+     *
      * @return \swoole_lock
      */
     public function getHalfOpenLock()

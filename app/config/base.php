@@ -40,6 +40,9 @@ return [
         ]
     ],
 
+    'userProvider' => [
+        'class' => \swoft\service\ConsulProvider::class
+    ],
     "userPool"  => [
         "class"       => \swoft\pool\ServicePool::class,
         "uri"         => '127.0.0.1:8099,127.0.0.1:8099',
@@ -48,7 +51,8 @@ return [
         "timeout"     => '${config.service.user.timeout}',
         "balancer"    => '${randomBalancer}',
         "serviceName" => 'user',
-        "useProvider" => false
+        "useProvider" => false,
+        'serviceprovider' => '${userProvider}'
     ],
     "redisPool" => [
         'class'     => \swoft\pool\RedisPool::class,

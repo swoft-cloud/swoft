@@ -3,7 +3,7 @@
 namespace swoft\filter;
 
 /**
- *
+ * 过滤链规则
  *
  * @uses      FilterUriPattern
  * @version   2017年05月28日

@@ -44,7 +44,7 @@ class ServicePool extends ConnectPool
     public function getServiceList()
     {
         if($this->useProvider){
-            return App::getServiceProvider()->getServiceList($this->serviceName);
+            return $this->serviceprovider->getServiceList($this->serviceName);
         }
 
         if(empty($this->uri)){

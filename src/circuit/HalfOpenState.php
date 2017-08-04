@@ -23,6 +23,15 @@ use swoft\App;
  */
 class HalfOpenState extends CircuitBreakerState
 {
+    /**
+     * 熔断器调用
+     *
+     * @param mixed $callback 回调函数
+     * @param array $params   参数
+     * @param mixed $fallback 失败回调
+     *
+     * @return mixed 返回结果
+     */
     function doCall($callback, $params = [], $fallback = null)
     {
         // 加锁
