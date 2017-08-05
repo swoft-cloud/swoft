@@ -1,9 +1,9 @@
 <?php
 return [
-    'config'         => [
+    'config'      => [
         'properties' => require_once __DIR__ . '/' . APP_ENV . '/properties.php',
     ],
-    'application'    => [
+    'application' => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
         'viewsPath'   => VIEWS_PATH,
@@ -12,7 +12,7 @@ return [
         'basePath'    => dirname(__DIR__),
         'useProvider' => false
     ],
-    'router' => [
+    'router'      => [
         'class'  => \swoft\web\Router::class,
         'config' => [
             'ignoreLastSep'  => false,
@@ -27,55 +27,57 @@ return [
             ],
         ]
     ],
-    'filter'         => [
-        'filters' => [
-            'commonParamsFilter' => [
-                'class'      => 'app\beans\filters\CommonParamsFilter',
-                'uriPattern' => '/*',
-            ],
-            'loginFilter'        => [
-                'class'      => 'app\beans\filters\LoginFilter',
-                'uriPattern' => '/index/login',
-            ]
-        ]
-    ],
 
-    'userProvider' => [
+    'commonParamsFilter' => [
+        'class'      => \app\beans\filters\CommonParamsFilter::class,
+        'uriPattern' => '/*',
+    ],
+    'loginFilter'        => [
+        'class'      => \app\beans\filters\LoginFilter::class,
+        'uriPattern' => '/index/login',
+    ],
+    'filter'             => [
+        'filters' => [
+            '${commonParamsFilter}',
+            '${loginFilter}',
+        ],
+    ],
+    'userProvider'       => [
         'class' => \swoft\service\ConsulProvider::class
     ],
-    "userPool"  => [
-        "class"       => \swoft\pool\ServicePool::class,
-        "uri"         => '127.0.0.1:8099,127.0.0.1:8099',
-        "maxIdel"     => 6,
-        "maxActive"   => 10,
-        "timeout"     => '${config.service.user.timeout}',
-        "balancer"    => '${randomBalancer}',
-        "serviceName" => 'user',
-        "useProvider" => false,
+    "userPool"           => [
+        "class"           => \swoft\pool\ServicePool::class,
+        "uri"             => '127.0.0.1:8099,127.0.0.1:8099',
+        "maxIdel"         => 6,
+        "maxActive"       => 10,
+        "timeout"         => '${config.service.user.timeout}',
+        "balancer"        => '${randomBalancer}',
+        "serviceName"     => 'user',
+        "useProvider"     => false,
         'serviceprovider' => '${userProvider}'
     ],
-    "redisPool" => [
+    "redisPool"          => [
         'class'     => \swoft\pool\RedisPool::class,
         "maxIdel"   => 6,
         "maxActive" => 10,
         "timeout"   => 200,
     ],
 
-    "userBreaker"        => [
+    "userBreaker" => [
         'class'           => \swoft\circuit\CircuitBreaker::class,
         'delaySwithTimer' => 8000
     ],
 
-    "lineFormate" =>[
-        'class' => \Monolog\Formatter\LineFormatter::class,
-        "format" => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
+    "lineFormate"        => [
+        'class'      => \Monolog\Formatter\LineFormatter::class,
+        "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
         'dateFormat' => 'Y/m/d H:i:s'
     ],
     "noticeHandler"      => [
-        "class"   => \swoft\log\FileHandler::class,
-        "logFile" => RUNTIME_PATH . "/notice.log",
+        "class"     => \swoft\log\FileHandler::class,
+        "logFile"   => RUNTIME_PATH . "/notice.log",
         'formatter' => '${lineFormate}',
-        "levels"  => [
+        "levels"    => [
             \swoft\log\Logger::NOTICE,
             \swoft\log\Logger::INFO,
             \swoft\log\Logger::DEBUG,
@@ -83,17 +85,17 @@ return [
         ]
     ],
     "applicationHandler" => [
-        "class"   => \swoft\log\FileHandler::class,
-        "logFile" => RUNTIME_PATH . "/error.log",
+        "class"     => \swoft\log\FileHandler::class,
+        "logFile"   => RUNTIME_PATH . "/error.log",
         'formatter' => '${lineFormate}',
-        "levels"  => [
+        "levels"    => [
             \swoft\log\Logger::ERROR,
             \swoft\log\Logger::WARNING
         ]
     ],
     "logger"             => [
-        "class"   => \swoft\log\Logger::class,
-        "name"    => SYSTEM_NAME,
+        "class"    => \swoft\log\Logger::class,
+        "name"     => SYSTEM_NAME,
         "handlers" => [
             '${noticeHandler}',
             '${applicationHandler}'

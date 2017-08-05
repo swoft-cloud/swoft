@@ -118,9 +118,16 @@ class Application extends \swoft\base\Application
 
         try {
 
+            App::profileStart("app.route");
+
             /* @var Router $router*/
             $router = App::getBean('router');
+
+            App::profileStart("app.route.match");
             list($path, $info) = $router->match($swfRequest->getRequestUri(), $swfRequest->getMethod());
+            App::profileEnd("app.route.match");
+
+            App::profileEnd("app.route");
 
             if (!$info) {
                 return $this->handleNotFound($path);
@@ -129,12 +136,9 @@ class Application extends \swoft\base\Application
             /* @var Controller $controller */
             list($controller, $actionId, $params) = $this->createController($path, $info);
 
-            /* @var FilterChain $filter */
-            $filter = ApplicationContext::getBean('filter');
-            $filterHandler = $filter->doFilter($swfRequest, $swfResponse, $filter);
+            /* run controller with filters */
+            $this->runControllerWithFilters($swfRequest, $swfResponse, $controller, $actionId, $params);
 
-            /* run controller */
-            $this->runController($filterHandler, $controller, $actionId, $params);
         } catch (\Exception $e) {
             $swfResponse->setResponseContent($e->getMessage());
             $swfResponse->send();
@@ -174,6 +178,23 @@ class Application extends \swoft\base\Application
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->basePath;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getViewsPath()
+    {
+        return $this->viewsPath;
+    }
+
     private function beforeReceiver($data)
     {
         $logid = $data['logid'] ?? uniqid();
@@ -208,13 +229,24 @@ class Application extends \swoft\base\Application
         RequestContext::setContextData($contextData);
     }
 
-    private function runController($filterHandler, \swoft\web\Controller $controller, string $actionId, array $params)
+    /**
+     * run controller with filters
+     *
+     * @param Request    $request    请求对象
+     * @param Response   $response   响应对象
+     * @param Controller $controller 控制器
+     * @param string     $actionId   actionID
+     * @param array      $params     action参数
+     */
+    private function runControllerWithFilters(Request $request, Response $response,  Controller $controller, string $actionId, array $params)
     {
-        if ($filterHandler instanceof Response) {
-            $filterHandler->send();
-        } else {
-            $responseHandler = $controller->run($actionId, $params);
-            $responseHandler->send();
+        /* @var FilterChain $filter */
+        $filter = App::getBean('filter');
+        $result = $filter->doFilter($request, $response, $filter);
+
+        if($result){
+            $response = $controller->run($actionId, $params);
+            $response->send();
         }
     }
 
@@ -224,25 +256,11 @@ class Application extends \swoft\base\Application
         RequestContext::destory();
     }
 
-    public function params()
-    {
-        return $this->params;
-    }
-
     /**
-     * @return string
+     * @return \Swoole\Http\Server
      */
-    public function getBasePath()
+    public function getServer()
     {
-        return $this->basePath;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getViewsPath()
-    {
-        return $this->viewsPath;
+        return $this->swoft;
     }
 }

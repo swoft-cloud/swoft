@@ -27,7 +27,7 @@ class Dispatcher implements DispatcherInterface
      * @var array
      */
     private $config = [
-        // Filter the `/favicon.ico` request.
+        // IFilter the `/favicon.ico` request.
         'filterFavicon' => false,
 
         // default action method name

@@ -7,7 +7,10 @@ use DI\ContainerBuilder;
 use swoft\base\Config;
 use swoft\base\Timer;
 use swoft\exception\ErrorHandler;
+use swoft\filter\ExactUriPattern;
+use swoft\filter\ExtUriPattern;
 use swoft\filter\FilterChain;
+use swoft\filter\PathUriPattern;
 use swoft\helpers\ArrayHelper;
 use swoft\App;
 use swoft\pool\balancer\RandomBalancer;
@@ -161,7 +164,6 @@ class BeanFactory implements BeanFactoryInterface
      */
     private static function formateRefFields(array $fields)
     {
-
         $formateRef = [];
         foreach ($fields as $key => $field) {
             if (is_array($field)) {
@@ -201,6 +203,7 @@ class BeanFactory implements BeanFactoryInterface
             $refField = self::createBean($refBeanName, $refBeanConfig);
             $formateRef[$key] = $refField;
         }
+
         return $formateRef;
     }
 
@@ -250,13 +253,23 @@ class BeanFactory implements BeanFactoryInterface
     private static function coreBeans()
     {
         return [
-            'config'         => ['class' => Config::class],
-            'application'    => ['class' => Application::class],
-            'filter'         => ['class' => FilterChain::class],
-            'errorHanlder'   => ['class' => ErrorHandler::class],
-            "packer"         => ['class' => JsonPacker::class],
-            'timer'          => ['class' => Timer::class],
-            'randomBalancer' => ['class' => RandomBalancer::class],
+            'config'          => ['class' => Config::class],
+            'application'     => ['class' => Application::class],
+            'errorHanlder'    => ['class' => ErrorHandler::class],
+            "packer"          => ['class' => JsonPacker::class],
+            'timer'           => ['class' => Timer::class],
+            'randomBalancer'  => ['class' => RandomBalancer::class],
+            'extUriPattern'   => ['class' => ExtUriPattern::class],
+            'pathUriPattern'  => ['class' => PathUriPattern::class],
+            'exactUriPattern' => ['class' => ExactUriPattern::class],
+            'filter'          => [
+                'class' => FilterChain::class,
+                'filterUriPatterns' => [
+                    '${exactUriPattern}',
+                    '${extUriPattern}',
+                    '${pathUriPattern}',
+                ]
+            ],
         ];
     }
 }

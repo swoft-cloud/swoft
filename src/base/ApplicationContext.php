@@ -2,9 +2,8 @@
 
 namespace swoft\base;
 
-use DI\Container;
+use swoft\App;
 use swoft\di\BeanFactory;
-use swoft\web\Application;
 
 /**
  * 应用上下文
@@ -45,6 +44,7 @@ class ApplicationContext
         if (!empty($params) && is_array($type)) {
             array_unshift($type, $params);
         }
+        
         return BeanFactory::createBean($beanName, $type);
     }
 

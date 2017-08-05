@@ -1,4 +1,9 @@
 <?php
+namespace  test;
+
+use swoft\base\ApplicationContext;
+use swoft\di\BeanFactory;
+
 function test($name, ...$params){
     var_dump($name, $params);
 }

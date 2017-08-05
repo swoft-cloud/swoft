@@ -2,7 +2,6 @@
 
 namespace swoft\filter;
 
-use swoft\base\ApplicationContext;
 use swoft\web\Request;
 use swoft\web\Response;
 
@@ -15,24 +14,17 @@ use swoft\web\Response;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class FilterChain implements Filter
+class FilterChain implements IFilter
 {
     /**
-     * @var array
+     * @var array 过滤器
      */
-    private $filters;
+    private $filters = [];
 
-    public function init()
-    {
-        $newFilters = [];
-        foreach ($this->filters as $filterName => $filter){
-            $filterClass = $filter['class'];
-            $filter['class'] = ApplicationContext::getBean($filterClass);
-            $newFilters[] = $filter;
-        }
-        $this->filters = $newFilters;
-    }
-
+    /**
+     * @var array 所有过滤规则表
+     */
+    private $filterUriPatterns = [];
 
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0)
     {
@@ -42,12 +34,11 @@ class FilterChain implements Filter
 
         $uri = $request->getRequestUri();
         $filterAry = $this->getCurrentFilter($uri, $currentIndex);
-
         if(empty($filterAry)){
             return true;
         }
 
-        /* @var Filter $currentFilter*/
+        /* @var IFilter $currentFilter*/
         list($currentFilter, $currentIndex) = $filterAry;
 
         $nextIndex = $currentIndex + 1;
@@ -60,15 +51,24 @@ class FilterChain implements Filter
             return array();
         }
 
+        /* @var Filter $filter*/
         $filter = $this->filters[$currentIndex];
-        $uriPattern = $filter['uriPattern'];
+        $uriPattern = $filter->getUriPattern();
 
-        /* @var  $filterUriPattern FilterUriPattern*/
-        $filterUriPattern = ApplicationContext::getBean(FilterUriPattern::class);
-        if($filterUriPattern->match($uri, $uriPattern)){
-            $filterObject = $filter['class'];
-            return array($filterObject, $currentIndex);
+        $match = false;
+
+        /* @var IUriPattern $filterUriPattern*/
+        foreach ($this->filterUriPatterns as $filterUriPattern){
+            if($filterUriPattern->isMatch($uri, $uriPattern)){
+                $match = true;
+                continue;
+            }
         }
+
+        if($match){
+            return [$filter, $currentIndex];
+        }
+
         return $this->getCurrentFilter($uri, $currentIndex +1);
     }
 
