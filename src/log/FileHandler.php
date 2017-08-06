@@ -3,10 +3,9 @@
 namespace swoft\log;
 
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Logger;
 
 /**
- *
+ * 日志文件输出器
  *
  * @uses      FileHandler
  * @version   2017年07月05日
@@ -16,21 +15,28 @@ use Monolog\Logger;
  */
 class FileHandler extends AbstractProcessingHandler
 {
-
+    /**
+     * @var array 输出包含日志级别集合
+     */
     protected $levels = [];
+
+    /**
+     * @var string 输入日志文件名称
+     */
     protected $logFile = "";
 
-    public function __construct($filePath, $level = [], $bubble = true)
-    {
-        parent::__construct($level, $bubble);
 
-        $this->logFile = $filePath;
-    }
-
+    /**
+     * 批量输出日志
+     *
+     * @param array $records 日志记录集合
+     *
+     * @return bool
+     */
     public function handleBatch(array $records)
     {
         $records = $this->recordFilter($records);
-        if(empty($records)){
+        if (empty($records)) {
             return true;
         }
 
@@ -39,6 +45,11 @@ class FileHandler extends AbstractProcessingHandler
         $this->write($lines);
     }
 
+    /**
+     * 输出到文件
+     *
+     * @param array $records 日志记录集合
+     */
     protected function write(array $records)
     {
         $messageText = implode("\n", $records) . "\n";
@@ -53,6 +64,13 @@ class FileHandler extends AbstractProcessingHandler
         }
     }
 
+    /**
+     * 记录过滤器
+     *
+     * @param array $records 日志记录集合
+     *
+     * @return array
+     */
     private function recordFilter(array $records)
     {
         $messages = [];
@@ -72,6 +90,9 @@ class FileHandler extends AbstractProcessingHandler
         return $messages;
     }
 
+    /**
+     * 创建目录
+     */
     private function createDir()
     {
         $dir = dirname($this->logFile);
@@ -83,19 +104,20 @@ class FileHandler extends AbstractProcessingHandler
         }
     }
 
+    /**
+     * check是否输出日志
+     *
+     * @param array $record
+     *
+     * @return bool
+     */
     public function isHandling(array $record)
     {
-        if(empty($this->levels)){
+        if (empty($this->levels)) {
             return true;
         }
 
-        return  in_array($record['level'], $this->levels);
+        return in_array($record['level'], $this->levels);
     }
 
-    public function setLevel($level)
-    {
-        $this->levels = $level;
-
-        return $this;
-    }
 }

@@ -2,12 +2,11 @@
 
 namespace swoft\log;
 
-use Monolog\Formatter\LineFormatter;
 use swoft\App;
 use swoft\base\RequestContext;
 
 /**
- *
+ * 日志类
  *
  * @uses      Logger
  * @version   2017年05月11日
@@ -19,45 +18,71 @@ class Logger extends \Monolog\Logger
 {
 
     /**
-     * trace log
+     * trace 日志级别
      */
     const TRACE = 650;
 
-
+    /**
+     * @var string 日志系统名称
+     */
     public $name = "swoft";
-    public $flushInterval = 10;
-    public $targets = [];
-
-    // 性能日志
-    public $profiles = [];
-
-    // 计算日志
-    public $countings= [];
-
-    // 标记日志
-    public $pushlogs = [];
-
-    // 标记栈
-    public $profileStacks = [];
-
-
-    protected static $levels = array(
-        self::DEBUG     => 'debug',
-        self::INFO      => 'info',
-        self::NOTICE    => 'notice',
-        self::WARNING   => 'warning',
-        self::ERROR     => 'error',
-        self::CRITICAL  => 'critical',
-        self::ALERT     => 'alert',
-        self::EMERGENCY => 'emergency',
-        self::TRACE     => 'trace'
-    );
 
     /**
-     * @var array 记录请求日志
+     * @var int 刷新日志条数
+     */
+    public $flushInterval = 10;
+
+    /**
+     * @var array 性能日志
+     */
+    public $profiles = [];
+
+    /**
+     * @var array 计算日志
+     */
+    public $countings = [];
+
+    /**
+     * @var array 标记日志
+     */
+    public $pushlogs = [];
+
+    /**
+     * @var array 标记栈
+     */
+    public $profileStacks = [];
+
+    /**
+     * @var array 日志数据记录
      */
     public $messages = [];
 
+
+    /**
+     * @var array 日志级别对应名称
+     */
+    protected static $levels
+        = array(
+            self::DEBUG     => 'debug',
+            self::INFO      => 'info',
+            self::NOTICE    => 'notice',
+            self::WARNING   => 'warning',
+            self::ERROR     => 'error',
+            self::CRITICAL  => 'critical',
+            self::ALERT     => 'alert',
+            self::EMERGENCY => 'emergency',
+            self::TRACE     => 'trace'
+        );
+
+    /**
+     * 记录日志
+     *
+     * @param int   $level   日志级别
+     * @param mixed $message 信息
+     * @param array $context 附加信息
+     *
+     * @return bool
+     */
     public function addRecord($level, $message, array $context = array())
     {
         $levelName = static::getLevelName($level);
@@ -85,23 +110,37 @@ class Logger extends \Monolog\Logger
 
         $this->messages[] = $record;
 
-        if(count($this->messages) >= $this->flushInterval){
+        if (count($this->messages) >= $this->flushInterval) {
             $this->flushLog();
         }
+
+        return true;
     }
 
+    /**
+     * 格式化一条日志记录
+     *
+     * @param string    $message   信息
+     * @param string    $context   内容
+     * @param int       $level     级别
+     * @param string    $levelName 级别名
+     * @param \DateTime $ts        时间
+     * @param array     $extra     附加信息
+     *
+     * @return array
+     */
     public function formateRecord($message, $context, $level, $levelName, $ts, $extra)
     {
         $record = array(
-            "logid" => $this->getLogid(),
-            "spanid" => $this->getSpanid(),
-            'message' => $message,
-            'context' => $context,
-            'level' => $level,
+            "logid"      => $this->getLogid(),
+            "spanid"     => $this->getSpanid(),
+            'message'    => $message,
+            'context'    => $context,
+            'level'      => $level,
             'level_name' => $levelName,
-            'channel' => $this->name,
-            'datetime' => $ts,
-            'extra' => $extra,
+            'channel'    => $this->name,
+            'datetime'   => $ts,
+            'extra'      => $extra,
         );
 
         return $record;
@@ -110,8 +149,8 @@ class Logger extends \Monolog\Logger
     /**
      * pushlog日志
      *
-     * @param string $key
-     * @param mixed $val
+     * @param string $key 记录KEY
+     * @param mixed  $val 记录值
      */
     public function pushLog($key, $val)
     {
@@ -135,12 +174,12 @@ class Logger extends \Monolog\Logger
     /**
      * 标记开始
      *
-     * @param string $name
+     * @param string $name 标记名称
      */
     public function profileStart($name)
     {
-        if(is_string($name) == false || empty($name)){
-            return ;
+        if (is_string($name) == false || empty($name)) {
+            return;
         }
         $cid = App::getCoroutineId();
         $this->profileStacks[$cid][$name]['start'] = microtime(true);
@@ -149,7 +188,7 @@ class Logger extends \Monolog\Logger
     /**
      * 标记开始
      *
-     * @param string $name
+     * @param string $name 标记名称
      */
     public function profileEnd($name)
     {
@@ -158,9 +197,9 @@ class Logger extends \Monolog\Logger
         }
 
         $cid = App::getCoroutineId();
-        if (! isset($this->profiles[$cid][$name])) {
+        if (!isset($this->profiles[$cid][$name])) {
             $this->profiles[$cid][$name] = [
-                'cost' => 0,
+                'cost'  => 0,
                 'total' => 0
             ];
         }
@@ -191,9 +230,9 @@ class Logger extends \Monolog\Logger
     /**
      * 缓存命中率计算
      *
-     * @param string $name
-     * @param int    $hit
-     * @param int    $total
+     * @param string $name  计算KEY
+     * @param int    $hit   命中数
+     * @param int    $total 总数
      */
     public function counting($name, $hit, $total = null)
     {
@@ -223,24 +262,38 @@ class Logger extends \Monolog\Logger
 
         $countAry = [];
         $countings = $this->countings[$cid];
-        foreach ($countings as $name => $counter){
-            if(isset($counter['hit'], $counter['total']) && $counter['total'] != 0){
-                $countAry[] = "$name=".$counter['hit']."/".$counter['total'];
-            }elseif(isset($counter['hit'])){
-                $countAry[] = "$name=".$counter['hit'];
+        foreach ($countings as $name => $counter) {
+            if (isset($counter['hit'], $counter['total']) && $counter['total'] != 0) {
+                $countAry[] = "$name=" . $counter['hit'] . "/" . $counter['total'];
+            } elseif (isset($counter['hit'])) {
+                $countAry[] = "$name=" . $counter['hit'];
             }
         }
         return implode(',', $countAry);
     }
 
+    /**
+     * 写入日志信息格式化
+     *
+     * @param $message
+     *
+     * @return string
+     */
     public function formateMessage($message)
     {
-        if(is_array($message)){
+        if (is_array($message)) {
             return json_encode($message);
         }
         return $message;
     }
 
+    /**
+     * 计算调用trace
+     *
+     * @param $message
+     *
+     * @return string
+     */
     public function getTrace($message)
     {
         $traces = debug_backtrace();
@@ -272,10 +325,13 @@ class Logger extends \Monolog\Logger
         return $message;
     }
 
+    /**
+     * 刷新日志到handlers
+     */
     public function flushLog()
     {
-        if(empty($this->messages)){
-            return ;
+        if (empty($this->messages)) {
+            return;
         }
         reset($this->handlers);
 
@@ -288,16 +344,19 @@ class Logger extends \Monolog\Logger
         $this->messages = [];
     }
 
+    /**
+     * 请求完成追加一条notice日志
+     */
     public function appendNoticeLog()
     {
         $cid = App::getCoroutineId();
         $ts = $this->getLoggerTime();
 
         // php耗时单位ms毫秒
-        $timeUsed = sprintf("%.0f", (microtime(true)-$this->getRequestTime())*1000);
+        $timeUsed = sprintf("%.0f", (microtime(true) - $this->getRequestTime()) * 1000);
 
         // php运行内存大小单位M
-        $memUsed = sprintf("%.0f", memory_get_peak_usage()/(1024*1024));
+        $memUsed = sprintf("%.0f", memory_get_peak_usage() / (1024 * 1024));
 
         $profileInfo = $this->getProfilesInfos();
         $countingInfo = $this->getCountingInfo();
@@ -307,9 +366,9 @@ class Logger extends \Monolog\Logger
             "[$timeUsed(ms)]",
             "[$memUsed(MB)]",
             "[{$this->getUri()}]",
-            "[".implode(" ", $pushlogs)."]",
-            "profile[".$profileInfo."]",
-            "counting[".$countingInfo."]"
+            "[" . implode(" ", $pushlogs) . "]",
+            "profile[" . $profileInfo . "]",
+            "counting[" . $countingInfo . "]"
         );
 
 
@@ -325,12 +384,17 @@ class Logger extends \Monolog\Logger
 
         $this->messages[] = $message;
 
-        if(count($this->messages) >= $this->flushInterval){
+        if (count($this->messages) >= $this->flushInterval) {
             $this->flushLog();
         }
 
     }
 
+    /**
+     * 获取去日志时间
+     *
+     * @return \DateTime
+     */
     private function getLoggerTime()
     {
         if (!static::$timezone) {
@@ -348,11 +412,24 @@ class Logger extends \Monolog\Logger
         return $ts;
     }
 
+    /**
+     * 添加一条trace日志
+     *
+     * @param       $message 日志信息
+     * @param array $context 附加信息
+     *
+     * @return bool
+     */
     public function addTrace($message, array $context = array())
     {
         return $this->addRecord(static::TRACE, $message, $context);
     }
 
+    /**
+     * 请求logid
+     *
+     * @return string
+     */
     private function getLogid()
     {
         $contextData = RequestContext::getContextData();
@@ -360,6 +437,11 @@ class Logger extends \Monolog\Logger
         return $logid;
     }
 
+    /**
+     * 请求跨度值
+     *
+     * @return int
+     */
     private function getSpanid()
     {
         $contextData = RequestContext::getContextData();
@@ -367,6 +449,11 @@ class Logger extends \Monolog\Logger
         return $spanid;
     }
 
+    /**
+     * 请求URI
+     *
+     * @return string
+     */
     private function getUri()
     {
         $contextData = RequestContext::getContextData();
@@ -374,6 +461,11 @@ class Logger extends \Monolog\Logger
         return $uri;
     }
 
+    /**
+     * 请求开始时间
+     *
+     * @return int
+     */
     private function getRequestTime()
     {
         $contextData = RequestContext::getContextData();
