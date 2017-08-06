@@ -2,6 +2,7 @@
 
 namespace swoft\http;
 
+use swoft\App;
 use swoft\web\AbstractResult;
 
 /**
@@ -20,6 +21,8 @@ class HttpResult extends AbstractResult
         $this->client->recv();
         $result = $this->client->body;
         $this->client->close();
+
+        App::debug("http调用结果=".json_encode($result));
         return $result;
     }
 }
