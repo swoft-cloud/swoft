@@ -153,12 +153,27 @@ class IndexController extends Controller
 
     public function actionHttp()
     {
-        $result = HttpClient::call("http://127.0.0.1/index/rpc", HttpClient::GET);
-        $ret = HttpClient::deferCall("http://127.0.0.1/index/index", HttpClient::GET);
+        $requestData = [
+            'name' => 'boy',
+            'desc' => 'php'
+        ];
 
+        $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
         $data['result'] = $result;
-//        $data['deferResult'] = $ret->getResult();
+
+        $ret = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
+        $ret2 = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
         $data['deferResult'] = $ret->getResult();
+        $data['deferResult2'] = $ret->getResult();
+
+
         $this->outputJson($data);
+    }
+
+    public function actionPost(){
+        $this->outputJson([
+            'post' => $this->post(),
+            'get' => $this->get()
+        ], 'suc');
     }
 }
