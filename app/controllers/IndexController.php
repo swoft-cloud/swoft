@@ -115,6 +115,29 @@ class IndexController extends Controller
         $this->render('/main/layout.html', $data);
     }
 
+    public function actionLog()
+    {
+        // 标记开始
+        App::profileStart("tag");
+
+        // 直接输出异常
+        App::error(new \Exception("error exception"));
+        App::error("this errro log");
+        App::info("this errro log");
+
+        // 数组出
+        App::error(['name' => 'boy']);
+        App::debug("this errro log");
+
+        // 标记结束
+        App::profileEnd("tag");
+
+        // 统计缓存命中率
+        App::counting("cache", 1, 10);
+
+        $this->outputJson([], 'suc');
+    }
+
     public function actionRpc()
     {
         $result = Service::call("user", 'User::getUserInfo', [2,6,8]);

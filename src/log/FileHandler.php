@@ -33,14 +33,18 @@ class FileHandler extends AbstractProcessingHandler
         if(empty($records)){
             return true;
         }
+
         $lines = array_column($records, 'formatted');
+
         $this->write($lines);
     }
 
     protected function write(array $records)
     {
         $messageText = implode("\n", $records) . "\n";
+
         $this->createDir();
+
         while (true) {
             $result = \Swoole\Async::writeFile($this->logFile, $messageText, null, FILE_APPEND);
             if ($result == true) {

@@ -4,6 +4,7 @@ namespace swoft\di;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use Monolog\Formatter\LineFormatter;
 use swoft\base\Config;
 use swoft\base\Timer;
 use swoft\exception\ErrorHandler;
@@ -263,12 +264,17 @@ class BeanFactory implements BeanFactoryInterface
             'pathUriPattern'  => ['class' => PathUriPattern::class],
             'exactUriPattern' => ['class' => ExactUriPattern::class],
             'filter'          => [
-                'class' => FilterChain::class,
+                'class'             => FilterChain::class,
                 'filterUriPatterns' => [
                     '${exactUriPattern}',
                     '${extUriPattern}',
                     '${pathUriPattern}',
                 ]
+            ],
+            "lineFormate"     => [
+                'class'      => LineFormatter::class,
+                "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
+                'dateFormat' => 'Y/m/d H:i:s'
             ],
         ];
     }

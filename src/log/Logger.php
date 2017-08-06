@@ -25,7 +25,7 @@ class Logger extends \Monolog\Logger
 
 
     public $name = "swoft";
-    public $flushInterval = 1;
+    public $flushInterval = 10;
     public $targets = [];
 
     // 性能日志
@@ -75,6 +75,7 @@ class Logger extends \Monolog\Logger
 
         $ts->setTimezone(static::$timezone);
 
+        $message = $this->formateMessage($message);
         $message = $this->getTrace($message);
         $record = $this->formateRecord($message, $context, $level, $levelName, $ts, []);
 
@@ -232,6 +233,14 @@ class Logger extends \Monolog\Logger
         return implode(',', $countAry);
     }
 
+    public function formateMessage($message)
+    {
+        if(is_array($message)){
+            return json_encode($message);
+        }
+        return $message;
+    }
+
     public function getTrace($message)
     {
         $traces = debug_backtrace();
@@ -258,6 +267,8 @@ class Logger extends \Monolog\Logger
         if (!empty($ex)) {
             $message = "trace[$ex] " . $message;
         }
+
+
         return $message;
     }
 

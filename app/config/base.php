@@ -68,11 +68,6 @@ return [
         'delaySwithTimer' => 8000
     ],
 
-    "lineFormate"        => [
-        'class'      => \Monolog\Formatter\LineFormatter::class,
-        "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
-        'dateFormat' => 'Y/m/d H:i:s'
-    ],
     "noticeHandler"      => [
         "class"     => \swoft\log\FileHandler::class,
         "logFile"   => RUNTIME_PATH . "/notice.log",
@@ -93,10 +88,11 @@ return [
             \swoft\log\Logger::WARNING
         ]
     ],
-    "logger"             => [
-        "class"    => \swoft\log\Logger::class,
-        "name"     => SYSTEM_NAME,
-        "handlers" => [
+    "logger" => [
+        "class"         => \swoft\log\Logger::class,
+        "name"          => SYSTEM_NAME,
+        "flushInterval" => 1,
+        "handlers"      => [
             '${noticeHandler}',
             '${applicationHandler}'
         ]

@@ -1,5 +1,11 @@
 <?php
-namespace  test;
+
+$e = new Exception('error exception');
+echo (string)$e;
+
+exit();
+
+
 
 use swoft\base\ApplicationContext;
 use swoft\di\BeanFactory;
