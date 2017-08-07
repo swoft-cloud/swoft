@@ -6,7 +6,7 @@ use swoft\pool\balancer\IBalancer;
 use swoft\service\ServiceProvider;
 
 /**
- *
+ * 通用连接池
  *
  * @uses      ConnectPool
  * @version   2017年06月15日
@@ -17,25 +17,8 @@ use swoft\service\ServiceProvider;
 abstract class ConnectPool implements Pool
 {
     /**
-     * 轮询
+     * @var string 服务清楚
      */
-    const ROUND_ROBIN = "roundRobin";
-
-    /**
-     * 随机
-     */
-    const RANDOM_SELECT = "randomSelect";
-
-    /**
-     * 一致哈希
-     */
-    const HASH_SELECT = "hashSelect";
-
-    /**
-     * 压力最小
-     */
-    const CALL_LEAST = "callLeast";
-
     protected $serviceName = "";
 
     protected $maxIdel = 6;
@@ -150,6 +133,25 @@ abstract class ConnectPool implements Pool
             $connect = $this->createConnect();
             $this->queue->push($connect);
         }
+    }
+
+    public function getConnectAddress()
+    {
+        $serviceList = $this->getServiceList();
+        return $this->balancer->select($serviceList);
+    }
+
+    public function getServiceList()
+    {
+        if($this->useProvider){
+            return $this->serviceprovider->getServiceList($this->serviceName);
+        }
+
+        if(empty($this->uri)){
+
+        }
+
+        return explode(',', $this->uri);
     }
     abstract public function createConnect();
     abstract public function reConnect($client);

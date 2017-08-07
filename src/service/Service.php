@@ -3,14 +3,11 @@
 namespace swoft\service;
 
 use swoft\App;
-use swoft\base\ApplicationContext;
 use swoft\circuit\CircuitBreaker;
-use swoft\helpers\RpcHelper;
-use swoft\pool\ConnectPool;
 use swoft\pool\ServicePool;
 
 /**
- *
+ * RPC服务调用
  *
  * @uses      InnerService
  * @version   2017年07月14日
@@ -41,24 +38,27 @@ class Service
     protected $failSelector = self::FAIL_FAST;
 
     /**
+     * 直接调用
+     *
      * @param string   $serviceName 服务名称，例如:user
      * @param string   $func        调用函数，例如:User::getUserInfo
      * @param array    $params      函数参数，数组参数[1,2]
      * @param callable $fallback    降级处理，例如:[class,'getDefaultUserInfo']
      *
-     * @return array
+     * @return mixed
      */
-    public static function call(string $serviceName,string $func, array $params, callable $fallback = null){
+    public static function call(string $serviceName, string $func, array $params, callable $fallback = null)
+    {
 
-        $profileKey = "$serviceName->".$func;
+        $profileKey = "$serviceName->" . $func;
 
-        /* @var $criuitBreaker CircuitBreaker*/
-        $criuitBreaker = App::getBean($serviceName."Breaker");
+        /* @var $criuitBreaker CircuitBreaker */
+        $criuitBreaker = App::getBean($serviceName . "Breaker");
 
-        /* @var  $connectPool ServicePool*/
-        $connectPool = App::getBean($serviceName."Pool");
+        /* @var  $connectPool ServicePool */
+        $connectPool = App::getBean($serviceName . "Pool");
 
-        /* @var $client \Swoole\Coroutine\Client*/
+        /* @var $client \Swoole\Coroutine\Client */
         $client = $connectPool->getConnect();
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);
@@ -66,7 +66,7 @@ class Service
         $result = $criuitBreaker->call([$client, 'send'], [$packData], $fallback);
 
         // 错误处理
-        if($result === null || $result === false){
+        if ($result === null || $result === false) {
             return null;
         }
 
@@ -75,12 +75,15 @@ class Service
         App::profileEnd($profileKey);
         $connectPool->release($client);
 
+        App::debug("RPC调用结果，data=" . json_encode($result));
         $result = $packer->unpack($result);
         $datta = $packer->checkData($result);
         return $datta;
     }
 
     /**
+     * 延迟收包调用，用于并发请求
+     *
      * @param string   $serviceName 服务名称，例如:user
      * @param string   $func        调用函数，例如:User::getUserInfos
      * @param array    $params      函数参数，数组参数[1,2]
@@ -88,17 +91,18 @@ class Service
      *
      * @return ServiceResult
      */
-    public static function deferCall($serviceName, $func, array $params, $fallback = null){
+    public static function deferCall($serviceName, $func, array $params, $fallback = null)
+    {
 
-        $profile = "$serviceName->".$func;
+        $profile = "$serviceName->" . $func;
 
-        /* @var $criuitBreaker CircuitBreaker*/
-        $criuitBreaker = App::getBean($serviceName."Breaker");
+        /* @var $criuitBreaker CircuitBreaker */
+        $criuitBreaker = App::getBean($serviceName . "Breaker");
 
-        /* @var $connectPool ServicePool*/
-        $connectPool = App::getBean($serviceName."Pool");
+        /* @var $connectPool ServicePool */
+        $connectPool = App::getBean($serviceName . "Pool");
 
-        /* @var $client \Swoole\Coroutine\Client*/
+        /* @var $client \Swoole\Coroutine\Client */
         $client = $connectPool->getConnect();
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);

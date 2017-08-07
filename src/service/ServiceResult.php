@@ -3,14 +3,11 @@
 namespace swoft\service;
 
 use swoft\App;
-use swoft\circuit\CircuitBreaker;
-use swoft\pool\ConnectPool;
 use swoft\web\AbstractResult;
-use swoft\web\IResult;
 
 
 /**
- *
+ * RPC结果集
  *
  * @uses      ServicePool
  * @version   2017年05月11日
@@ -22,10 +19,12 @@ class ServiceResult extends AbstractResult
 {
     public function getResult()
     {
-        if($this->sendResult === null || $this->sendResult === false){
+        if ($this->sendResult === null || $this->sendResult === false) {
             return null;
         }
         $result = $this->recv();
+
+        App::debug("RPC调用结果，data=" . json_encode($result));
         $packer = App::getPacker();
         $result = $packer->unpack($result);
         $data = $packer->checkData($result);

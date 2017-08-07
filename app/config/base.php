@@ -42,7 +42,7 @@ return [
             '${loginFilter}',
         ],
     ],
-    'userProvider'       => [
+    'consulProvider'       => [
         'class' => \swoft\service\ConsulProvider::class
     ],
     "userPool"           => [
@@ -54,13 +54,19 @@ return [
         "balancer"        => '${randomBalancer}',
         "serviceName"     => 'user',
         "useProvider"     => false,
-        'serviceprovider' => '${userProvider}'
+        'serviceprovider' => '${consulProvider}'
     ],
+
     "redisPool"          => [
         'class'     => \swoft\pool\RedisPool::class,
-        "maxIdel"   => 6,
-        "maxActive" => 10,
-        "timeout"   => 200,
+        "uri"             => '127.0.0.1:6379,127.0.0.1:6379',
+        "maxIdel"         => 6,
+        "maxActive"       => 10,
+        "timeout"         => '${config.service.user.timeout}',
+        "balancer"        => '${randomBalancer}',
+        "serviceName"     => 'redis',
+        "useProvider"     => false,
+        'serviceprovider' => '${consulProvider}'
     ],
 
     "userBreaker" => [

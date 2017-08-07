@@ -34,23 +34,4 @@ class ServicePool extends ConnectPool
     {
         list($host, $port) = $this->getConnectAddress();
     }
-
-    public function getConnectAddress()
-    {
-        $serviceList = $this->getServiceList();
-        return $this->balancer->select($serviceList);
-    }
-
-    public function getServiceList()
-    {
-        if($this->useProvider){
-            return $this->serviceprovider->getServiceList($this->serviceName);
-        }
-
-        if(empty($this->uri)){
-
-        }
-
-        return explode(',', $this->uri);
-    }
 }

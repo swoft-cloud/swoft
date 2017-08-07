@@ -15,7 +15,9 @@ class RedisPool extends ConnectPool
 {
     public function createConnect()
     {
-        list($host, $port) = $this->getConnectInfo();
+        $address = $this->getConnectAddress();
+        list($host, $port) = explode(":", $address);
+
         $redis = new \Swoole\Coroutine\Redis();
         $redis->connect($host, $port);
         return $redis;
@@ -24,12 +26,5 @@ class RedisPool extends ConnectPool
     public function reConnect($client)
     {
         list($host, $port) = $this->getConnectInfo();
-    }
-
-    public function getConnectInfo(){
-        return [
-            "127.0.0.1",
-            6379
-        ];
     }
 }

@@ -3,7 +3,7 @@
 namespace swoft\pool;
 
 /**
- *
+ * 连接池接口
  *
  * @uses      Pool
  * @version   2017年05月11日

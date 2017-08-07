@@ -14,6 +14,11 @@ use swoft\base\RequestContext;
  */
 class ErrorHandler
 {
+    /**
+     * @var string 统一错误error
+     */
+    private $errorAction = "error";
+
     public function init(){
         ini_set('display_errors', false);
         set_exception_handler([$this, 'handlerException']);

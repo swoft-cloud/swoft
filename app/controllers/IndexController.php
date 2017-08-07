@@ -143,11 +143,14 @@ class IndexController extends Controller
         $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
 
         $res = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
+        $res2 = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
         $users = $res->getResult();
+        $users2 = $res2->getResult();
 
         $data['count'] = App::$app->count;
         $data['ret'] = $result;
         $data['deferRet'] = $users;
+        $data['deferRet2'] = $users2;
         $this->outputJson($data);
     }
 

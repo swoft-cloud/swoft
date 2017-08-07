@@ -4,7 +4,7 @@ namespace app\controllers\services;
 use swoft\web\InnerService;
 
 /**
- *
+ * RPC服务函数
  *
  * @uses      UserService
  * @version   2017年07月14日

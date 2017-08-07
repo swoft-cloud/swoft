@@ -4,14 +4,13 @@ namespace swoft\web;
 
 use inhere\console\utils\Show;
 use swoft\App;
-use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
 use swoft\console\Console;
 use swoft\filter\FilterChain;
 use swoft\helpers\ResponseHelper;
 
 /**
- *
+ * 应用主体
  *
  * @uses      Application
  * @version   2017年04月25日
