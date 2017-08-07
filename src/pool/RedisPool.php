@@ -2,8 +2,10 @@
 
 namespace swoft\pool;
 
+use swoft\App;
+
 /**
- *
+ * redis连接池
  *
  * @uses      RedisPool
  * @version   2017年05月11日
@@ -13,13 +15,23 @@ namespace swoft\pool;
  */
 class RedisPool extends ConnectPool
 {
+    /**
+     * 创建一个连接
+     *
+     * @return \Swoole\Coroutine\Redis
+     */
     public function createConnect()
     {
         $address = $this->getConnectAddress();
         list($host, $port) = explode(":", $address);
 
+        /* @var \Redis $redis*/
         $redis = new \Swoole\Coroutine\Redis();
-        $redis->connect($host, $port);
+        $result = $redis->connect($host, $port, $this->timeout);
+        if($result == false){
+            App::error("redis连接失败，host=".$host." port=".$port." timeout=".$this->timeout);
+            return null;
+        }
         return $redis;
     }
 

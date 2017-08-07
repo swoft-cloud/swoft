@@ -5,7 +5,7 @@ namespace swoft\pool;
 use swoft\App;
 
 /**
- *
+ * RPC服务连接池
  *
  * @uses      ServicePool
  * @version   2017年05月11日
@@ -15,6 +15,11 @@ use swoft\App;
  */
 class ServicePool extends ConnectPool
 {
+    /**
+     * 创建连接
+     *
+     * @return null|\Swoole\Coroutine\Client
+     */
     public function createConnect()
     {
         $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
