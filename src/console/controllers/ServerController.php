@@ -12,45 +12,66 @@ class ServerController extends Controller
 {
     protected static $name = 'server';
 
-    protected static $description = 'manage the swoft application runtime. [<info>built in</info>]';
+    protected static $description = 'manage the swoft application server runtime. [<info>built in</info>]';
 
     protected $showMore = false;
 
+    /**
+     * @return \swoft\web\Application
+     */
     protected function createApp()
     {
         /* @var  \swoft\web\Application $application */
         $application = ApplicationContext::getBean('application');
+        $application->init($this->input->getScript());
 
         return $application;
     }
 
     /**
      * start the swoole application server
+     *
+     * @options
+     * -d, --daemon  run app server on the background
      */
     public function startCommand()
     {
-        $this->write('hello start');
-        $router = ApplicationContext::getBean('router');
+        //$this->write('hello start');
 
-        require APP_PATH . '/app/routes.php';
+        require BASE_PATH . '/app/routes.php';
 
-        $this->createApp()->run();
+        $daemon = $this->input->getSameOpt(['d', 'daemon']);
+
+        $this->createApp()->asDaemon($daemon)->start();
     }
 
     /**
      * restart the swoole application server
+     *
+     * @options
+     * -d, --daemon  run app server on the background
      */
     public function restartCommand()
     {
-        $this->write('hello restart');
+        require BASE_PATH . '/app/routes.php';
+
+        $daemon = $this->input->getSameOpt(['d', 'daemon']);
+
+        $this->createApp()->asDaemon($daemon)->restart();
     }
 
     /**
      * reload the swoole application server
+     *
+     * @options
+     *  --task  only reload task worker when exec reload command
      */
     public function reloadCommand()
     {
-        $this->write('hello restart');
+        //$this->write('hello restart');
+        $onlyTask = $this->input->getSameOpt(['task']);
+
+        $this->createApp()->reload($onlyTask);
     }
 
     /**
@@ -58,6 +79,8 @@ class ServerController extends Controller
      */
     public function stopCommand()
     {
-        $this->write('hello stop');
+        //$this->write('hello stop');
+
+        $this->createApp()->stop();
     }
 }

@@ -20,16 +20,38 @@ use swoft\helpers\ResponseHelper;
  */
 class Application extends \swoft\base\Application
 {
-    const ALLOW_COMMANDS = ['start', 'stop', 'reload', 'restart', 'help'];
-
     private $tcp;
     private $http;
     private $swoft;
     private $setting;
     private $listen;
 
-    use Console;
+    public function init($startFile = '')
+    {
+        $this->status['startFile'] = $startFile;
 
+        // 注册全局错误错误
+        $this->registerErrorHandler();
+
+        $this->loadSwoftIni();
+    }
+
+    /**
+     * @param bool $daemon
+     * @return $this
+     */
+    public function asDaemon($daemon = null)
+    {
+        if (null !== $daemon) {
+            $this->setting['daemonize'] = (bool)$daemon;
+        }
+
+        return $this;
+    }
+
+    /**
+     * start
+     */
     public function start()
     {
         if ($this->isRunning()) {
@@ -64,6 +86,29 @@ class Application extends \swoft\base\Application
         }
 
         $this->swoft->start();
+    }
+
+    protected function loadSwoftIni()
+    {
+        $setings = parse_ini_file($this->settingPath, true);
+        if (!isset($setings['tcp'])) {
+
+        }
+        if (!isset($setings['http'])) {
+
+        }
+        if (!isset($setings['server'])) {
+
+        }
+
+        if (!isset($setings['setting'])) {
+
+        }
+
+        $this->tcp = $setings['tcp'];
+        $this->http = $setings['http'];
+        $this->server = $setings['server'];
+        $this->setting = $setings['setting'];
     }
 
     public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
