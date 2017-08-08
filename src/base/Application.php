@@ -83,6 +83,10 @@ abstract class Application
      */
     public function run()
     {
+        // 注册全局错误错误
+        $this->registerErrorHandler();
+
+        // 命令解析
         $this->parseCommand();
     }
 
@@ -317,5 +321,16 @@ abstract class Application
         $data = $service->run($method, $params);
 
         return $data;
+    }
+
+    /**
+     * 注册全局错误解析
+     */
+    public function registerErrorHandler()
+    {
+        ini_set('display_errors', false);
+
+        $errorHandler = App::getErrorHandler();
+        $errorHandler->register();
     }
 }
