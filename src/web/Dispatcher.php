@@ -317,7 +317,7 @@ class Dispatcher implements DispatcherInterface
             throw new \RuntimeException("please config the route path [$path] controller action to call");
         }
 
-        $action = ORouter::convertNodeStr($action);
+        $action = Router::convertNodeStr($action);
 
         // if set the 'actionExecutor', the action handle logic by it.
         if ($executor = $this->config['actionExecutor']) {

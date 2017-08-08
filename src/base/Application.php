@@ -2,6 +2,8 @@
 
 namespace swoft\base;
 
+use inhere\console\io\Input;
+use inhere\console\utils\Show;
 use swoft\App;
 use swoft\web\InnerService;
 use swoft\web\Router;
@@ -17,6 +19,18 @@ use swoft\web\Router;
  */
 abstract class Application
 {
+    /**
+     * @var array
+     */
+    protected $status = [];
+
+    private $command;
+
+    /**
+     * @var array
+     */
+    protected $server = [];
+
     /**
      * @var string 应用ID
      */
@@ -70,6 +84,143 @@ abstract class Application
     public function run()
     {
         $this->parseCommand();
+    }
+
+    public function parseCommand()
+    {
+        $input = new Input;
+        $command = $input->getCommand();
+
+        if (!$command || $command === 'help' || $input->getSameOpt(['h', 'help'])) {
+            $this->showHelp($input);
+        }
+
+        // $this->loadSwoftIni();
+
+        $this->status['startFile'] = $input->getScript();
+        $allowCommands = ['start', 'stop', 'reload', 'restart', 'help'];
+
+        if (!in_array($command, $allowCommands, true)) {
+            Show::error("The command: $command is not exists.");
+            $this->showHelp($input);
+        }
+
+        $this->command = $command;
+        $this->$command();
+    }
+
+    abstract public function start();
+
+    /**
+     * stop the swoole application server
+     */
+    public function stop()
+    {
+        if (!$this->isRunning()) {
+            echo "The server is not running! cannot stop\n";
+            exit(0);
+        }
+
+        $pidFile = $this->server['pfile'];
+        $startFile = $this->status['startFile'];
+        @unlink($pidFile);
+        echo("swoft $startFile is stopping ... \n");
+
+        $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
+
+        $timeout = 5;
+        $startTime = time();
+
+        while (1) {
+            $masterIslive = $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
+
+            if ($masterIslive) {
+                if (time() - $startTime >= $timeout) {
+                    echo('swoft ' . $startFile . " stop fail \n");
+                    exit;
+                }
+                usleep(10000);
+                continue;
+            }
+
+            echo("swoft $startFile stop success \n");
+            break;
+        }
+    }
+
+    /**
+     * reload the swoole application server
+     * @param bool $onlyTask
+     */
+    public function reload($onlyTask = false)
+    {
+        if (!$this->isRunning()) {
+            echo "The server is not running! cannot reload\n";
+            exit(0);
+        }
+
+        $startFile = $this->status['startFile'];
+
+        echo "Server $startFile is reloading \n";
+
+        posix_kill($this->server['managerPid'], $onlyTask ? SIGUSR2 : SIGUSR1);
+
+        echo "Server $startFile reload success \n";
+    }
+
+    /**
+     * restart the swoole application server
+     */
+    public function restart()
+    {
+        if ($this->isRunning()) {
+            $this->stop();
+        }
+
+        $this->start();
+    }
+
+    /**
+     * check Status
+     * @return bool
+     */
+    protected function isRunning()
+    {
+        $masterIsLive = false;
+        $pFile = $this->server['pfile'];
+
+        if (file_exists($pFile)) {
+            $pidFile = file_get_contents($pFile);
+            $pids = explode(',', $pidFile);
+
+            $this->server['masterPid'] = $pids[0];
+            $this->server['managerPid'] = $pids[1];
+            $masterIsLive = $this->server['masterPid'] && @posix_kill($this->server['managerPid'], 0);
+        }
+
+        return $masterIsLive;
+    }
+
+
+    protected function showHelp(Input $input)
+    {
+        $script = $input->getScriptName();
+
+        Show::helpPanel([
+            Show::HELP_DES => 'the application server powered by swoole',
+            Show::HELP_USAGE => "$script <cyan>{start|stop|reload|restart}</cyan> [--opt ...]",
+            Show::HELP_COMMANDS => [
+                'start' => 'start the swoole application server',
+                'restart' => 'restart the swoole application server',
+                'reload' => 'reload the swoole application server',
+                'stop' => 'stop the swoole application server',
+                'help' => 'display the help information',
+            ],
+            Show::HELP_OPTIONS => [
+                '-h,--help' => 'display the help information',
+                '--only-task' => 'only reload task worker when exec reload command'
+            ]
+        ]);
     }
 
     /**
@@ -167,6 +318,4 @@ abstract class Application
 
         return $data;
     }
-
-    abstract public function parseCommand();
 }

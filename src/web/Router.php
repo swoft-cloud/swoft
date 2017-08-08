@@ -11,7 +11,6 @@ namespace swoft\web;
 /**
  * Class Router- this is object version
  * @package swoft\web
- *
  * @method get(string $route, mixed $handler, array $opts = [])
  * @method post(string $route, mixed $handler, array $opts = [])
  * @method put(string $route, mixed $handler, array $opts = [])
@@ -75,7 +74,7 @@ class Router implements RouterInterface
      * [
      *     // 先用第一个字符作为 key，进行分组
      *     'a' => [
-     *          // 第一节只有一个字符, 使用关键字'__NO__'为 key 进行分组
+     *          // 第一节只有一个字符, 使用关键字'_NO_'为 key 进行分组
      *         '_NO_' => [
      *              [
      *                  'first' => '/a',
@@ -119,7 +118,6 @@ class Router implements RouterInterface
      * vague Routes - have dynamic arguments,but the first node is exists regex.
      * 第一节就包含了正则匹配，称之为无规律/模糊的动态路由
      * e.g '/{some}/{some2}'
-     *
      * @var array
      * [
      *     [
@@ -152,36 +150,36 @@ class Router implements RouterInterface
      */
     private $routeCaches = [];
 
-    /**
-     * some setting for self
-     * @var array
-     */
-    private $config = [
-        // ignore last '/' char. If is True, will clear last '/'.
-        'ignoreLastSep' => false,
-
-        // 'tmpCacheNumber' => 100,
-        'tmpCacheNumber' => 0,
-
-        // match all request.
-        // 1. If is a valid URI path, will match all request uri to the path.
-        // 2. If is a closure, will match all request then call it
-        // eg: '/site/maintenance' or `function () { echo 'System Maintaining ... ...'; }`
-        'matchAll' => '',
-
-        // auto route match @like yii framework
-        'autoRoute' => [
-            // If is True, will auto find the handler controller file.
-            'enable' => false,
-            // The default controllers namespace, is valid when `'enable' = true`
-            'controllerNamespace' => '', // eg: 'app\\controllers'
-            // controller suffix, is valid when `'enable' = true`
-            'controllerSuffix' => '',    // eg: 'Controller'
-        ],
-    ];
+//////////////////////////////////////////////////////////////////////
+/// router config
+//////////////////////////////////////////////////////////////////////
 
     /** @var DispatcherInterface */
     private $dispatcher;
+
+    /** @var bool ignore last '/' char. If is True, will clear last '/'. */
+    public $ignoreLastSep = false;
+
+    /** @var int */
+    public $tmpCacheNumber = 0;
+
+    /**
+     * match all request.
+     *  1. If is a valid URI path, will match all request uri to the path.
+     *  2. If is a closure, will match all request then call it
+     * eg: '/site/maintenance' or `function () { echo 'System Maintaining ... ...'; }`
+     * @var mixed
+     */
+    public $matchAll;
+
+    /** @var bool auto route match @like yii framework. If is True, will auto find the handler controller file. */
+    public $autoRoute = false;
+
+    /** @var string The default controllers namespace, is valid when `$autoRoute = true`. eg: 'app\\controllers' */
+    public $controllerNamespace = '';
+
+    /** @var string controller suffix, is valid when `$autoRoute = true`. eg: 'Controller' */
+    public $controllerSuffix = '';
 
     /**
      * object creator.
@@ -218,10 +216,8 @@ class Router implements RouterInterface
         }
 
         foreach ($config as $name => $value) {
-            if ($name === 'autoRoute') {
-                $this->config['autoRoute'] = array_merge($this->config['autoRoute'], (array)$value);
-            } else {
-                $this->config[$name] = $value;
+            if (property_exists($this, $name)) {
+                $this->$name = $value;
             }
         }
     }
@@ -234,7 +230,7 @@ class Router implements RouterInterface
      * Defines a route callback and method
      * @param string $method
      * @param array $args
-     * @return ORouter
+     * @return Router
      * @throws \LogicException
      * @throws \InvalidArgumentException
      */
@@ -244,13 +240,12 @@ class Router implements RouterInterface
             throw new \InvalidArgumentException("The method [$method] parameters is missing.");
         }
 
-        return $this->map($method, $args[0], $args[1], isset($args[2]) ? $args[2] : []);
+        return $this->map($method, $args[0], $args[1], $args[2] ?? []);
     }
 
     /**
      * Create a route group with a common prefix.
      * All routes created in the passed callback will have the given group prefix prepended.
-     *
      * @from package 'nikic/fast-route'
      * @param string $prefix
      * @param \Closure $callback
@@ -321,7 +316,7 @@ class Router implements RouterInterface
         $route = $this->currentGroupPrefix . $route;
 
         // setting 'ignoreLastSep'
-        if ($route !== '/' && $this->config['ignoreLastSep']) {
+        if ($route !== '/' && $this->ignoreLastSep) {
             $route = rtrim($route, '/');
         }
 
@@ -359,7 +354,7 @@ class Router implements RouterInterface
 
         // route string is regular
         if ($first) {
-            $twoLevelKey = isset($first{1}) ? $first{1} : self::DEFAULT_TWO_LEVEL_KEY;
+            $twoLevelKey = $first{1} ?? self::DEFAULT_TWO_LEVEL_KEY;
             $this->regularRoutes[$first{0}][$twoLevelKey][] = $conf;
         } else {
             $this->vagueRoutes[] = $conf;
@@ -425,7 +420,7 @@ class Router implements RouterInterface
             foreach ($m[1] as $name) {
                 $key = '{' . $name . '}';
                 // 匹配定义的 token  , 未匹配到的使用默认 self::DEFAULT_REGEX
-                $regex = isset($tokens[$name]) ? $tokens[$name] : self::DEFAULT_REGEX;
+                $regex = $tokens[$name] ?? self::DEFAULT_REGEX;
 
                 // 将匹配结果命名 (?P<arg1>[^/]+)
                 // $replacePairs[$key] = '(?P<' . $name . '>' . $pattern . ')';
@@ -483,7 +478,7 @@ class Router implements RouterInterface
     public function match($path, $method)
     {
         // if enable 'matchAll'
-        if ($matchAll = $this->config['matchAll']) {
+        if ($matchAll = $this->matchAll) {
             if (is_string($matchAll) && $matchAll{0} === '/') {
                 $path = $matchAll;
             } elseif (is_callable($matchAll)) {
@@ -494,10 +489,10 @@ class Router implements RouterInterface
         // clear '//', '///' => '/'
         $path = rawurldecode(preg_replace('#\/\/+#', '/', $path));
         $method = strtoupper($method);
-        $number = $this->config['tmpCacheNumber'];
+        $number = (int)$this->tmpCacheNumber;
 
         // setting 'ignoreLastSep'
-        if ($path !== '/' && $this->config['ignoreLastSep']) {
+        if ($path !== '/' && $this->ignoreLastSep) {
             $path = rtrim($path, '/');
         }
 
@@ -528,7 +523,7 @@ class Router implements RouterInterface
         // is a regular dynamic route(the first char is 1th level index key).
         if ($this->regularRoutes && isset($this->regularRoutes[$tmp{0}])) {
             $twoLevelArr = $this->regularRoutes[$tmp{0}];
-            $twoLevelKey = isset($tmp{1}) ? $tmp{1} : '__NO__';
+            $twoLevelKey = $tmp{1} ?? self::DEFAULT_TWO_LEVEL_KEY;
 
             // not found
             if (!isset($twoLevelArr[$twoLevelKey])) {
@@ -582,7 +577,7 @@ class Router implements RouterInterface
         }
 
         // handle Auto Route
-        if ($handler = self::matchAutoRoute($path, $this->config['autoRoute'])) {
+        if ($this->autoRoute && ($handler = self::matchAutoRoute($path, $this->controllerNamespace, $this->controllerSuffix))) {
             return [$path, [
                 'path' => $path,
                 'handler' => $handler,
@@ -594,25 +589,16 @@ class Router implements RouterInterface
     }
 
     /**
-     * handle auto route match
-     *  when config `'autoRoute' => true`
+     * handle auto route match, when config `'autoRoute' => true`
      * @param string $path The route path
-     * @param array $opts  The some options
-     * contains: [
-     *  'controllerNamespace' => '', // controller namespace. eg: 'app\\controllers'
-     *  'controllerSuffix' => '',    // controller suffix. eg: 'Controller'
-     * ]
+     * @param string $controllerNamespace controller namespace. eg: 'app\\controllers'
+     * @param string $controllerSuffix controller suffix. eg: 'Controller'
      * @return bool|callable
      */
-    public static function matchAutoRoute($path, array $opts)
+    public static function matchAutoRoute($path, $controllerNamespace, $controllerSuffix)
     {
-        // not enabled
-        if (!$opts || !isset($opts['enable']) || !$opts['enable']) {
-            return false;
-        }
-
-        $cnp = $opts['controllerNamespace'];
-        $sfx = $opts['controllerSuffix'];
+        $cnp = $controllerNamespace;
+        $sfx = $controllerSuffix;
         $tmp = trim($path, '/- ');
 
         // one node. eg: 'home'
@@ -806,20 +792,6 @@ class Router implements RouterInterface
     public static function getSupportedMethods()
     {
         return self::SUPPORTED_METHODS;
-    }
-
-    /**
-     * @param null|string $name
-     * @param null|mixed $default
-     * @return array
-     */
-    public function getConfig($name = null, $default = null)
-    {
-        if ($name) {
-            return isset($this->config[$name]) ? $this->config[$name] : $default;
-        }
-
-        return $this->config;
     }
 
     /**
