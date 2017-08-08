@@ -29,6 +29,10 @@ class Application extends \swoft\base\Application
     public function init($startFile = '')
     {
         $this->status['startFile'] = $startFile;
+
+        // 注册全局错误错误
+        $this->registerErrorHandler();
+
         $this->loadSwoftIni();
     }
 
