@@ -1,7 +1,17 @@
 <?php
 
-$e = new Exception('error exception');
-echo (string)$e;
+ini_set('display_errors', false);
+
+register_shutdown_function(function (){
+    var_dump(error_get_last());
+    if ($error = error_get_last()) {
+        var_dump($error);
+    }
+});
+
+var_dump(empty(null));
+
+//echo func();
 
 exit();
 

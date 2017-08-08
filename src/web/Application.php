@@ -132,11 +132,7 @@ class Application extends \swoft\base\Application
                 return $this->handleNotFound($path);
             }
 
-            /* @var Controller $controller */
-            list($controller, $actionId, $params) = $this->createController($path, $info);
-
-            /* run controller with filters */
-            $this->runControllerWithFilters($swfRequest, $swfResponse, $controller, $actionId, $params);
+            $this->runController($path, $info);
 
         } catch (\Exception $e) {
             $swfResponse->setResponseContent($e->getMessage());
@@ -144,6 +140,21 @@ class Application extends \swoft\base\Application
         }
 
         $this->after();
+    }
+
+    /**
+     * 执行控制器
+     *
+     * @param string $path  uri路径
+     * @param array  $info  参数
+     */
+    public function runController(string $path, array $info)
+    {
+        /* @var Controller $controller */
+        list($controller, $actionId, $params) = $this->createController($path, $info);
+
+        /* run controller with filters */
+        $this->runControllerWithFilters($controller, $actionId, $params);
     }
 
     public function handleNotFound($path)
@@ -231,14 +242,15 @@ class Application extends \swoft\base\Application
     /**
      * run controller with filters
      *
-     * @param Request    $request    请求对象
-     * @param Response   $response   响应对象
      * @param Controller $controller 控制器
      * @param string     $actionId   actionID
      * @param array      $params     action参数
      */
-    private function runControllerWithFilters(Request $request, Response $response,  Controller $controller, string $actionId, array $params)
+    private function runControllerWithFilters(Controller $controller, string $actionId, array $params)
     {
+        $request = App::getRequest();
+        $response = App::getResponse();
+
         /* @var FilterChain $filter */
         $filter = App::getBean('filter');
         $result = $filter->doFilter($request, $response, $filter);
@@ -256,6 +268,8 @@ class Application extends \swoft\base\Application
     }
 
     /**
+     * 获取server
+     *
      * @return \Swoole\Http\Server
      */
     public function getServer()

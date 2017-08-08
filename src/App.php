@@ -10,6 +10,7 @@ use swoft\log\Logger;
 use swoft\pool\RedisPool;
 use swoft\service\IPack;
 use swoft\web\Application;
+use swoft\web\ErrorHandler;
 
 /**
  * 应用简写类
@@ -70,6 +71,16 @@ class App
     public static function getBean(string $name)
     {
         return ApplicationContext::getBean($name);
+    }
+
+    /**
+     * 全局错误处理器
+     *
+     * @return ErrorHandler
+     */
+    public static function getErrorHandler()
+    {
+        return ApplicationContext::getBean('errorHanlder');
     }
 
     /**
@@ -226,6 +237,18 @@ class App
     public static function getCoroutineId()
     {
         return \Swoole\Coroutine::getuid();
+    }
+
+    /**
+     * @return bool 当前是否是worker状态
+     */
+    public static function isWorkerStatus()
+    {
+        $server = self::$app->getServer();
+        if($server != null && $server->taskworker == false){
+            return true;
+        }
+        return false;
     }
 
     /**

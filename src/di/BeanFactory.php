@@ -7,7 +7,6 @@ use DI\ContainerBuilder;
 use Monolog\Formatter\LineFormatter;
 use swoft\base\Config;
 use swoft\base\Timer;
-use swoft\exception\ErrorHandler;
 use swoft\filter\ExactUriPattern;
 use swoft\filter\ExtUriPattern;
 use swoft\filter\FilterChain;
@@ -17,6 +16,7 @@ use swoft\App;
 use swoft\pool\balancer\RandomBalancer;
 use swoft\service\JsonPacker;
 use swoft\web\Application;
+use swoft\web\ErrorHandler;
 
 /**
  * bean工厂

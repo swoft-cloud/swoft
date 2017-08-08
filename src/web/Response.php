@@ -3,7 +3,7 @@
 namespace swoft\web;
 
 /**
- *
+ * 响应response
  *
  * @uses      Response
  * @version   2017年05月11日
@@ -21,6 +21,13 @@ class Response extends \swoft\base\Response
     private $charset = "utf-8";
     private $responseContent = "";
     private $format = self::FORMAT_HTML;
+
+    /**
+     * @var \Exception 未知异常
+     */
+    private $exception = null;
+
+
     private $contentTypes = [
         self::FORMAT_XML => 'text/xml',
         self::FORMAT_HTML => 'text/html',
@@ -51,6 +58,22 @@ class Response extends \swoft\base\Response
 
     public function setCharset(string $charset){
         $this->charset = $charset;
+    }
+
+    /**
+     * @return \Exception 异常
+     */
+    public function getException(): \Exception
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param \Exception $exception 初始化异常
+     */
+    public function setException(\Exception $exception)
+    {
+        $this->exception = $exception;
     }
 
     /**

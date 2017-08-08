@@ -16,7 +16,7 @@ use swoft\web\Request;
 use swoft\web\Response;
 
 /**
- *
+ * demo使用案例
  *
  * @uses      IndexController
  * @version   2017年04月25日
@@ -167,8 +167,7 @@ class IndexController extends Controller
         $ret = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
         $ret2 = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
         $data['deferResult'] = $ret->getResult();
-        $data['deferResult2'] = $ret->getResult();
-
+        $data['deferResult2'] = $ret2->getResult();
 
         $this->outputJson($data);
     }
