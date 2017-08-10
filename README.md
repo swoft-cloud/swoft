@@ -127,7 +127,9 @@ return [
 ```php
 //匹配 GET 请求. 处理器是个闭包 Closure
 $router->get('/', function () {
-    echo 'hello';
+    $resposne = RequestContext::getResponse();
+    $resposne->setResponseContent("hello");
+    $resposne->send();
 });
 
 // 匹配参数 'test/john'
@@ -162,19 +164,27 @@ $router->map(['get', 'post'], '/user/login', function () {
 
 // 允许任何请求方法
 $router->any('/home', function () {
-    echo 'hello, you request page is /home';
+    $resposne = RequestContext::getResponse();
+    $resposne->setResponseContent("hello, you request page is /home");
+    $resposne->send();
 });
 $router->any('/404', function () {
-    echo "Sorry,This page {$_GET['_src_path']} not found.";
+    $resposne = RequestContext::getResponse();
+    $resposne->setResponseContent("Sorry,This page not found.");
+    $resposne->send();
 });
 
 // 路由组
 $router->group('/user', function ($router) {
     $router->get('/', function () {
-        echo 'hello. you access: /user/';
+        $resposne = RequestContext::getResponse();
+        $resposne->setResponseContent("hello. you access: /user/");
+        $resposne->send();
     });
     $router->get('/index', function () {
-        echo 'hello. you access: /user/index';
+        $resposne = RequestContext::getResponse();
+        $resposne->setResponseContent("hello. you access: /user/index");
+        $resposne->send();
     });
 });
 
@@ -191,11 +201,13 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
 
 // 配置 matchAll 可用于拦截所有请求，目前有如下两种方式。
 //路由path
-'matchAll' => '/about', 
+'matchAll' => '/about',
 
 //回调
 'matchAll' => function () {
-    echo 'System Maintaining ... ...';
+    $resposne = RequestContext::getResponse();
+    $resposne->setResponseContent("System Maintaining ... ...");
+    $resposne->send();
 },
 ```
 
