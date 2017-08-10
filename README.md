@@ -3,9 +3,6 @@
         <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
     </a>
 </p>
-
-
-[![php version](https://img.shields.io/badge/php-7.0-blue.svg)](http://php.net/)
 ------------
 
 
@@ -23,18 +20,18 @@ swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器�
 - redis连接池
 - mysql连接池
 
-
-
-后续
-------------
-
-- restapi
+## Future
+- 连接池等待队列
+- 国际化i18
+- restful风格
 - mysql数据库ORM
-- crontab定时任务
 - inotify自动reload
+- crontab定时任务
 - 服务监控
 - 日志统计分析
 - 统一配置中心
+
+
 
 优化
 ------------
