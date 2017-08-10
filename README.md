@@ -1,11 +1,3 @@
-<p align="center">
-    <a href="https://github.com/stelin/swoft" target="_blank">
-        <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
-    </a>
-</p>
-------------
-
-
 简介(Introduction)
 ------------
 swoft是基于swoole协程的高性能PHP微服务框架，内置http服务器。框架全协程实现，性能优于传统的php-fpm模式。
