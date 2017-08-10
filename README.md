@@ -33,12 +33,51 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 # 快速入门
 ## 文档(Documentation)
-
 [**中文文档**](https://stelin.gitbooks.io/swoft)
 
 ## 环境要求
 ## 安装与配置
 ## 控制器
+## 连接池
+连接池使用简单，只需在base.php里面配置对应服务连接池即可。
+
+```php
+return [
+
+    // ...
+
+    // RCP打包、解包
+    "packer"          => [
+        'class' => JsonPacker::class
+    ],
+    // 服务发现bean, 目前系统支持consul,只行实现
+    'consulProvider'       => [
+        'class' => \swoft\service\ConsulProvider::class
+    ],
+
+    // user服务连接池
+    "userPool"            => [
+        "class"           => \swoft\pool\ServicePool::class,
+        "uri"             => '127.0.0.1:8099,127.0.0.1:8099', // useProvider为false时，从这里识别配置
+        "maxIdel"         => 6,// 最大空闲连接数
+        "maxActive"       => 10,// 最大活跃连接数
+        "maxWait"         => 20,// 最大的等待连接数
+        "timeout"         => '${config.service.user.timeout}',// 引用properties.php配置值
+        "balancer"        => '${randomBalancer}',// 连接创建负载
+        "serviceName"     => 'user',// 服务名称，对应连接池的名称格式必须为xxxPool/xxxBreaker
+        "useProvider"     => false,
+        'serviceprovider' => '${consulProvider}' // useProvider为true使用，用于发现服务
+    ],
+    // user服务熔断器
+    "userBreaker" => [
+        'class'           => \swoft\circuit\CircuitBreaker::class,
+        'delaySwithTimer' => 8000
+    ],
+
+    // ...
+
+];
+```
 
 ## 缓存
 缓存目前只支持redis,redis使用有两种方式直接调用和延迟收包调用。
@@ -64,7 +103,7 @@ $data = [
 ```
 
 ## RPC调用
-PC及内部服务通过监听TCP端口实现，通过swoft.ini日志配置TCP监听端口信息。
+RPC及内部服务通过监听TCP端口实现，通过swoft.ini日志配置TCP监听端口信息。RPC调用内部实现连接池、熔断器、服务注册与发现等。
 
 ```php
 // 直接调用
@@ -87,8 +126,8 @@ $deferRet2 = $users2;
 ```php
 // 直接调用
 $requestData = [
-'name' => 'boy',
-'desc' => 'php'
+	'name' => 'boy',
+	'desc' => 'php'
 ];
 
 $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
@@ -124,5 +163,9 @@ App::profileEnd("tag");
 // 统计缓存命中率
 App::counting("cache", 1, 10);
 ```
+
+
+
+
 
 
