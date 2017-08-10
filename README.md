@@ -217,7 +217,7 @@ App::error(new \Exception("error exception"));
 App::error("this errro log");
 App::info("this errro log");
 
-// 数组出
+// 数组
 App::error(['name' => 'boy']);
 App::debug("this errro log");
 
