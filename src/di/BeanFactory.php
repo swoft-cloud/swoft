@@ -14,6 +14,7 @@ use swoft\filter\PathUriPattern;
 use swoft\helpers\ArrayHelper;
 use swoft\App;
 use swoft\pool\balancer\RandomBalancer;
+use swoft\pool\balancer\RoundRobinBalancer;
 use swoft\service\JsonPacker;
 use swoft\web\Application;
 use swoft\web\ErrorHandler;
@@ -152,7 +153,6 @@ class BeanFactory implements BeanFactoryInterface
         if (method_exists($bean, 'init')) {
             $bean->init();
         }
-
         return $bean;
     }
 
@@ -254,16 +254,17 @@ class BeanFactory implements BeanFactoryInterface
     private static function coreBeans()
     {
         return [
-            'config'          => ['class' => Config::class],
-            'application'     => ['class' => Application::class],
-            'errorHanlder'    => ['class' => ErrorHandler::class],
-            "packer"          => ['class' => JsonPacker::class],
-            'timer'           => ['class' => Timer::class],
-            'randomBalancer'  => ['class' => RandomBalancer::class],
-            'extUriPattern'   => ['class' => ExtUriPattern::class],
-            'pathUriPattern'  => ['class' => PathUriPattern::class],
-            'exactUriPattern' => ['class' => ExactUriPattern::class],
-            'filter'          => [
+            'config'             => ['class' => Config::class],
+            'application'        => ['class' => Application::class],
+            'errorHanlder'       => ['class' => ErrorHandler::class],
+            "packer"             => ['class' => JsonPacker::class],
+            'timer'              => ['class' => Timer::class],
+            'randomBalancer'     => ['class' => RandomBalancer::class],
+            'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
+            'extUriPattern'      => ['class' => ExtUriPattern::class],
+            'pathUriPattern'     => ['class' => PathUriPattern::class],
+            'exactUriPattern'    => ['class' => ExactUriPattern::class],
+            'filter'             => [
                 'class'             => FilterChain::class,
                 'filterUriPatterns' => [
                     '${exactUriPattern}',
@@ -271,7 +272,7 @@ class BeanFactory implements BeanFactoryInterface
                     '${pathUriPattern}',
                 ]
             ],
-            "lineFormate"     => [
+            "lineFormate"        => [
                 'class'      => LineFormatter::class,
                 "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
                 'dateFormat' => 'Y/m/d H:i:s'

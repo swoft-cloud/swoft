@@ -178,4 +178,25 @@ class IndexController extends Controller
             'get' => $this->get()
         ], 'suc');
     }
+
+    public function actionDemo()
+    {
+        // 获取所有GET参数
+        $get = $this->get();
+        // 获取name参数默认值defaultName
+        $name = $this->get('name', 'defaultName');
+        // 获取所有POST参数
+        $post = $this->post();
+        // 获取name参数默认值defaultName
+        $name = $this->post('name', 'defaultName');
+        // 获取所有参，包括GET或POST
+        $request = $this->request();
+        // 获取name参数默认值defaultName
+        $name = $this->request('name', 'defaultName');
+        //json方式显示数据
+        //$this->outputJson("data", 'suc');
+
+        // 重定向一个URI
+        $this->redirect("/login/index");
+    }
 }

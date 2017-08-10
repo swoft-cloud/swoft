@@ -11,4 +11,6 @@ define('RUNTIME_PATH', BASE_PATH . '/runtime/' . SYSTEM_NAME);
 define('VIEWS_PATH', APP_PATH . '/views');
 // swoft启动配置文件
 define('SETTING_PATH', BASE_PATH . '/bin/swoft.ini');
+// swoole日志文件
+define("SWOOLE_LOG_PATH", RUNTIME_PATH."/swoole.log");
 

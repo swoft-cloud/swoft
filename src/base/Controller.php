@@ -124,30 +124,48 @@ class Controller
     /**
      * get方法参数，等同$_GET
      *
-     * @return array
+     * @param string $name      默认为空，返回所有GEG参数
+     * @param mixed  $default   name不为空是有效
+     *
+     * @return mixed
      */
-    protected function get()
+    protected function get($name = "", $default = null)
     {
+        if(empty($name)){
+            return  App::getRequest()->getParameter($name, $default);
+        }
         return App::getRequest()->getGetParameters();
     }
 
     /**
-     * post方法参数，等同$_GET
+     * get方法参数，等同$_GET
      *
-     * @return array
+     * @param string $name      默认为空，返回所有GEG参数
+     * @param mixed  $default   name不为空是有效
+     *
+     * @return mixed
      */
-    protected function post()
+    protected function post($name = "", $default = null)
     {
+        if(empty($name)){
+            return  App::getRequest()->getParameter($name, $default);
+        }
         return App::getRequest()->getPostParameters();
     }
 
     /**
      * 请求参数，等同$_REQUEST
      *
-     * @return array
+     * @param string $name      默认为空，返回所有GEG参数
+     * @param mixed  $default   name不为空是有效
+     *
+     * @return mixed
      */
-    protected function request()
+    protected function request($name = "", $default = null)
     {
+        if(empty($name)){
+            return  App::getRequest()->getParameter($name, $default);
+        }
         return App::getRequest()->getParameters();
     }
 }

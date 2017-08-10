@@ -99,6 +99,36 @@ class RequestContext
     }
 
     /**
+     * 设置或修改，当前请求数据共享值
+     *
+     * @param string $key
+     * @param mixed  $val
+     */
+    public static function setContextDataByKey(string $key, $val)
+    {
+        $coroutineId = self::getcoroutine();
+        self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key] = $val;
+    }
+
+    /**
+     * 获取当前请求数据一个KEY的值
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function getContextDataByKey(string $key, $default = null)
+    {
+        $coroutineId = self::getcoroutine();
+        if(isset(self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key])){
+            return self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key];
+        }
+
+        App::warning("RequestContext data数据不存在key,key=".$key);
+        return $default;
+    }
+
+    /**
      * 销毁当前协程数据
      */
     public static function destory()
