@@ -150,12 +150,14 @@ $router->get('/hello[/{name}]', function ($name = 'No') {
 
 // 匹配 POST 请求
 $router->post('/user/login', function () {
-    var_dump($_POST);
+    $request = App::getRequest();
+    var_dump($request->getGetParameters(), $request->getPostParameters());
 });
 
 // 匹配 GET 或者 POST
 $router->map(['get', 'post'], '/user/login', function () {
-    var_dump($_GET, $_POST);
+    $request = App::getRequest();
+    var_dump($request->getGetParameters(), $request->getPostParameters());
 });
 
 // 允许任何请求方法
