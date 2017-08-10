@@ -127,7 +127,7 @@ return [
 ```php
 //匹配 GET 请求. 处理器是个闭包 Closure
 $router->get('/', function () {
-    $resposne = RequestContext::getResponse();
+    $resposne = App::getResponse();
     $resposne->setResponseContent("hello");
     $resposne->send();
 });
@@ -169,7 +169,7 @@ $router->any('/home', function () {
     $resposne->send();
 });
 $router->any('/404', function () {
-    $resposne = RequestContext::getResponse();
+    $resposne = App::getResponse();
     $resposne->setResponseContent("Sorry,This page not found.");
     $resposne->send();
 });
@@ -177,12 +177,12 @@ $router->any('/404', function () {
 // 路由组
 $router->group('/user', function ($router) {
     $router->get('/', function () {
-        $resposne = RequestContext::getResponse();
+        $resposne = App::getResponse();
         $resposne->setResponseContent("hello. you access: /user/");
         $resposne->send();
     });
     $router->get('/index', function () {
-        $resposne = RequestContext::getResponse();
+        $resposne = App::getResponse();
         $resposne->setResponseContent("hello. you access: /user/index");
         $resposne->send();
     });
@@ -205,7 +205,7 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
 
 //回调
 'matchAll' => function () {
-    $resposne = RequestContext::getResponse();
+    $resposne = App::getResponse();
     $resposne->setResponseContent("System Maintaining ... ...");
     $resposne->send();
 },
