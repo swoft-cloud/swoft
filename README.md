@@ -5,7 +5,7 @@
 </p>
 
 
-# 简介(Introduction)
+# 简介
 swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务器。框架全协程实现，性能优于传统的php-fpm模式。
 
 - 基于swoole易扩展
@@ -32,11 +32,75 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - 统一配置中心
 
 # 快速入门
-## 文档(Documentation)
-[**中文文档**](https://stelin.gitbooks.io/swoft)
+## 文档
+[**中文**](https://stelin.gitbooks.io/swoft)
 
 ## 环境要求
-## 安装与配置
+1. hiredis
+2. composer
+2. PHP7.X
+3. Swoole2.x且开启协程和异步redis
+
+## 安装
+
+* clone项目
+* composer install安装依赖
+* 配置base.php
+* 设置启动参数swoft.ini
+
+## 启动
+
+启动服务支持HTTP和TCP同时启动，swoft.ini中配置。
+
+**常用命令**
+
+```php
+//启动服务
+php swoft.php start
+
+// 重启
+php swoft.php restart
+
+// 重新加载
+php swoft.php reload
+
+// 关闭服务
+php swoft.php stop
+
+```
+
+**Swoft.ini参数**
+
+```shell
+[swoft]
+;;;;;;;;;;;;;;;;;;;
+; About swoft.ini   ;
+;;;;;;;;;;;;;;;;;;;
+
+[server]
+pfile = '/tmp/swoft.pid';
+pname = "php-swf";
+
+[tcp]
+enable = 1;
+host = "0.0.0.0"
+port = 8099
+type = SWOOLE_SOCK_TCP
+
+[http]
+host = "0.0.0.0"
+port = 80
+model = SWOOLE_PROCESS
+type = SWOOLE_SOCK_TCP
+
+[setting]
+worker_num = 4
+max_request = 10000
+daemonize = 0;
+dispatch_mode = 2
+log_file = '../runtime/swoft/swoole.log';
+```
+
 ## 控制器
 ## 连接池
 连接池使用简单，只需在base.php里面配置对应服务连接池即可。
@@ -120,14 +184,14 @@ $deferRet = $users;
 $deferRet2 = $users2;
 ```
 
-## httpClient
+## HttpClient
 系统提供HttpClient来实现HTTP调用，目前有两种方式，直接调用和延迟收包调用，延迟收包，一般用于并发调用。
 
 ```php
 // 直接调用
 $requestData = [
-	'name' => 'boy',
-	'desc' => 'php'
+  'name' => 'boy',
+  'desc' => 'php'
 ];
 
 $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
