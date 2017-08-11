@@ -34,8 +34,8 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 # 快速入门
 ## 文档
 [**中文文档**](https://swoft.gitbooks.io/swoft/)
-<br>
-QQ交流群:548173319
+
+QQ交流群：548173319
 
 ## 环境要求
 1. hiredis
