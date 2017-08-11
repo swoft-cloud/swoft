@@ -199,4 +199,24 @@ class IndexController extends Controller
         // 重定向一个URI
         $this->redirect("/login/index");
     }
+
+    public function actionConfig()
+    {
+        $data = [];
+
+        // 数组使用
+        $version = App::$properties['version'];
+        $data['version'] = $version;
+
+        // 对象使用
+        $service = App::$properties->get('service');
+        $data['service'] = $service;
+
+        //迭代器使用
+        foreach (App::$properties as $key => $val) {
+            $data['ary'][$key] = $val;
+        }
+
+        $this->outputJson($data, 'suc');
+    }
 }

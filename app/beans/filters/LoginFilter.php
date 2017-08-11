@@ -8,7 +8,7 @@ use swoft\web\Request;
 use swoft\web\Response;
 
 /**
- *
+ * 登陆验证
  *
  * @uses      CommonParamsFilter
  * @version   2017年05月15日

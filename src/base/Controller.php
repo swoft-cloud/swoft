@@ -131,8 +131,8 @@ class Controller
      */
     protected function get($name = "", $default = null)
     {
-        if(empty($name)){
-            return  App::getRequest()->getParameter($name, $default);
+        if (!empty($name)) {
+            return App::getRequest()->getParameter($name, $default);
         }
         return App::getRequest()->getGetParameters();
     }
@@ -147,8 +147,8 @@ class Controller
      */
     protected function post($name = "", $default = null)
     {
-        if(empty($name)){
-            return  App::getRequest()->getParameter($name, $default);
+        if (!empty($name)) {
+            return App::getRequest()->getParameter($name, $default);
         }
         return App::getRequest()->getPostParameters();
     }
@@ -163,8 +163,8 @@ class Controller
      */
     protected function request($name = "", $default = null)
     {
-        if(empty($name)){
-            return  App::getRequest()->getParameter($name, $default);
+        if (!empty($name)) {
+            return App::getRequest()->getParameter($name, $default);
         }
         return App::getRequest()->getParameters();
     }
