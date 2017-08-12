@@ -3,7 +3,7 @@
 namespace swoft\web;
 
 /**
- *
+ * 数据返回接口
  *
  * @uses      IResult
  * @version   2017年07月15日

@@ -8,6 +8,7 @@ use swoft\base\RequestContext;
 use swoft\base\Timer;
 use swoft\log\Logger;
 use swoft\pool\RedisPool;
+use swoft\service\ConsulProvider;
 use swoft\service\IPack;
 use swoft\web\Application;
 use swoft\web\ErrorHandler;
@@ -46,6 +47,16 @@ class App
     public static function getRedisPool()
     {
         return self::getBean('redisPool');
+    }
+
+    /**
+     * consul对象
+     *
+     * @return ConsulProvider
+     */
+    public static function getConsulProvider()
+    {
+        return self::getBean('consulProvider');
     }
 
     /**
@@ -244,8 +255,11 @@ class App
      */
     public static function isWorkerStatus()
     {
+        if (self::$app == null) {
+            return false;
+        }
         $server = self::$app->getServer();
-        if($server != null && $server->taskworker == false){
+        if ($server != null && $server->taskworker == false) {
             return true;
         }
         return false;

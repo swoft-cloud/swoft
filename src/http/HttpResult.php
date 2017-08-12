@@ -6,7 +6,7 @@ use swoft\App;
 use swoft\web\AbstractResult;
 
 /**
- *
+ * Http结果
  *
  * @uses      HttpResult
  * @version   2017年07月15日

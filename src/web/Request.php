@@ -3,7 +3,7 @@
 namespace swoft\web;
 
 /**
- *
+ * Request请求对象
  *
  * @uses      Request
  * @version   2017年05月11日
@@ -14,15 +14,8 @@ namespace swoft\web;
 class Request extends \swoft\base\Request
 {
     /**
-     * @param string $key
-     * @return string
-     */
-    public function getHeader(string $key, $default = ""): string
-    {
-        return $default;
-    }
-
-    /**
+     * 请求方法
+     *
      * @return string
      */
     public function getMethod(): string
@@ -31,6 +24,8 @@ class Request extends \swoft\base\Request
     }
 
     /**
+     * 请求path
+     *
      * @return string
      */
     public function getPathInfo(): string
@@ -39,6 +34,8 @@ class Request extends \swoft\base\Request
     }
 
     /**
+     * 请求参数串
+     *
      * @return string
      */
     public function getQueryString(): string
@@ -47,6 +44,8 @@ class Request extends \swoft\base\Request
     }
 
     /**
+     * 请求URI
+     *
      * @return string
      */
     public function getRequestUri(): string
@@ -54,24 +53,71 @@ class Request extends \swoft\base\Request
         return $this->server['request_uri'];
     }
 
+    /**
+     * remote ip
+     *
+     * @return string
+     */
     public function getRemoteIp()
     {
         return $this->server['remote_addr'];
     }
 
+    /**
+     * 获取所有cookes
+     *
+     * @return array
+     */
     public function getCookies(): array
     {
-
-    }
-    public function getCookie(string $name): string
-    {
-
+        return $this->cookie;
     }
 
-    public function getUserAgent()
+    /**
+     * 获取所有header
+     *
+     * @return array
+     * <pre>
+     * [
+     *  'host' => '192.168.99.100',
+     *  'connection' => 'keep-alive',
+     *  ...
+     * ]
+     * </pre>
+     */
+    public function getHeaders()
     {
-        if(isset($this->request['header']['user-agent'])){
+        return $this->header;
+    }
 
+    /**
+     * 获取header
+     *
+     * @param string $key       KEY名称
+     * @param string $default   默认值
+     *
+     * @return string
+     */
+    public function getHeader(string $key, string $default = ""): string
+    {
+        if(isset($this->header[$key])){
+            return $this->header[$key];
         }
+        return $default;
+    }
+
+    /**
+     * 获取用户user agent
+     *
+     * @param string $deafult 默认值
+     *
+     * @return string
+     */
+    public function getUserAgent(string $deafult = "")
+    {
+        if(isset($this->header['user-agent'])){
+            return $this->header['user-agent'];
+        }
+        return $deafult;
     }
 }

@@ -19,7 +19,6 @@ class ErrorHandler
     /**
      * @var string 统一错误error
      */
-//    private $errorAction = "/error/index";
     private $errorAction = "";
 
     /**

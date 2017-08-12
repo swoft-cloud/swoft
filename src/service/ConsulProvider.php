@@ -2,10 +2,11 @@
 
 namespace swoft\service;
 
+use swoft\App;
 use swoft\http\HttpClient;
 
 /**
- *
+ * consul服务
  *
  * @uses      ConsulProvider
  * @version   2017年07月23日
@@ -15,21 +16,42 @@ use swoft\http\HttpClient;
  */
 class ConsulProvider implements ServiceProvider
 {
+    /**
+     * @var string consul服务地址
+     */
     private $address = '127.0.0.1:80';
 
+    /**
+     * 获取服务可用的服务列表
+     *
+     * @param string $serviceName 服务名称
+     *
+     * @return array
+     * <pre>
+     * [
+     *   '127.0.0.1:89',
+     *   '127.0.0.1:88',
+     *   ...
+     * ]
+     * <pre>
+     */
     public function getServiceList(string $serviceName)
     {
+        // consul获取健康的节点集合
         $url = "http://" . $this->address . "/v1/health/service/{$serviceName}?passing";
-        $resutl = HttpClient::call($url, HttpClient::GET);
-        $services = json_decode($resutl, true);
+        $result = HttpClient::call($url, HttpClient::GET);
+        $services = json_decode($result, true);
 
+        // 数据格式化
         $nodes = [];
         foreach ($services as $service) {
             if (!isset($service['Service'])) {
+                App::warning("consul[Service] 服务健康节点集合，数据格式不不正确，data=".$result);
                 continue;
             }
             $serviceInfo = $service['Service'];
             if (!isset($serviceInfo['Address']) || !isset($serviceInfo['Port'])) {
+                App::warning("consul[Address] Or consul[Port] 服务健康节点集合，数据格式不不正确，data=".$result);
                 continue;
             }
             $address = $serviceInfo['Address'];
@@ -39,10 +61,19 @@ class ConsulProvider implements ServiceProvider
             $nodes[] = $uri;
         }
 
-        var_dump($nodes);
         return $nodes;
     }
 
+    /**
+     * 注册一个服务到consul
+     *
+     * @param string $serviceName   服务名称
+     * @param string $host          HOST
+     * @param  int   $port          PORT
+     * @param array  $tags          tags
+     * @param int    $interval      心跳时间，单位秒
+     * @param int    $timeout       超时时间，单位秒
+     */
     public function registerService(string $serviceName, $host, $port, $tags = [], $interval = 10, $timeout = 1)
     {
         $url = "http://" . $this->address . "/v1/agent/service/register";
@@ -63,7 +94,13 @@ class ConsulProvider implements ServiceProvider
         $this->putService($service, $url);
     }
 
-    private function putService($service, $url)
+    /**
+     * CURL注册服务
+     *
+     * @param array  $service   服务信息集合
+     * @param string $url       consulURI
+     */
+    private function putService(array $service, string $url)
     {
         $contentJson = json_encode($service);
         $headers = [
