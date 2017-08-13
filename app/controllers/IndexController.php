@@ -6,6 +6,7 @@ use app\models\logic\IndexLogic;
 use DI\Annotation\Inject;
 use swoft\base\ApplicationContext;
 use swoft\cache\RedisClient;
+use swoft\filter\FilterChain;
 use swoft\http\HttpClient;
 use swoft\log\FileHandler;
 use swoft\log\Logger;

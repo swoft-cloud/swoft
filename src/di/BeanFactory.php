@@ -11,6 +11,7 @@ use swoft\filter\ExactUriPattern;
 use swoft\filter\ExtUriPattern;
 use swoft\filter\FilterChain;
 use swoft\filter\PathUriPattern;
+use swoft\filter\UriPattern;
 use swoft\helpers\ArrayHelper;
 use swoft\App;
 use swoft\pool\balancer\RandomBalancer;
@@ -261,16 +262,10 @@ class BeanFactory implements BeanFactoryInterface
             'timer'              => ['class' => Timer::class],
             'randomBalancer'     => ['class' => RandomBalancer::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'extUriPattern'      => ['class' => ExtUriPattern::class],
-            'pathUriPattern'     => ['class' => PathUriPattern::class],
-            'exactUriPattern'    => ['class' => ExactUriPattern::class],
+            'uriPattern'    => ['class' => UriPattern::class],
             'filter'             => [
                 'class'             => FilterChain::class,
-                'filterUriPatterns' => [
-                    '${exactUriPattern}',
-                    '${extUriPattern}',
-                    '${pathUriPattern}',
-                ]
+                'filterUriPattern' => '${uriPattern}'
             ],
             "lineFormate"        => [
                 'class'      => LineFormatter::class,

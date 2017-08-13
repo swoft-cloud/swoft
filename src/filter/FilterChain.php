@@ -22,9 +22,9 @@ class FilterChain implements IFilter
     private $filters = [];
 
     /**
-     * @var array 所有过滤规则表
+     * @var IUriPattern
      */
-    private $filterUriPatterns = [];
+    private $filterUriPattern;
 
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0)
     {
@@ -55,16 +55,7 @@ class FilterChain implements IFilter
         $filter = $this->filters[$currentIndex];
         $uriPattern = $filter->getUriPattern();
 
-        $match = false;
-
-        /* @var IUriPattern $filterUriPattern*/
-        foreach ($this->filterUriPatterns as $filterUriPattern){
-            if($filterUriPattern->isMatch($uri, $uriPattern)){
-                $match = true;
-                continue;
-            }
-        }
-
+        $match = $this->filterUriPattern->isMatch($uri, $uriPattern);
         if($match){
             return [$filter, $currentIndex];
         }

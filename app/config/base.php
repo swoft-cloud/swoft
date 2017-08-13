@@ -34,7 +34,7 @@ return [
     ],
     'loginFilter'        => [
         'class'      => \app\beans\filters\LoginFilter::class,
-        'uriPattern' => '/index/login',
+        'uriPattern' => '/index/login,/index/login2',
     ],
     'filter'             => [
         'filters' => [

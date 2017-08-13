@@ -198,13 +198,11 @@ class Application extends \swoft\base\Application
             return false;
         }
 
+        // 请求数测试
         $this->count = $this->count + 1;
-
-        echo "count= " . $this->count . "---------\n";
 
         $this->beforeRequest($request, $response);
         $swfRequest = RequestContext::getRequest();
-        $swfResponse = RequestContext::getResponse();
 
         try {
 
@@ -212,7 +210,9 @@ class Application extends \swoft\base\Application
             $router = App::getBean('router');
 
             // 路由解析
+            App::profileStart("router.match");
             list($path, $info) = $router->match($swfRequest->getRequestUri(), $swfRequest->getMethod());
+            App::profileEnd("router.match");
 
             // 路由未定义处理
             if (!$info) {
@@ -223,8 +223,7 @@ class Application extends \swoft\base\Application
             $this->runController($path, $info);
 
         } catch (\Exception $e) {
-            $swfResponse->setResponseContent($e->getMessage());
-            $swfResponse->send();
+            App::getErrorHandler()->handlerException($e);
         }
 
         $this->after();
@@ -349,9 +348,13 @@ class Application extends \swoft\base\Application
         $request = App::getRequest();
         $response = App::getResponse();
 
+
         /* @var FilterChain $filter */
         $filter = App::getBean('filter');
+
+        App::profileStart("filter");
         $result = $filter->doFilter($request, $response, $filter);
+        App::profileEnd("filter");
 
         if ($result) {
             $response = $controller->run($actionId, $params);

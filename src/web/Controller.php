@@ -2,6 +2,8 @@
 
 namespace swoft\web;
 
+use app\beans\filters\CommonParamsFilter;
+use app\beans\filters\LoginFilter;
 use swoft\base\RequestContext;
 use swoft\App;
 use swoft\helpers\ResponseHelper;
@@ -26,6 +28,14 @@ class Controller extends \swoft\base\Controller
     public function redirect(string $uri, array $params = [])
     {
         $this->run($uri, $params);
+    }
+
+    public function filters()
+    {
+        return [
+            CommonParamsFilter::class,
+            LoginFilter::class,
+        ];
     }
 
     /**
