@@ -33,6 +33,11 @@ class Logger extends \Monolog\Logger
     public $flushInterval = 10;
 
     /**
+     * @var bool 每个请求完成刷新一次日志到磁盘，默认未开启
+     */
+    public $flushRequest = false;
+
+    /**
      * @var array 性能日志
      */
     public $profiles = [];
@@ -384,7 +389,8 @@ class Logger extends \Monolog\Logger
 
         $this->messages[] = $message;
 
-        if (count($this->messages) >= $this->flushInterval) {
+        // 一个请求完成刷新一次或达到刷新的次数
+        if ($this->flushRequest || count($this->messages) >= $this->flushInterval) {
             $this->flushLog();
         }
 

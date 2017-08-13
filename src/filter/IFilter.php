@@ -29,7 +29,7 @@ interface IFilter
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0);
 
     /**
-     * 未能通过过滤，逻辑处理，需要返回一个response对象
+     * 未能通过过滤，逻辑处理
      *
      * @param Request  $request
      * @param Response $response

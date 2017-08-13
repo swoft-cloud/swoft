@@ -3,7 +3,7 @@
 namespace swoft\filter;
 
 /**
- *
+ * 过滤器规则匹配
  *
  * @uses      UriPattern
  * @version   2017年08月13日
@@ -13,6 +13,14 @@ namespace swoft\filter;
  */
 class UriPattern implements IUriPattern
 {
+    /**
+     * 规则匹配
+     *
+     * @param string $uri        请求uri
+     * @param string $uriPattern 具体过滤规则，多个逗号隔开。比如"/a/b/c,/c/e"
+     *
+     * @return bool 返回uri是否匹配当前规则
+     */
     public function isMatch(string $uri, string $uriPattern): bool
     {
         $searchs = [
@@ -28,10 +36,10 @@ class UriPattern implements IUriPattern
 
         $isMatch = false;
         $uriPatterns = explode(",", $uriPattern);
-        foreach ($uriPatterns as $pattern){
+        foreach ($uriPatterns as $pattern) {
             $reg = str_replace($searchs, $replaces, $pattern);
             $result = preg_match('/^' . $reg . '$/', $uri);
-            if($result){
+            if ($result) {
                 $isMatch = true;
                 break;
             }
