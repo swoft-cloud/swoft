@@ -23,7 +23,7 @@ class Response extends \swoft\base\Response
     private $format = self::FORMAT_HTML;
 
     /**
-     * @var \Exception 未知异常
+     * @var \Throwable 未知异常
      */
     private $exception = null;
 
@@ -92,9 +92,9 @@ class Response extends \swoft\base\Response
     /**
      * 获取异常
      *
-     * @return \Exception 异常
+     * @return \Throwable 异常
      */
-    public function getException(): \Exception
+    public function getException(): \Throwable
     {
         return $this->exception;
     }
@@ -102,9 +102,9 @@ class Response extends \swoft\base\Response
     /**
      * 设置异常
      *
-     * @param \Exception $exception 初始化异常
+     * @param \Throwable $exception 初始化异常
      */
-    public function setException(\Exception $exception)
+    public function setException(\Throwable $exception)
     {
         $this->exception = $exception;
     }

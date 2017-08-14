@@ -19,6 +19,7 @@ class ErrorHandler
     /**
      * @var string 统一错误error
      */
+//    private $errorAction = "/error/index";
     private $errorAction = "";
 
     /**
@@ -35,9 +36,9 @@ class ErrorHandler
     /**
      * 处理未捕获异常
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      */
-    public function handlerException(\Exception $exception)
+    public function handlerException(\Throwable $exception)
     {
         $this->renderException($exception);
     }
@@ -71,11 +72,11 @@ class ErrorHandler
     /**
      * 显示错误
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
-    public function renderException(\Exception $exception)
+    public function renderException(\Throwable $exception)
     {
         if (!App::isWorkerStatus()) {
             throw $exception;
