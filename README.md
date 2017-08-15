@@ -57,8 +57,11 @@ QQ交流群:548173319
 **常用命令**
 
 ```php
-//启动服务
+//启动服务,是否是守护进程，根据swoft.ini配置
 php swoft.php start
+
+//守护进程启动，覆盖swoft.ini配置守护进程配置
+php swoft.php start -d
 
 // 重启
 php swoft.php restart
