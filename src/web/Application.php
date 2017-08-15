@@ -2,11 +2,8 @@
 
 namespace swoft\web;
 
-use inhere\console\utils\Show;
-use Psr\Log\InvalidArgumentException;
 use swoft\App;
 use swoft\base\RequestContext;
-use swoft\console\Console;
 use swoft\filter\FilterChain;
 use swoft\helpers\ResponseHelper;
 
@@ -21,6 +18,12 @@ use swoft\helpers\ResponseHelper;
  */
 class Application extends \swoft\base\Application
 {
+
+    /**
+     * @var string 启动入口文件
+     */
+    private $scriptFile = "";
+
     /**
      * @var array tcp配置信息
      */
@@ -48,31 +51,14 @@ class Application extends \swoft\base\Application
 
     /**
      * 初始化
-     *
-     * @param string $startFile
      */
-    public function init($startFile = '')
+    public function init()
     {
-        $this->status['startFile'] = $startFile;
-
         // 注册全局错误错误
         $this->registerErrorHandler();
 
+        // 记载swoft.ini
         $this->loadSwoftIni();
-    }
-
-    /**
-     * @param bool $daemon
-     *
-     * @return $this
-     */
-    public function asDaemon($daemon = null)
-    {
-        if (null !== $daemon) {
-            $this->setting['daemonize'] = (bool)$daemon;
-        }
-
-        return $this;
     }
 
     /**
@@ -80,16 +66,6 @@ class Application extends \swoft\base\Application
      */
     public function start()
     {
-        if ($this->isRunning()) {
-            echo "The server have been running!(PID: {$this->server['masterPid']})\n";
-            exit(0);
-        }
-
-        Show::panel([
-            'http' => $this->http,
-            'tcp'  => $this->tcp,
-        ]);
-
         App::$app = $this;
 
         $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
@@ -121,17 +97,17 @@ class Application extends \swoft\base\Application
     {
         $setings = parse_ini_file($this->settingPath, true);
         if (!isset($setings['tcp'])) {
-            throw new InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
+            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
         }
         if (!isset($setings['http'])) {
-            throw new InvalidArgumentException("未配置http启动参数，settings=" . json_encode($setings));
+            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($setings));
         }
         if (!isset($setings['server'])) {
-            throw new InvalidArgumentException("未配置server启动参数，settings=" . json_encode($setings));
+            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($setings));
         }
 
         if (!isset($setings['setting'])) {
-            throw new InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
+            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
         }
 
         $this->tcp = $setings['tcp'];
@@ -258,7 +234,7 @@ class Application extends \swoft\base\Application
     {
         file_put_contents($this->server['pfile'], $server->master_pid);
         file_put_contents($this->server['pfile'], ',' . $server->manager_pid, FILE_APPEND);
-        swoole_set_process_name($this->server['pname'] . " master process (" . $this->status['startFile'] . ")");
+        swoole_set_process_name($this->server['pname'] . " master process (" . $this->scriptFile . ")");
     }
 
     /**
@@ -372,16 +348,6 @@ class Application extends \swoft\base\Application
     }
 
     /**
-     * 获取http server
-     *
-     * @return \Swoole\Http\Server
-     */
-    public function getServer()
-    {
-        return $this->swoft;
-    }
-
-    /**
      * 获取basePath
      *
      * @return string
@@ -392,11 +358,72 @@ class Application extends \swoft\base\Application
     }
 
     /**
+     * 获取ViewPath
      *
      * @return string
      */
     public function getViewsPath()
     {
         return $this->viewsPath;
+    }
+
+    /**
+     * 设置是否守护进程启动
+     *
+     * @param int $daemonize
+     */
+    public function setDaemonize(int $daemonize)
+    {
+        $this->setting['daemonize'] = $daemonize;
+    }
+
+    /**
+     * 设置启动脚本文件
+     *
+     * @param string $scriptFile
+     */
+    public function setScriptFile(string $scriptFile)
+    {
+        $this->scriptFile = $scriptFile;
+    }
+
+    /**
+     * 获取http server
+     *
+     * @return \Swoole\Http\Server
+     */
+    public function getServer()
+    {
+        return $this->swoft;
+    }
+
+    /**
+     * 获取启动server状态
+     *
+     * @return array
+     */
+    public function getServerStatus()
+    {
+        return $this->server;
+    }
+
+    /**
+     * 获取tcp启动参数
+     *
+     * @return array
+     */
+    public function getTcpStatus()
+    {
+        return $this->tcp;
+    }
+
+    /**
+     * 获取http启动参数
+     *
+     * @return array
+     */
+    public function getHttpStatus()
+    {
+        return $this->http;
     }
 }

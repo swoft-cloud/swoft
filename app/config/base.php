@@ -3,6 +3,9 @@ return [
     'config'      => [
         'properties' => require_once __DIR__ . '/' . APP_ENV . '/properties.php',
     ],
+    'console' =>[
+        'class' => \swoft\console\Console::class,
+    ],
     'application' => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,

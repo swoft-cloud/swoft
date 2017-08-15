@@ -2,8 +2,6 @@
 
 namespace swoft\base;
 
-use inhere\console\io\Input;
-use inhere\console\utils\Show;
 use swoft\App;
 use swoft\web\InnerService;
 use swoft\web\Router;
@@ -19,13 +17,6 @@ use swoft\web\Router;
  */
 abstract class Application
 {
-    /**
-     * @var array
-     */
-    protected $status = [];
-
-    private $command;
-
     /**
      * @var array
      */
@@ -79,159 +70,11 @@ abstract class Application
     public $count = 0;
 
     /**
-     * 启动服务
-     */
-    public function run()
-    {
-        // 注册全局错误错误
-        $this->registerErrorHandler();
-
-        // 命令解析
-        $this->parseCommand();
-    }
-
-    public function parseCommand()
-    {
-        $input = new Input;
-        $command = $input->getCommand();
-
-        if (!$command || $command === 'help' || $input->getSameOpt(['h', 'help'])) {
-            $this->showHelp($input);
-        }
-
-        // $this->loadSwoftIni();
-
-        $this->status['startFile'] = $input->getScript();
-        $allowCommands = ['start', 'stop', 'reload', 'restart', 'help'];
-
-        if (!in_array($command, $allowCommands, true)) {
-            Show::error("The command: $command is not exists.");
-            $this->showHelp($input);
-        }
-
-        $this->command = $command;
-        $this->$command();
-    }
-
-    abstract public function start();
-
-    /**
-     * stop the swoole application server
-     */
-    public function stop()
-    {
-        if (!$this->isRunning()) {
-            echo "The server is not running! cannot stop\n";
-            exit(0);
-        }
-
-        $pidFile = $this->server['pfile'];
-        $startFile = $this->status['startFile'];
-        @unlink($pidFile);
-        echo("swoft $startFile is stopping ... \n");
-
-        $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
-
-        $timeout = 5;
-        $startTime = time();
-
-        while (1) {
-            $masterIslive = $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
-
-            if ($masterIslive) {
-                if (time() - $startTime >= $timeout) {
-                    echo('swoft ' . $startFile . " stop fail \n");
-                    exit;
-                }
-                usleep(10000);
-                continue;
-            }
-
-            echo("swoft $startFile stop success \n");
-            break;
-        }
-    }
-
-    /**
-     * reload the swoole application server
-     * @param bool $onlyTask
-     */
-    public function reload($onlyTask = false)
-    {
-        if (!$this->isRunning()) {
-            echo "The server is not running! cannot reload\n";
-            exit(0);
-        }
-
-        $startFile = $this->status['startFile'];
-
-        echo "Server $startFile is reloading \n";
-
-        posix_kill($this->server['managerPid'], $onlyTask ? SIGUSR2 : SIGUSR1);
-
-        echo "Server $startFile reload success \n";
-    }
-
-    /**
-     * restart the swoole application server
-     */
-    public function restart()
-    {
-        if ($this->isRunning()) {
-            $this->stop();
-        }
-
-        $this->start();
-    }
-
-    /**
-     * check Status
-     * @return bool
-     */
-    protected function isRunning()
-    {
-        $masterIsLive = false;
-        $pFile = $this->server['pfile'];
-
-        if (file_exists($pFile)) {
-            $pidFile = file_get_contents($pFile);
-            $pids = explode(',', $pidFile);
-
-            $this->server['masterPid'] = $pids[0];
-            $this->server['managerPid'] = $pids[1];
-            $masterIsLive = $this->server['masterPid'] && @posix_kill($this->server['managerPid'], 0);
-        }
-
-        return $masterIsLive;
-    }
-
-
-    protected function showHelp(Input $input)
-    {
-        $script = $input->getScriptName();
-
-        Show::helpPanel([
-            Show::HELP_DES => 'the application server powered by swoole',
-            Show::HELP_USAGE => "$script <cyan>{start|stop|reload|restart}</cyan> [--opt ...]",
-            Show::HELP_COMMANDS => [
-                'start' => 'start the swoole application server',
-                'restart' => 'restart the swoole application server',
-                'reload' => 'reload the swoole application server',
-                'stop' => 'stop the swoole application server',
-                'help' => 'display the help information',
-            ],
-            Show::HELP_OPTIONS => [
-                '-h,--help' => 'display the help information',
-                '--only-task' => 'only reload task worker when exec reload command'
-            ]
-        ]);
-    }
-
-    /**
      * 创建控制器
      *
-     * @param string $path  url路径
-     * @param array  $info  url参数
+     * @param string $path url路径
+     * @param array  $info url参数
+     *
      * @return array
      * <pre>
      *  [$controller, $action, $matches]
@@ -289,6 +132,7 @@ abstract class Application
      * 调用内部服务
      *
      * @param array $data 调用参数信息
+     *
      * @return array
      */
     public function runService(array $data)
@@ -302,18 +146,18 @@ abstract class Application
         $class = $servicePrefix . 'Service';
         $className = $namespace . "\\" . $class;
         if (!class_exists($className)) {
-            App::error('内部服务调用的class不存在,class=' .$className);
-            throw new \InvalidArgumentException('内部服务调用的class不存在,class=' .$className);
+            App::error('内部服务调用的class不存在,class=' . $className);
+            throw new \InvalidArgumentException('内部服务调用的class不存在,class=' . $className);
         }
 
         if ($className instanceof InnerService) {
-            App::error('内部服务调用的class不是InnerService子类,class=' .$className);
-            throw new \InvalidArgumentException('内部服务调用的class不是InnerService子类,class=' .$className);
+            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
+            throw new \InvalidArgumentException('内部服务调用的class不是InnerService子类,class=' . $className);
         }
 
         if (empty($method)) {
-            App::error('内部服务调用的class不是InnerService子类,class=' .$className);
-            throw new \InvalidArgumentException('内部服务调用的method为空,method=' .$method);
+            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
+            throw new \InvalidArgumentException('内部服务调用的method为空,method=' . $method);
         }
 
         /* @var $service InnerService */
@@ -333,4 +177,67 @@ abstract class Application
         $errorHandler = App::getErrorHandler();
         $errorHandler->register();
     }
+
+    /**
+     * reload服务
+     *
+     * @param bool $reloadTask
+     */
+    public function reload($reloadTask = false)
+    {
+        $onlyTask = $reloadTask ? SIGUSR2 : SIGUSR1;
+        posix_kill($this->server['managerPid'], $onlyTask);
+    }
+
+    /**
+     * stop服务
+     */
+    public function stop()
+    {
+        $timeout = 5;
+        $startTime = time();
+        $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
+
+        $result = true;
+        while (1) {
+            $masterIslive = $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
+            if ($masterIslive) {
+                if (time() - $startTime >= $timeout) {
+                    $result = false;
+                    break;
+                }
+                usleep(10000);
+                continue;
+            }
+
+            break;
+        }
+        return $result;
+    }
+
+    /**
+     * 服务是否已启动
+     *
+     * @return bool
+     */
+    public function isRunning()
+    {
+        $masterIsLive = false;
+        $pFile = $this->server['pfile'];
+
+        // pid 文件是否存在
+        if (file_exists($pFile)) {
+            // 文件内容解析
+            $pidFile = file_get_contents($pFile);
+            $pids = explode(',', $pidFile);
+
+            $this->server['masterPid'] = $pids[0];
+            $this->server['managerPid'] = $pids[1];
+            $masterIsLive = $this->server['masterPid'] && @posix_kill($this->server['managerPid'], 0);
+        }
+
+        return $masterIsLive;
+    }
+
+    abstract public function start();
 }

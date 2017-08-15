@@ -85,6 +85,13 @@ class App
     }
 
     /**
+     * @return Application
+     */
+    public static function getApplication(){
+        return ApplicationContext::getBean('application');
+    }
+
+    /**
      * 全局错误处理器
      *
      * @return ErrorHandler

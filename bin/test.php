@@ -1,4 +1,16 @@
 <?php
+//$str = sprintf('
+
+//', \swoft\console\style\LiteStyle::render('0.0.0.0', \swoft\console\style\LiteStyle::BG_BLUE));
+
+
+
+
+//exit();
+$options = 'd';
+var_dump($_SERVER['argv']);
+var_dump(getopt($options));
+exit();
 // 1. *.html
 // 2. /*
 // 3. /a/b /b/c
