@@ -2,6 +2,7 @@
 
 namespace swoft;
 
+use app\models\logic\IndexLogic;
 use swoft\base\ApplicationContext;
 use swoft\base\Config;
 use swoft\base\RequestContext;
@@ -12,9 +13,14 @@ use swoft\service\ConsulProvider;
 use swoft\service\IPack;
 use swoft\web\Application;
 use swoft\web\ErrorHandler;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Scope;
+use swoft\di\annotation\Inject;
 
 /**
  * 应用简写类
+ *
+ * @Bean(name="app", scope=Scope::PROTOTYPE)
  *
  * @uses      App
  * @version   2017年04月25日
@@ -24,6 +30,25 @@ use swoft\web\ErrorHandler;
  */
 class App
 {
+
+    /**
+     * @Inject("name")
+     */
+    private $p1;
+
+    /**
+     * @Inject("name2")
+     */
+    private $p2;
+
+    /**
+     * @Inject()
+     *
+     * @var IndexLogic
+     */
+    private $p3;
+
+
     /**
      * @var Application 应用对象
      */
