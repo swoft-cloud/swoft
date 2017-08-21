@@ -1,5 +1,6 @@
 <?php
 
+
 preg_match('/^\$\{(.*)\}$/', 1, $match);
 
 var_dump($match);
@@ -31,15 +32,15 @@ $reader = new AnnotationReader();
 
 $files = scanPhpFile($dir, '\swoft');
 
-//$s = microtime(true);
-//foreach ($files as $file){
-//    $reflClass = new \ReflectionClass($file);
-//    $classAnnotations = $reader->getClassAnnotations($reflClass);
-//
-//    var_dump($classAnnotations);
-//}
-//$e = microtime(true);
-//echo $e-$s;
+$s = microtime(true);
+foreach ($files as $file){
+    $reflClass = new \ReflectionClass($file);
+    $classAnnotations = $reader->getClassAnnotations($reflClass);
+
+    var_dump($classAnnotations);
+}
+$e = microtime(true);
+echo $e-$s;
 
 $file = $files[0];
 $reflClass = new \ReflectionClass($file);

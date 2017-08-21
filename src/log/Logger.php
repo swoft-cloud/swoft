@@ -30,7 +30,7 @@ class Logger extends \Monolog\Logger
     /**
      * @var int 刷新日志条数
      */
-    public $flushInterval = 10;
+    public $flushInterval = 1;
 
     /**
      * @var bool 每个请求完成刷新一次日志到磁盘，默认未开启
@@ -63,6 +63,9 @@ class Logger extends \Monolog\Logger
     public $messages = [];
 
 
+    protected $processors = [];
+
+
     /**
      * @var array 日志级别对应名称
      */
@@ -78,6 +81,11 @@ class Logger extends \Monolog\Logger
             self::EMERGENCY => 'emergency',
             self::TRACE     => 'trace'
         );
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * 记录日志
@@ -338,6 +346,7 @@ class Logger extends \Monolog\Logger
         if (empty($this->messages)) {
             return;
         }
+
         reset($this->handlers);
 
         while ($handler = current($this->handlers)) {

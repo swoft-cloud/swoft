@@ -172,7 +172,7 @@ class Router implements RouterInterface
      */
     public $matchAll;
 
-    /** @var bool auto route match @like yii framework. If is True, will auto find the handler controller file. */
+    /** @var bool auto route match like yii framework. If is True, will auto find the handler controller file. */
     public $autoRoute = false;
 
     /** @var string The default controllers namespace, is valid when `$autoRoute = true`. eg: 'app\\controllers' */

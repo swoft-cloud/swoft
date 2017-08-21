@@ -13,7 +13,7 @@ return [
         'runtimePath' => RUNTIME_PATH,
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
-        'useProvider' => false
+        'useProvider' => false,
     ],
     'router'      => [
         'class'  => \swoft\web\Router::class,
@@ -104,7 +104,7 @@ return [
         "class"         => \swoft\log\Logger::class,
         "name"          => SYSTEM_NAME,
         "flushInterval" => 20,
-        "flushRequest" => true,
+        "flushRequest" => false,
         "handlers"      => [
             '${noticeHandler}',
             '${applicationHandler}'

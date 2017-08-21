@@ -3,9 +3,10 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
-use DI\Annotation\Inject;
 use swoft\base\ApplicationContext;
 use swoft\cache\RedisClient;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
 use swoft\filter\FilterChain;
 use swoft\http\HttpClient;
 use swoft\log\FileHandler;
@@ -19,6 +20,7 @@ use swoft\web\Response;
 /**
  * demo使用案例
  *
+ * @Bean()
  * @uses      IndexController
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>
@@ -28,6 +30,7 @@ use swoft\web\Response;
 class IndexController extends Controller
 {
     /**
+     *
      * @Inject()
      * @var IndexLogic
      */
@@ -36,7 +39,8 @@ class IndexController extends Controller
     public function actionIndex()
     {
         $data = $this->logic->getUser();
-        $data['properties'] = App::$properties['env'];
+
+        $data['properties'] = App::$properties;
 
         App::profileStart("logger");
         App::profileStart("logger1");
@@ -57,7 +61,7 @@ class IndexController extends Controller
         App::counting("redis.get", 1, 10);
         App::counting("redis.set", 1, 10);
 
-        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
+//        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
 
         $this->outputJson($data, 'suc');
     }

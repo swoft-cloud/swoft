@@ -37,7 +37,7 @@ class ObjectDefinition
      * Constructor parameter injection.
      * @var MethodInjection
      */
-    private $constructorInjection;
+    private $constructorInjection = null;
 
     /**
      * Property injections.
@@ -101,7 +101,7 @@ class ObjectDefinition
     /**
      * @return MethodInjection
      */
-    public function getConstructorInjection(): MethodInjection
+    public function getConstructorInjection()
     {
         return $this->constructorInjection;
     }

@@ -1,10 +1,11 @@
 <?php
 
-namespace swoft\di\resolver;
+namespace swoft\di\resource;
 
 use swoft\di\ObjectDefinition;
 use swoft\di\ObjectDefinition\PropertyInjection;
 use swoft\di\ObjectDefinition\MethodInjection;
+use swoft\di\ObjectDefinition\ArgsInjection;
 
 
 /**
@@ -16,17 +17,12 @@ use swoft\di\ObjectDefinition\MethodInjection;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class DefinitionResource implements IResource
+class DefinitionResource extends AbstractResource
 {
     /**
      * @var array
      */
     private $definitions = [];
-
-    /**
-     * @var array
-     */
-    private $properties = [];
 
     public function __construct($definitions)
     {
@@ -41,7 +37,7 @@ class DefinitionResource implements IResource
             $definitions[$beanName] = $this->resolvedefinitation($beanName, $definition);
         }
 
-        return [];
+        return $definitions;
     }
 
     public function resolvedefinitation($beanName, array $definition)
@@ -57,71 +53,66 @@ class DefinitionResource implements IResource
         $objDefinitation->setClassName($className);
 
         $propertyInjections = [];
-        $constructorInjection = [];
+        $constructorInjection = null;
+
         foreach ($definition as $name => $property) {
+
+
             // 构造函数
-            if (is_array($property) && $name == 0) {
+            if (is_array($property) && $name === 0) {
                 $constructorInjection = $this->resolverConstructor($property);
                 continue;
             }
 
-            $injectProperty = $property;
-            $isRef = preg_match('/^\$\{(.*)\}$/', $property, $match);
+            if(is_array($property)){
+                $injectProperty = $this->getArrayPropertyValue($property);
 
-            if (!empty($match)) {
-                $injectProperty = $this->getInjectProperty($match[1]);
+                $propertyInjection = new PropertyInjection($name, $injectProperty, false);
+                $propertyInjections[$name] = $propertyInjection;
+            }else{
+                list($injectProperty, $isRef) = $this->getTransferProperty($property);
+                $propertyInjection = new PropertyInjection($name, $injectProperty, (bool)$isRef);
+                $propertyInjections[$name] = $propertyInjection;
             }
-
-            $propertyInjection = new PropertyInjection($name, $injectProperty, (bool)$isRef);
-            $propertyInjections[] = $propertyInjection;
-
         }
 
         $objDefinitation->setPropertyInjections($propertyInjections);
-        $objDefinitation->setConstructorInjection($constructorInjection);
+        if($constructorInjection != null){
+            $objDefinitation->setConstructorInjection($constructorInjection);
+        }
 
         return $objDefinitation;
     }
 
-    private function getInjectProperty(string $property)
+    private function getArrayPropertyValue(array $propertyValue)
     {
-        // '${beanName}'格式解析
-        $propertyKeys = explode(".", $property);
-        if (count($propertyKeys) == 1) {
-            return $property;
-        }
-
-        if ($propertyKeys[0] != 'config') {
-            throw new \InvalidArgumentException("properties配置引用格式不正确，key=" . $propertyKeys[0]);
-        }
-
-        // '${config.xx.yy}' 格式解析,直接key
-        $propertyKey = str_replace("config.", "", $property);
-        if (isset($this->properties[$propertyKey])) {
-            return $this->properties[$propertyKey];
-        }
-
-        // '${config.xx.yy}' 格式解析, 层级解析
-        $layerProperty = "";
-        unset($propertyKeys[0]);
-        foreach ($propertyKeys as $subPropertyKey) {
-            if (isset($this->properties[$subPropertyKey])) {
-                $layerProperty = $this->properties[$subPropertyKey];
+        $args = [];
+        foreach ($propertyValue as $key => $subArg){
+            if(is_array($subArg)){
+                $args[$key] = $this->getArrayPropertyValue($subArg);
                 continue;
             }
 
-            if (!isset($layerProperty[$subPropertyKey])) {
-                throw new \InvalidArgumentException("$subPropertyKey is not exisit configed");
-            }
-            $layerProperty = $layerProperty[$subPropertyKey];
+            list($injectProperty, $isRef) = $this->getTransferProperty($subArg);
+            $args[$key] = new ArgsInjection($injectProperty, (bool)$isRef);
         }
-
-        return $layerProperty;
-
+        return $args;
     }
 
+    /**
+     * @param array $args
+     *
+     * @return MethodInjection
+     */
     private function resolverConstructor(array $args)
     {
-        return new MethodInjection();
+        $methodArgs = [];
+        foreach ($args as $arg) {
+            list($injectProperty, $isRef) = $this->getTransferProperty($arg);
+            $methodArgs[] = new ArgsInjection($injectProperty, (bool)$isRef);
+        }
+
+        $methodInject = new MethodInjection("__construct", $methodArgs);
+        return $methodInject;
     }
 }

@@ -2,9 +2,11 @@
 
 namespace app\models\dao;
 
+use swoft\di\annotation\Bean;
+
 /**
  *
- *
+ * @Bean()
  * @uses      UserExtDao
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>

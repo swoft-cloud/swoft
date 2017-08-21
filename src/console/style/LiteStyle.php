@@ -1,9 +1,14 @@
 <?php
 namespace swoft\console\style;
 
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
+use swoft\pool\balancer\RandomBalancer;
+use swoft\pool\balancer\RoundRobinBalancer;
+
 /**
  *
- *
+ * @Bean()
  * @uses      Console
  * @version   2017年08月14日
  * @author    stelin <phpcrazy@126.com>

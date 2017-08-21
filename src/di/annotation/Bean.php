@@ -19,7 +19,7 @@ final class Bean
     /**
      * @var string bean名称
      */
-    private $name;
+    private $name = "";
 
     /**
      * @var int

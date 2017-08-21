@@ -29,7 +29,7 @@ class PropertyInjection
     public function __construct($propertyName, $value, $ref = false)
     {
         $this->propertyName = $propertyName;
-        $this->value = $ref;
+        $this->value = $value;
         $this->ref = $ref;
     }
 

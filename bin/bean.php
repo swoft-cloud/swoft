@@ -8,4 +8,7 @@ require_once __DIR__. '/../app/config/model.php';
 
 $config = require dirname(__DIR__). '/app/config/base.php';
 
-$beanFactory = new \swoft\di\BeanFactory2($config);
+$beanFactory = new \swoft\di\BeanFactory($config);
+
+//var_dump($beanFactory::getBean(\app\controllers\IndexController::class));
+var_dump($beanFactory::getBean('logger'));

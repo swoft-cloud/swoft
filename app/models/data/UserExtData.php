@@ -4,10 +4,12 @@ namespace app\models\data;
 
 use app\models\dao\UserDao;
 use app\models\dao\UserExtDao;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
 
 /**
  *
- *
+ * @Bean()
  * @uses      UserExtData
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>
@@ -17,13 +19,13 @@ use app\models\dao\UserExtDao;
 class UserExtData
 {
     /**
-     * @Inject
+     * @Inject()
      * @var UserExtDao
      */
     private $userExtDao;
 
     /**
-     * @Inject
+     * @Inject()
      * @var UserData
      */
     private $userData;

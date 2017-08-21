@@ -1,6 +1,6 @@
 <?php
 
-namespace swoft\di\resolver;
+namespace swoft\di\resource;
 
 /**
  *
