@@ -3,7 +3,7 @@
 namespace swoft\di\resource;
 
 /**
- *
+ * 资源接口
  *
  * @uses      IResource
  * @version   2017年08月18日

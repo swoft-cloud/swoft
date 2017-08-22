@@ -3,7 +3,7 @@
 namespace swoft\di\annotation;
 
 /**
- * restful控制器注解
+ * restful控制器注解，后续实现
  *
  * @Annotation
  * @Target("CLASS")

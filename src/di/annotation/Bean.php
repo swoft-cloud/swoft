@@ -17,18 +17,27 @@ namespace swoft\di\annotation;
 final class Bean
 {
     /**
-     * @var string bean名称
+     * bean名称
+     *
+     * @var string
      */
     private $name = "";
 
     /**
+     * bean类型
+     *
      * @var int
      */
     private $scope = Scope::SINGLETON;
 
+    /**
+     * Bean constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
-        if(isset($values['value'])){
+        if (isset($values['value'])) {
             $this->name = $values['value'];
         }
         if (isset($values['name'])) {
@@ -40,6 +49,8 @@ final class Bean
     }
 
     /**
+     * 获取bean名称
+     *
      * @return string
      */
     public function getName(): string
@@ -48,6 +59,8 @@ final class Bean
     }
 
     /**
+     * 获取bean类型
+     *
      * @return int
      */
     public function getScope()

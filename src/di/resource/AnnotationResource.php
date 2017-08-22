@@ -5,12 +5,10 @@ namespace swoft\di\resource;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpDocReader\PhpDocReader;
-use swoft\App;
 use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
 use swoft\di\annotation\RequestMapping;
-use swoft\di\annotation\RequestMethod;
 use swoft\di\annotation\Scope;
 use swoft\di\ObjectDefinition;
 
@@ -74,7 +72,7 @@ class AnnotationResource extends AbstractResource
 
         $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        $this->parseMethods($reader, $reflectionClass, $className, $publicMethods);
+        $this->parseMethods($reader, $className, $publicMethods);
 
 
         $this->definitions[$beanName] = $objectDefinition;
@@ -82,11 +80,10 @@ class AnnotationResource extends AbstractResource
 
     /**
      * @param AnnotationReader $reader
-     * @param \ReflectionClass $reflectionClass
      * @param string $className
      * @param \ReflectionMethod[] $publicMethods
      */
-    private function parseMethods(AnnotationReader $reader, \ReflectionClass $reflectionClass, string $className, array $publicMethods)
+    private function parseMethods(AnnotationReader $reader, string $className, array $publicMethods)
     {
         if(!isset($this->requestMapping[$className])){
             return ;
@@ -117,6 +114,8 @@ class AnnotationResource extends AbstractResource
      *
      * @param AnnotationReader $reader
      * @param array            $properties
+     * @param string           $className
+     *
      * @return array
      */
     private function parseProperties(AnnotationReader $reader, array $properties, string $className)

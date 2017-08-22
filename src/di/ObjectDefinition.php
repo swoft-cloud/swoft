@@ -6,7 +6,7 @@ use swoft\di\annotation\Scope;
 use swoft\di\ObjectDefinition\MethodInjection;
 
 /**
- *
+ * bean对象定义类
  *
  * @uses      ObjectDefinition
  * @version   2017年08月18日
@@ -18,12 +18,14 @@ class ObjectDefinition
 {
     /**
      * Entry name (most of the time, same as $classname).
+     *
      * @var string
      */
     private $name;
 
     /**
      * Class name (if null, then the class name is $name).
+     *
      * @var string|null
      */
     private $className;
@@ -35,6 +37,7 @@ class ObjectDefinition
 
     /**
      * Constructor parameter injection.
+     *
      * @var MethodInjection
      */
     private $constructorInjection = null;
@@ -46,11 +49,14 @@ class ObjectDefinition
 
     /**
      * Method calls.
+     *
      * @var MethodInjection[][]
      */
     private $methodInjections = [];
 
     /**
+     * 设置bean名称
+     *
      * @return string
      */
     public function getName(): string
@@ -59,6 +65,8 @@ class ObjectDefinition
     }
 
     /**
+     * 初始化bean名称
+     *
      * @param string $name
      */
     public function setName(string $name)
@@ -67,7 +75,9 @@ class ObjectDefinition
     }
 
     /**
-     * @return null|string
+     * 获取bean类名
+     *
+     * @return string
      */
     public function getClassName()
     {
@@ -75,6 +85,8 @@ class ObjectDefinition
     }
 
     /**
+     * 初始化bean类名
+     *
      * @param null|string $className
      */
     public function setClassName($className)
@@ -83,6 +95,8 @@ class ObjectDefinition
     }
 
     /**
+     * 设置bean类型
+     *
      * @return int
      */
     public function getScope(): int
@@ -91,6 +105,8 @@ class ObjectDefinition
     }
 
     /**
+     * 获取bean类型
+     *
      * @param int $scope
      */
     public function setScope(int $scope)
@@ -99,6 +115,8 @@ class ObjectDefinition
     }
 
     /**
+     * 获取构造函数注入对象
+     *
      * @return MethodInjection
      */
     public function getConstructorInjection()
@@ -107,6 +125,8 @@ class ObjectDefinition
     }
 
     /**
+     * 设置构造函数注入对象
+     *
      * @param MethodInjection $constructorInjection
      */
     public function setConstructorInjection(MethodInjection $constructorInjection)
@@ -115,6 +135,8 @@ class ObjectDefinition
     }
 
     /**
+     * 获取属性注入对象
+     *
      * @return mixed
      */
     public function getPropertyInjections()
@@ -123,6 +145,8 @@ class ObjectDefinition
     }
 
     /**
+     * 设置属性注入对象
+     *
      * @param mixed $propertyInjections
      */
     public function setPropertyInjections($propertyInjections)
@@ -131,6 +155,8 @@ class ObjectDefinition
     }
 
     /**
+     * 获取方法注入对象
+     *
      * @return ObjectDefinition\MethodInjection[][]
      */
     public function getMethodInjections(): array
@@ -139,6 +165,8 @@ class ObjectDefinition
     }
 
     /**
+     * 设置方法注入对象
+     *
      * @param ObjectDefinition\MethodInjection[][] $methodInjections
      */
     public function setMethodInjections(array $methodInjections)

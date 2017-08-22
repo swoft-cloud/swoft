@@ -3,7 +3,7 @@
 namespace swoft\di\ObjectDefinition;
 
 /**
- *
+ * 数组属性的参数或构造函数的参数注入对象
  *
  * @uses      ArgsInjection
  * @version   2017年08月18日
@@ -14,16 +14,25 @@ namespace swoft\di\ObjectDefinition;
 class ArgsInjection
 {
     /**
+     * 参数值
+     *
      * @var mixed
      */
     private $value;
 
     /**
+     * 是否是bean引用
+     *
      * @var bool
      */
     private $ref = false;
 
-
+    /**
+     * ArgsInjection constructor.
+     *
+     * @param mixed $value
+     * @param bool  $ref
+     */
     public function __construct($value, $ref = false)
     {
         $this->value = $value;
@@ -31,6 +40,8 @@ class ArgsInjection
     }
 
     /**
+     * 参数值
+     *
      * @return mixed
      */
     public function getValue()
@@ -39,6 +50,8 @@ class ArgsInjection
     }
 
     /**
+     * 参数是否是bean引用
+     *
      * @return bool
      */
     public function isRef(): bool

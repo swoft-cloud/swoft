@@ -3,7 +3,7 @@
 namespace swoft\di\annotation;
 
 /**
- * bean生命周期类型
+ * bean类型
  *
  * @uses      Scope
  * @version   2017年08月18日

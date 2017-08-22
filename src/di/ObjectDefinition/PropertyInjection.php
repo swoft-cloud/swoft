@@ -1,7 +1,9 @@
 <?php
+
 namespace swoft\di\ObjectDefinition;
 
 /**
+ * 属性注入对象
  *
  * @uses      PropertyInjection
  * @version   2017年08月18日
@@ -12,21 +14,34 @@ namespace swoft\di\ObjectDefinition;
 class PropertyInjection
 {
     /**
+     * 属性名称
+     *
      * @var string
      */
     private $propertyName;
 
     /**
+     * 属性值
+     *
      * @var mixed
      */
     private $value;
 
     /**
+     * 是否是bean引用
+     *
      * @var bool
      */
     private $ref = false;
 
-    public function __construct($propertyName, $value, $ref = false)
+    /**
+     * PropertyInjection constructor.
+     *
+     * @param string $propertyName
+     * @param mixed  $value
+     * @param bool   $ref
+     */
+    public function __construct(string $propertyName, $value, $ref = false)
     {
         $this->propertyName = $propertyName;
         $this->value = $value;
@@ -34,6 +49,8 @@ class PropertyInjection
     }
 
     /**
+     * 获取属性名称
+     *
      * @return string
      */
     public function getPropertyName(): string
@@ -42,6 +59,8 @@ class PropertyInjection
     }
 
     /**
+     * 获取属性值
+     *
      * @return mixed
      */
     public function getValue()
@@ -50,11 +69,12 @@ class PropertyInjection
     }
 
     /**
+     * 获取属性是否是bean引用
+     *
      * @return bool
      */
     public function isRef(): bool
     {
         return $this->ref;
     }
-
 }

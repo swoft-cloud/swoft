@@ -17,10 +17,17 @@ namespace swoft\di\annotation;
 class Inject
 {
     /**
-     * @var string 注入bean名称
+     * 注入bean名称
+     *
+     * @var string
      */
     private $name = "";
 
+    /**
+     * Inject constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {

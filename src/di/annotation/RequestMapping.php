@@ -3,7 +3,7 @@
 namespace swoft\di\annotation;
 
 /**
- * action 注解
+ * action方法注解
  *
  * @Annotation
  * @Target("METHOD")
@@ -17,18 +17,22 @@ namespace swoft\di\annotation;
 class RequestMapping
 {
     /**
+     * action路由规则
+     *
      * @var string
      */
     private $route = "";
 
     /**
-     * @var mixed
+     * 路由支持的HTTP方法集合
+     *
+     * @var array
      */
     private $method = [RequestMethod::GET, RequestMethod::POST];
 
     public function __construct(array $values)
     {
-        if(isset($values['value'])){
+        if (isset($values['value'])) {
             $this->route = $values['value'];
         }
         if (isset($values['route'])) {
@@ -42,6 +46,8 @@ class RequestMapping
     }
 
     /**
+     * 获取路由
+     *
      * @return string
      */
     public function getRoute()
@@ -50,7 +56,9 @@ class RequestMapping
     }
 
     /**
-     * @return mixed
+     * 获取方法集合
+     *
+     * @return array
      */
     public function getMethod()
     {

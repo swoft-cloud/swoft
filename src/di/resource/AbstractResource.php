@@ -3,7 +3,7 @@
 namespace swoft\di\resource;
 
 /**
- *
+ * 抽象bean资源
  *
  * @uses      AbstractResource
  * @version   2017年08月21日
@@ -14,10 +14,19 @@ namespace swoft\di\resource;
 abstract class AbstractResource implements IResource
 {
     /**
+     * properties.php配置
+     *
      * @var array
      */
     protected $properties = [];
 
+    /**
+     *
+     *
+     * @param $property
+     *
+     * @return array
+     */
     protected function getTransferProperty($property)
     {
         if (!is_string($property)) {
@@ -36,6 +45,13 @@ abstract class AbstractResource implements IResource
         return [$injectProperty, $isRef];
     }
 
+    /**
+     *
+     *
+     * @param string $property
+     *
+     * @return mixed|string
+     */
     protected function getInjectProperty(string $property)
     {
         // '${beanName}'格式解析
@@ -70,6 +86,5 @@ abstract class AbstractResource implements IResource
         }
 
         return $layerProperty;
-
     }
 }

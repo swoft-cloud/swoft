@@ -18,15 +18,21 @@ namespace swoft\di\annotation;
 class AutoController
 {
     /**
-     * @var string
+     * @var string 控制器前缀
      */
     private $prefix = "";
 
+    /**
+     * AutoController constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {
             $this->prefix = $values['value'];
         }
+
         if (isset($values['prefix'])) {
             $this->prefix = $values['prefix'];
         }

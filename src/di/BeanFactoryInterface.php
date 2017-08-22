@@ -2,7 +2,7 @@
 namespace swoft\di;
 
 /**
- * bean工程
+ * bean工厂接口
  *
  * @uses      BeanFactoryInterface
  * @version   2017年07月07日
