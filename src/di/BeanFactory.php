@@ -13,7 +13,9 @@ use swoft\pool\balancer\RandomBalancer;
 use swoft\pool\balancer\RoundRobinBalancer;
 use swoft\service\JsonPacker;
 use swoft\web\Application;
+use swoft\web\Controller;
 use swoft\web\ErrorHandler;
+use swoft\web\Router;
 
 /**
  *
@@ -40,7 +42,10 @@ class BeanFactory implements BeanFactoryInterface
         self::$container = new Container();
         self::$container->addDefinitions($definitions);
         self::$container->autoloadAnnotations();
+        self::$container->initBeans();
 
+        $requestMapping = self::$container->getRequestMapping();
+        $this->registerRoutes($requestMapping);
         App::setProperties();
     }
 
@@ -72,6 +77,65 @@ class BeanFactory implements BeanFactoryInterface
         return $definitions;
     }
 
+    private function registerRoutes(array $requestMapping)
+    {
+        /* @var Router $router */
+        $router = self::getBean('router');
+        foreach ($requestMapping as $className => $mapping) {
+            if (!isset($mapping['prefix']) || !isset($mapping['routes'])) {
+                continue;
+            }
+
+            $controllerPrefix = $mapping['prefix'];
+            $controllerPrefix = $this->getControllerPrefix($controllerPrefix, $className);
+            $routes = $mapping['routes'];
+            /* @var Controller $controller */
+            $controller = self::getBean($className);
+            $actionPrefix = $controller->getActionPrefix();
+
+            foreach ($routes as $route) {
+                if (!isset($route['route']) || !isset($route['method']) || !isset($route['action'])) {
+                    continue;
+                }
+
+                $mapRoute = $route['route'];
+                $method = $route['method'];
+                $action = $route['action'];
+
+                $actionMethod = $this->getActionMethod($actionPrefix, $action);
+                $mapRoute = empty($mapRoute) ? $actionMethod : $mapRoute;
+
+                $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . "/" . $mapRoute;
+                $handler = $className . "@" . $actionMethod;
+
+                $router->map($method, $uri, $handler);
+            }
+        }
+
+    }
+
+
+    private function getActionMethod(string $actionPrefix, string $action)
+    {
+        $action = str_replace($actionPrefix, '', $action);
+        $action = lcfirst($action);
+        return $action;
+    }
+
+    private function getControllerPrefix(string $controllerPrefix, string $className)
+    {
+        if (!empty($controllerPrefix)) {
+            return $controllerPrefix;
+        }
+
+        $reg = '/^.*\\\(\w+)Controller$/';
+        $result = preg_match($reg, $className, $match);
+        if ($result) {
+            $prefix = "/" . lcfirst($match[1]);
+            return $prefix;
+        }
+    }
+
     private static function coreBeans()
     {
         return [
@@ -82,9 +146,9 @@ class BeanFactory implements BeanFactoryInterface
             'timer'              => ['class' => Timer::class],
             'randomBalancer'     => ['class' => RandomBalancer::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'uriPattern'    => ['class' => UriPattern::class],
+            'uriPattern'         => ['class' => UriPattern::class],
             'filter'             => [
-                'class'             => FilterChain::class,
+                'class'            => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'
             ],
             "lineFormate"        => [

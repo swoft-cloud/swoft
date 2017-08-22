@@ -178,7 +178,7 @@ class Router implements RouterInterface
     /** @var string The default controllers namespace, is valid when `$autoRoute = true`. eg: 'app\\controllers' */
     public $controllerNamespace = '';
 
-    /** @var string controller suffix, is valid when `$autoRoute = true`. eg: 'Controller' */
+    /** @var string controller suffix, is valid when `$autoRoute = true`. eg: 'AutoController' */
     public $controllerSuffix = '';
 
     /**
@@ -592,7 +592,7 @@ class Router implements RouterInterface
      * handle auto route match, when config `'autoRoute' => true`
      * @param string $path The route path
      * @param string $controllerNamespace controller namespace. eg: 'app\\controllers'
-     * @param string $controllerSuffix controller suffix. eg: 'Controller'
+     * @param string $controllerSuffix controller suffix. eg: 'AutoController'
      * @return bool|callable
      */
     public static function matchAutoRoute($path, $controllerNamespace, $controllerSuffix)

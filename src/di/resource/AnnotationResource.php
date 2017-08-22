@@ -6,8 +6,10 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use PhpDocReader\PhpDocReader;
 use swoft\App;
+use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
+use swoft\di\annotation\RequestMapping;
 use swoft\di\annotation\Scope;
 use swoft\di\ObjectDefinition;
 
@@ -28,6 +30,8 @@ class AnnotationResource extends AbstractResource
 
     private $definitions = [];
 
+    private $requestMapping = [];
+
     public function getDefinitions()
     {
         $classNames = $this->registerLoaderAndScanBean();
@@ -35,6 +39,10 @@ class AnnotationResource extends AbstractResource
             $this->registerBean($className);
         }
         return $this->definitions;
+    }
+
+    public function getRequestMapping(){
+        return $this->requestMapping;
     }
 
     public function registerBean($className)
@@ -63,7 +71,44 @@ class AnnotationResource extends AbstractResource
         $propertyInjections = $this->parseProperties($reader, $properties, $className);
         $objectDefinition->setPropertyInjections($propertyInjections);
 
+        $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        $this->parseMethods($reader, $reflectionClass, $className, $publicMethods);
+
+
         $this->definitions[$beanName] = $objectDefinition;
+    }
+
+    /**
+     * @param AnnotationReader $reader
+     * @param \ReflectionClass $reflectionClass
+     * @param string $className
+     * @param \ReflectionMethod[] $publicMethods
+     */
+    private function parseMethods(AnnotationReader $reader, \ReflectionClass $reflectionClass, string $className, array $publicMethods)
+    {
+        if(!isset($this->requestMapping[$className])){
+            return ;
+        }
+
+        foreach ($publicMethods as $method){
+            if($method->isStatic()){
+                continue;
+            }
+
+            $methodAnnotations = $reader->getMethodAnnotations($method);
+            foreach ($methodAnnotations as $methodAnnotation){
+                if($methodAnnotation instanceof RequestMapping){
+                    $route = $methodAnnotation->getRoute();
+                    $httpMethod = $methodAnnotation->getMethod();
+                    $this->requestMapping[$className]['routes'][] =[
+                        'route' => $route,
+                        'method' => $httpMethod,
+                        'action' => $method->getName()
+                    ];
+                }
+            }
+        }
     }
 
     /**
@@ -148,6 +193,12 @@ class AnnotationResource extends AbstractResource
                 $scope = $classAnnotation->getScope();
 
                 $beanName = empty($name)? $className: $name;
+            }elseif($classAnnotation instanceof AutoController){
+                $beanName = $className;
+                $scope = Scope::SINGLETON;
+
+                $prefix = $classAnnotation->getPrefix();
+                $this->requestMapping[$className]['prefix'] = $prefix;
             }
         }
         return [$beanName, $scope];

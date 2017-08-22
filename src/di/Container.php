@@ -37,6 +37,8 @@ class Container
      */
     private $properties = [];
 
+    private $requestMapping = [];
+
     private $initMethod = 'init';
 
     public function get(string $name)
@@ -197,7 +199,22 @@ class Container
         $resource = new AnnotationResource();
         $resource->addScanNamespaces($beanScan);
         $definitions = $resource->getDefinitions();
+        $this->requestMapping = $resource->getRequestMapping();
 
         $this->definitions = array_merge($definitions, $this->definitions);
+    }
+
+    public function initBeans()
+    {
+        $autoInitBeans = $this->properties['autoInitBean'] ?? false;
+        if($autoInitBeans){
+            foreach ($this->definitions as $beanName => $definition){
+                $this->get($beanName);
+            }
+        }
+    }
+
+    public function getRequestMapping(){
+        return $this->requestMapping;
     }
 }

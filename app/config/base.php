@@ -22,9 +22,9 @@ return [
         'matchAll'       => '',
 
         // auto route match @like yii framework
-        'autoRoute'      => true,
+        'autoRoute'      => false,
         'controllerNamespace' => 'app\\controllers',
-        'controllerSuffix'    => 'Controller',
+        'controllerSuffix'    => 'AutoController',
     ],
     'errorHanlder' => [
         'class' => \swoft\web\ErrorHandler::class,
@@ -103,7 +103,7 @@ return [
     "logger" => [
         "class"         => \swoft\log\Logger::class,
         "name"          => SYSTEM_NAME,
-        "flushInterval" => 20,
+        "flushInterval" => 1,
         "flushRequest" => false,
         "handlers"      => [
             '${noticeHandler}',

@@ -3,41 +3,42 @@
 namespace swoft\di\annotation;
 
 /**
- * inject注解
+ *
+ * 控制器自动解析注解路由
  *
  * @Annotation
- * @Target({"PROPERTY"})
+ * @Target("CLASS")
  *
- * @uses      Inject
- * @version   2017年08月18日
+ * @uses      Controller
+ * @version   2017年08月22日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Inject
+class AutoController
 {
     /**
-     * @var string 注入bean名称
+     * @var string
      */
-    private $name = "";
+    private $prefix = "";
 
     public function __construct(array $values)
     {
         if (isset($values['value'])) {
-            $this->name = $values['value'];
+            $this->prefix = $values['value'];
         }
-        if (isset($values['name'])) {
-            $this->name = $values['name'];
+        if (isset($values['prefix'])) {
+            $this->prefix = $values['prefix'];
         }
     }
 
     /**
-     * 获取bean名称
+     * 获取controller前缀
      *
      * @return string
      */
-    public function getName(): string
+    public function getPrefix(): string
     {
-        return $this->name;
+        return $this->prefix;
     }
 }

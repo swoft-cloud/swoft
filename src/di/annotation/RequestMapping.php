@@ -6,7 +6,7 @@ namespace swoft\di\annotation;
  * action 注解
  *
  * @Annotation
- * @Target("CLASS")
+ * @Target("METHOD")
  *
  * @uses      RequestMapping
  * @version   2017年08月18日
@@ -16,5 +16,44 @@ namespace swoft\di\annotation;
  */
 class RequestMapping
 {
+    /**
+     * @var string
+     */
+    private $route = "";
 
+    /**
+     * @var mixed
+     */
+    private $method;
+
+    public function __construct(array $values)
+    {
+        if(isset($values['value'])){
+            $this->route = $values['value'];
+        }
+        if (isset($values['route'])) {
+            $this->route = $values['route'];
+        }
+
+        if (isset($values['method'])) {
+            $method = $values['method'];
+            $this->method = !is_array($method) ? [$method] : $method;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
 }

@@ -1,9 +1,10 @@
 <?php
 
 
-preg_match('/^\$\{(.*)\}$/', 1, $match);
+$reg = '/^.*\\\(\w+)Controller$/';
+$result = preg_match($reg, 'app\controllers\DemoController', $match);
 
-var_dump($match);
+var_dump($result, $match);
     exit();
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;

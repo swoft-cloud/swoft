@@ -168,4 +168,14 @@ class Controller
         }
         return App::getRequest()->getParameters();
     }
+
+    /**
+     * action前缀
+     *
+     * @return string
+     */
+    public function getActionPrefix(): string
+    {
+        return $this->actionPrefix;
+    }
 }
