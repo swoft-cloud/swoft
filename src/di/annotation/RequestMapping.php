@@ -24,7 +24,7 @@ class RequestMapping
     /**
      * @var mixed
      */
-    private $method;
+    private $method = [RequestMethod::GET, RequestMethod::POST];
 
     public function __construct(array $values)
     {

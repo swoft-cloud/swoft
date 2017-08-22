@@ -13,6 +13,6 @@ namespace swoft\di;
 interface BeanFactoryInterface
 {
     public static function getBean(string $name);
-    public static function createBean(string $beanName, array $beanConfig);
-    public static function hasBean($name);
+    public static function createBean(string $beanName, array $definition);
+    public static function hasBean(string $name);
 }

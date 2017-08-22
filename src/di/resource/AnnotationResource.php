@@ -10,6 +10,7 @@ use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
 use swoft\di\annotation\RequestMapping;
+use swoft\di\annotation\RequestMethod;
 use swoft\di\annotation\Scope;
 use swoft\di\ObjectDefinition;
 

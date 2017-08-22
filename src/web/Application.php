@@ -188,6 +188,7 @@ class Application extends \swoft\base\Application
 
             // 路由解析
             App::profileStart("router.match");
+            var_dump($swfRequest->getRequestUri(), $swfRequest->getMethod());
             list($path, $info) = $router->match($swfRequest->getRequestUri(), $swfRequest->getMethod());
             App::profileEnd("router.match");
 
