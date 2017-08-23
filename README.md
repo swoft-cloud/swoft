@@ -31,6 +31,10 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - 日志统计分析
 - 统一配置中心
 
+# 更新记录
+
+* 2017-08-15 重构console命令行
+
 # 快速入门
 ## 文档
 [**中文文档**](https://swoft.gitbooks.io/swoft/)
@@ -57,8 +61,11 @@ QQ交流群:548173319
 **常用命令**
 
 ```php
-//启动服务
+//启动服务,是否是守护进程，根据swoft.ini配置
 php swoft.php start
+
+//守护进程启动，覆盖swoft.ini守护进程配置
+php swoft.php start -d
 
 // 重启
 php swoft.php restart
@@ -100,7 +107,7 @@ worker_num = 4
 max_request = 10000
 daemonize = 0;
 dispatch_mode = 2
-log_file = '../runtime/swoft/swoole.log';
+log_file = SWOOLE_LOG_PATH
 ```
 
 ## 路由器
