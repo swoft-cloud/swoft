@@ -46,11 +46,11 @@ class Controller extends \swoft\base\Controller
      */
     public function render(string $templateId, array $data = [])
     {
-        $viewsPath = App::$app->getViewsPath();
-
-        $this->checkTemplateFile($viewsPath, $templateId);
-        $content = $this->renderContent($viewsPath, $templateId, $data);
-        RequestContext::getResponse()->setResponseContent($content);
+//        $viewsPath = App::$app->getViewsPath();
+//
+//        $this->checkTemplateFile($viewsPath, $templateId);
+//        $content = $this->renderContent($viewsPath, $templateId, $data);
+        RequestContext::getResponse()->setResponseContent(json_encode($data));
     }
 
     /**
@@ -81,9 +81,7 @@ class Controller extends \swoft\base\Controller
      */
     private function renderContent(string $viewsPath, string $templateId, array $data)
     {
-        $loader = new \Twig_Loader_Filesystem($viewsPath);
-        $twig = new \Twig_Environment($loader);
-        return $twig->render($templateId, $data);
+        return $data;
     }
 
     /**
