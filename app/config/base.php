@@ -103,11 +103,11 @@ return [
     "logger" => [
         "class"         => \swoft\log\Logger::class,
         "name"          => SYSTEM_NAME,
-        "flushInterval" => 1,
-        "flushRequest" => false,
+        "flushInterval" => 100,
+        "flushRequest" => true,
         "handlers"      => [
             '${noticeHandler}',
             '${applicationHandler}'
         ]
-    ]
+    ],
 ];

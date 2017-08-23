@@ -130,6 +130,7 @@ class Container
 
         $resource = new AnnotationResource();
         $resource->addScanNamespaces($beanScan);
+        $resource->setProperties($this->properties);
         $definitions = $resource->getDefinitions();
         $this->requestMapping = $resource->getRequestMapping();
 
@@ -192,7 +193,7 @@ class Container
         // 构造函数
         $constructorParameters = [];
         if ($constructorInject != null) {
-            $constructorParameters = $this->getConstructorParameters($constructorInject);
+            $constructorParameters = $this->injectConstructor($constructorInject);
         }
 
         $reflectionClass = new \ReflectionClass($className);
@@ -225,11 +226,17 @@ class Container
      *
      * @return array
      */
-    private function getConstructorParameters(MethodInjection $constructorInject)
+    private function injectConstructor(MethodInjection $constructorInject)
     {
         $constructorParameters = [];
+
         /* @var ArgsInjection $parameter */
         foreach ($constructorInject->getParameters() as $parameter) {
+            $argValue = $parameter->getValue();
+            if(is_array($argValue)){
+                $constructorParameters[] = $this->injectArrayArgs($argValue);
+                continue;
+            }
             if ($parameter->isRef()) {
                 $constructorParameters[] = $this->get($parameter->getValue());
                 continue;
@@ -286,7 +293,7 @@ class Container
 
             // 属性是数组
             if (is_array($injectProperty)) {
-                $injectProperty = $this->injectArrayProperty($injectProperty);
+                $injectProperty = $this->injectArrayArgs($injectProperty);
             }
 
             // 属性是bean引用
@@ -305,14 +312,14 @@ class Container
      *
      * @return array
      */
-    private function injectArrayProperty(array $injectProperty)
+    private function injectArrayArgs(array $injectProperty)
     {
         $injectAry = [];
         foreach ($injectProperty as $key => $property) {
 
             // 递归循环注入
             if (is_array($property)) {
-                $injectAry[$key] = $this->injectArrayProperty($property);
+                $injectAry[$key] = $this->injectArrayArgs($property);
                 continue;
             }
 
@@ -320,7 +327,7 @@ class Container
             if ($property instanceof ArgsInjection) {
                 $propertyVlaue = $property->getValue();
                 if ($property->isRef()) {
-                    $injectAry[] = $this->get($propertyVlaue);
+                    $injectAry[$key] = $this->get($propertyVlaue);
                     continue;
                 }
                 $injectAry[$key] = $propertyVlaue;

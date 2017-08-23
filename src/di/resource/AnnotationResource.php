@@ -250,6 +250,8 @@ class AnnotationResource extends AbstractResource
                 continue;
             }
 
+            $methodName = $method->getName();
+
             // 解析方法注解
             $methodAnnotations = $reader->getMethodAnnotations($method);
             $this->parseMethodAnnotations($className, $method, $methodAnnotations);

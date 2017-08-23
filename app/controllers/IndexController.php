@@ -60,7 +60,7 @@ class IndexController extends Controller
         App::counting("redis.get", 1, 10);
         App::counting("redis.set", 1, 10);
 
-//        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
+        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
 
         $this->outputJson($data, 'suc');
     }

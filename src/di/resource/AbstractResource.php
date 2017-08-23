@@ -74,12 +74,12 @@ abstract class AbstractResource implements IResource
         // '${config.xx.yy}' 格式解析, 层级解析
         $layerProperty = "";
         unset($propertyKeys[0]);
+
         foreach ($propertyKeys as $subPropertyKey) {
             if (isset($this->properties[$subPropertyKey])) {
                 $layerProperty = $this->properties[$subPropertyKey];
                 continue;
             }
-
             if (!isset($layerProperty[$subPropertyKey])) {
                 throw new \InvalidArgumentException("$subPropertyKey is not exisit configed");
             }
@@ -87,5 +87,15 @@ abstract class AbstractResource implements IResource
         }
 
         return $layerProperty;
+    }
+
+    /**
+     * 初始化properties配置
+     *
+     * @param array $properties
+     */
+    public function setProperties(array $properties)
+    {
+        $this->properties = $properties;
     }
 }

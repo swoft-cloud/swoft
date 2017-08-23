@@ -6,7 +6,7 @@ namespace swoft\di\annotation;
  * inject注解
  *
  * @Annotation
- * @Target({"PROPERTY"})
+ * @Target({"PROPERTY","METHOD"})
  *
  * @uses      Inject
  * @version   2017年08月18日

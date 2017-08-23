@@ -11,4 +11,5 @@ $config = require dirname(__DIR__). '/app/config/base.php';
 $beanFactory = new \swoft\di\BeanFactory($config);
 
 //var_dump($beanFactory::getBean(\app\controllers\IndexController::class));
-var_dump($beanFactory::getBean('logger'));
+var_dump($beanFactory::getBean('userModel'));
+//var_dump($beanFactory::getBean(\app\models\model\UserModel::class));
