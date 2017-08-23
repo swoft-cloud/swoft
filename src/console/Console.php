@@ -4,11 +4,14 @@ namespace swoft\console;
 
 use swoft\App;
 use swoft\console\style\LiteStyle;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
 use swoft\web\Application;
 
 /**
  * 启动命令行
  *
+ * @Bean("console")
  * @uses      Console
  * @version   2017年08月14日
  * @author    stelin <phpcrazy@126.com>
@@ -33,6 +36,7 @@ class Console
     private $reloadTask = false;
 
     /**
+     * @Inject("${application}")
      * @var Application 应用
      */
     private $application = null;
@@ -48,6 +52,7 @@ class Console
     private $httpStatus = [];
 
     /**
+     * @Inject()
      * @var LiteStyle 颜色辅助
      */
     private $liteStyle = null;
@@ -67,8 +72,6 @@ class Console
         $this->reloadTask = in_array('-t', $argv);
 
         // 初始化数据
-        $this->application = App::getApplication();
-        $this->liteStyle = App::getBean(LiteStyle::class);
         $this->application->setDaemonize($daemonize);
         $this->application->setScriptFile($this->scriptFile);
         $this->tcpStatus = $this->application->getTcpStatus();
@@ -123,7 +126,7 @@ class Console
         $line = implode("\n", $lines);
         echo $line . "\n";
 
-        App::getApplication()->start();
+        $this->application->start();
     }
 
     /**

@@ -2,9 +2,12 @@
 
 namespace swoft\filter;
 
+use swoft\di\annotation\Bean;
+
 /**
  * 过滤器规则匹配
  *
+ * @Bean("uriPattern")
  * @uses      UriPattern
  * @version   2017年08月13日
  * @author    stelin <phpcrazy@126.com>

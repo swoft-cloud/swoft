@@ -2,9 +2,12 @@
 
 namespace swoft\pool\balancer;
 
+use swoft\di\annotation\Bean;
+
 /**
+ * 随机选取负责
  *
- *
+ * @Bean("randomBalancer")
  * @uses      RandomBalancer
  * @version   2017年07月27日
  * @author    stelin <phpcrazy@126.com>

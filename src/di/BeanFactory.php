@@ -5,13 +5,9 @@ namespace swoft\di;
 use Monolog\Formatter\LineFormatter;
 use swoft\App;
 use swoft\base\Config;
-use swoft\base\Timer;
 use swoft\filter\FilterChain;
-use swoft\filter\UriPattern;
 use swoft\helpers\ArrayHelper;
-use swoft\pool\balancer\RandomBalancer;
 use swoft\pool\balancer\RoundRobinBalancer;
-use swoft\service\JsonPacker;
 use swoft\web\Application;
 use swoft\web\Controller;
 use swoft\web\ErrorHandler;
@@ -95,12 +91,8 @@ class BeanFactory implements BeanFactoryInterface
         return [
             'config'             => ['class' => Config::class],
             'application'        => ['class' => Application::class],
-            'errorHanlder'       => ['class' => ErrorHandler::class],
-            "packer"             => ['class' => JsonPacker::class],
-            'timer'              => ['class' => Timer::class],
-            'randomBalancer'     => ['class' => RandomBalancer::class],
+            'errorHandler'       => ['class' => ErrorHandler::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'uriPattern'         => ['class' => UriPattern::class],
             'filter'             => [
                 'class'            => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'

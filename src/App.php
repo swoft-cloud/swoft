@@ -101,7 +101,7 @@ class App
      */
     public static function getErrorHandler()
     {
-        return ApplicationContext::getBean('errorHanlder');
+        return ApplicationContext::getBean('errorHandler');
     }
 
     /**
