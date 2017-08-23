@@ -21,7 +21,7 @@ abstract class AbstractResource implements IResource
     protected $properties = [];
 
     /**
-     *
+     * 非数组格式属性值转换
      *
      * @param $property
      *
@@ -33,20 +33,21 @@ abstract class AbstractResource implements IResource
             return [$property, 0];
         }
 
+        // 正则匹配
         $injectProperty = $property;
         $isRef = preg_match('/^\$\{(.*)\}$/', $property, $match);
 
+        // 解析
         if (!empty($match)) {
             $isRef = strpos($match[1], 'config') === 0 ? 0 : $isRef;
             $injectProperty = $this->getInjectProperty($match[1]);
         }
 
-
         return [$injectProperty, $isRef];
     }
 
     /**
-     *
+     * 属性值引用解析
      *
      * @param string $property
      *
