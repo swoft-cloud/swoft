@@ -222,16 +222,16 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
 ### 注解自动注册
 注解自动注册常用到三个注解@AutoController、@Inject、@RequestMapping.
 
-> @AutoController
-> 已经使用@AutoController，不能再使用@Bean注解。
-> @AutoController注解不需要指定bean名称，统一类为bean名称
-> @AutoController()默认自动解析controller前缀，并且使用驼峰格式。
-> @AutoController(prefix="/demo2")或@AutoController("/demo2")功能一样，两种使用方式。
-> @Inject
-> 使用和之前的一样
-> @RequestMapping
-> @RequestMapping(route="/index2")或@RequestMapping("/index2")功能一样两种方式使用，这种默认是支持get和post方式@RequestMapping(route="/index2", method=RequestMethod::GET)注册支持的方法
-> 不使用@RequestMapping或RequestMapping()功能一样，都是默认解析action方法，以驼峰格式，注册路由。
+> @AutoController    
+> 已经使用@AutoController，不能再使用@Bean注解。    
+> @AutoController注解不需要指定bean名称，统一类为bean名称    
+> @AutoController()默认自动解析controller前缀，并且使用驼峰格式。    
+> @AutoController(prefix="/demo2")或@AutoController("/demo2")功能一样，两种使用方式。    
+> @Inject    
+> 使用和之前的一样    
+> @RequestMapping    
+> @RequestMapping(route="/index2")或@RequestMapping("/index2")功能一样两种方式使用，这种默认是支持get和post方式@RequestMapping(route="/index2", method=RequestMethod::GET)注册支持的方法    
+> 不使用@RequestMapping或RequestMapping()功能一样，都是默认解析action方法，以驼峰格式，注册路由。    
 
 
 ## 连接池
