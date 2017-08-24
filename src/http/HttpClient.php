@@ -189,6 +189,31 @@ class HttpClient
         $uri = $path . "?" . $query;
         $port = $parses['port']?? $defaultPorts[$protocol];
 
+        $host = self::dnsLookup($host);
         return [$host, $port, $uri];
+    }
+
+    /**
+     * 域名dns查询
+     *
+     * @param string $host
+     *
+     * @return string
+     */
+    private static function dnsLookup(string $host)
+    {
+        $ipLong = ip2long($host);
+        // ip
+        if ($ipLong !== false) {
+            return $host;
+        }
+
+        // 域名
+        $ip = swoole_async_dns_lookup_coro($host);
+        if (!$ip) {
+            App::error("域名dns查询失败，domain=" . $host);
+            throw new \InvalidArgumentException("域名dns查询失败，domain=" . $host);
+        }
+        return $ip;
     }
 }

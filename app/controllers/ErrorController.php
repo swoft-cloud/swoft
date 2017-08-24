@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use swoft\App;
+use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\helpers\ResponseHelper;
 use swoft\web\Controller;
@@ -10,7 +11,7 @@ use swoft\web\Controller;
 /**
  * 错误控制器
  *
- * @Bean()
+ * @AutoController()
  * @uses      ErrorController
  * @version   2017年08月08日
  * @author    stelin <phpcrazy@126.com>

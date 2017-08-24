@@ -183,21 +183,12 @@ class Application extends \swoft\base\Application
 
         try {
 
-            /* @var Router $router */
-            $router = App::getBean('router');
-
-            // 路由解析
-            App::profileStart("router.match");
-            list($path, $info) = $router->match($swfRequest->getRequestUri(), $swfRequest->getMethod());
-            App::profileEnd("router.match");
-
-            // 路由未定义处理
-            if (!$info) {
-                //                return $this->handleNotFound($path);
-            }
+            // 解析URI和method
+            $uri = $swfRequest->getRequestUri();
+            $method = $swfRequest->getMethod();
 
             // 运行controller
-            $this->runController($path, $info);
+            $this->runController($uri, $method);
 
         } catch (\Exception $e) {
             App::getErrorHandler()->handlerException($e);
@@ -207,24 +198,33 @@ class Application extends \swoft\base\Application
     }
 
     /**
-     * 执行控制器
+     * 运行控制器
      *
-     * @param string $path uri路径
-     * @param array  $info 参数
+     * @param string $uri
+     * @param string $method
+     *
+     * @throws \Exception
      */
-    public function runController(string $path, array $info)
+    public function runController(string $uri, string $method = "get")
     {
+        /* @var Router $router */
+        $router = App::getBean('router');
+
+        // 路由解析
+        App::profileStart("router.match");
+        list($path, $info) = $router->match($uri, $method);
+        App::profileEnd("router.match");
+
+        // 路由未定义处理
+        if ($info == null) {
+            throw new \RuntimeException("路由不存在，uri=".$uri." method=".$method);
+        }
+
         /* @var Controller $controller */
         list($controller, $actionId, $params) = $this->createController($path, $info);
 
-
         /* run controller with filters */
         $this->runControllerWithFilters($controller, $actionId, $params);
-    }
-
-    public function handleNotFound($path)
-    {
-        // ...
     }
 
     /**

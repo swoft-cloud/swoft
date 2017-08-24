@@ -18,5 +18,8 @@
         "type": "composer",
         "url": "https://packagist.phpcomposer.com"
       }
-	}
+	},
+  "require-dev": {
+    "eaglewu/swoole-ide-helper": "dev-master"
+  }
 }

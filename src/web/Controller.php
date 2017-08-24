@@ -27,15 +27,7 @@ class Controller extends \swoft\base\Controller
      */
     public function redirect(string $uri, array $params = [])
     {
-        $this->run($uri, $params);
-    }
-
-    public function filters()
-    {
-        return [
-            CommonParamsFilter::class,
-            LoginFilter::class,
-        ];
+//        $this->run($uri, $params);
     }
 
     /**

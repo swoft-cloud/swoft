@@ -15,8 +15,20 @@ use swoft\exception\RedisException;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  *
+ * @method static int del( $key1, $key2 = null, $key3 = null )
+ * @method static bool exists( $key )
+ * @method static bool expire( $key, $ttl )
+ * @method static int ttl( $key )
  * @method static string|bool get($key)
  * @method static bool set($key, $value, $timeout = 0)
+ * @method static int bitCount( $key )
+ * @method static int decr( $key )
+ * @method static int decrBy( $key, $value )
+ * @method static int incr( $key )
+ * @method static int incrBy( $key, $value )
+ * @method static array mget( array $array )
+ * @method static bool mset( array $array )
+ * @method static bool setnx( $key, $value )
  */
 class RedisClient
 {
@@ -26,12 +38,23 @@ class RedisClient
     const SERVICE_NAME = "redisPool";
 
     /**
-     * 目前支持redis操作方法的集合
+     * 目前支持redis操作方法的集合,若需新方法支持，添加到里面即可。
      */
     const redis_operations = [
+            // keys
+            'del', 'exists', 'expire', 'ttl',
+
             // string
-            'get',
-            'set'
+            'get', 'set', 'bitCount', 'decr', 'decrBy', 'incr', 'incrBy', 'mget', 'mset', 'setnx'
+
+            // lists
+
+            // sets
+
+            // hash
+
+            // zset
+
         ];
 
     /**

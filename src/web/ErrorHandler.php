@@ -85,10 +85,6 @@ class ErrorHandler
         $reponse = App::getResponse();
         $reponse->setException($exception);
 
-        // 错误action
-        $info = [
-            'handler' => ErrorController::class
-        ];
-        App::$app->runController($this->errorAction, $info);
+        App::$app->runController($this->errorAction);
     }
 }

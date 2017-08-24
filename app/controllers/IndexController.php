@@ -184,7 +184,9 @@ class IndexController extends Controller
         ];
 
         $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
+        $result2 = HttpClient::call("http://www.baidu.com/", HttpClient::GET, $requestData);
         $data['result'] = $result;
+        $data['result2'] = $result2;
 
         $ret = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
         $ret2 = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
@@ -225,7 +227,7 @@ class IndexController extends Controller
         //$this->outputJson("data", 'suc');
 
         // 重定向一个URI
-        $this->redirect("/login/index");
+        $this->redirect("/index/login");
     }
 
     /**
