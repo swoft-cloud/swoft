@@ -112,7 +112,7 @@ log_file = SWOOLE_LOG_PATH
 
 ## 路由器
 
-路由解析有两种方式，注册路由和自动解析，所有路由都在routes.php中配置。路由配置参数(base.php):
+路由解析有两种方式，注册路由和自动解析，所有路由都在routes.php中配置。建议所有路由都提前注册，或者通过注解注册，不建议使用自动路由解析。路由配置参数(base.php):
 
 ```php
 return [
@@ -122,11 +122,6 @@ return [
         'ignoreLastSep'  => false, // 是否忽略最后一个斜杠，设置false后，/user/index和/user/index/是两个不同的路由
         'tmpCacheNumber' => 1000,// 缓存路由数，最近一1000条
         'matchAll'       => '', // 匹配所有，所有请求都会匹配到这个uri或闭包
-
-        // 自动路由配置
-        'autoRoute'      => true,// 是否开启自动匹配路由，默认是false
-        'controllerNamespace' => 'app\\controllers', // 命名空间
-        'controllerSuffix'    => 'Controller', // 控制器后缀
     ],
     // ...
 ];
@@ -222,45 +217,25 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
 
 
 ## 控制器
-继承\swoft\web\Controller控制器定义controller，@Inject自动注入Logic依赖，Logic中也可以使用@Inject自动注入dao层或其它依赖，注入的依赖默认是单列的。
+一个继承\swoft\web\Controller的类既是控制器，控制器有两种注解自动注册和手动注册两种方式。建议使用注解自动注册，方便简洁，维护简单。多次注册相同的路由前者会被后者覆盖。
 
-```php
-class IndexController extends Controller
-{
-
-    /**
-     * @Inject()
-     * @var IndexLogic
-     */
-    private $logic;
-
-
-    public function actionDemo()
-    {
-        // 获取所有GET参数
-        $get = $this->get();
-        // 获取name参数默认值defaultName
-        $name = $this->get('name', 'defaultName');
-        // 获取所有POST参数
-        $post = $this->post();
-        // 获取name参数默认值defaultName
-        $name = $this->post('name', 'defaultName');
-        // 获取所有参，包括GET或POST
-        $request = $this->request();
-        // 获取name参数默认值defaultName
-        $name = $this->request('name', 'defaultName');
-        //json方式显示数据
-        //$this->outputJson("data", 'suc');
-
-        // 重定向一个URI
-        $this->redirect("/login/index");
-    }
-}
-```
-
+### 注解自动注册
+注解自动注册常用到三个注解@AutoController、@Inject、@RequestMapping.
 
 ## 连接池
 连接池使用简单，只需在base.php里面配置对应服务连接池即可。
+
+> @AutoController
+已经使用@AutoController，不能再使用@Bean注解。
+@AutoController注解不需要指定bean名称，统一类为bean名称
+@AutoController()默认自动解析controller前缀，并且使用驼峰格式。
+@AutoController(prefix="/demo2")或@AutoController("/demo2")功能一样，两种使用方式。
+@Inject
+使用和之前的一样
+@RequestMapping
+@RequestMapping(route="/index2")或@RequestMapping("/index2")功能一样两种方式使用，这种默认是支持get和post方式@RequestMapping(route="/index2", method=RequestMethod::GET)注册支持的方法
+不使用@RequestMapping或RequestMapping()功能一样，都是默认解析action方法，以驼峰格式，注册路由。
+
 
 ```php
 return [
