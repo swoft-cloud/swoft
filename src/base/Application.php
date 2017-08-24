@@ -58,11 +58,6 @@ abstract class Application
     protected $useProvider = false;
 
     /**
-     * @var string 控制器命令空间
-     */
-    protected $controllerNamespace = "app\\controllers";
-
-    /**
      * @var string 内部服务命令空间
      */
     protected $serviceNameSpace = "app\\controllers\\services";
@@ -194,7 +189,7 @@ abstract class Application
      */
     public function stop()
     {
-        $timeout = 5;
+        $timeout = 60;
         $startTime = time();
         $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
 

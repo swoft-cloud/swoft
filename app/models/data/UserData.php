@@ -3,10 +3,12 @@
 namespace app\models\data;
 
 use app\models\dao\UserDao;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
 
 /**
  *
- *
+ * @Bean()
  * @uses      UserData
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>
@@ -17,7 +19,7 @@ class UserData
 {
     /**
      *
-     * @Inject
+     * @Inject()
      * @var UserDao
      */
     private $userDao;

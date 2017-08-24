@@ -2,9 +2,12 @@
 
 namespace swoft\base;
 
+use swoft\di\annotation\Bean;
+
 /**
  * 定时器
  *
+ * @Bean("timer")
  * @uses      Timer
  * @version   2017年07月17日
  * @author    stelin <phpcrazy@126.com>

@@ -168,6 +168,7 @@ class Application extends \swoft\base\Application
      */
     public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
+
         // chrome两次请求bug修复
         if (isset($request->server['request_uri']) && $request->server['request_uri'] === '/favicon.ico') {
             $response->end('favicon.ico');
@@ -215,6 +216,7 @@ class Application extends \swoft\base\Application
     {
         /* @var Controller $controller */
         list($controller, $actionId, $params) = $this->createController($path, $info);
+
 
         /* run controller with filters */
         $this->runControllerWithFilters($controller, $actionId, $params);

@@ -3,10 +3,12 @@
 namespace swoft\service;
 
 use swoft\base\RequestContext;
+use swoft\di\annotation\Bean;
 
 /**
+ * json格式解压包
  *
- *
+ * @Bean("packer")
  * @uses      JsonPacker
  * @version   2017年07月14日
  * @author    stelin <phpcrazy@126.com>

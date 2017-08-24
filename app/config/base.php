@@ -1,33 +1,25 @@
 <?php
 return [
-    'config'      => [
+    'config'       => [
         'properties' => require_once __DIR__ . '/' . APP_ENV . '/properties.php',
     ],
-    'console' =>[
-        'class' => \swoft\console\Console::class,
-    ],
-    'application' => [
+    'application'  => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
         'viewsPath'   => VIEWS_PATH,
         'runtimePath' => RUNTIME_PATH,
         'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
-        'useProvider' => false
+        'useProvider' => false,
     ],
-    'router'      => [
-        'class'  => \swoft\web\Router::class,
-        'ignoreLastSep'  => false,
-        'tmpCacheNumber' => 1000,
-        'matchAll'       => '',
-
-        // auto route match @like yii framework
-        'autoRoute'      => true,
-        'controllerNamespace' => 'app\\controllers',
-        'controllerSuffix'    => 'Controller',
+    'router'       => [
+        'class'               => \swoft\web\Router::class,
+        'ignoreLastSep'       => false,
+        'tmpCacheNumber'      => 1000,
+        'matchAll'            => '',
     ],
-    'errorHanlder' => [
-        'class' => \swoft\web\ErrorHandler::class,
+    'errorHandler' => [
+        'class'       => \swoft\web\ErrorHandler::class,
         'errorAction' => '/error/index',
     ],
 
@@ -45,8 +37,8 @@ return [
             '${loginFilter}',
         ],
     ],
-    'consulProvider'       => [
-        'class' => \swoft\service\ConsulProvider::class,
+    'consulProvider'     => [
+        'class'   => \swoft\service\ConsulProvider::class,
         'address' => '127.0.0.1:80'
     ],
     "userPool"           => [
@@ -61,8 +53,8 @@ return [
         'serviceprovider' => '${consulProvider}'
     ],
 
-    "redisPool"          => [
-        'class'     => \swoft\pool\RedisPool::class,
+    "redisPool" => [
+        'class'           => \swoft\pool\RedisPool::class,
         "uri"             => '127.0.0.1:6379,127.0.0.1:6379',
         "maxIdel"         => 6,
         "maxActive"       => 10,
@@ -74,10 +66,10 @@ return [
     ],
 
     "userBreaker" => [
-        'class'           => \swoft\circuit\CircuitBreaker::class,
+        'class'               => \swoft\circuit\CircuitBreaker::class,
         'swithToSuccessCount' => 6, // 请求成功次数上限(状态切换)
-        'swithToFailCount' => 6, // 请求失败次数上限(状态切换)
-        'delaySwithTimer' => 5000, // 开启状态切换到半开状态的延迟时间，单位毫秒
+        'swithToFailCount'    => 6, // 请求失败次数上限(状态切换)
+        'delaySwithTimer'     => 5000, // 开启状态切换到半开状态的延迟时间，单位毫秒
     ],
 
     "noticeHandler"      => [
@@ -100,14 +92,14 @@ return [
             \swoft\log\Logger::WARNING
         ]
     ],
-    "logger" => [
+    "logger"             => [
         "class"         => \swoft\log\Logger::class,
         "name"          => SYSTEM_NAME,
-        "flushInterval" => 20,
-        "flushRequest" => true,
+        "flushInterval" => 100,
+        "flushRequest"  => true,
         "handlers"      => [
             '${noticeHandler}',
             '${applicationHandler}'
         ]
-    ]
+    ],
 ];

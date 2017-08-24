@@ -1,11 +1,13 @@
 <?php
 namespace app\controllers\services;
 
+use swoft\di\annotation\Bean;
 use swoft\web\InnerService;
 
 /**
  * RPC服务函数
  *
+ * @Bean()
  * @uses      UserService
  * @version   2017年07月14日
  * @author    stelin <phpcrazy@126.com>

@@ -3,21 +3,19 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
-use DI\Annotation\Inject;
-use swoft\base\ApplicationContext;
 use swoft\cache\RedisClient;
-use swoft\filter\FilterChain;
+use swoft\di\annotation\AutoController;
+use swoft\di\annotation\Inject;
+use swoft\di\annotation\RequestMapping;
 use swoft\http\HttpClient;
-use swoft\log\FileHandler;
-use swoft\log\Logger;
 use swoft\service\Service;
 use swoft\App;
 use swoft\web\Controller;
-use swoft\web\Request;
-use swoft\web\Response;
 
 /**
  * demo使用案例
+ *
+ * @AutoController()
  *
  * @uses      IndexController
  * @version   2017年04月25日
@@ -28,15 +26,20 @@ use swoft\web\Response;
 class IndexController extends Controller
 {
     /**
+     *
      * @Inject()
      * @var IndexLogic
      */
     private $logic;
 
+    /**
+     * @RequestMapping()
+     */
     public function actionIndex()
     {
         $data = $this->logic->getUser();
-        $data['properties'] = App::$properties['env'];
+
+        $data['properties'] = App::$properties;
 
         App::profileStart("logger");
         App::profileStart("logger1");
@@ -70,6 +73,9 @@ class IndexController extends Controller
         echo "after time do.................................\n";
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionRedis()
     {
         RedisClient::set('name', 'redis client stelin', 180);
@@ -85,12 +91,18 @@ class IndexController extends Controller
         $this->outputJson($data);
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionLogin()
     {
 
         $this->outputJson(array('login suc'), 'suc');
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionHtml()
     {
         $data = [
@@ -116,6 +128,9 @@ class IndexController extends Controller
         $this->render('/main/layout.html', $data);
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionLog()
     {
         // 标记开始
@@ -139,6 +154,9 @@ class IndexController extends Controller
         $this->outputJson([], 'suc');
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionRpc()
     {
         $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
@@ -155,6 +173,9 @@ class IndexController extends Controller
         $this->outputJson($data);
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionHttp()
     {
         $requestData = [
@@ -173,6 +194,9 @@ class IndexController extends Controller
         $this->outputJson($data);
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionPost(){
         $this->outputJson([
             'post' => $this->post(),
@@ -180,6 +204,9 @@ class IndexController extends Controller
         ], 'suc');
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionDemo()
     {
         // 获取所有GET参数
@@ -201,6 +228,9 @@ class IndexController extends Controller
         $this->redirect("/login/index");
     }
 
+    /**
+     * @RequestMapping()
+     */
     public function actionConfig()
     {
         $data = [];

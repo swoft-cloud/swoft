@@ -4,10 +4,12 @@ namespace app\models\logic;
 
 use app\models\data\UserData;
 use app\models\data\UserExtData;
+use swoft\di\annotation\Bean;
+use swoft\di\annotation\Inject;
 
 /**
  *
- *
+ * @Bean()
  * @uses      IndexLogic
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>
@@ -18,14 +20,14 @@ class IndexLogic
 {
     /**
      *
-     * @Inject
+     * @Inject()
      * @var UserData
      */
     private $userData;
 
     /**
      *
-     * @Inject
+     * @Inject()
      * @var UserExtData
      */
     private $userExtData;

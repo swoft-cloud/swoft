@@ -3,7 +3,7 @@
 namespace swoft\pool\balancer;
 
 /**
- *
+ * 轮询负载
  *
  * @uses      RoundRobinBalancer
  * @version   2017年07月27日

@@ -2,6 +2,7 @@
 
 namespace swoft;
 
+use app\models\logic\IndexLogic;
 use swoft\base\ApplicationContext;
 use swoft\base\Config;
 use swoft\base\RequestContext;
@@ -24,6 +25,7 @@ use swoft\web\ErrorHandler;
  */
 class App
 {
+
     /**
      * @var Application 应用对象
      */
@@ -69,6 +71,7 @@ class App
         if ($properties == null) {
             $properties = self::getProperties();
         }
+
         self::$properties = $properties;
     }
 
@@ -98,7 +101,7 @@ class App
      */
     public static function getErrorHandler()
     {
-        return ApplicationContext::getBean('errorHanlder');
+        return ApplicationContext::getBean('errorHandler');
     }
 
     /**

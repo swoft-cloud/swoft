@@ -2,39 +2,28 @@
 
 namespace swoft\di;
 
-use DI\Container;
-use DI\ContainerBuilder;
 use Monolog\Formatter\LineFormatter;
-use swoft\base\Config;
-use swoft\base\Timer;
-use swoft\filter\ExactUriPattern;
-use swoft\filter\ExtUriPattern;
-use swoft\filter\FilterChain;
-use swoft\filter\PathUriPattern;
-use swoft\filter\UriPattern;
-use swoft\helpers\ArrayHelper;
 use swoft\App;
-use swoft\pool\balancer\RandomBalancer;
+use swoft\base\Config;
+use swoft\filter\FilterChain;
+use swoft\helpers\ArrayHelper;
 use swoft\pool\balancer\RoundRobinBalancer;
-use swoft\service\JsonPacker;
 use swoft\web\Application;
+use swoft\web\Controller;
 use swoft\web\ErrorHandler;
+use swoft\web\Router;
 
 /**
  * bean工厂
  *
  * @uses      BeanFactory
- * @version   2017年07月07日
+ * @version   2017年08月18日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class BeanFactory implements BeanFactoryInterface
 {
-    /**
-     * bean引用正则匹配
-     */
-    const BEAN_REF_REG = '/^\$\{(.*)\}$/';
 
     /**
      * @var Container 容器
@@ -42,229 +31,70 @@ class BeanFactory implements BeanFactoryInterface
     private static $container = null;
 
     /**
-     * @var array bean配置数组
-     */
-    private static $beansConfig = [];
-
-    /**
      * BeanFactory constructor.
      *
-     * @param array $config 配置项
+     * @param array $definitions
      */
-    public function __construct(array $config)
+    public function __construct(array $definitions)
     {
-        // 合并参数及初始化
-        self::$beansConfig = ArrayHelper::merge(self::coreBeans(), $config);
+        $definitions = self::merge($definitions);
 
-        // 初始化全局容器
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->useAnnotations(true);
-        $container = $containerBuilder->build();
-        self::$container = $container;
+        self::$container = new Container();
+        self::$container->addDefinitions($definitions);
+        self::$container->autoloadAnnotations();
+        self::$container->initBeans();
 
-        // 初始化App配置
+        $requestMapping = self::$container->getRequestMapping();
+        $this->registerRoutes($requestMapping);
         App::setProperties();
     }
 
     /**
-     * 查询Bean
+     * 获取Bean
      *
-     * @param  string $name 名称
+     * @param string $name Bean名称
      *
      * @return mixed
      */
     public static function getBean(string $name)
     {
-        if (self::$container->has($name)) {
-            return self::$container->get($name);
-        }
-
-        if (!isset(self::$beansConfig[$name])) {
-            throw new \InvalidArgumentException("初始化Bean失败，bean不存在，beanName=" . $name);
-        }
-
-        $beanConfig = self::$beansConfig[$name];
-        return self::createBean($name, $beanConfig);
+        return self::$container->get($name);
     }
 
     /**
-     * Bean是否存在容器中
+     * 创建一个bean
      *
-     * @param  string $name 名称
+     * @param string $beanName
+     * @param array  $definition
+     *
+     * @return mixed
+     */
+    public static function createBean(string $beanName, array $definition)
+    {
+        return self::$container->create($beanName, $definition);
+    }
+
+    /**
+     * bean是否存在
+     *
+     * @param string $name bean名称
      *
      * @return bool
      */
-    public static function hasBean($name)
+    public static function hasBean(string $name)
     {
-        return self::$container->has($name);
+        return self::$container->hasBean($name);
     }
 
-
-    /**
-     * 注入一个bean
-     *
-     * @param string       $beanName   名称
-     * @param array|string $beanConfig 配置属性
-     *
-     * @return mixed
-     */
-    public static function createBean(string $beanName, array $beanConfig)
-    {
-        $className = $beanConfig;
-
-        // 直接初始化一个类
-        if (is_string($className)) {
-            $object = \DI\object($className);
-            self::$container->set($beanName, $object);
-            return $object;
-        }
-
-        // 配置信息不完整,忽略
-        if (!is_array($className) || !isset($beanConfig['class'])) {
-            throw new \InvalidArgumentException("初始化Bean失败，配置信息不完整" . json_encode($beanConfig));
-        }
-
-        $constructorArgs = [];
-        $className = $beanConfig['class'];
-        unset($beanConfig['class']);
-
-        // 构造函数初识别
-        foreach ($beanConfig as $proName => $proVale) {
-            if (is_array($proVale) && $proName === 0) {
-                unset($proName);
-                $constructorArgs = self::formateRefFields($proVale);
-                continue;
-            }
-        }
-
-        // 类属性识别
-        $fields = self::formateRefFields($beanConfig);
-
-        // 类初始化
-        $object = \DI\object($className);
-        $object = $object->constructor($constructorArgs);
-        foreach ($fields as $name => $field) {
-            $object->property($name, $field);
-        }
-
-        self::$container->set($beanName, $object);
-
-        // 存在init方法初始化
-        $bean = self::$container->get($beanName);
-        if (method_exists($bean, 'init')) {
-            $bean->init();
-        }
-        return $bean;
-    }
-
-    /**
-     * 格式化bean引用属性
-     *
-     * @param array $fields
-     *
-     * @return array
-     */
-    private static function formateRefFields(array $fields)
-    {
-        $formateRef = [];
-        foreach ($fields as $key => $field) {
-            if (is_array($field)) {
-                $formateRef[$key] = self::formateRefFields($field);
-                continue;
-            }
-            $refField = $field;
-            $result = preg_match(self::BEAN_REF_REG, $field, $match);
-            if (!$result) {
-                $formateRef[$key] = $field;
-                continue;
-            }
-
-            $refConfigProperties = explode(".", $match[1]);
-
-            // 配置属性参数
-            if (count($refConfigProperties) > 1) {
-                $refField = self::getConfigPropertiesByRef($refConfigProperties);
-                $formateRef[$key] = $refField;
-                continue;
-            }
-
-            // bean引用存在
-            if (self::$container->has($refConfigProperties[0])) {
-                $refField = self::$container->get($refConfigProperties[0]);
-                $formateRef[$key] = $refField;
-                continue;
-            }
-
-            // bean引用不存在
-            $refBeanName = $refConfigProperties[0];
-            if (!isset(self::$beansConfig[$refBeanName])) {
-                throw new \InvalidArgumentException("引用的bean不存在，beanName=" . $refBeanName);
-            }
-
-            $refBeanConfig = self::$beansConfig[$refBeanName];
-            $refField = self::createBean($refBeanName, $refBeanConfig);
-            $formateRef[$key] = $refField;
-        }
-
-        return $formateRef;
-    }
-
-    /**
-     * 获取属性引用bean
-     *
-     * @param array $refConfigProperties
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    private static function getConfigPropertiesByRef(array $refConfigProperties)
-    {
-        $configName = "config";
-        if ($refConfigProperties[0] == $configName) {
-            unset($refConfigProperties[0]);
-        }
-
-        $propertyVal = null;
-        $config = self::$container->get($configName);
-
-        // 属性解析
-        foreach ($refConfigProperties as $refProName) {
-
-            // config配置propterties识别
-            if ($propertyVal == null && isset($config[$refProName])) {
-                $propertyVal = $config[$refProName];
-                continue;
-            }
-
-            // 不存在
-            if (!isset($propertyVal[$refProName])) {
-                throw new \InvalidArgumentException("$refConfigProperties is not exisit configed");
-            }
-
-            $propertyVal = $propertyVal[$refProName];
-        }
-
-        return $propertyVal;
-    }
-
-    /**
-     * 常用beans
-     *
-     * @return array
-     */
     private static function coreBeans()
     {
         return [
             'config'             => ['class' => Config::class],
             'application'        => ['class' => Application::class],
-            'errorHanlder'       => ['class' => ErrorHandler::class],
-            "packer"             => ['class' => JsonPacker::class],
-            'timer'              => ['class' => Timer::class],
-            'randomBalancer'     => ['class' => RandomBalancer::class],
+            'errorHandler'       => ['class' => ErrorHandler::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'uriPattern'    => ['class' => UriPattern::class],
             'filter'             => [
-                'class'             => FilterChain::class,
+                'class'            => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'
             ],
             "lineFormate"        => [
@@ -273,5 +103,103 @@ class BeanFactory implements BeanFactoryInterface
                 'dateFormat' => 'Y/m/d H:i:s'
             ],
         ];
+    }
+
+    /**
+     * 自动注册路由
+     *
+     * @param array $requestMapping
+     */
+    private function registerRoutes(array $requestMapping)
+    {
+        /* @var Router $router */
+        $router = self::getBean('router');
+        foreach ($requestMapping as $className => $mapping) {
+            if (!isset($mapping['prefix']) || !isset($mapping['routes'])) {
+                continue;
+            }
+
+            // 控制器prefix
+            $controllerPrefix = $mapping['prefix'];
+            $controllerPrefix = $this->getControllerPrefix($controllerPrefix, $className);
+            $routes = $mapping['routes'];
+
+            /* @var Controller $controller */
+            $controller = self::getBean($className);
+            $actionPrefix = $controller->getActionPrefix();
+
+            // 循环注册路由
+            foreach ($routes as $route) {
+                if (!isset($route['route']) || !isset($route['method']) || !isset($route['action'])) {
+                    continue;
+                }
+                $mapRoute = $route['route'];
+                $method = $route['method'];
+                $action = $route['action'];
+
+                // 解析注入action名称
+                $actionMethod = $this->getActionMethod($actionPrefix, $action);
+                $mapRoute = empty($mapRoute) ? $actionMethod : $mapRoute;
+
+                // '/'开头的路由是一个单独的路由，未使用'/'需要和控制器组拼成一个路由
+                $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . "/" . $mapRoute;
+                $handler = $className . "@" . $actionMethod;
+
+                // 注入路由规则
+                $router->map($method, $uri, $handler);
+            }
+        }
+    }
+
+    /**
+     * 获取action方法
+     *
+     * @param string $actionPrefix 配置的默认action前缀
+     * @param string $action       action方法
+     *
+     * @return string
+     */
+    private function getActionMethod(string $actionPrefix, string $action)
+    {
+        $action = str_replace($actionPrefix, '', $action);
+        $action = lcfirst($action);
+        return $action;
+    }
+
+    /**
+     * 获取控制器prefix
+     *
+     * @param string $controllerPrefix 注解控制器prefix
+     * @param string $className        控制器类名
+     *
+     * @return string
+     */
+    private function getControllerPrefix(string $controllerPrefix, string $className)
+    {
+        // 注解注入不为空，直接返回prefix
+        if (!empty($controllerPrefix)) {
+            return $controllerPrefix;
+        }
+
+        // 注解注入为空，解析控制器prefix
+        $reg = '/^.*\\\(\w+)Controller$/';
+        $result = preg_match($reg, $className, $match);
+        if ($result) {
+            $prefix = "/" . lcfirst($match[1]);
+            return $prefix;
+        }
+    }
+
+    /**
+     * 合并参数及初始化
+     *
+     * @param array $definitions
+     *
+     * @return array
+     */
+    private static function merge(array $definitions)
+    {
+        $definitions = ArrayHelper::merge(self::coreBeans(), $definitions);
+        return $definitions;
     }
 }
