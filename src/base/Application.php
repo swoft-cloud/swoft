@@ -189,7 +189,7 @@ abstract class Application
      */
     public function stop()
     {
-        $timeout = 5;
+        $timeout = 60;
         $startTime = time();
         $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
 

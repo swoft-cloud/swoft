@@ -8,7 +8,7 @@ use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
 
 /**
- * @Bean("userModel")
+ * @Bean(name="userModel")
  *
  * @uses      UserModel
  * @version   2017年08月23日

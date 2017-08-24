@@ -17,11 +17,6 @@ return [
         'ignoreLastSep'       => false,
         'tmpCacheNumber'      => 1000,
         'matchAll'            => '',
-
-        // auto route match @like yii framework
-        'autoRoute'           => false,
-        'controllerNamespace' => 'app\\controllers',
-        'controllerSuffix'    => 'AutoController',
     ],
     'errorHandler' => [
         'class'       => \swoft\web\ErrorHandler::class,

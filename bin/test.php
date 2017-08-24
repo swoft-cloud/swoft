@@ -1,6 +1,7 @@
 <?php
 
 
+
 $reg = '/^.*\\\(\w+)Controller$/';
 $result = preg_match($reg, 'app\controllers\DemoController', $match);
 

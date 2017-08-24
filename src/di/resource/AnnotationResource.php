@@ -9,6 +9,7 @@ use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
 use swoft\di\annotation\RequestMapping;
+use swoft\di\annotation\RequestMethod;
 use swoft\di\annotation\Scope;
 use swoft\di\ObjectDefinition;
 
@@ -267,6 +268,12 @@ class AnnotationResource extends AbstractResource
      */
     private function parseMethodAnnotations(string $className, \ReflectionMethod $method, array $methodAnnotations)
     {
+        // 方法没有注解解析
+        $methodName = $method->getName();
+        if (empty($methodAnnotations)) {
+            return $this->parseMethodWithoutAnnotation($className, $methodName);
+        }
+
         foreach ($methodAnnotations as $methodAnnotation) {
             // 路由规则解析
             if ($methodAnnotation instanceof RequestMapping) {
@@ -275,10 +282,28 @@ class AnnotationResource extends AbstractResource
                 $this->requestMapping[$className]['routes'][] = [
                     'route'  => $route,
                     'method' => $httpMethod,
-                    'action' => $method->getName()
+                    'action' => $methodName
                 ];
+                continue;
             }
+            $this->parseMethodWithoutAnnotation($className, $methodName);
         }
+    }
+
+    /**
+     * 方法没有配置路由注解解析
+     *
+     * @param string $className
+     * @param string $methodName
+     */
+    private function parseMethodWithoutAnnotation(string $className, string $methodName)
+    {
+        $this->requestMapping[$className]['routes'][] = [
+            'route'  => "",
+            'method' => [RequestMethod::GET, RequestMethod::POST],
+            'action' => $methodName
+        ];
+        return;
     }
 
     /**

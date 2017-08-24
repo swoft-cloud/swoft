@@ -5,4 +5,3 @@ use app\controllers\IndexController;
 $router = \swoft\App::getBean('router');
 
 $router->get('/', IndexController::class);
-$router->get('/index/http', 'app\controllers\IndexController@http');
