@@ -1,6 +1,7 @@
 <?php
 return [
     "version" => '1.0',
+    'settingPath' => SETTING_PATH,
     'autoInitBean' => true,
     'beanScan' => [
         'app\controllers',
@@ -8,10 +9,10 @@ return [
         'app\beans',
     ],
     'env' => 'base',
-    'user.stelin.steln' => 'afa',
+    'user.stelin.steln' => 'fafafa',
     'service' =>[
         'user' => [
-            'timeout' => 300
+            'timeout' => 3000
         ]
     ]
 ];

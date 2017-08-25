@@ -8,7 +8,6 @@ return [
         'name'        => SYSTEM_NAME,
         'viewsPath'   => VIEWS_PATH,
         'runtimePath' => RUNTIME_PATH,
-        'settingPath' => SETTING_PATH,
         'basePath'    => dirname(__DIR__),
         'useProvider' => false,
     ],

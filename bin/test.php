@@ -1,6 +1,16 @@
 <?php
+// 递归遍历目录里面的文件
+$dir_iterator = new \RecursiveDirectoryIterator(dirname(__FILE__));
+$iterator = new \RecursiveIteratorIterator($dir_iterator);
+foreach ($iterator as $file){
+    // 只监控php文件
+    if (pathinfo($file, PATHINFO_EXTENSION) != 'php') {
+        echo $file."\n";
+        continue;
+    }
+}
 
-
+exit();
 
 $reg = '/^.*\\\(\w+)Controller$/';
 $result = preg_match($reg, 'app\controllers\DemoController', $match);

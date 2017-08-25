@@ -7,11 +7,11 @@ use swoft\console\style\LiteStyle;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
 use swoft\web\Application;
+use swoft\web\HttpServer;
 
 /**
  * 启动命令行
  *
- * @Bean("console")
  * @uses      Console
  * @version   2017年08月14日
  * @author    stelin <phpcrazy@126.com>
@@ -36,12 +36,6 @@ class Console
     private $reloadTask = false;
 
     /**
-     * @Inject("${application}")
-     * @var Application 应用
-     */
-    private $application = null;
-
-    /**
      * @var array tcp启动参数
      */
     private $tcpStatus = [];
@@ -52,16 +46,23 @@ class Console
     private $httpStatus = [];
 
     /**
-     * @Inject()
      * @var LiteStyle 颜色辅助
      */
     private $liteStyle = null;
 
 
     /**
+     * httpServer服务器
+     *
+     * @var HttpServer
+     */
+    private $httpServer;
+
+
+    /**
      * 初始化
      */
-    public function init()
+    public function __construct()
     {
         // 参数解析
         $argv = $_SERVER['argv'];
@@ -72,10 +73,12 @@ class Console
         $this->reloadTask = in_array('-t', $argv);
 
         // 初始化数据
-        $this->application->setDaemonize($daemonize);
-        $this->application->setScriptFile($this->scriptFile);
-        $this->tcpStatus = $this->application->getTcpStatus();
-        $this->httpStatus = $this->application->getHttpStatus();
+        $this->liteStyle = new LiteStyle();
+        $this->httpServer = new HttpServer();
+        $this->httpServer->setDaemonize($daemonize);
+        $this->httpServer->setScriptFile($this->scriptFile);
+        $this->tcpStatus = $this->httpServer->getTcpStatus();
+        $this->httpStatus = $this->httpServer->getHttpStatus();
     }
 
     /**
@@ -96,8 +99,8 @@ class Console
     public function start()
     {
         // 是否正在运行
-        if ($this->application->isRunning()) {
-            $serverStatus = $this->application->getServerStatus();
+        if ($this->httpServer->isRunning()) {
+            $serverStatus = $this->httpServer->getServerStatus();
             echo $this->liteStyle->color("The server have been running!(PID: {$serverStatus['masterPid']})", LiteStyle::BG_RED) . "\n";
             exit(0);
         }
@@ -126,7 +129,7 @@ class Console
         $line = implode("\n", $lines);
         echo $line . "\n";
 
-        $this->application->start();
+        $this->httpServer->start();
     }
 
     /**
@@ -135,12 +138,12 @@ class Console
     public function restart()
     {
         // 是否已启动
-        if ($this->application->isRunning()) {
+        if ($this->httpServer->isRunning()) {
             $this->stop();
         }
 
         // 重启默认是守护进程
-        $this->application->setDaemonize(1);
+        $this->httpServer->setDaemonize(1);
         $this->start();
     }
 
@@ -150,7 +153,7 @@ class Console
     public function reload()
     {
         // 是否已启动
-        if (!$this->application->isRunning()) {
+        if (!$this->httpServer->isRunning()) {
             echo $this->liteStyle->color('The server is not running! cannot reload', LiteStyle::BG_RED) . "\n";
             exit(0);
         }
@@ -158,7 +161,7 @@ class Console
         echo "Server {$this->scriptFile} is reloading \n";
 
         // 重载
-        $this->application->reload($this->reloadTask);
+        $this->httpServer->reload($this->reloadTask);
 
         echo $this->liteStyle->color("Server {$this->scriptFile} reload success ", LiteStyle::FG_GREEN) . "\n";
     }
@@ -169,18 +172,18 @@ class Console
     public function stop()
     {
         // 是否已启动
-        if (!$this->application->isRunning()) {
+        if (!$this->httpServer->isRunning()) {
             echo $this->liteStyle->color('The server is not running! cannot stop', LiteStyle::BG_RED) . "\n";
             exit(0);
         }
 
-        $serverStatus = $this->application->getServerStatus();
+        $serverStatus = $this->httpServer->getServerStatus();
         $pidFile = $serverStatus['pfile'];
 
         @unlink($pidFile);
         echo("swoft {$this->scriptFile} is stopping ... \n");
 
-        $result = $this->application->stop();
+        $result = $this->httpServer->stop();
 
         // 停止失败
         if (!$result) {

@@ -269,7 +269,7 @@ class App
             return false;
         }
         $server = self::$app->getServer();
-        if ($server != null && $server->taskworker == false) {
+        if ($server != null && property_exists($server, 'taskworker') && $server->taskworker == false) {
             return true;
         }
         return false;

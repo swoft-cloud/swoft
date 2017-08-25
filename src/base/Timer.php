@@ -2,6 +2,7 @@
 
 namespace swoft\base;
 
+use swoft\App;
 use swoft\di\annotation\Bean;
 
 /**
@@ -138,8 +139,8 @@ class Timer
         unset($this->timers[$name]);
 
         // 目前有bug,协程发生切换，先忽略
-        //        App::getLogger()->appendNoticeLog();
-        RequestContext::destory();
+//        App::getLogger()->appendNoticeLog();
+//        RequestContext::destory();
     }
 
     /**

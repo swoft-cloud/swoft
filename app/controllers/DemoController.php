@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\logic\IndexLogic;
+use swoft\App;
 use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Inject;
 use swoft\di\annotation\RequestMapping;
@@ -62,9 +63,7 @@ class DemoController extends Controller
      */
     public function actionIndex2()
     {
-        // 重定向一个URI
-//        $this->redirect("/login/index");
-        $this->outputJson("suc2");
+        $this->outputJson("afafaafa");
     }
 
     /**

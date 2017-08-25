@@ -17,10 +17,6 @@ use swoft\web\Router;
  */
 abstract class Application
 {
-    /**
-     * @var array
-     */
-    protected $server = [];
 
     /**
      * @var string 应用ID
@@ -172,67 +168,4 @@ abstract class Application
         $errorHandler = App::getErrorHandler();
         $errorHandler->register();
     }
-
-    /**
-     * reload服务
-     *
-     * @param bool $reloadTask
-     */
-    public function reload($reloadTask = false)
-    {
-        $onlyTask = $reloadTask ? SIGUSR2 : SIGUSR1;
-        posix_kill($this->server['managerPid'], $onlyTask);
-    }
-
-    /**
-     * stop服务
-     */
-    public function stop()
-    {
-        $timeout = 60;
-        $startTime = time();
-        $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
-
-        $result = true;
-        while (1) {
-            $masterIslive = $this->server['masterPid'] && posix_kill($this->server['masterPid'], SIGTERM);
-            if ($masterIslive) {
-                if (time() - $startTime >= $timeout) {
-                    $result = false;
-                    break;
-                }
-                usleep(10000);
-                continue;
-            }
-
-            break;
-        }
-        return $result;
-    }
-
-    /**
-     * 服务是否已启动
-     *
-     * @return bool
-     */
-    public function isRunning()
-    {
-        $masterIsLive = false;
-        $pFile = $this->server['pfile'];
-
-        // pid 文件是否存在
-        if (file_exists($pFile)) {
-            // 文件内容解析
-            $pidFile = file_get_contents($pFile);
-            $pids = explode(',', $pidFile);
-
-            $this->server['masterPid'] = $pids[0];
-            $this->server['managerPid'] = $pids[1];
-            $masterIsLive = $this->server['masterPid'] && @posix_kill($this->server['managerPid'], 0);
-        }
-
-        return $masterIsLive;
-    }
-
-    abstract public function start();
 }

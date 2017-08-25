@@ -82,6 +82,7 @@ class ErrorHandler
             throw $exception;
         }
 
+
         $reponse = App::getResponse();
         $reponse->setException($exception);
 

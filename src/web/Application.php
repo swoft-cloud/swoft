@@ -3,6 +3,7 @@
 namespace swoft\web;
 
 use swoft\App;
+use swoft\base\Inotify;
 use swoft\base\RequestContext;
 use swoft\filter\FilterChain;
 use swoft\helpers\ResponseHelper;
@@ -18,157 +19,19 @@ use swoft\helpers\ResponseHelper;
  */
 class Application extends \swoft\base\Application
 {
-
-    /**
-     * @var string 启动入口文件
-     */
-    private $scriptFile = "";
-
-    /**
-     * @var array tcp配置信息
-     */
-    private $tcp;
-
-    /**
-     * @var array http配置信息
-     */
-    private $http;
-
-    /**
-     * @var \Swoole\Http\Server http server
-     */
-    private $swoft;
-
-    /**
-     * @var array swoole启动参数
-     */
-    private $setting;
-
-    /**
-     * @var \Swoole\Server\Port tcp监听器
-     */
-    private $listen;
-
     /**
      * 初始化
      */
     public function init()
     {
-        // 注册全局错误错误
-        $this->registerErrorHandler();
-
-        // 记载swoft.ini
-        $this->loadSwoftIni();
-    }
-
-    /**
-     * 启动Http Server
-     */
-    public function start()
-    {
         App::$app = $this;
 
-        $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
-
-        $this->swoft->set($this->setting);
-        $this->swoft->on('start', [$this, 'onStart']);
-        $this->swoft->on('workerstart', [$this, 'onWorkerStart']);
-        $this->swoft->on('managerstart', [$this, 'onManagerStart']);
-        $this->swoft->on('request', [$this, 'onRequest']);
-
-        if ((int)$this->tcp['enable'] === 1) {
-            $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
-            $this->listen->set([
-                'open_eof_check'     => false,
-                'package_max_length' => 20480,
-            ]);
-            $this->listen->on('connect', [$this, 'onConnect']);
-            $this->listen->on('receive', [$this, 'onReceive']);
-            $this->listen->on('close', [$this, 'onClose']);
-        }
-
-        $this->swoft->start();
+        // 注册全局错误错误
+        $this->registerErrorHandler();
     }
 
-    /**
-     * 加载swoft.ini配置
-     */
-    protected function loadSwoftIni()
+    public function doRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        $setings = parse_ini_file($this->settingPath, true);
-        if (!isset($setings['tcp'])) {
-            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
-        }
-        if (!isset($setings['http'])) {
-            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($setings));
-        }
-        if (!isset($setings['server'])) {
-            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($setings));
-        }
-
-        if (!isset($setings['setting'])) {
-            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
-        }
-
-        $this->tcp = $setings['tcp'];
-        $this->http = $setings['http'];
-        $this->server = $setings['server'];
-        $this->setting = $setings['setting'];
-    }
-
-    public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
-    {
-        var_dump("connnect------");
-    }
-
-    /**
-     * RPC请求每次启动一个协程来处理
-     *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $from_id
-     * @param string         $data
-     */
-    public function onReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
-    {
-        try {
-            // 解包
-            $packer = App::getPacker();
-            $data = $packer->unpack($data);
-
-            // 初始化
-            $this->beforeReceiver($data);
-
-            // 执行函数调用
-            $response = $this->runService($data);
-            $data = $packer->pack($response);
-
-            // 处理完成
-            $this->after();
-        } catch (\Exception $e) {
-            $code = $e->getCode();
-            $message = $e->getMessage();
-            $data = ResponseHelper::formatData("", $code, $message);
-        }
-        $server->send($fd, $data);
-    }
-
-    public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
-    {
-        var_dump("close------");
-    }
-
-    /**
-     * http请求每次会启动一个协程
-     *
-     * @param \Swoole\Http\Request  $request
-     * @param \Swoole\Http\Response $response
-     *
-     * @return bool|void
-     */
-    public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
-    {
-
         // chrome两次请求bug修复
         if (isset($request->server['request_uri']) && $request->server['request_uri'] === '/favicon.ico') {
             $response->end('favicon.ico');
@@ -195,6 +58,30 @@ class Application extends \swoft\base\Application
         }
 
         $this->after();
+    }
+
+    public function doReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
+    {
+        try {
+            // 解包
+            $packer = App::getPacker();
+            $data = $packer->unpack($data);
+
+            // 初始化
+            $this->beforeReceiver($data);
+
+            // 执行函数调用
+            $response = $this->runService($data);
+            $data = $packer->pack($response);
+
+            // 处理完成
+            $this->after();
+        } catch (\Exception $e) {
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $data = ResponseHelper::formatData("", $code, $message);
+        }
+        $server->send($fd, $data);
     }
 
     /**
@@ -225,48 +112,6 @@ class Application extends \swoft\base\Application
 
         /* run controller with filters */
         $this->runControllerWithFilters($controller, $actionId, $params);
-    }
-
-    /**
-     * master进程启动前初始化
-     *
-     * @param \Swoole\Http\Server $server
-     */
-    public function onStart(\Swoole\Http\Server $server)
-    {
-        file_put_contents($this->server['pfile'], $server->master_pid);
-        file_put_contents($this->server['pfile'], ',' . $server->manager_pid, FILE_APPEND);
-        swoole_set_process_name($this->server['pname'] . " master process (" . $this->scriptFile . ")");
-    }
-
-    /**
-     * mananger进程启动前初始化
-     *
-     * @param \Swoole\Http\Server $server
-     */
-    public function onManagerStart(\Swoole\Http\Server $server)
-    {
-        if ($this->useProvider) {
-            App::getConsulProvider()->registerService("user", '127.0.0.1', 8099);
-        }
-
-        swoole_set_process_name($this->server['pname'] . " manager process");
-    }
-
-    /**
-     * worker进程启动前初始化
-     *
-     * @param \Swoole\Http\Server $server
-     * @param int                 $workerId
-     */
-    public function onWorkerStart(\Swoole\Http\Server $server, int $workerId)
-    {
-        $setting = $server->setting;
-        if ($workerId >= $setting['worker_num']) {
-            swoole_set_process_name($this->server['pname'] . " task process");
-        } else {
-            swoole_set_process_name($this->server['pname'] . " worker process");
-        }
     }
 
     /**
@@ -367,65 +212,5 @@ class Application extends \swoft\base\Application
     public function getViewsPath()
     {
         return $this->viewsPath;
-    }
-
-    /**
-     * 设置是否守护进程启动
-     *
-     * @param int $daemonize
-     */
-    public function setDaemonize(int $daemonize)
-    {
-        $this->setting['daemonize'] = $daemonize;
-    }
-
-    /**
-     * 设置启动脚本文件
-     *
-     * @param string $scriptFile
-     */
-    public function setScriptFile(string $scriptFile)
-    {
-        $this->scriptFile = $scriptFile;
-    }
-
-    /**
-     * 获取http server
-     *
-     * @return \Swoole\Http\Server
-     */
-    public function getServer()
-    {
-        return $this->swoft;
-    }
-
-    /**
-     * 获取启动server状态
-     *
-     * @return array
-     */
-    public function getServerStatus()
-    {
-        return $this->server;
-    }
-
-    /**
-     * 获取tcp启动参数
-     *
-     * @return array
-     */
-    public function getTcpStatus()
-    {
-        return $this->tcp;
-    }
-
-    /**
-     * 获取http启动参数
-     *
-     * @return array
-     */
-    public function getHttpStatus()
-    {
-        return $this->http;
     }
 }
