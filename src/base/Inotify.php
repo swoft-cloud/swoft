@@ -2,9 +2,6 @@
 
 namespace swoft\base;
 
-use swoft\console\Console;
-use swoft\di\annotation\Bean;
-use swoft\di\annotation\Inject;
 use swoft\web\HttpServer;
 
 /**

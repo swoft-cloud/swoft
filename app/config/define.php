@@ -18,4 +18,3 @@ define('SETTING_PATH', BASE_PATH . '/bin/swoft.ini');
 // swoole日志文件
 define("SWOOLE_LOG_PATH", RUNTIME_PATH."/swoole.log");
 
-

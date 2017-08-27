@@ -3,7 +3,6 @@
 namespace swoft\web;
 
 use swoft\App;
-use swoft\base\Inotify;
 use swoft\base\RequestContext;
 use swoft\filter\FilterChain;
 use swoft\helpers\ResponseHelper;
@@ -19,17 +18,6 @@ use swoft\helpers\ResponseHelper;
  */
 class Application extends \swoft\base\Application
 {
-    /**
-     * 初始化
-     */
-    public function init()
-    {
-        App::$app = $this;
-
-        // 注册全局错误错误
-        $this->registerErrorHandler();
-    }
-
     public function doRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         // chrome两次请求bug修复
@@ -186,15 +174,6 @@ class Application extends \swoft\base\Application
     }
 
     /**
-     * onRequest或onReceiver最后执行
-     */
-    private function after()
-    {
-        App::getLogger()->appendNoticeLog();
-        RequestContext::destory();
-    }
-
-    /**
      * 获取basePath
      *
      * @return string
@@ -212,5 +191,14 @@ class Application extends \swoft\base\Application
     public function getViewsPath()
     {
         return $this->viewsPath;
+    }
+
+    /**
+     * onRequest或onReceiver最后执行
+     */
+    private function after()
+    {
+        App::getLogger()->appendNoticeLog();
+        RequestContext::destory();
     }
 }

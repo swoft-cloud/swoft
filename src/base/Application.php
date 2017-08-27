@@ -61,6 +61,17 @@ abstract class Application
     public $count = 0;
 
     /**
+     * 初始化
+     */
+    public function init()
+    {
+        App::$app = $this;
+
+        // 注册全局错误错误
+        $this->registerErrorHandler();
+    }
+
+    /**
      * 创建控制器
      *
      * @param string $path url路径

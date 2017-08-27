@@ -1,4 +1,4 @@
 <?php
-require_once __DIR__. '/../vendor/autoload.php';
-require_once __DIR__. '/../app/config/define.php';
-require_once __DIR__. '/../app/config/model.php';
+require_once dirname(__FILE__, 2) . "/vendor/autoload.php";
+require_once dirname(__FILE__, 2) . '/app/config/define.php';
+require_once dirname(__FILE__, 2) . '/app/config/model.php';

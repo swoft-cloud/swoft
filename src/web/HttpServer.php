@@ -4,10 +4,10 @@ namespace swoft\web;
 
 use swoft\App;
 use swoft\base\Inotify;
-use swoft\di\BeanFactory;
+use Swoole\Process;
 
 /**
- *
+ * http服务器
  *
  * @uses      HttpServer
  * @version   2017年08月25日
@@ -15,82 +15,15 @@ use swoft\di\BeanFactory;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class HttpServer
+class HttpServer extends \swoft\base\HttpServer
 {
-    /**
-     * @var string 启动入口文件
-     */
-    private $scriptFile = "";
-
-    /**
-     * @var array tcp配置信息
-     */
-    private $tcp;
-
-    /**
-     * @var array http配置信息
-     */
-    private $http;
-
-    /**
-     * @var \Swoole\Http\Server http server
-     */
-    private $swoft;
-
-    /**
-     * @var array swoole启动参数
-     */
-    private $setting;
-
-    /**
-     * @var \Swoole\Server\Port tcp监听器
-     */
-    private $listen;
-
-    /**
-     * httpServer运行状态信息
-     *
-     * @var array
-     */
-    private $status = [];
-
-    public function __construct()
-    {
-        // 记载swoft.ini
-        $this->loadSwoftIni();
-    }
-
-    /**
-     * 加载swoft.ini配置
-     */
-    protected function loadSwoftIni()
-    {
-        $setings = parse_ini_file(SETTING_PATH, true);
-        if (!isset($setings['tcp'])) {
-            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
-        }
-        if (!isset($setings['http'])) {
-            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($setings));
-        }
-        if (!isset($setings['server'])) {
-            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($setings));
-        }
-
-        if (!isset($setings['setting'])) {
-            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
-        }
-
-        $this->tcp = $setings['tcp'];
-        $this->http = $setings['http'];
-        $this->status = $setings['server'];
-        $this->setting = $setings['setting'];
-    }
-
     /**
      * 启动Http Server
      */
     public function start()
     {
+        App::$server = $this;
+
         $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
 
         $this->swoft->set($this->setting);
@@ -109,51 +42,11 @@ class HttpServer
             $this->listen->on('receive', [$this, 'onReceive']);
             $this->listen->on('close', [$this, 'onClose']);
         }
-        $reloadProcess = new \Swoole\Process(function ($process){
-            $process->name('php-swf reload process');
-            $inotify = new Inotify($this);
-            $inotify->run();
-        }, false, 2);
 
+        // 添加重新加载进程
+        $reloadProcess = new Process([$this, 'reloadCallback'], false, 2);
         $this->swoft->addProcess($reloadProcess);
-
         $this->swoft->start();
-    }
-
-    /**
-     * http请求每次会启动一个协程
-     *
-     * @param \Swoole\Http\Request  $request
-     * @param \Swoole\Http\Response $response
-     *
-     * @return bool|void
-     */
-    public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
-    {
-        App::getApplication()->doRequest($request, $response);
-    }
-
-    /**
-     * RPC请求每次启动一个协程来处理
-     *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $fromId
-     * @param string         $data
-     */
-    public function onReceive(\Swoole\Server $server, int $fd, int $fromId, string $data)
-    {
-        App::getApplication()->doReceive($server, $fd, $fromId, $data);
-    }
-
-    public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
-    {
-        var_dump("connnect------");
-    }
-
-    public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
-    {
-        var_dump("close------");
     }
 
     /**
@@ -193,135 +86,63 @@ class HttpServer
             swoole_set_process_name($this->status['pname'] . " worker process");
         }
 
-        // 加载配置
-        $definitions = require CONFIG_PATH;
-
-        // 初始化beans
-        $beanFactory = new BeanFactory($definitions);
-
-        // 加载路由
-        require ROUTES_PATH;
+        // reload重新加载文件
+        $this->beforeOnWorkerStart();
     }
 
-
     /**
-     * reload服务
+     * http请求每次会启动一个协程
      *
-     * @param bool $reloadTask
-     */
-    public function reload($reloadTask = false)
-    {
-        $onlyTask = $reloadTask ? SIGUSR2 : SIGUSR1;
-        posix_kill($this->status['managerPid'], $onlyTask);
-    }
-
-    /**
-     * stop服务
-     */
-    public function stop()
-    {
-        $timeout = 60;
-        $startTime = time();
-        $this->status['masterPid'] && posix_kill($this->status['masterPid'], SIGTERM);
-
-        $result = true;
-        while (1) {
-            $masterIslive = $this->status['masterPid'] && posix_kill($this->status['masterPid'], SIGTERM);
-            if ($masterIslive) {
-                if (time() - $startTime >= $timeout) {
-                    $result = false;
-                    break;
-                }
-                usleep(10000);
-                continue;
-            }
-
-            break;
-        }
-        return $result;
-    }
-
-    /**
-     * 服务是否已启动
+     * @param \Swoole\Http\Request  $request
+     * @param \Swoole\Http\Response $response
      *
-     * @return bool
+     * @return bool|void
      */
-    public function isRunning()
+    public function onRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
-        $masterIsLive = false;
-        $pFile = $this->status['pfile'];
-
-        // pid 文件是否存在
-        if (file_exists($pFile)) {
-            // 文件内容解析
-            $pidFile = file_get_contents($pFile);
-            $pids = explode(',', $pidFile);
-
-            $this->status['masterPid'] = $pids[0];
-            $this->status['managerPid'] = $pids[1];
-            $masterIsLive = $this->status['masterPid'] && @posix_kill($this->status['managerPid'], 0);
-        }
-
-        return $masterIsLive;
+        App::getApplication()->doRequest($request, $response);
     }
 
     /**
-     * 设置是否守护进程启动
+     * RPC请求每次启动一个协程来处理
      *
-     * @param int $daemonize
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $fromId
+     * @param string         $data
      */
-    public function setDaemonize(int $daemonize)
+    public function onReceive(\Swoole\Server $server, int $fd, int $fromId, string $data)
     {
-        $this->setting['daemonize'] = $daemonize;
+        App::getApplication()->doReceive($server, $fd, $fromId, $data);
     }
 
     /**
-     * 设置启动脚本文件
+     * 重新加载reload回调函数
      *
-     * @param string $scriptFile
+     * @param Process $process
      */
-    public function setScriptFile(string $scriptFile)
-    {
-        $this->scriptFile = $scriptFile;
+    public function reloadCallback(Process $process){
+        $processName = $this->status['pname'] . " reload process";
+        $process->name($processName);
+        $inotify = new Inotify($this);
+        $inotify->run();
     }
 
     /**
-     * 获取http server
-     *
-     * @return \Swoole\Http\Server
+     * worker start之前运行
      */
-    public function getServer()
+    private function beforeOnWorkerStart()
     {
-        return $this->swoft;
+        require_once BASE_PATH . '/app/config/reload.php';
     }
 
-    /**
-     * 获取启动server状态
-     *
-     * @return array
-     */
-    public function getServerStatus()
+    public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
     {
-        return $this->status;
+        var_dump("connnect------");
     }
 
-    /**
-     * 获取tcp启动参数
-     *
-     * @return array
-     */
-    public function getTcpStatus()
+    public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
     {
-        return $this->tcp;
-    }
-
-    /**
-     * 获取http启动参数
-     *
-     * @return array
-     */
-    public function getHttpStatus()
-    {
-        return $this->http;
+        var_dump("close------");
     }
 }

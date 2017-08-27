@@ -2,11 +2,7 @@
 
 namespace swoft\console;
 
-use swoft\App;
 use swoft\console\style\LiteStyle;
-use swoft\di\annotation\Bean;
-use swoft\di\annotation\Inject;
-use swoft\web\Application;
 use swoft\web\HttpServer;
 
 /**

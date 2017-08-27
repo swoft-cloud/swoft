@@ -13,6 +13,7 @@ use swoft\service\ConsulProvider;
 use swoft\service\IPack;
 use swoft\web\Application;
 use swoft\web\ErrorHandler;
+use swoft\web\HttpServer;
 
 /**
  * 应用简写类
@@ -27,12 +28,23 @@ class App
 {
 
     /**
-     * @var Application 应用对象
+     * 应用对象
+     *
+     * @var Application
      */
     public static $app;
 
     /**
-     * @var Config config bean配置对象
+     * http服务器对象
+     *
+     * @var HttpServer
+     */
+    public static $server;
+
+    /**
+     * config bean配置对象
+     *
+     * @var Config
      */
     public static $properties;
 
@@ -265,10 +277,11 @@ class App
      */
     public static function isWorkerStatus()
     {
-        if (self::$app == null) {
+        if (self::$server == null) {
             return false;
         }
-        $server = self::$app->getServer();
+        $server = self::$server->getServer();
+
         if ($server != null && property_exists($server, 'taskworker') && $server->taskworker == false) {
             return true;
         }
