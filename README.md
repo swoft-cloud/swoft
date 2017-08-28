@@ -47,7 +47,8 @@ QQ交流群:548173319
 1. hiredis
 2. composer
 2. PHP7.X
-3. Swoole2.x且开启协程和异步redis
+3. inotify(可选)
+4. Swoole2.x且开启协程和异步redis
 
 ## 安装
 
