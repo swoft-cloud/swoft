@@ -33,7 +33,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 # 更新记录
 
-* ...
+* ......
 * 2017-08-15 重构console命令行
 * 2017-08-24 重写IOC容器，新增控制器路由注解注册，不再依赖php-di。使用时，重新composer安装
 * 2017-08-28 inotify自动reload
