@@ -112,8 +112,6 @@ class BeanFactory implements BeanFactoryInterface
      */
     private function registerRoutes(array $requestMapping)
     {
-        /* @var Router $router */
-        $router = self::getBean('router');
         foreach ($requestMapping as $className => $mapping) {
             if (!isset($mapping['prefix']) || !isset($mapping['routes'])) {
                 continue;
@@ -128,26 +126,43 @@ class BeanFactory implements BeanFactoryInterface
             $controller = self::getBean($className);
             $actionPrefix = $controller->getActionPrefix();
 
-            // 循环注册路由
-            foreach ($routes as $route) {
-                if (!isset($route['route']) || !isset($route['method']) || !isset($route['action'])) {
-                    continue;
-                }
-                $mapRoute = $route['route'];
-                $method = $route['method'];
-                $action = $route['action'];
+            // 注册控制器对应的一组路由
+            $this->registerRoute($className, $routes, $controllerPrefix, $actionPrefix);
+        }
+    }
 
-                // 解析注入action名称
-                $actionMethod = $this->getActionMethod($actionPrefix, $action);
-                $mapRoute = empty($mapRoute) ? $actionMethod : $mapRoute;
+    /**
+     * 注册路由
+     *
+     * @param string $className        类名
+     * @param array  $routes           控制器对应的路由组
+     * @param string $controllerPrefix 控制器prefix
+     * @param string $actionPrefix     action prefix
+     */
+    private function registerRoute(string $className, array $routes, string $controllerPrefix, string $actionPrefix)
+    {
+        /* @var Router $router */
+        $router = self::getBean('router');
 
-                // '/'开头的路由是一个单独的路由，未使用'/'需要和控制器组拼成一个路由
-                $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . "/" . $mapRoute;
-                $handler = $className . "@" . $actionMethod;
-
-                // 注入路由规则
-                $router->map($method, $uri, $handler);
+        // 循环注册路由
+        foreach ($routes as $route) {
+            if (!isset($route['route']) || !isset($route['method']) || !isset($route['action'])) {
+                continue;
             }
+            $mapRoute = $route['route'];
+            $method = $route['method'];
+            $action = $route['action'];
+
+            // 解析注入action名称
+            $actionMethod = $this->getActionMethod($actionPrefix, $action);
+            $mapRoute = empty($mapRoute) ? $actionMethod : $mapRoute;
+
+            // '/'开头的路由是一个单独的路由，未使用'/'需要和控制器组拼成一个路由
+            $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . "/" . $mapRoute;
+            $handler = $className . "@" . $actionMethod;
+
+            // 注入路由规则
+            $router->map($method, $uri, $handler);
         }
     }
 
