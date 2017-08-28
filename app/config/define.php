@@ -1,6 +1,8 @@
 <?php
 // 系统名称
 define('SYSTEM_NAME', 'swoft');
+// auto reload
+define('AUTO_RELOAD', true);
 // 基础目录
 define('BASE_PATH', dirname(__DIR__, 2));
 // 应用目录

@@ -57,10 +57,10 @@ class Inotify
 
         $iterator = new \RecursiveDirectoryIterator($this->watchDir);
         $files = new \RecursiveIteratorIterator($iterator);
-        foreach ($files as $file){
+        foreach ($files as $file) {
             // 监听类型判断
             $fileType = pathinfo($file, PATHINFO_EXTENSION);
-            if(!in_array($fileType, $this->fileTypes)){
+            if (!in_array($fileType, $this->fileTypes)) {
                 continue;
             }
 
@@ -73,6 +73,11 @@ class Inotify
         $this->addSwooleEvent($inotify);
     }
 
+    /**
+     * 新增swoole事件
+     *
+     * @param mixed $inotify
+     */
     private function addSwooleEvent($inotify)
     {
         global $watchFiles;
@@ -87,6 +92,12 @@ class Inotify
         }, null, SWOOLE_EVENT_READ);
     }
 
+    /**
+     * 重新reload
+     *
+     * @param mixed $inotify
+     * @param array $events
+     */
     private function reloadFiles($inotify, $events)
     {
         global $watchFiles;
@@ -95,7 +106,7 @@ class Inotify
         // 更新的文件监控
         foreach ($events as $event) {
             $wid = $event['wd'];
-            if(!isset($watchFiles[$wid])){
+            if (!isset($watchFiles[$wid])) {
                 continue;
             }
 
@@ -112,16 +123,16 @@ class Inotify
         }
 
 
-        if(!$isReload){
+        if (!$isReload) {
             return;
         }
 
         // 延迟一秒
-        sleep(1);
+        sleep(3);
 
-        echo "inotify reloading worker files....\n";
+        echo "inotify开始自动reloading...\n";
         $this->httpServer->isRunning();
         $this->httpServer->reload();
-        echo "inotify reload success....\n";
+        echo "inotify自动成功\n";
     }
 }

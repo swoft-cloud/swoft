@@ -43,9 +43,7 @@ class HttpServer extends \swoft\base\HttpServer
             $this->listen->on('close', [$this, 'onClose']);
         }
 
-        // 添加重新加载进程
-        $reloadProcess = new Process([$this, 'reloadCallback'], false, 2);
-        $this->swoft->addProcess($reloadProcess);
+        $this->beforeStart();
         $this->swoft->start();
     }
 
@@ -126,6 +124,21 @@ class HttpServer extends \swoft\base\HttpServer
         $process->name($processName);
         $inotify = new Inotify($this);
         $inotify->run();
+    }
+
+    /**
+     * master start之前运行
+     */
+    private function beforeStart()
+    {
+        if (!AUTO_RELOAD || !extension_loaded('inotify')) {
+            echo "自动reload未开启，请检查配置(AUTO_RELOAD)和inotify扩展是否安装正确! \n";
+            return;
+        }
+
+        // 添加重新加载进程
+        $reloadProcess = new Process([$this, 'reloadCallback'], false, 2);
+        $this->swoft->addProcess($reloadProcess);
     }
 
     /**
