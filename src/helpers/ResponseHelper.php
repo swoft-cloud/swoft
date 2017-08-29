@@ -22,13 +22,13 @@ class ResponseHelper
      *
      * @return array
      */
-    public static function formatData($data = "", $status = 200, $message = "")
+    public static function formatData($data = "", $message = "", $status = 200)
     {
         return [
-            'data' => $data,
+            'data'   => $data,
             'status' => $status,
-            'msg' => $message,
-            'time' => microtime(true)
+            'msg'    => $message,
+            'time'   => microtime(true)
         ];
     }
 }

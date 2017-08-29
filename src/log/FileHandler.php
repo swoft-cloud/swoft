@@ -3,6 +3,7 @@
 namespace swoft\log;
 
 use Monolog\Handler\AbstractProcessingHandler;
+use swoft\App;
 
 /**
  * 日志文件输出器
@@ -52,12 +53,13 @@ class FileHandler extends AbstractProcessingHandler
      */
     protected function write(array $records)
     {
-        $messageText = implode("\n", $records) . "\n";
+        $logFile = App::getAlias($this->logFile);
 
+        $messageText = implode("\n", $records) . "\n";
         $this->createDir();
 
         while (true) {
-            $result = \Swoole\Async::writeFile($this->logFile, $messageText, null, FILE_APPEND);
+            $result = \Swoole\Async::writeFile($logFile, $messageText, null, FILE_APPEND);
             if ($result == true) {
                 break;
             }
@@ -95,7 +97,8 @@ class FileHandler extends AbstractProcessingHandler
      */
     private function createDir()
     {
-        $dir = dirname($this->logFile);
+        $logFile = App::getAlias($this->logFile);
+        $dir = dirname($logFile);
         if ($dir !== null && !is_dir($dir)) {
             $status = mkdir($dir, 0777, true);
             if ($status === false) {

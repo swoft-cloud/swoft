@@ -6,9 +6,6 @@ return [
     'application'  => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
-        'viewsPath'   => VIEWS_PATH,
-        'runtimePath' => RUNTIME_PATH,
-        'basePath'    => dirname(__DIR__),
         'useProvider' => false,
     ],
     'router'       => [
@@ -73,7 +70,7 @@ return [
 
     "noticeHandler"      => [
         "class"     => \swoft\log\FileHandler::class,
-        "logFile"   => RUNTIME_PATH . "/notice.log",
+        "logFile"   =>  "@runtime/notice.log",
         'formatter' => '${lineFormate}',
         "levels"    => [
             \swoft\log\Logger::NOTICE,
@@ -84,7 +81,7 @@ return [
     ],
     "applicationHandler" => [
         "class"     => \swoft\log\FileHandler::class,
-        "logFile"   => RUNTIME_PATH . "/error.log",
+        "logFile"   => "@runtime/error.log",
         'formatter' => '${lineFormate}',
         "levels"    => [
             \swoft\log\Logger::ERROR,

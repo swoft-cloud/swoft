@@ -48,6 +48,15 @@ class App
      */
     public static $properties;
 
+    /**
+     * 别名库
+     *
+     * @var array
+     */
+    private static $aliases = [
+        '@swoft' => __DIR__
+    ];
+
     public static function getMysqlPool()
     {
         return self::getBean('mysql');
@@ -174,6 +183,90 @@ class App
     public static function getTimer()
     {
         return ApplicationContext::getBean('timer');
+    }
+
+    /**
+     * 语言翻译
+     *
+     * @param string $category 翻译文件类别，比如xxx.xx/xx
+     * @param array  $params   参数
+     * @param string $language 当前语言环境
+     */
+    public static function t(string $category, array $params, string $language)
+    {
+
+    }
+
+    /**
+     * 注册别名
+     *
+     * @param string $alias 别名
+     * @param string $path  路径
+     */
+    public static function setAlias(string $alias, string $path = null)
+    {
+        if (strncmp($alias, '@', 1)) {
+            $alias = '@' . $alias;
+        }
+
+        // 删除别名
+        if ($path == null) {
+            unset(self::$aliases[$alias]);
+            return;
+        }
+
+        // $path不是别名，直接设置
+        $isAlias = strpos($path, '@');
+        if ($isAlias === false) {
+            self::$aliases[$alias] = $path;
+            return;
+        }
+
+        // $path是一个别名
+        if (isset(self::$aliases[$path])) {
+            self::$aliases[$alias] = self::$aliases[$path];
+            return;
+        }
+
+        list($root) = explode('/', $path);
+        if (!isset(self::$aliases[$root])) {
+            throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
+        }
+
+        $rootPath = self::$aliases[$root];
+        $aliasPath = str_replace($root, "", $path);
+
+        self::$aliases[$alias] = $rootPath . $aliasPath;
+    }
+
+    /**
+     * 获取别名路径
+     *
+     * @param string $alias
+     * @return string
+     */
+    public static function getAlias(string $alias)
+    {
+        if(isset(self::$aliases[$alias])){
+            return self::$aliases[$alias];
+        }
+
+        // $path不是别名，直接返回
+        $isAlias = strpos($alias, '@');
+        if($isAlias === false){
+            return $alias;
+        }
+
+        list($root) = explode('/', $alias);
+        if (!isset(self::$aliases[$root])) {
+            throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
+        }
+
+        $rootPath = self::$aliases[$root];
+        $aliasPath = str_replace($root, "", $alias);
+        $path = $rootPath. $aliasPath;
+
+        return $path;
     }
 
     /**

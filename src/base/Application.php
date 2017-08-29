@@ -29,26 +29,6 @@ abstract class Application
     protected $name;
 
     /**
-     * @var string 应用根目录
-     */
-    protected $basePath;
-
-    /**
-     * @var string 视图目录
-     */
-    protected $viewsPath;
-
-    /**
-     * @var string 运行日志目录
-     */
-    protected $runtimePath;
-
-    /**
-     * @var string http或tcp服务启动配置参数目录
-     */
-    protected $settingPath;
-
-    /**
      * @var bool 是否使用第三方(consul/etcd/zk)注册服务
      */
     protected $useProvider = false;

@@ -174,26 +174,6 @@ class Application extends \swoft\base\Application
     }
 
     /**
-     * 获取basePath
-     *
-     * @return string
-     */
-    public function getBasePath()
-    {
-        return $this->basePath;
-    }
-
-    /**
-     * 获取ViewPath
-     *
-     * @return string
-     */
-    public function getViewsPath()
-    {
-        return $this->viewsPath;
-    }
-
-    /**
      * onRequest或onReceiver最后执行
      */
     private function after()

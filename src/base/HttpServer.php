@@ -2,6 +2,8 @@
 
 namespace swoft\base;
 
+use swoft\App;
+
 /**
  * Http服务器
  *
@@ -64,7 +66,8 @@ class HttpServer
      */
     protected function loadSwoftConfig()
     {
-        $setings = parse_ini_file(SETTING_PATH, true);
+        $settingsPath = App::getAlias('@settings');
+        $setings = parse_ini_file($settingsPath, true);
         if (!isset($setings['tcp'])) {
             throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
         }
@@ -79,10 +82,16 @@ class HttpServer
             throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
         }
 
+        if(isset($setings['setting']['log_file'])){
+            $logPath = $setings['setting']['log_file'];
+            $setings['setting']['log_file'] = App::getAlias($logPath);
+        }
+
         $this->tcp = $setings['tcp'];
         $this->http = $setings['http'];
         $this->status = $setings['server'];
         $this->setting = $setings['setting'];
+
     }
 
     /**

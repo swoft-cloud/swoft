@@ -2,6 +2,7 @@
 
 namespace swoft\base;
 
+use swoft\App;
 use swoft\web\HttpServer;
 
 /**
@@ -20,7 +21,7 @@ class Inotify
      *
      * @var string
      */
-    private $watchDir = APP_PATH;
+    private $watchDir;
 
     /**
      * 监听文件变化事件
@@ -41,6 +42,7 @@ class Inotify
     public function __construct(HttpServer $httpServer)
     {
         $this->httpServer = new HttpServer();
+        $this->watchDir = App::getAlias('@app');
     }
 
     /**
