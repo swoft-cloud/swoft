@@ -99,7 +99,7 @@ class BeanFactory implements BeanFactoryInterface
             ],
             "lineFormate"        => [
                 'class'      => LineFormatter::class,
-                "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %message%',
+                "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %messages%',
                 'dateFormat' => 'Y/m/d H:i:s'
             ],
         ];

@@ -7,6 +7,9 @@ return [
         'app\models',
         'app\beans',
     ],
+    'i18n' =>[
+        'sourceLanguage' => '@app/messages/',
+    ],
     'env' => 'base',
     'user.stelin.steln' => 'fafafa',
     'service' =>[

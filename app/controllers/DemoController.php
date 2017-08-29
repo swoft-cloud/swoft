@@ -73,4 +73,16 @@ class DemoController extends Controller
     {
         $this->outputJson("suc3");
     }
+
+    /**
+     * 国际化测试
+     */
+    public function actionI18n()
+    {
+        $data[] = App::t("title", [], 'zh');
+        $data[] = App::t("title", [], 'en');
+        $data[] = App::t("msg.body", ["stelin", 999], 'en');
+        $data[] = App::t("msg.body", ["stelin", 666], 'en');
+        $this->outputJson($data);
+    }
 }

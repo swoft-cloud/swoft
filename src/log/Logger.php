@@ -147,7 +147,7 @@ class Logger extends \Monolog\Logger
         $record = array(
             "logid"      => $this->getLogid(),
             "spanid"     => $this->getSpanid(),
-            'message'    => $message,
+            'messages'    => $message,
             'context'    => $context,
             'level'      => $level,
             'level_name' => $levelName,

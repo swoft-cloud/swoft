@@ -192,9 +192,9 @@ class App
      * @param array  $params   参数
      * @param string $language 当前语言环境
      */
-    public static function t(string $category, array $params, string $language)
+    public static function t(string $category, array $params, string $language = 'en')
     {
-
+        return ApplicationContext::getBean('i18n')->translate($category, $params, $language);
     }
 
     /**

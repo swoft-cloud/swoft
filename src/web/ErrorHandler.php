@@ -64,7 +64,7 @@ class ErrorHandler
     {
         $error = error_get_last();
         if (!empty($error)) {
-            $exception = new \ErrorException($error['message'], $error['type'], $error['type'], $error['file'], $error['line']);
+            $exception = new \ErrorException($error['messages'], $error['type'], $error['type'], $error['file'], $error['line']);
             $this->renderException($exception);
         }
     }

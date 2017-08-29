@@ -1,6 +1,6 @@
 <?php
 // 递归遍历目录里面的文件
-$dir_iterator = new \RecursiveDirectoryIterator(dirname(__FILE__));
+$dir_iterator = new \RecursiveDirectoryIterator('/home/worker/data/www/swoft/app/messages');
 $iterator = new \RecursiveIteratorIterator($dir_iterator);
 foreach ($iterator as $file){
     // 只监控php文件
