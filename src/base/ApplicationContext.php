@@ -109,10 +109,11 @@ class ApplicationContext
     /**
      * 发布一个事件，一个事件可能会有多个监听器
      *
-     * @param string                $name  发布的事件名称
-     * @param ApplicationEvent|null $event 发布的时间对象
+     * @param string                $name   发布的事件名称
+     * @param ApplicationEvent|null $event  发布的时间对象
+     * @param array                 $params 附加数据信息
      */
-    public static function publishEvent(string $name, ApplicationEvent $event = null)
+    public static function publishEvent(string $name, ApplicationEvent $event = null, ...$params)
     {
         if (!isset(self::$listeners[$name]) || !isset(self::$listeners[$name])) {
             throw new \InvalidArgumentException("不存在事件监听器，name=" . $name);
@@ -123,7 +124,7 @@ class ApplicationContext
         // 循环触发多个监听器
         /* @var IApplicationListener $listener */
         foreach ($listeners as $listener) {
-            $listener->onApplicationEvent($event);
+            $listener->onApplicationEvent($event, ...$params);
             // 是否需要执行后续的监听器
             if ($event instanceof ApplicationEvent && $event->isHandled()) {
                 break;

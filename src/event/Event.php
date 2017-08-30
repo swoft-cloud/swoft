@@ -18,4 +18,7 @@ class Event
 
     // 请求后事件
     const AFTER_REQUEST = "afterRequest";
+
+    // rpc前事件
+    const BEFORE_RECEIVE = "beforeReceive";
 }

@@ -3,7 +3,6 @@
 namespace swoft\web;
 
 use swoft\App;
-use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
 use swoft\event\Event;
 use swoft\filter\FilterChain;
@@ -78,8 +77,7 @@ class Application extends \swoft\base\Application
             $packer = App::getPacker();
             $data = $packer->unpack($data);
 
-            // 初始化
-            $this->beforeReceiver($data);
+            App::trigger(Event::BEFORE_RECEIVE, null, $data);
 
             // 执行函数调用
             $response = $this->runService($data);
@@ -115,7 +113,7 @@ class Application extends \swoft\base\Application
 
         // 路由未定义处理
         if ($info == null) {
-            throw new \RuntimeException("路由不存在，uri=".$uri." method=".$method);
+            throw new \RuntimeException("路由不存在，uri=" . $uri . " method=" . $method);
         }
 
         /* @var Controller $controller */
@@ -123,26 +121,6 @@ class Application extends \swoft\base\Application
 
         /* run controller with filters */
         $this->runControllerWithFilters($controller, $actionId, $params);
-    }
-
-    /**
-     * onReceiver初始化
-     *
-     * @param array $data RPC包数据
-     */
-    private function beforeReceiver($data)
-    {
-        $logid = $data['logid'] ?? uniqid();
-        $spanid = $data['spanid'] ?? 0;
-        $uri = $data['func'] ?? "null";
-
-        $contextData = [
-            'logid'       => $logid,
-            'spanid'      => $spanid,
-            'uri'         => $uri,
-            'requestTime' => microtime(true),
-        ];
-        RequestContext::setContextData($contextData);
     }
 
     /**
@@ -156,7 +134,6 @@ class Application extends \swoft\base\Application
     {
         $request = App::getRequest();
         $response = App::getResponse();
-
 
         /* @var FilterChain $filter */
         $filter = App::getBean('filter');

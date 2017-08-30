@@ -21,7 +21,13 @@ use swoft\event\Event;
  */
 class AfterRequestListener implements IApplicationListener
 {
-    public function onApplicationEvent(ApplicationEvent $event = null)
+    /**
+     * 事件回调
+     *
+     * @param ApplicationEvent|null $event      事件对象
+     * @param array                 ...$params  事件附加信息
+     */
+    public function onApplicationEvent(ApplicationEvent $event = null, ...$params)
     {
         App::getLogger()->appendNoticeLog();
         RequestContext::destory();

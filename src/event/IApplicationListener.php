@@ -13,5 +13,5 @@ namespace swoft\event;
  */
 interface IApplicationListener
 {
-    public function onApplicationEvent(ApplicationEvent $event = null);
+    public function onApplicationEvent(ApplicationEvent $event = null, ...$params);
 }

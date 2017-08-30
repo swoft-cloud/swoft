@@ -191,10 +191,20 @@ class App
      *
      * @param string           $name    事件名称
      * @param ApplicationEvent $event   事件对象
+     *
      */
-    public static function trigger(string $name, ApplicationEvent $event = null)
+
+
+    /**
+     * 发布事件
+     *
+     * @param string                $name   发布的事件名称
+     * @param ApplicationEvent|null $event  发布的时间对象
+     * @param array                 $params 附加数据信息
+     */
+    public static function trigger(string $name, ApplicationEvent $event = null, ...$params)
     {
-        ApplicationContext::publishEvent($name, $event);
+        ApplicationContext::publishEvent($name, $event, ...$params);
     }
 
         /**
