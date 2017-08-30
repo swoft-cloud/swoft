@@ -24,38 +24,6 @@ class ApplicationContext
      */
     private static $listeners = [];
 
-    public static function registerListeners(array $listeners)
-    {
-        foreach ($listeners as $eventName => $eventListeners){
-            foreach ($eventListeners as $listenerClassName){
-                $listener = self::getBean($listenerClassName);
-                self::addListeners($eventName, $listener);
-            }
-        }
-    }
-
-    public static function addListeners(string $name, IApplicationListener $listener)
-    {
-        self::$listeners[$name][] = $listener;
-    }
-
-    public static function publishEvent(string $name, ApplicationEvent $event = null)
-    {
-        if(!isset(self::$listeners[$name]) || !isset(self::$listeners[$name])){
-            throw new \InvalidArgumentException("不存在事件监听器，name=".$name);
-        }
-
-        $listeners = self::$listeners[$name];
-
-        /* @var IApplicationListener $listener */
-        foreach ($listeners as $listener){
-            $listener->onApplicationEvent($event);
-            if($event instanceof ApplicationEvent && $event->isHandled()){
-               break;
-            }
-        }
-    }
-
     /**
      * 运行过程中创建一个Bean
      *
@@ -84,7 +52,7 @@ class ApplicationContext
         if (!empty($params) && is_array($type)) {
             array_unshift($type, $params);
         }
-        
+
         return BeanFactory::createBean($beanName, $type);
     }
 
@@ -112,4 +80,54 @@ class ApplicationContext
         return BeanFactory::hasBean($name);
     }
 
+    /**
+     * 初始化注册监听器
+     *
+     * @param array $listeners 监听器集合
+     */
+    public static function registerListeners(array $listeners)
+    {
+        foreach ($listeners as $eventName => $eventListeners) {
+            foreach ($eventListeners as $listenerClassName) {
+                $listener = self::getBean($listenerClassName);
+                self::addListeners($eventName, $listener);
+            }
+        }
+    }
+
+    /**
+     * 注册一个监听器
+     *
+     * @param string               $name     监听的事件名称
+     * @param IApplicationListener $listener 监听器
+     */
+    public static function addListeners(string $name, IApplicationListener $listener)
+    {
+        self::$listeners[$name][] = $listener;
+    }
+
+    /**
+     * 发布一个事件，一个事件可能会有多个监听器
+     *
+     * @param string                $name  发布的事件名称
+     * @param ApplicationEvent|null $event 发布的时间对象
+     */
+    public static function publishEvent(string $name, ApplicationEvent $event = null)
+    {
+        if (!isset(self::$listeners[$name]) || !isset(self::$listeners[$name])) {
+            throw new \InvalidArgumentException("不存在事件监听器，name=" . $name);
+        }
+
+        $listeners = self::$listeners[$name];
+
+        // 循环触发多个监听器
+        /* @var IApplicationListener $listener */
+        foreach ($listeners as $listener) {
+            $listener->onApplicationEvent($event);
+            // 是否需要执行后续的监听器
+            if ($event instanceof ApplicationEvent && $event->isHandled()) {
+                break;
+            }
+        }
+    }
 }

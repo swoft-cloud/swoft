@@ -20,6 +20,14 @@ use swoft\helpers\ResponseHelper;
  */
 class Application extends \swoft\base\Application
 {
+    /**
+     * request请求处理
+     *
+     * @param \Swoole\Http\Request  $request
+     * @param \Swoole\Http\Response $response
+     *
+     * @return bool
+     */
     public function doRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
     {
         // chrome两次请求bug修复
@@ -55,6 +63,14 @@ class Application extends \swoft\base\Application
         App::trigger(Event::AFTER_REQUEST);
     }
 
+    /**
+     * rpc内部服务
+     *
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $from_id
+     * @param string         $data
+     */
     public function doReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
     {
         try {

@@ -9,7 +9,7 @@ use swoft\event\IApplicationListener;
 use swoft\event\Event;
 
 /**
- * 请求前事件
+ * 请求前
  *
  * @Listener(Event::BEFORE_REQUEST)
  * @uses      BeforeRequestListener
