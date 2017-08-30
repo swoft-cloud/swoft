@@ -7,6 +7,7 @@ use swoft\base\ApplicationContext;
 use swoft\base\Config;
 use swoft\base\RequestContext;
 use swoft\base\Timer;
+use swoft\event\ApplicationEvent;
 use swoft\log\Logger;
 use swoft\pool\RedisPool;
 use swoft\service\ConsulProvider;
@@ -186,6 +187,17 @@ class App
     }
 
     /**
+     * 发布事件
+     *
+     * @param string           $name    事件名称
+     * @param ApplicationEvent $event   事件对象
+     */
+    public static function trigger(string $name, ApplicationEvent $event = null)
+    {
+        ApplicationContext::publishEvent($name, $event);
+    }
+
+        /**
      * 语言翻译
      *
      * @param string $category 翻译文件类别，比如xxx.xx/xx

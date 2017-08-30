@@ -8,6 +8,7 @@ use PhpDocReader\PhpDocReader;
 use swoft\di\annotation\AutoController;
 use swoft\di\annotation\Bean;
 use swoft\di\annotation\Inject;
+use swoft\di\annotation\Listener;
 use swoft\di\annotation\RequestMapping;
 use swoft\di\annotation\RequestMethod;
 use swoft\di\annotation\Scope;
@@ -53,6 +54,13 @@ class AnnotationResource extends AbstractResource
      * @var array
      */
     private $requestMapping = [];
+
+    /**
+     * 系统监听器
+     *
+     * @var array
+     */
+    private $listeners = [];
 
     /**
      * 获取已解析的配置beans
@@ -148,6 +156,16 @@ class AnnotationResource extends AbstractResource
                 $scope = Scope::SINGLETON;
                 $prefix = $classAnnotation->getPrefix();
                 $this->requestMapping[$className]['prefix'] = $prefix;
+                continue;
+            }
+
+            // @Listener注解
+            if($classAnnotation instanceof Listener){
+                $beanName = $className;
+                $scope = Scope::SINGLETON;
+                $eventName = $classAnnotation->getEvent();
+
+                $this->listeners[$eventName][] = $beanName;
                 continue;
             }
         }
@@ -351,6 +369,15 @@ class AnnotationResource extends AbstractResource
         return $this->requestMapping;
     }
 
+    /**
+     * 获取监听器
+     *
+     * @return array
+     */
+    public function getListeners(): array
+    {
+        return $this->listeners;
+    }
 
     /**
      * 扫描目录下PHP文件

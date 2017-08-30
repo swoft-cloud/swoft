@@ -3,7 +3,9 @@
 namespace swoft\web;
 
 use swoft\App;
+use swoft\base\ApplicationContext;
 use swoft\base\RequestContext;
+use swoft\event\Event;
 use swoft\filter\FilterChain;
 use swoft\helpers\ResponseHelper;
 
@@ -26,12 +28,17 @@ class Application extends \swoft\base\Application
             return false;
         }
 
+        // 初始化request和response
+        RequestContext::setRequest($request);
+        RequestContext::setResponse($response);
+
+
         // 请求数测试
         $this->count = $this->count + 1;
 
-        $this->beforeRequest($request, $response);
-        $swfRequest = RequestContext::getRequest();
+        App::trigger(Event::BEFORE_REQUEST);
 
+        $swfRequest = RequestContext::getRequest();
         try {
 
             // 解析URI和method
@@ -45,7 +52,7 @@ class Application extends \swoft\base\Application
             App::getErrorHandler()->handlerException($e);
         }
 
-        $this->after();
+        App::trigger(Event::AFTER_REQUEST);
     }
 
     public function doReceive(\Swoole\Server $server, int $fd, int $from_id, string $data)
@@ -62,13 +69,13 @@ class Application extends \swoft\base\Application
             $response = $this->runService($data);
             $data = $packer->pack($response);
 
-            // 处理完成
-            $this->after();
         } catch (\Exception $e) {
             $code = $e->getCode();
             $message = $e->getMessage();
             $data = ResponseHelper::formatData("", $code, $message);
         }
+
+        App::trigger(Event::AFTER_REQUEST);
         $server->send($fd, $data);
     }
 
@@ -123,31 +130,6 @@ class Application extends \swoft\base\Application
     }
 
     /**
-     * onRequest初始化执行
-     *
-     * @param \Swoole\Http\Request  $request
-     * @param \Swoole\Http\Response $response
-     */
-    private function beforeRequest(\Swoole\Http\Request $request, \Swoole\Http\Response $response)
-    {
-        RequestContext::setRequest($request);
-        RequestContext::setResponse($response);
-
-        // header获取日志ID和spanid请求跨度ID
-        $logid = RequestContext::getRequest()->getHeader('logid', uniqid());
-        $spanid = RequestContext::getRequest()->getHeader('spanid', 0);
-        $uri = RequestContext::getRequest()->getRequestUri();
-
-        $contextData = [
-            'logid'       => $logid,
-            'spanid'      => $spanid,
-            'uri'         => $uri,
-            'requestTime' => microtime(true),
-        ];
-        RequestContext::setContextData($contextData);
-    }
-
-    /**
      * run controller with filters
      *
      * @param Controller $controller 控制器
@@ -171,14 +153,5 @@ class Application extends \swoft\base\Application
             $response = $controller->run($actionId, $params);
             $response->send();
         }
-    }
-
-    /**
-     * onRequest或onReceiver最后执行
-     */
-    private function after()
-    {
-        App::getLogger()->appendNoticeLog();
-        RequestContext::destory();
     }
 }

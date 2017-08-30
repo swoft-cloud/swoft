@@ -49,6 +49,13 @@ class Container
     private $requestMapping = [];
 
     /**
+     * 监听器
+     *
+     * @var array
+     */
+    private $listeners = [];
+
+    /**
      * 默认创建bean执行的初始化方法
      *
      * @var string
@@ -132,6 +139,7 @@ class Container
         $resource->addScanNamespaces($beanScan);
         $resource->setProperties($this->properties);
         $definitions = $resource->getDefinitions();
+        $this->listeners = $resource->getListeners();
         $this->requestMapping = $resource->getRequestMapping();
 
         $this->definitions = array_merge($definitions, $this->definitions);
@@ -173,6 +181,15 @@ class Container
         return $this->requestMapping;
     }
 
+    /**
+     * 监听器
+     *
+     * @return array
+     */
+    public function getListeners(): array
+    {
+        return $this->listeners;
+    }
 
     /**
      * 创建bean

@@ -2,8 +2,9 @@
 
 namespace swoft\base;
 
-use swoft\App;
 use swoft\di\BeanFactory;
+use swoft\event\ApplicationEvent;
+use swoft\event\IApplicationListener;
 
 /**
  * 应用上下文
@@ -16,6 +17,45 @@ use swoft\di\BeanFactory;
  */
 class ApplicationContext
 {
+    /**
+     * 监听器集合
+     *
+     * @var array
+     */
+    private static $listeners = [];
+
+    public static function registerListeners(array $listeners)
+    {
+        foreach ($listeners as $eventName => $eventListeners){
+            foreach ($eventListeners as $listenerClassName){
+                $listener = self::getBean($listenerClassName);
+                self::addListeners($eventName, $listener);
+            }
+        }
+    }
+
+    public static function addListeners(string $name, IApplicationListener $listener)
+    {
+        self::$listeners[$name][] = $listener;
+    }
+
+    public static function publishEvent(string $name, ApplicationEvent $event = null)
+    {
+        if(!isset(self::$listeners[$name]) || !isset(self::$listeners[$name])){
+            throw new \InvalidArgumentException("不存在事件监听器，name=".$name);
+        }
+
+        $listeners = self::$listeners[$name];
+
+        /* @var IApplicationListener $listener */
+        foreach ($listeners as $listener){
+            $listener->onApplicationEvent($event);
+            if($event instanceof ApplicationEvent && $event->isHandled()){
+               break;
+            }
+        }
+    }
+
     /**
      * 运行过程中创建一个Bean
      *

@@ -4,7 +4,9 @@ namespace swoft\di;
 
 use Monolog\Formatter\LineFormatter;
 use swoft\App;
+use swoft\base\ApplicationContext;
 use swoft\base\Config;
+use swoft\event\ApplicationEvent;
 use swoft\filter\FilterChain;
 use swoft\helpers\ArrayHelper;
 use swoft\pool\balancer\RoundRobinBalancer;
@@ -44,8 +46,14 @@ class BeanFactory implements BeanFactoryInterface
         self::$container->autoloadAnnotations();
         self::$container->initBeans();
 
+        // 路由自动注册
         $requestMapping = self::$container->getRequestMapping();
         $this->registerRoutes($requestMapping);
+
+        // 监听器注册
+        $listeners = self::$container->getListeners();
+        ApplicationContext::registerListeners($listeners);
+
         App::setProperties();
     }
 
