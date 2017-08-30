@@ -22,10 +22,12 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 **Future**
 
+- 事件机制
 - 连接池等待队列
+- 别名机制
 - 国际化i18n
 - restful风格
-- mysql数据库ORM
+- 数据库ORM(自动验证、模型、db)
 - crontab定时任务
 - 服务监控
 - 日志统计分析
