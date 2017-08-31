@@ -1,4 +1,4 @@
 <?php
 require_once __DIR__. '/bootstrap.php';
-$console = new \swoft\console\Console();
+$console = new \Swoft\Console\Console();
 $console->run();

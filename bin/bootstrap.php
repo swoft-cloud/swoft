@@ -7,5 +7,5 @@ define('AUTO_RELOAD', true);
 define('BASE_PATH', dirname(__DIR__, 1));
 
 require_once dirname(__FILE__, 2) . "/vendor/autoload.php";
-require_once dirname(__FILE__, 2) . '/app/config/define.php';
-require_once dirname(__FILE__, 2) . '/app/config/model.php';
+require_once dirname(__FILE__, 2) . '/config/define.php';
+require_once dirname(__FILE__, 2) . '/config/model.php';

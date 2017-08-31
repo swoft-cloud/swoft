@@ -9,8 +9,8 @@
         "classmap": [
         ],
         "psr-4": {
-       		"app\\": "app/",
-            "swoft\\":"src/"
+       		"App\\": "app/",
+            "Swoft\\":"src/"
         }
     },
     "repositories": {
