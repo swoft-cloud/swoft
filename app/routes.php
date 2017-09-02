@@ -1,7 +1,7 @@
 <?php
-use app\controllers\IndexController;
+use App\Controllers\IndexController;
 
-/* @var \swoft\web\Router $router */
-$router = \swoft\App::getBean('router');
+/* @var \Swoft\Web\Router $router */
+$router = \Swoft\App::getBean('router');
 
 $router->get('/', IndexController::class);

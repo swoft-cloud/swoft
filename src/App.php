@@ -1,19 +1,20 @@
 <?php
 
-namespace swoft;
+namespace Swoft;
 
-use app\models\logic\IndexLogic;
-use swoft\base\ApplicationContext;
-use swoft\base\Config;
-use swoft\base\RequestContext;
-use swoft\base\Timer;
-use swoft\log\Logger;
-use swoft\pool\RedisPool;
-use swoft\service\ConsulProvider;
-use swoft\service\IPack;
-use swoft\web\Application;
-use swoft\web\ErrorHandler;
-use swoft\web\HttpServer;
+use App\Models\Logic\IndexLogic;
+use Swoft\Base\ApplicationContext;
+use Swoft\Base\Config;
+use Swoft\Base\RequestContext;
+use Swoft\Base\Timer;
+use Swoft\Event\ApplicationEvent;
+use Swoft\Log\Logger;
+use Swoft\Pool\RedisPool;
+use Swoft\Service\ConsulProvider;
+use Swoft\Service\IPack;
+use Swoft\Web\Application;
+use Swoft\Web\ErrorHandler;
+use Swoft\Web\HttpServer;
 
 /**
  * 应用简写类
@@ -21,7 +22,7 @@ use swoft\web\HttpServer;
  * @uses      App
  * @version   2017年04月25日
  * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
+ * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class App
@@ -47,6 +48,15 @@ class App
      * @var Config
      */
     public static $properties;
+
+    /**
+     * 别名库
+     *
+     * @var array
+     */
+    private static $aliases = [
+        '@Swoft' => __DIR__
+    ];
 
     public static function getMysqlPool()
     {
@@ -149,7 +159,7 @@ class App
     /**
      * request对象
      *
-     * @return web\Request
+     * @return Web\Request
      */
     public static function getRequest()
     {
@@ -159,7 +169,7 @@ class App
     /**
      * response对象
      *
-     * @return web\Response
+     * @return Web\Response
      */
     public static function getResponse()
     {
@@ -174,6 +184,111 @@ class App
     public static function getTimer()
     {
         return ApplicationContext::getBean('timer');
+    }
+
+    /**
+     * 发布事件
+     *
+     * @param string           $name    事件名称
+     * @param ApplicationEvent $event   事件对象
+     *
+     */
+
+
+    /**
+     * 发布事件
+     *
+     * @param string                $name   发布的事件名称
+     * @param ApplicationEvent|null $event  发布的时间对象
+     * @param array                 $params 附加数据信息
+     */
+    public static function trigger(string $name, ApplicationEvent $event = null, ...$params)
+    {
+        ApplicationContext::publishEvent($name, $event, ...$params);
+    }
+
+        /**
+     * 语言翻译
+     *
+     * @param string $category 翻译文件类别，比如xxx.xx/xx
+     * @param array  $params   参数
+     * @param string $language 当前语言环境
+     */
+    public static function t(string $category, array $params, string $language = 'en')
+    {
+        return ApplicationContext::getBean('I18n')->translate($category, $params, $language);
+    }
+
+    /**
+     * 注册别名
+     *
+     * @param string $alias 别名
+     * @param string $path  路径
+     */
+    public static function setAlias(string $alias, string $path = null)
+    {
+        if (strncmp($alias, '@', 1)) {
+            $alias = '@' . $alias;
+        }
+
+        // 删除别名
+        if ($path == null) {
+            unset(self::$aliases[$alias]);
+            return;
+        }
+
+        // $path不是别名，直接设置
+        $isAlias = strpos($path, '@');
+        if ($isAlias === false) {
+            self::$aliases[$alias] = $path;
+            return;
+        }
+
+        // $path是一个别名
+        if (isset(self::$aliases[$path])) {
+            self::$aliases[$alias] = self::$aliases[$path];
+            return;
+        }
+
+        list($root) = explode('/', $path);
+        if (!isset(self::$aliases[$root])) {
+            throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
+        }
+
+        $rootPath = self::$aliases[$root];
+        $aliasPath = str_replace($root, "", $path);
+
+        self::$aliases[$alias] = $rootPath . $aliasPath;
+    }
+
+    /**
+     * 获取别名路径
+     *
+     * @param string $alias
+     * @return string
+     */
+    public static function getAlias(string $alias)
+    {
+        if(isset(self::$aliases[$alias])){
+            return self::$aliases[$alias];
+        }
+
+        // $path不是别名，直接返回
+        $isAlias = strpos($alias, '@');
+        if($isAlias === false){
+            return $alias;
+        }
+
+        list($root) = explode('/', $alias);
+        if (!isset(self::$aliases[$root])) {
+            throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
+        }
+
+        $rootPath = self::$aliases[$root];
+        $aliasPath = str_replace($root, "", $alias);
+        $path = $rootPath. $aliasPath;
+
+        return $path;
     }
 
     /**

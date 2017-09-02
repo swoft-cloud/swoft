@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models\Logic;
+
+use App\Models\Data\UserData;
+use App\Models\Data\UserExtData;
+use Swoft\Di\Annotation\Bean;
+use Swoft\Di\Annotation\Inject;
+
+/**
+ *
+ * @Bean()
+ * @uses      IndexLogic
+ * @version   2017年04月25日
+ * @author    stelin <phpcrazy@126.com>
+ * @copyright Copyright 2010-2016 Swoft software
+ * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ */
+class IndexLogic
+{
+    /**
+     *
+     * @Inject()
+     * @var UserData
+     */
+    private $userData;
+
+    /**
+     *
+     * @Inject()
+     * @var UserExtData
+     */
+    private $userExtData;
+
+    public function getUser()
+    {
+        $base = $this->userData->getUserInfo();
+        $ext = $this->userExtData->getExtInfo();
+
+        return array_merge($base, $ext);
+    }
+
+
+}
