@@ -3,7 +3,6 @@
 namespace App\Beans\Filters;
 
 use Swoft\Filter\Filter;
-use Swoft\Filter\IFilter;
 use Swoft\Filter\FilterChain;
 use Swoft\Web\Request;
 use Swoft\Web\Response;

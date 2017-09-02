@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Model;
+namespace App\Models\Entity;
 
 use App\Models\Logic\IndexLogic;
 use Monolog\Logger;
@@ -10,13 +10,13 @@ use Swoft\Di\Annotation\Inject;
 /**
  * @Bean(name="userModel")
  *
- * @uses      UserModel
+ * @uses      User
  * @version   2017年08月23日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class UserModel
+class User
 {
     /**
      * @Inject("${logger}")

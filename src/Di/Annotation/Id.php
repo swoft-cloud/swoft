@@ -1,17 +1,20 @@
 <?php
 
-namespace Swoft\Db;
+namespace Swoft\Di\Annotation;
 
 /**
+ * ID注解
  *
+ * @Annotation
+ * @Target({"PROPERTY"})
  *
- * @uses      ActiveRecord
+ * @uses      Id
  * @version   2017年08月31日
  * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
+ * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class ActiveRecord
+class Id
 {
 
 }
