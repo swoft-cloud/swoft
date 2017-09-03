@@ -2,6 +2,9 @@
 
 namespace Swoft\Db;
 
+use Swoft\Db\Mysql\Query;
+use Swoft\Db\Mysql\QueryBuilder;
+
 /**
  *
  *
@@ -13,7 +16,19 @@ namespace Swoft\Db;
  */
 class EntityManager implements IEntityManager
 {
+    /**
+     * 连接
+     *
+     * @var AbstractConnect
+     */
     private $connect;
+
+    /**
+     * 驱动
+     *
+     * @var string
+     */
+    private $driver;
 
 
     public function create($isMaster = false)
@@ -23,26 +38,27 @@ class EntityManager implements IEntityManager
 
     public function beginTransaction()
     {
-
+        $this->connect->beginTransaction();
     }
 
     public function commit()
     {
-
+        $this->connect->commit();
     }
 
     public function rollback()
     {
-
+        $this->connect->rollback();
     }
 
     public function createQuery($sql = '')
     {
-
+        return new Query($this->connect, $sql);
     }
 
     public function createQueryBuilder()
     {
+        return new QueryBuilder($this->connect);
     }
 
     public function save($entity)
@@ -63,5 +79,10 @@ class EntityManager implements IEntityManager
 
     public function find($entity)
     {
+    }
+
+    public function close()
+    {
+
     }
 }

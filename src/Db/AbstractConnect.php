@@ -13,8 +13,23 @@ namespace Swoft\Db;
  */
 abstract class AbstractConnect implements IConnect
 {
-    public function __construct()
-    {
+    /**
+     * 驱动类型
+     *
+     * @var string
+     */
+    protected $driver;
 
+    public function __construct(string $driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDriver(): string
+    {
+        return $this->driver;
     }
 }

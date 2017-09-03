@@ -8,13 +8,13 @@ use Swoole\Coroutine\Mysql;
 /**
  *
  *
- * @uses      MysqlConnect
+ * @uses      Connect
  * @version   2017年09月01日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class MysqlConnect extends AbstractConnect
+class Connect extends AbstractConnect
 {
     /**
      * @var Mysql
@@ -40,5 +40,11 @@ class MysqlConnect extends AbstractConnect
     public function setAutoCommit(bool $autoCommit)
     {
 
+    }
+
+
+    public function execute(string $sql)
+    {
+        return $this->connect->query($sql);
     }
 }

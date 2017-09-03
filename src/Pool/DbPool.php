@@ -2,8 +2,6 @@
 
 namespace Swoft\Pool;
 
-use Swoft\Db\Mysql\MysqlConnect;
-
 /**
  *
  *
@@ -15,7 +13,7 @@ use Swoft\Db\Mysql\MysqlConnect;
  */
 class DbPool extends ConnectPool
 {
-    const MYSQL = MysqlConnect::class;
+    const MYSQL = "Mysql";
 
     /**
      * 数据库驱动

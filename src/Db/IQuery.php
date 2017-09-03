@@ -15,4 +15,6 @@ interface IQuery
 {
     public function setParameter($key, $value, $type = null);
     public function setParameters($parameters);
+    public function getResult();
+    public function getSql();
 }
