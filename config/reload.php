@@ -7,3 +7,5 @@ $beanFactory = new \Swoft\Di\BeanFactory($definitions);
 
 // 重新加载路由
 require_once BASE_PATH . '/app/routes.php';
+
+// InitApplicationContext
