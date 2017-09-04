@@ -3,10 +3,7 @@
 namespace Swoft\Di;
 
 use Monolog\Formatter\LineFormatter;
-use Swoft\App;
-use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
-use Swoft\Event\Event;
 use Swoft\Filter\FilterChain;
 use Swoft\Helpers\ArrayHelper;
 use Swoft\Pool\Balancer\RoundRobinBalancer;
@@ -43,15 +40,15 @@ class BeanFactory implements BeanFactoryInterface
         self::$container->addDefinitions($definitions);
         self::$container->autoloadAnnotations();
         self::$container->initBeans();
-
-        // 监听器注册
-        self::registerListeners();
-
-        // 应用初始化加载事件
-        $resourceDataProxy = self::$container->getResourceDataProxy();
-        App::trigger(Event::APPLICATION_LOADER, null, $resourceDataProxy);
     }
 
+    /**
+     * @return ResourceDataProxy
+     */
+    public static function getResourceDataProxy()
+    {
+        return self::$container->getResourceDataProxy();
+    }
     /**
      * 获取Bean
      *
@@ -119,15 +116,5 @@ class BeanFactory implements BeanFactoryInterface
     {
         $definitions = ArrayHelper::merge(self::coreBeans(), $definitions);
         return $definitions;
-    }
-
-    /**
-     *  注册监听器
-     */
-    private static function registerListeners()
-    {
-        // 监听器注册
-        $listeners = self::$container->getResourceDataProxy()->listeners;
-        ApplicationContext::registerListeners($listeners);
     }
 }
