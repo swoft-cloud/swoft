@@ -389,21 +389,21 @@ class AnnotationResource extends AbstractResource
      */
     private function scanPhpFile(string $dir, string $namespace)
     {
+        $iterator = new \RecursiveDirectoryIterator($dir);
+        $files = new \RecursiveIteratorIterator($iterator);
+
         $phpFiles = [];
-        $files = scandir($dir);
         foreach ($files as $file) {
-            // 排除不必要的文件解析
-            if ($file != '.' && $file != '..' && is_dir($dir . "/" . $file)) {
-                $phpFiles = array_merge($phpFiles, $this->scanPhpFile($dir . "/" . $file, $namespace . "\\" . $file));
+            $fileType = pathinfo($file, PATHINFO_EXTENSION);
+            if ($fileType != 'php') {
                 continue;
             }
 
-            // php文件解析
-            if (strpos($file, '.php') !== false) {
-                $file = str_replace(".php", "", $file);
-                $phpFiles[] = $namespace . "\\" . $file;
-                continue;
-            }
+            $replaces = ["", '\\', "", ""];
+            $searchs = [$dir, '/', '.php', '.PHP'];
+
+            $file = str_replace($searchs, $replaces, $file);
+            $phpFiles[] = $namespace . $file;
         }
 
         return $phpFiles;
