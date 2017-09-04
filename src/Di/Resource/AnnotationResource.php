@@ -320,6 +320,7 @@ class AnnotationResource extends AbstractResource
     {
         foreach ($namespaces as $namespace) {
             $nsPath = str_replace("\\", "/", $namespace);
+            $nsPath = str_replace('App/', 'app/', $nsPath);
             $this->scanNamespaces[$namespace] = BASE_PATH . "/" . $nsPath;
         }
     }
