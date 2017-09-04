@@ -42,25 +42,24 @@ class Container
     private $properties = [];
 
     /**
-     * 已解析的路由规则
-     *
-     * @var array
-     */
-    private $requestMapping = [];
-
-    /**
-     * 监听器
-     *
-     * @var array
-     */
-    private $listeners = [];
-
-    /**
      * 默认创建bean执行的初始化方法
      *
      * @var string
      */
     private $initMethod = 'init';
+
+    /**
+     * @var ResourceDataProxy
+     */
+    private $resourceDataProxy;
+
+    /**
+     * Container constructor.
+     */
+    public function __construct()
+    {
+        $this->resourceDataProxy = new ResourceDataProxy();
+    }
 
     /**
      * 获取一个bean
@@ -119,7 +118,9 @@ class Container
         if (!isset($definitions['config']['properties'])) {
             throw new \InvalidArgumentException("config bean properties没有配置");
         }
-        $this->properties = $definitions['config']['properties'];
+
+        $properties = $definitions['config']['properties'];
+        $this->resourceDataProxy->setProperties($properties);
 
         $resource = new DefinitionResource($definitions);
         $this->definitions = $resource->getDefinitions();
@@ -130,17 +131,14 @@ class Container
      */
     public function autoloadAnnotations()
     {
-        if (!isset($this->properties['beanScan'])) {
+        $properties = $this->resourceDataProxy->getProperties();
+        if (!isset($properties['beanScan'])) {
             throw new \InvalidArgumentException("自动扫描注释，命令空间未配置the beanScan of properties!");
         }
-        $beanScan = $this->properties['beanScan'];
-
-        $resource = new AnnotationResource();
+        $beanScan = $properties['beanScan'];
+        $resource = new AnnotationResource($this->resourceDataProxy);
         $resource->addScanNamespaces($beanScan);
-        $resource->setProperties($this->properties);
         $definitions = $resource->getDefinitions();
-        $this->listeners = $resource->getListeners();
-        $this->requestMapping = $resource->getRequestMapping();
 
         $this->definitions = array_merge($definitions, $this->definitions);
     }
@@ -162,6 +160,14 @@ class Container
     }
 
     /**
+     * @return ResourceDataProxy
+     */
+    public function getResourceDataProxy(): ResourceDataProxy
+    {
+        return $this->resourceDataProxy;
+    }
+
+    /**
      * 所有bean定义
      *
      * @return array
@@ -169,26 +175,6 @@ class Container
     public function getDefinitions(): array
     {
         return $this->definitions;
-    }
-
-    /**
-     * 获取注入路由规则
-     *
-     * @return array
-     */
-    public function getRequestMapping()
-    {
-        return $this->requestMapping;
-    }
-
-    /**
-     * 监听器
-     *
-     * @return array
-     */
-    public function getListeners(): array
-    {
-        return $this->listeners;
     }
 
     /**

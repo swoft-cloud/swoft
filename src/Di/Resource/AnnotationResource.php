@@ -4,15 +4,11 @@ namespace Swoft\Di\Resource;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use PhpDocReader\PhpDocReader;
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\Listener;
-use Swoft\Di\Annotation\RequestMapping;
-use Swoft\Di\Annotation\RequestMethod;
 use Swoft\Di\Annotation\Scope;
 use Swoft\Di\ObjectDefinition;
+use Swoft\Di\Parser\AbstractParser;
+use Swoft\Di\Parser\MethodWithoutAnnotationParser;
+use Swoft\Di\ResourceDataProxy;
 
 /**
  * 注释解析
@@ -49,18 +45,15 @@ class AnnotationResource extends AbstractResource
     private $definitions = [];
 
     /**
-     * 已解析的路由规则
-     *
-     * @var array
+     * @var ResourceDataProxy
      */
-    private $requestMapping = [];
+    private $resourceDataProxy;
 
-    /**
-     * 系统监听器
-     *
-     * @var array
-     */
-    private $listeners = [];
+    public function __construct(ResourceDataProxy $resourceDataProxy)
+    {
+        $this->resourceDataProxy = $resourceDataProxy;
+        $this->properties = $resourceDataProxy->getProperties();
+    }
 
     /**
      * 获取已解析的配置beans
@@ -142,34 +135,34 @@ class AnnotationResource extends AbstractResource
 
         // 类注解解析
         foreach ($classAnnotations as $classAnnotation) {
-            // @bean注解
-            if ($classAnnotation instanceof Bean) {
-                $name = $classAnnotation->getName();
-                $scope = $classAnnotation->getScope();
-                $beanName = empty($name) ? $className : $name;
+            if (!is_object($classAnnotation)) {
                 continue;
             }
 
-            // @AutoController注解
-            if ($classAnnotation instanceof AutoController) {
-                $beanName = $className;
-                $scope = Scope::SINGLETON;
-                $prefix = $classAnnotation->getPrefix();
-                $this->requestMapping[$className]['prefix'] = $prefix;
-                continue;
-            }
-
-            // @Listener注解
-            if($classAnnotation instanceof Listener){
-                $beanName = $className;
-                $scope = Scope::SINGLETON;
-                $eventName = $classAnnotation->getEvent();
-
-                $this->listeners[$eventName][] = $beanName;
-                continue;
-            }
+            $annotationParser = $this->getAnnotationParser($classAnnotation);
+            list($beanName, $scope) = $annotationParser->parser($className, $classAnnotation);
         }
         return [$beanName, $scope];
+    }
+
+    /**
+     * @param $objectAnnotation
+     *
+     * @return AbstractParser
+     */
+    private function getAnnotationParser($objectAnnotation)
+    {
+        $annotationClassName = get_class($objectAnnotation);
+        $classNameTmp = str_replace('\\', '/', $annotationClassName);
+        $className = basename($classNameTmp);
+
+        $annotationParserClassName = "Swoft\\Di\Parser\\" . $className . "Parser";
+        if (!class_exists($annotationParserClassName)) {
+            return null;
+        }
+
+        $annotationParser = new $annotationParserClassName($this, $this->resourceDataProxy);
+        return $annotationParser;
     }
 
     /**
@@ -225,26 +218,13 @@ class AnnotationResource extends AbstractResource
 
         // 属性注解解析
         foreach ($propertyAnnotations as $propertyAnnotation) {
-            // @Inject注解
-            if ($propertyAnnotation instanceof Inject) {
-                $injectValue = $propertyAnnotation->getName();
-                if (!empty($injectValue)) {
-                    list($injectProperty, $isRef) = $this->getTransferProperty($injectValue);
-                    continue;
-                }
-
-                // phpdoc解析
-                $phpReader = new PhpDocReader();
-                $property = new \ReflectionProperty($className, $propertyName);
-                $propertyClass = $phpReader->getPropertyClass($property);
-
-                $isRef = true;
-                $injectProperty = $propertyClass;
+            $annotationParser = $this->getAnnotationParser($propertyAnnotation);
+            if ($annotationParser === null) {
+                $injectProperty = null;
+                $isRef = false;
                 continue;
             }
-
-            $injectProperty = null;
-            $isRef = false;
+            list($injectProperty, $isRef) = $annotationParser->parser($className, $propertyAnnotation, $propertyName, "");
         }
 
         return [$injectProperty, $isRef];
@@ -259,17 +239,11 @@ class AnnotationResource extends AbstractResource
      */
     private function parseMethods(AnnotationReader $reader, string $className, array $publicMethods)
     {
-        if (!isset($this->requestMapping[$className])) {
-            return;
-        }
-
         // 循环解析
         foreach ($publicMethods as $method) {
             if ($method->isStatic()) {
                 continue;
             }
-
-            $methodName = $method->getName();
 
             // 解析方法注解
             $methodAnnotations = $reader->getMethodAnnotations($method);
@@ -289,22 +263,17 @@ class AnnotationResource extends AbstractResource
         // 方法没有注解解析
         $methodName = $method->getName();
         if (empty($methodAnnotations)) {
-            return $this->parseMethodWithoutAnnotation($className, $methodName);
+            $this->parseMethodWithoutAnnotation($className, $methodName);
+            return;
         }
 
         foreach ($methodAnnotations as $methodAnnotation) {
-            // 路由规则解析
-            if ($methodAnnotation instanceof RequestMapping) {
-                $route = $methodAnnotation->getRoute();
-                $httpMethod = $methodAnnotation->getMethod();
-                $this->requestMapping[$className]['routes'][] = [
-                    'route'  => $route,
-                    'method' => $httpMethod,
-                    'action' => $methodName
-                ];
+            $annotationParser = $this->getAnnotationParser($methodAnnotation);
+            if ($annotationParser == null) {
+                $this->parseMethodWithoutAnnotation($className, $methodName);
                 continue;
             }
-            $this->parseMethodWithoutAnnotation($className, $methodName);
+            $annotationParser->parser($className, $methodAnnotation, "", $methodName);
         }
     }
 
@@ -316,12 +285,8 @@ class AnnotationResource extends AbstractResource
      */
     private function parseMethodWithoutAnnotation(string $className, string $methodName)
     {
-        $this->requestMapping[$className]['routes'][] = [
-            'route'  => "",
-            'method' => [RequestMethod::GET, RequestMethod::POST],
-            'action' => $methodName
-        ];
-        return;
+        $parser = new MethodWithoutAnnotationParser($this, $this->resourceDataProxy);
+        $parser->parser($className, null, "", $methodName);
     }
 
     /**
@@ -359,25 +324,6 @@ class AnnotationResource extends AbstractResource
         }
     }
 
-    /**
-     * 获取已解析的路由规则
-     *
-     * @return array
-     */
-    public function getRequestMapping()
-    {
-        return $this->requestMapping;
-    }
-
-    /**
-     * 获取监听器
-     *
-     * @return array
-     */
-    public function getListeners(): array
-    {
-        return $this->listeners;
-    }
 
     /**
      * 扫描目录下PHP文件

@@ -27,7 +27,7 @@ abstract class AbstractResource implements IResource
      *
      * @return array
      */
-    protected function getTransferProperty($property)
+    public function getTransferProperty($property)
     {
         if (!is_string($property)) {
             return [$property, 0];
@@ -53,7 +53,7 @@ abstract class AbstractResource implements IResource
      *
      * @return mixed|string
      */
-    protected function getInjectProperty(string $property)
+    public function getInjectProperty(string $property)
     {
         // '${beanName}'格式解析
         $propertyKeys = explode(".", $property);
@@ -87,15 +87,5 @@ abstract class AbstractResource implements IResource
         }
 
         return $layerProperty;
-    }
-
-    /**
-     * 初始化properties配置
-     *
-     * @param array $properties
-     */
-    public function setProperties(array $properties)
-    {
-        $this->properties = $properties;
     }
 }
