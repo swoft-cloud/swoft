@@ -248,7 +248,6 @@ class Router implements RouterInterface
     /**
      * Create a route group with a common prefix.
      * All routes created in the passed callback will have the given group prefix prepended.
-     * @from package 'nikic/fast-route'
      * @param string $prefix
      * @param \Closure $callback
      * @param array $opts

@@ -5,10 +5,12 @@ namespace Swoft\Di\Resource;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Swoft\Di\Annotation\Scope;
+use Swoft\Di\AnnotationParser;
 use Swoft\Di\ObjectDefinition;
 use Swoft\Di\Parser\AbstractParser;
 use Swoft\Di\Parser\MethodWithoutAnnotationParser;
 use Swoft\Di\ResourceDataProxy;
+use Swoft\Di\Wrapper\IWrapper;
 
 /**
  * 注释解析
@@ -44,6 +46,9 @@ class AnnotationResource extends AbstractResource
      */
     private $definitions = [];
 
+
+    private $annotations = [];
+
     /**
      * @var ResourceDataProxy
      */
@@ -53,6 +58,7 @@ class AnnotationResource extends AbstractResource
     {
         $this->resourceDataProxy = $resourceDataProxy;
         $this->properties = $resourceDataProxy->getProperties();
+
     }
 
     /**
@@ -73,15 +79,12 @@ class AnnotationResource extends AbstractResource
         foreach ($classNames as $className) {
             $this->parseBeanAnnotations($className);
         }
+
+        $this->parseAnnotationsData();
+
         return $this->definitions;
     }
 
-    /**
-     *
-     * 解析bean注解
-     *
-     * @param string $className
-     */
     public function parseBeanAnnotations(string $className)
     {
         if (!class_exists($className)) {
@@ -93,31 +96,65 @@ class AnnotationResource extends AbstractResource
         $reflectionClass = new \ReflectionClass($className);
         $classAnnotations = $reader->getClassAnnotations($reflectionClass);
 
-        // 解析类级别的注解
-        list($beanName, $scope) = $this->parseClassAnnotations($className, $classAnnotations);
-
-        // 没配置注入bean注解
-        if (empty($beanName)) {
-            return;
+        foreach ($classAnnotations as $classAnnotation){
+            $this->annotations[$className]['class'][get_class($classAnnotation)] = $classAnnotation;
         }
-
-        // 初始化对象
-        $objectDefinition = new ObjectDefinition();
-        $objectDefinition->setName($beanName);
-        $objectDefinition->setClassName($className);
-        $objectDefinition->setScope($scope);
-
 
         // 解析属性
         $properties = $reflectionClass->getProperties();
-        $propertyInjections = $this->parseProperties($reader, $properties, $className);
-        $objectDefinition->setPropertyInjections($propertyInjections);
+        foreach ($properties as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+            $propertyName = $property->getName();
+            $propertyAnnotations = $reader->getPropertyAnnotations($property);
+
+
+            foreach ($propertyAnnotations as $propertyAnnotation){
+                $this->annotations[$className]['property'][$propertyName][get_class($propertyAnnotation)] = $propertyAnnotation;
+            }
+        }
 
         // 解析方法
         $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
-        $this->parseMethods($reader, $className, $publicMethods);
+        foreach ($publicMethods as $method) {
+            if ($method->isStatic()) {
+                continue;
+            }
 
-        $this->definitions[$beanName] = $objectDefinition;
+            $methodName = $method->getName();
+
+            // 解析方法注解
+            $methodAnnotations = $reader->getMethodAnnotations($method);
+
+            foreach ($methodAnnotations as $methodAnnotation){
+                $this->annotations[$className]['method'][$methodName][get_class($methodAnnotation)] = $methodAnnotation;
+            }
+        }
+    }
+
+    public function parseAnnotationsData(){
+        foreach ($this->annotations as $className => $annotation){
+            $classAnnotations = $annotation['class'];
+            foreach ($classAnnotations as $classAnnotation){
+                $annotationClassName = get_class($classAnnotation);
+                $classNameTmp = str_replace('\\', '/', $annotationClassName);
+                $classFileName = basename($classNameTmp);
+
+                $annotationParserClassName = "Swoft\\Di\Wrapper\\" . $classFileName . "Wrapper";
+                if (!class_exists($annotationParserClassName)) {
+                    continue;
+                }
+
+                /* @var IWrapper $wrapper*/
+                $wrapper = new $annotationParserClassName($this, $this->resourceDataProxy);
+                $objectDefinitionAry = $wrapper->doWrapper($className, $annotation);
+                if($objectDefinitionAry != null){
+                    list($beanName, $objectDefinition) = $objectDefinitionAry;
+                    $this->definitions[$beanName] = $objectDefinition;
+                }
+            }
+        }
     }
 
     /**
@@ -140,7 +177,11 @@ class AnnotationResource extends AbstractResource
             }
 
             $annotationParser = $this->getAnnotationParser($classAnnotation);
+            if($annotationParser == null){
+                continue;
+            }
             list($beanName, $scope) = $annotationParser->parser($className, $classAnnotation);
+
         }
         return [$beanName, $scope];
     }

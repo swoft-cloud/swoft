@@ -31,13 +31,6 @@ class Column
     private $type = "string";
 
     /**
-     * 默认值
-     *
-     * @var mixed
-     */
-    private $default = "";
-
-    /**
      * 长度
      *
      * @var int
@@ -45,8 +38,19 @@ class Column
     private $length = -1;
 
 
-    public function __construct()
+    public function __construct(array $values)
     {
-
+        if (isset($values['value'])) {
+            $this->name = $values['value'];
+        }
+        if (isset($values['name'])) {
+            $this->name = $values['name'];
+        }
+        if (isset($values['type'])) {
+            $this->type = $values['type'];
+        }
+        if (isset($values['length'])) {
+            $this->length = $values['length'];
+        }
     }
 }

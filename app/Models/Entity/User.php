@@ -2,14 +2,17 @@
 
 namespace App\Models\Entity;
 
-use App\Models\Logic\IndexLogic;
-use Monolog\Logger;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Doctrine\Common\Annotations\Annotation\Enum;
+use Swoft\Di\Annotation\Column;
+use Swoft\Di\Annotation\Entity;
+use Swoft\Di\Annotation\Id;
+use Swoft\Di\Annotation\Required;
+use Swoft\Di\Annotation\Table;
 
 /**
- * @Bean(name="userModel")
  *
+ * @Entity()
+ * @Table(name="user")
  * @uses      User
  * @version   2017年08月23日
  * @author    stelin <phpcrazy@126.com>
@@ -19,36 +22,48 @@ use Swoft\Di\Annotation\Inject;
 class User
 {
     /**
-     * @Inject("${logger}")
-     * @var Logger
-     */
-    private $d2;
-
-    /**
-     * @Inject()
-     * @var IndexLogic
-     */
-    private $data;
-
-    /**
-     * @Inject("${config.Service.user.timeout}")
+     * 主键ID
+     *
+     * @Id()
+     * @Column(name="id", type="int")
      * @var int
      */
-    private $data2;
+    private $id;
 
     /**
-     * @Inject(name="${config.user.stelin.steln}")
+     * 名称
+     *
+     * @Column(name="name", type="string", length=20)
+     * @Required()
      * @var string
      */
-    private $data3;
-
-    private $data4;
-
-    private $data5;
+    private $name;
 
 
-    public function getData()
-    {
-        return $this->data;
-    }
+    /**
+     * 年龄
+     *
+     * @Column(name="age", type="int")
+     * @var int
+     */
+    private $age = 0;
+
+    /**
+     * 性别
+     *
+     * @Column(name="sex", type="int")
+     * @Required()
+     * @var int
+     */
+    private $sex = 0;
+
+
+    /**
+     * 描述
+     *
+     * @Column(name="description", type="string")
+     * @var string
+     */
+    private $desc = "";
+
 }

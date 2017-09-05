@@ -35,6 +35,13 @@ class ResourceDataProxy
     public $listeners = [];
 
     /**
+     * 表结构实体
+     *
+     * @var array
+     */
+    public $entities = [];
+
+    /**
      * @return array
      */
     public function getProperties(): array
