@@ -10,8 +10,6 @@
     "php-di/phpdoc-reader": "^2.0",
     "monolog/monolog": "^1.23"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "autoload": {
     "classmap": [
     ],
