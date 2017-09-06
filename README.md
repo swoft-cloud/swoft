@@ -55,8 +55,17 @@ QQ交流群:548173319
 
 ## 安装
 
+### 手动安装
+
 * clone项目
 * composer install安装依赖
+
+### composer安装
+
+* composer.phar create-project stelin/swoft swoft(未开代理，会有点慢)
+
+## 配置
+
 * 配置base.php
 * 设置启动参数swoft.ini
 
