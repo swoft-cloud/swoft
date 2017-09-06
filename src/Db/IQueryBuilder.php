@@ -13,5 +13,4 @@ namespace Swoft\Db;
  */
 interface IQueryBuilder
 {
-    public function getQuery();
 }

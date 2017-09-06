@@ -16,6 +16,6 @@ class EntityParser extends AbstractParser
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
     {
         $this->resourceDataProxy->entities[$className] = [];
-        return $this->defaultClass;
+        return null;
     }
 }

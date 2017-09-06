@@ -33,13 +33,32 @@ return [
             '${loginFilter}',
         ],
     ],
+
+    "dbSlave" => [
+        "class"       => \Swoft\Pool\DbPool::class,
+        "uri"         => [
+            '127.0.0.1:3306/test?user=root&password=123456&charset=utf8',
+            '127.0.0.1:3306/test?user=root&password=123456&charset=utf8'
+        ],
+        "maxIdel"     => 6,
+        "maxActive"   => 10,
+        "timeout"     => 200,
+        "balancer"    => '${randomBalancer}',
+        "serviceName" => 'user',
+        "useProvider" => false,
+        'driver'      => \Swoft\Pool\DbPool::MYSQL
+    ],
+
     'consulProvider'     => [
         'class'   => \Swoft\Service\ConsulProvider::class,
         'address' => '127.0.0.1:80'
     ],
     "userPool"           => [
         "class"           => \Swoft\Pool\ServicePool::class,
-        "uri"             => '127.0.0.1:8099,127.0.0.1:8099',
+        "uri"             => [
+            '127.0.0.1:8099',
+            '127.0.0.1:8099'
+        ],
         "maxIdel"         => 6,
         "maxActive"       => 10,
         "timeout"         => '${config.Service.user.timeout}',
@@ -51,7 +70,10 @@ return [
 
     "redisPool" => [
         'class'           => \Swoft\Pool\RedisPool::class,
-        "uri"             => '127.0.0.1:6379,127.0.0.1:6379',
+        "uri"             => [
+            '127.0.0.1:6379',
+            '127.0.0.1:6379'
+        ],
         "maxIdel"         => 6,
         "maxActive"       => 10,
         "timeout"         => '${config.Service.user.timeout}',

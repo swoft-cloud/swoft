@@ -48,6 +48,18 @@ abstract class AbstractWrapper implements IWrapper
 
         // 没配置注入bean注解
         if (empty($beanName)) {
+            // 解析属性
+            $properties = $reflectionClass->getProperties();
+
+            // 解析属性
+            $propertyAnnotations = $annotations['property']??[];
+            $this->parseProperties( $propertyAnnotations,$properties, $className);
+
+            // 解析方法
+            $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+            $methodAnnotations = $annotations['method'] ??[];
+            $this->parseMethods($methodAnnotations, $className, $publicMethods);
+
             return null;
         }
         // 初始化对象
@@ -167,7 +179,6 @@ abstract class AbstractWrapper implements IWrapper
             if(!in_array($annotationClass, $this->propertyAnnotations)){
                 continue;
             }
-
             $annotationParser = $this->getAnnotationParser($propertyAnnotation);
             if ($annotationParser === null) {
                 $injectProperty = null;
@@ -188,6 +199,7 @@ abstract class AbstractWrapper implements IWrapper
             return [$beanName, $scope];
         }
 
+
         foreach ($annotations as $annotation){
             $annotationClass = get_class($annotation);
             if(!in_array($annotationClass, $this->classAnnotations)){
@@ -199,7 +211,7 @@ abstract class AbstractWrapper implements IWrapper
             }
             $annotationData = $annotationParser->parser($className, $annotation);
             if($annotationData == null){
-                return [$beanName, $scope];
+                continue;
             }
             list($beanName, $scope) = $annotationData;
         }

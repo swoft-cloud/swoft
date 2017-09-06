@@ -27,6 +27,10 @@ abstract class AbstractQuery implements IQuery
      */
     protected $sql;
 
+    protected $parameters = [];
+
+    protected $outSql;
+
 
     public function __construct(AbstractConnect $connect, string $sql)
     {
@@ -36,21 +40,25 @@ abstract class AbstractQuery implements IQuery
 
     public function setParameter($key, $value, $type = null)
     {
+        if(!is_int($key)){
+            $key = ":".$key;
+        }
 
+        if($type == "string" || ($type == null && is_string($value))){
+            $value = '"'.$value.'"';
+        }
+        $this->parameters[$key] = $value;
     }
 
-    public function setParameters($parameters)
+    public function setParameters(array $parameters)
     {
-
-    }
-
-    public function getResult()
-    {
-
+        $this->parameters = $parameters;
     }
 
     public function getSql()
     {
-
+        return $this->outSql;
     }
+
+    abstract public function getResult(string $entityClassName = "");
 }

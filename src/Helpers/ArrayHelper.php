@@ -1,6 +1,8 @@
 <?php
 namespace Swoft\Helpers;
 
+use Swoft\Di\BeanFactory;
+
 class ArrayHelper
 {
     /**
@@ -824,5 +826,29 @@ class ArrayHelper
         }
     
         return $result;
+    }
+
+
+    public static function arrayToEntity(array $array, string $className)
+    {
+        $entities = BeanFactory::getResourceDataProxy()->entities;
+        if(!isset($className)){
+            return $array;
+        }
+
+        $object = new $className();
+        foreach ($array as $col => $value){
+            if(!isset($entities[$className]['column'][$col])){
+                continue;
+            }
+
+            $field = $entities[$className]['column'][$col];
+            $setterMethod = "set".ucfirst($field);
+            if(method_exists($object, $setterMethod)){
+                $object->$setterMethod($value);
+            }
+        }
+
+        return $object;
     }
 }

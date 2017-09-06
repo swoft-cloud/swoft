@@ -2,8 +2,12 @@
 
 namespace Swoft\Db;
 
+use Swoft\App;
 use Swoft\Db\Mysql\Query;
 use Swoft\Db\Mysql\QueryBuilder;
+use Swoft\Di\BeanFactory;
+use Swoft\Pool\ConnectPool;
+use Swoft\Pool\DbPool;
 
 /**
  *
@@ -16,6 +20,15 @@ use Swoft\Db\Mysql\QueryBuilder;
  */
 class EntityManager implements IEntityManager
 {
+    const MASTER = "dbMaster";
+
+    const SLAVE = "dbSlave";
+
+    /**
+     * @var ConnectPool
+     */
+    private $pool = null;
+
     /**
      * 连接
      *
@@ -30,10 +43,36 @@ class EntityManager implements IEntityManager
      */
     private $driver;
 
+    private $entityMapper;
 
-    public function create($isMaster = false)
+    public function __construct(ConnectPool $pool)
     {
-        
+        $this->pool = $pool;
+        $this->connect = $pool->getConnect();
+        $this->driver = $this->connect->getDriver();
+    }
+
+
+    public static function create($isMaster = false)
+    {
+        $dbPoolId = self::SLAVE;
+        if($isMaster){
+            $dbPoolId = self::MASTER;
+        }
+        /* @var DbPool $dbPool*/
+        $dbPool = App::getBean($dbPoolId);
+        return new EntityManager($dbPool);
+    }
+
+    public static function createById(string $poolId)
+    {
+        if (!BeanFactory::hasBean($poolId)) {
+            throw new \InvalidArgumentException("数据库连接池未配置，poolId=" . $poolId);
+        }
+
+        /* @var DbPool $dbPool */
+        $dbPool = App::getBean($poolId);
+        return new EntityManager($dbPool);
     }
 
     public function beginTransaction()
@@ -51,9 +90,15 @@ class EntityManager implements IEntityManager
         $this->connect->rollback();
     }
 
+    /**
+     * @param string $sql
+     *
+     * @return AbstractQuery
+     */
     public function createQuery($sql = '')
     {
-        return new Query($this->connect, $sql);
+        $queryClassName = "Swoft\Db\\".$this->driver."\\Query";
+        return new $queryClassName($this->connect, $sql);
     }
 
     public function createQueryBuilder()
@@ -63,6 +108,7 @@ class EntityManager implements IEntityManager
 
     public function save($entity)
     {
+
     }
 
     public function update($entity)
@@ -75,6 +121,7 @@ class EntityManager implements IEntityManager
 
     public function findByPk($entity, ...$params)
     {
+
     }
 
     public function find($entity)
@@ -83,6 +130,6 @@ class EntityManager implements IEntityManager
 
     public function close()
     {
-
+        $this->pool->release($this->connect);
     }
 }

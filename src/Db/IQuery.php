@@ -14,7 +14,7 @@ namespace Swoft\Db;
 interface IQuery
 {
     public function setParameter($key, $value, $type = null);
-    public function setParameters($parameters);
-    public function getResult();
+    public function setParameters(array $parameters);
+    public function getResult(string $entityClassName = "");
     public function getSql();
 }

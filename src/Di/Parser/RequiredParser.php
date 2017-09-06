@@ -2,23 +2,22 @@
 
 namespace Swoft\Di\Parser;
 
-use Swoft\Di\Annotation\Table;
+use Swoft\Di\Annotation\Required;
 
 /**
  *
  *
- * @uses      TableParser
- * @version   2017年09月04日
+ * @uses      RequiredParser
+ * @version   2017年09月05日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class TableParser extends AbstractParser
+class RequiredParser extends AbstractParser
 {
-
     /**
      * @param string $className
-     * @param Table $objectAnnotation
+     * @param Required $objectAnnotation
      * @param string $propertyName
      * @param string $methodName
      *
@@ -26,8 +25,7 @@ class TableParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
     {
-        $tableName = $objectAnnotation->getName();
-        $this->resourceDataProxy->entities[$className]['table']['name'] = $tableName;
-        return $this->defaultClass;
+        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['required'] = true;
+        return null;
     }
 }

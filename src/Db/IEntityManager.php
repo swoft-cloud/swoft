@@ -13,7 +13,9 @@ namespace Swoft\Db;
  */
 interface IEntityManager
 {
-    public function create($isMaster = false);
+    public static function create($isMaster = false);
+
+    public static function createById(string $poolId);
 
     public function beginTransaction();
 

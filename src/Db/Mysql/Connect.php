@@ -42,6 +42,25 @@ class Connect extends AbstractConnect
 
     }
 
+    public function createConnect($options)
+    {
+        $mysql = new MySQL();
+        $mysql->connect([
+            'host'     => $options['host'],
+            'port'     => $options['port'],
+            'user'     => $options['user'],
+            'password' => $options['password'],
+            'database' => $options['database'],
+            'timeout'  => $options['timeout'],
+            'charset'  => $options['charset']
+        ]);
+
+        if($mysql->connected == false){
+            throw new \InvalidArgumentException("mysql数据库连接出错，error=".$mysql->connect_error);
+        }
+        $this->connect = $mysql;
+    }
+
 
     public function execute(string $sql)
     {
