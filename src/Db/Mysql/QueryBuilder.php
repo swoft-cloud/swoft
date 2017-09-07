@@ -15,5 +15,13 @@ use Swoft\Db\AbstractQueryBuilder;
  */
 class QueryBuilder extends AbstractQueryBuilder
 {
+    public function getResult()
+    {
+        $statement = $this->getStatement();
+        return $statement;
+    }
+    public function getDeferResult()
+    {
 
+    }
 }
