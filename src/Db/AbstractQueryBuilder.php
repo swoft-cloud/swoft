@@ -223,12 +223,30 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @var array
      */
-    private $parameters = [];
+    protected $parameters = [];
 
+    /**
+     * sql语句
+     *
+     * @var string
+     */
+    protected $sql;
 
-    public function __construct()
+    /**
+     * @var AbstractConnect
+     */
+    protected $connect;
+
+    /**
+     * AbstractQueryBuilder constructor.
+     *
+     * @param AbstractConnect $connect
+     * @param string          $sql
+     */
+    public function __construct(AbstractConnect $connect, string $sql = "")
     {
-
+        $this->sql = $sql;
+        $this->connect = $connect;
     }
 
     /**
@@ -695,6 +713,16 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
         $this->parameters[$key] = $value;
 
         return $this;
+    }
+
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    public function getSql()
+    {
+        return $this->sql;
     }
 
     /**

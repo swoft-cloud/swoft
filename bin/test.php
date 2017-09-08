@@ -62,6 +62,7 @@ $sql = $queryBuilder
     ->from("user")
     ->where('a', 'a')
     ->where('b', 1)
+    ->getQuery()
     ->getResult();
 
 echo $sql."\n";

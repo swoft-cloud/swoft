@@ -3,6 +3,7 @@
 namespace Swoft\Db\Mysql;
 
 use Swoft\Db\AbstractQueryBuilder;
+use Swoft\Helpers\ArrayHelper;
 
 /**
  *
@@ -15,13 +16,33 @@ use Swoft\Db\AbstractQueryBuilder;
  */
 class QueryBuilder extends AbstractQueryBuilder
 {
-    public function getResult()
+    public function getResult(string $className = "")
     {
-        $statement = $this->getStatement();
-        return $statement;
+        $sql = $this->getStatement();
+        $this->sql = strtr($sql, $this->parameters);
+        $result = $this->connect->execute($this->sql);
+        $result = $this->getEntityResult($result, $className);
+
+        return $result;
     }
-    public function getDeferResult()
+
+    public function getDeferResult(string $className = "")
     {
 
+    }
+
+    protected function getEntityResult(array $result, $className)
+    {
+        if(empty($className) ||  !is_array($result)){
+            return $result;
+        }
+        $entities = [];
+        foreach ($result as $entityData){
+            if(!is_array($entityData)){
+                continue;
+            }
+            $entities[] = ArrayHelper::arrayToEntity($entityData, $className);
+        }
+        return $entities;
     }
 }

@@ -13,6 +13,6 @@ namespace Swoft\Db;
  */
 interface IQueryBuilder
 {
-    public function getResult();
-    public function getDeferResult();
+    public function getResult(string $className = "");
+    public function getDeferResult(string $className = "");
 }

@@ -93,17 +93,12 @@ class EntityManager implements IEntityManager
     /**
      * @param string $sql
      *
-     * @return AbstractQuery
+     * @return AbstractQueryBuilder
      */
-    public function createQuery($sql = '')
+    public function createQuery(string $sql = "")
     {
-        $queryClassName = "Swoft\Db\\".$this->driver."\\Query";
-        return new $queryClassName($this->connect, $sql);
-    }
-
-    public function createQueryBuilder()
-    {
-        return new QueryBuilder($this->connect);
+        $className = "Swoft\Db\\".$this->driver."\\QueryBuilder";
+        return new $className($this->connect, $sql);
     }
 
     public function save($entity)

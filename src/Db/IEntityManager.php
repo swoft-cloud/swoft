@@ -23,9 +23,7 @@ interface IEntityManager
 
     public function rollback();
 
-    public function createQuery($sql = '');
-
-    public function createQueryBuilder();
+    public function createQuery(string $sql = '');
 
     public function save($entity);
 

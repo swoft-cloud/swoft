@@ -28,6 +28,11 @@ trait Statement
         return !empty($this->select);
     }
 
+    public function isQuerySql()
+    {
+        return !empty($this->sql);
+    }
+
     public function isUpdate()
     {
         return !empty($this->update);
@@ -51,7 +56,9 @@ trait Statement
     public function getStatement()
     {
         $statement = "";
-        if ($this->isSelect()) {
+        if($this->isQuerySql()){
+            $statement = $this->sql;
+        }elseif ($this->isSelect()) {
             $statement = $this->getSelectStatement();
         } elseif ($this->isInsert()) {
             $statement = $this->getInsertStatement();
