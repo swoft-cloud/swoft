@@ -31,7 +31,5 @@ interface IEntityManager
 
     public function delete($entity);
 
-    public function findByPk($entity, ...$params);
-
     public function find($entity);
 }

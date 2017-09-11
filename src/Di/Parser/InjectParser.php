@@ -25,7 +25,7 @@ class InjectParser extends AbstractParser
      *
      * @return array
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $injectValue = $objectAnnotation->getName();
         if (!empty($injectValue)) {

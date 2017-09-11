@@ -24,7 +24,7 @@ class TableParser extends AbstractParser
      *
      * @return mixed
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $tableName = $objectAnnotation->getName();
         $this->resourceDataProxy->entities[$className]['table']['name'] = $tableName;

@@ -3,6 +3,7 @@
 namespace App\Models\Entity;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
+use Swoft\Db\Model;
 use Swoft\Di\Annotation\Column;
 use Swoft\Di\Annotation\Entity;
 use Swoft\Di\Annotation\Id;
@@ -19,7 +20,7 @@ use Swoft\Di\Annotation\Table;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class User
+class User extends Model
 {
     /**
      * 主键ID

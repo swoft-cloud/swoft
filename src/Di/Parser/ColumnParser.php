@@ -16,19 +16,21 @@ use Swoft\Di\Annotation\Column;
 class ColumnParser extends AbstractParser
 {
     /**
-     * @param string $className
-     * @param Column $objectAnnotation
-     * @param string $propertyName
-     * @param string $methodName
+     * @param string      $className
+     * @param Column      $objectAnnotation
+     * @param string      $propertyName
+     * @param string      $methodName
+     * @param string|null $propertyValue
      *
      * @return mixed
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $columnName = $objectAnnotation->getName();
         $this->resourceDataProxy->entities[$className]['field'][$propertyName]['type'] = $objectAnnotation->getType();
         $this->resourceDataProxy->entities[$className]['field'][$propertyName]['length'] = $objectAnnotation->getLength();
         $this->resourceDataProxy->entities[$className]['field'][$propertyName]['column'] = $columnName;
+        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['default'] = $propertyValue;
         $this->resourceDataProxy->entities[$className]['column'][$columnName] = $propertyName;
         return null;
     }

@@ -24,7 +24,7 @@ class IdParser extends AbstractParser
      *
      * @return mixed
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $this->resourceDataProxy->entities[$className]['table']['id'] = $propertyName;
         return null;

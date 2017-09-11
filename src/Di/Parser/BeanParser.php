@@ -23,7 +23,7 @@ class BeanParser extends AbstractParser
      *
      * @return array
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $name = $objectAnnotation->getName();
         $scope = $objectAnnotation->getScope();

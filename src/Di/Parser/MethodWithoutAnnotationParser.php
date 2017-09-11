@@ -15,7 +15,7 @@ use Swoft\Di\Annotation\RequestMethod;
  */
 class MethodWithoutAnnotationParser extends AbstractParser
 {
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         if (!isset($this->resourceDataProxy->requestMapping[$className])) {
             return;

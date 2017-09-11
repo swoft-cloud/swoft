@@ -37,6 +37,16 @@ class Connect extends AbstractConnect
         $this->connect->query("rollback;");
     }
 
+    public function setDefer($defer = true)
+    {
+        $this->connect->setDefer($defer);
+    }
+
+    public function recv()
+    {
+        return $this->connect->recv();
+    }
+
     public function setAutoCommit(bool $autoCommit)
     {
 

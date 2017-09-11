@@ -14,12 +14,13 @@ namespace Swoft\Di\Parser;
 interface IParser
 {
     /**
-     * @param string $className
+     * @param string|null $className
      * @param object $objectAnnotation
      * @param string $propertyName
      * @param string $methodName
+     * @param string|null $propertyValue
      *
      * @return mixed
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "");
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null);
 }

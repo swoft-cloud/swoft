@@ -19,5 +19,9 @@ interface IConnect
 
     public function rollback();
 
+    public function setDefer($defer = true);
+
+    public function recv();
+
     public function execute(string $sql);
 }

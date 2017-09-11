@@ -2,16 +2,18 @@
 
 namespace Swoft\Db;
 
+use Swoft\Pool\ConnectPool;
+
 /**
  * 查询器父类
  *
- * @uses      AbstractQueryBuilder
+ * @uses      QueryBuilder
  * @version   2017年09月02日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-abstract class AbstractQueryBuilder implements IQueryBuilder
+abstract class QueryBuilder implements IQueryBuilder
 {
     /**
      * 升序
@@ -230,7 +232,12 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @var string
      */
-    protected $sql;
+    protected $sql = '';
+
+    /**
+     * @var ConnectPool
+     */
+    protected $pool;
 
     /**
      * @var AbstractConnect
@@ -238,15 +245,24 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
     protected $connect;
 
     /**
-     * AbstractQueryBuilder constructor.
+     * @var bool
+     */
+    protected $release = false;
+
+    /**
+     * QueryBuilder constructor.
      *
+     * @param ConnectPool     $connectPool
      * @param AbstractConnect $connect
      * @param string          $sql
+     * @param bool            $release
      */
-    public function __construct(AbstractConnect $connect, string $sql = "")
+    public function __construct(ConnectPool $connectPool, AbstractConnect $connect, string $sql = "", bool $release = false)
     {
         $this->sql = $sql;
         $this->connect = $connect;
+        $this->release = $release;
+        $this->pool = $connectPool;
     }
 
     /**
@@ -254,7 +270,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @param string $tableName
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function insert(string $tableName)
     {
@@ -267,7 +283,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @param string $tableName
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function update(string $tableName)
     {
@@ -278,7 +294,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
     /**
      * delete语句
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function delete()
     {
@@ -292,7 +308,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $column
      * @param string $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function select(string $column, string $alias = null)
     {
@@ -307,7 +323,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string      $table
      * @param string|null $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function from(string $table, string $alias = null)
     {
@@ -323,7 +339,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string|array $criteria
      * @param string       $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function innerJoin(string $table, $criteria = null, string $alias = null)
     {
@@ -338,7 +354,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string|array $criteria
      * @param string       $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function leftJoin(string $table, $criteria = null, string $alias = null)
     {
@@ -353,7 +369,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string|array $criteria
      * @param string       $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function rightJoin(string $table, $criteria = null, string $alias = null)
     {
@@ -369,7 +385,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $operator
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function where(string $column, $value, $operator = self::OPERATOR_EQ, $connector = self::LOGICAL_AND)
     {
@@ -384,7 +400,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $operator
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function andWhere(string $column, $value, $operator = self::OPERATOR_EQ)
     {
@@ -397,18 +413,20 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
-    public function openWhere($connector = self::LOGICAL_AND) {
+    public function openWhere($connector = self::LOGICAL_AND)
+    {
         return $this->bracketCriteria($this->where, self::BRACKET_OPEN, $connector);
     }
 
     /**
      * where条件中，括号结束(右括号)
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
-    public function closeWhere() {
+    public function closeWhere()
+    {
         return $this->bracketCriteria($this->where, self::BRACKET_CLOSE);
     }
 
@@ -419,7 +437,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $operator
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function orWhere($column, $value, $operator = self::OPERATOR_EQ)
     {
@@ -434,7 +452,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param array  $values
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function whereIn(string $column, array $values, string $connector = self::LOGICAL_AND)
     {
@@ -449,7 +467,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param array  $values
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function whereNotIn(string $column, array $values, string $connector = self::LOGICAL_AND)
     {
@@ -465,7 +483,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $max
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function whereBetween(string $column, $min, $max, string $connector = self::LOGICAL_AND)
     {
@@ -481,7 +499,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $max
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function whereNotBetween(string $column, $min, $max, string $connector = self::LOGICAL_AND)
     {
@@ -497,7 +515,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $operator
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function having(string $column, $value, string $operator = self::OPERATOR_EQ, string $connector = self::LOGICAL_AND)
     {
@@ -512,7 +530,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $operator
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function andHaving(string $column, $value, string $operator = self::OPERATOR_EQ)
     {
@@ -527,7 +545,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $operator
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function orHaving(string $column, $value, string $operator = self::OPERATOR_EQ)
     {
@@ -542,7 +560,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param array  $values
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function havingIn(string $column, array $values, string $connector = self::LOGICAL_AND)
     {
@@ -557,7 +575,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param array  $values
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function havingNotIn(string $column, array $values, string $connector = self::LOGICAL_AND)
     {
@@ -573,7 +591,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $max
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function havingBetween(string $column, $min, $max, string $connector = self::LOGICAL_AND)
     {
@@ -589,7 +607,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $max
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function havingNotBetween(string $column, $min, $max, string $connector = self::LOGICAL_AND)
     {
@@ -602,18 +620,20 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
-    public function openHaving($connector = self::LOGICAL_AND) {
+    public function openHaving($connector = self::LOGICAL_AND)
+    {
         return $this->bracketCriteria($this->having, self::BRACKET_OPEN, $connector);
     }
 
     /**
      * having，括号开始(右括号)
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
-    public function closeHaving() {
+    public function closeHaving()
+    {
         return $this->bracketCriteria($this->having, self::BRACKET_CLOSE);
     }
 
@@ -623,7 +643,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $column
      * @param string $order
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function groupBy(string $column, string $order = null)
     {
@@ -640,7 +660,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $column
      * @param string $order
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function orderBy(string $column, string $order = self::ORDER_BY_ASC)
     {
@@ -658,7 +678,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param int $limit
      * @param int $offset
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function limit(int $limit, $offset = 0)
     {
@@ -673,7 +693,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed $column
      * @param mixed $value
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function set($column, $value = null)
     {
@@ -699,16 +719,16 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $type
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     public function setParameter($key, $value, $type = null)
     {
-        if(!is_int($key)){
-            $key = ":".$key;
+        if (!is_int($key)) {
+            $key = ":" . $key;
         }
 
-        if($type == "string" || ($type == null && is_string($value))){
-            $value = '"'.$value.'"';
+        if ($type == "string" || ($type == null && is_string($value))) {
+            $value = '"' . $value . '"';
         }
         $this->parameters[$key] = $value;
 
@@ -722,6 +742,11 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
 
     public function getSql()
     {
+        if(empty($this->sql)){
+            $sql = $this->getStatement();
+            $this->sql = strtr($sql, $this->parameters);
+        }
+
         return $this->sql;
     }
 
@@ -732,7 +757,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string $bracket
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     private function bracketCriteria(array &$criteria, string $bracket = self::BRACKET_OPEN, string $connector = self::LOGICAL_AND)
     {
@@ -752,7 +777,7 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      * @param string       $type
      * @param string       $alias
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     private function join(string $table, $criteria = null, string $type = self::INNER_JOIN, string $alias = null)
     {
@@ -776,11 +801,11 @@ abstract class AbstractQueryBuilder implements IQueryBuilder
      *
      * @param array  $criteria
      * @param string $column
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $operator
      * @param string $connector
      *
-     * @return AbstractQueryBuilder
+     * @return QueryBuilder
      */
     private function criteria(
         array &$criteria,

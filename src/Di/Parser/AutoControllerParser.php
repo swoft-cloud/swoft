@@ -21,10 +21,11 @@ class AutoControllerParser extends AbstractParser
      * @param AutoController $objectAnnotation
      * @param string         $propertyName
      * @param string         $methodName
+     * @param string|null         $propertyValue
      *
      * @return array
      */
-    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "")
+    public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $beanName = $className;
         $scope = Scope::SINGLETON;

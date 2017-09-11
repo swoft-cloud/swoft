@@ -2,11 +2,11 @@
 
 namespace Swoft;
 
-use App\Models\Logic\IndexLogic;
 use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
+use Swoft\Di\BeanFactory;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
@@ -289,6 +289,15 @@ class App
         $path = $rootPath. $aliasPath;
 
         return $path;
+    }
+
+    /**
+     * 所有注释表结构信息
+     *
+     * @return array
+     */
+    public static function getEntities(){
+        return BeanFactory::getResourceDataProxy()->entities;
     }
 
     /**

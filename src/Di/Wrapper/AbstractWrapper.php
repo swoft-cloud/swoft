@@ -88,13 +88,17 @@ abstract class AbstractWrapper implements IWrapper
     {
         $propertyInjections = [];
 
+        $object = new $className();
         /* @var \ReflectionProperty $property */
         foreach ($properties as $property) {
             if ($property->isStatic()) {
                 continue;
             }
+            $property->setAccessible(true);
             $propertyName = $property->getName();
-            list($injectProperty, $isRef) = $this->parsePropertyAnnotations($propertyAnnotations, $className, $propertyName);
+            $propertyValue = $property->getValue($object);
+
+            list($injectProperty, $isRef) = $this->parsePropertyAnnotations($propertyAnnotations, $className, $propertyName, $propertyValue);
             if ($injectProperty == null) {
                 continue;
             }
@@ -162,7 +166,7 @@ abstract class AbstractWrapper implements IWrapper
     }
 
 
-    private function parsePropertyAnnotations($propertyAnnotations, string $className, string $propertyName)
+    private function parsePropertyAnnotations($propertyAnnotations, string $className, string $propertyName, $propertyValue)
     {
         $isRef = false;
         $injectProperty = "";
@@ -185,7 +189,7 @@ abstract class AbstractWrapper implements IWrapper
                 $isRef = false;
                 continue;
             }
-            list($injectProperty, $isRef) = $annotationParser->parser($className, $propertyAnnotation, $propertyName, "");
+            list($injectProperty, $isRef) = $annotationParser->parser($className, $propertyAnnotation, $propertyName, "", $propertyValue);
         }
 
         return [$injectProperty, $isRef];

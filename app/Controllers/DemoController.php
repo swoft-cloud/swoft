@@ -5,12 +5,13 @@ namespace App\Controllers;
 use App\Models\Entity\User;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
+use Swoft\Db\QueryBuilder;
 use Swoft\Db\EntityManager;
 use Swoft\Di\Annotation\AutoController;
 use Swoft\Di\Annotation\Inject;
 use Swoft\Di\Annotation\RequestMapping;
-use Swoft\Web\Controller;
 use Swoft\Di\Annotation\RequestMethod;
+use Swoft\Web\Controller;
 
 /**
  * 控制器demo
@@ -76,6 +77,57 @@ class DemoController extends Controller
         $this->outputJson("suc3222");
     }
 
+    public function actionQueryBuilder()
+    {
+        $em = EntityManager::create();
+        $query = $em->createQuery()
+                ->select("*")
+                ->from("user")
+                ->where('sex', ":sex")
+                ->setParameter('sex', 1)
+                ->orderBy("id", QueryBuilder::ORDER_BY_DESC);
+        $users = $query->getResult();
+
+        $sql = $query->getSql();
+
+        $em->close();
+
+        $this->outputJson([$sql, $users]);
+
+    }
+
+    public function actionAdd()
+    {
+        $user = new User();
+        $user->setName("boy");
+        $user->setAge(mt_rand(1, 100));
+        $user->setDesc("this is add user");
+        $user->setSex(1);
+//        $result = $user->save();
+        $result = $user->deferSave();
+
+//        $result = User::query()
+//            ->select('id')
+//            ->select('name')->where('sex', '1')
+//            ->orderBy("id", QueryBuilder::ORDER_BY_ASC)
+//            ->limit(6)
+//            ->getResult();
+
+//        $result = User::query()
+//            ->select('id')
+//            ->select('name')->where('sex', '1')
+//            ->orderBy("id", QueryBuilder::ORDER_BY_ASC)
+//            ->limit(6)
+//            ->getDefer();
+//
+//        $result = $result->getResult();
+
+//        $em = EntityManager::create();
+//        $result = $em->save($user);
+//        $em->close();
+
+        $this->outputJson($result->getResult());
+    }
     public function actionQueryArray(){
         $em = EntityManager::create();
         $query = $em->createQuery('select * from user where name=:name and sex=:sex');
