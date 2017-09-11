@@ -3,6 +3,7 @@
 namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Column;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -27,11 +28,15 @@ class ColumnParser extends AbstractParser
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $columnName = $objectAnnotation->getName();
-        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['type'] = $objectAnnotation->getType();
-        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['length'] = $objectAnnotation->getLength();
-        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['column'] = $columnName;
-        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['default'] = $propertyValue;
-        $this->resourceDataProxy->entities[$className]['column'][$columnName] = $propertyName;
+
+        $entity =[
+            'type' => $objectAnnotation->getType(),
+            'length' => $objectAnnotation->getLength(),
+            'column' => $columnName,
+            'default' => $propertyValue
+        ];
+        Collector::$entities[$className]['field'][$propertyName]= $entity;
+        Collector::$entities[$className]['column'][$columnName] = $propertyName;
         return null;
     }
 }

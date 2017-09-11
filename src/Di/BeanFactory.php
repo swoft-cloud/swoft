@@ -43,13 +43,6 @@ class BeanFactory implements BeanFactoryInterface
     }
 
     /**
-     * @return ResourceDataProxy
-     */
-    public static function getResourceDataProxy()
-    {
-        return self::$container->getResourceDataProxy();
-    }
-    /**
      * 获取Bean
      *
      * @param string $name Bean名称

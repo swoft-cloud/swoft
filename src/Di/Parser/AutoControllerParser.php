@@ -4,6 +4,7 @@ namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\AutoController;
 use Swoft\Di\Annotation\Scope;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -30,7 +31,7 @@ class AutoControllerParser extends AbstractParser
         $beanName = $className;
         $scope = Scope::SINGLETON;
         $prefix = $objectAnnotation->getPrefix();
-        $this->resourceDataProxy->requestMapping[$className]['prefix'] = $prefix;
+        Collector::$requestMapping[$className]['prefix'] = $prefix;
         return [$beanName, $scope];
     }
 }

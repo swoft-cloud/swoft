@@ -4,6 +4,7 @@ namespace Swoft\Base;
 
 use Swoft\App;
 use Swoft\Di\BeanFactory;
+use Swoft\Di\Collector;
 use Swoft\Event\Event;
 
 /**
@@ -26,15 +27,14 @@ class InitApplicationContext
     private function registerListeners()
     {
         // 监听器注册
-        $listeners = BeanFactory::getResourceDataProxy()->listeners;
+        $listeners = Collector::$listeners;
         ApplicationContext::registerListeners($listeners);
     }
 
     private function applicationLoader()
     {
         // 应用初始化加载事件
-        $resourceDataProxy = BeanFactory::getResourceDataProxy();
-        App::trigger(Event::APPLICATION_LOADER, null, $resourceDataProxy);
+        App::trigger(Event::APPLICATION_LOADER, null);
     }
 
     private function autoloadRoutes()

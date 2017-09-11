@@ -49,19 +49,6 @@ class Container
     private $initMethod = 'init';
 
     /**
-     * @var ResourceDataProxy
-     */
-    private $resourceDataProxy;
-
-    /**
-     * Container constructor.
-     */
-    public function __construct()
-    {
-        $this->resourceDataProxy = new ResourceDataProxy();
-    }
-
-    /**
      * 获取一个bean
      *
      * @param string $name 名称
@@ -120,7 +107,7 @@ class Container
         }
 
         $properties = $definitions['config']['properties'];
-        $this->resourceDataProxy->setProperties($properties);
+        $this->properties = $properties;
 
         $resource = new DefinitionResource($definitions);
         $this->definitions = $resource->getDefinitions();
@@ -131,12 +118,12 @@ class Container
      */
     public function autoloadAnnotations()
     {
-        $properties = $this->resourceDataProxy->getProperties();
+        $properties = $this->properties;
         if (!isset($properties['beanScan'])) {
             throw new \InvalidArgumentException("自动扫描注释，命令空间未配置the beanScan of properties!");
         }
         $beanScan = $properties['beanScan'];
-        $resource = new AnnotationResource($this->resourceDataProxy);
+        $resource = new AnnotationResource($properties);
         $resource->addScanNamespaces($beanScan);
         $definitions = $resource->getDefinitions();
 
@@ -157,14 +144,6 @@ class Container
         foreach ($this->definitions as $beanName => $definition) {
             $this->get($beanName);
         }
-    }
-
-    /**
-     * @return ResourceDataProxy
-     */
-    public function getResourceDataProxy(): ResourceDataProxy
-    {
-        return $this->resourceDataProxy;
     }
 
     /**

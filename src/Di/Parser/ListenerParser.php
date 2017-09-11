@@ -4,6 +4,7 @@ namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Listener;
 use Swoft\Di\Annotation\Scope;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -29,8 +30,7 @@ class ListenerParser extends AbstractParser
         $beanName = $className;
         $scope = Scope::SINGLETON;
         $eventName = $objectAnnotation->getEvent();
-
-        $this->resourceDataProxy->listeners[$eventName][] = $beanName;
+        Collector::$listeners[$eventName][] = $beanName;
         return [$beanName, $scope];
     }
 }

@@ -7,6 +7,7 @@ use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
 use Swoft\Di\BeanFactory;
+use Swoft\Di\Collector;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
@@ -297,7 +298,7 @@ class App
      * @return array
      */
     public static function getEntities(){
-        return BeanFactory::getResourceDataProxy()->entities;
+        return Collector::$entities;
     }
 
     /**

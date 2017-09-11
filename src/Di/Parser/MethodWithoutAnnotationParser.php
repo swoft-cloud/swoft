@@ -3,6 +3,7 @@
 namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\RequestMethod;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -17,11 +18,11 @@ class MethodWithoutAnnotationParser extends AbstractParser
 {
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        if (!isset($this->resourceDataProxy->requestMapping[$className])) {
+        if (!isset(Collector::$requestMapping[$className])) {
             return;
         }
 
-        $this->resourceDataProxy->requestMapping[$className]['routes'][] = [
+        Collector::$requestMapping[$className]['routes'][] = [
             'route'  => "",
             'method' => [RequestMethod::GET, RequestMethod::POST],
             'action' => $methodName

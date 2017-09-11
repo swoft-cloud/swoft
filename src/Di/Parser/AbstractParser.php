@@ -4,7 +4,6 @@ namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Scope;
 use Swoft\Di\Resource\AnnotationResource;
-use Swoft\Di\ResourceDataProxy;
 
 /**
  *
@@ -26,16 +25,9 @@ abstract class AbstractParser implements IParser
 
     protected $defaultClass;
 
-    /**
-     * @var ResourceDataProxy
-     */
-    protected $resourceDataProxy;
-
-    public function __construct(AnnotationResource $annotationResource, ResourceDataProxy $resourceDataProxy)
+    public function __construct(AnnotationResource $annotationResource)
     {
         $this->annotationResource = $annotationResource;
-        $this->resourceDataProxy = $resourceDataProxy;
-
         $this->defaultClass = ['', Scope::SINGLETON];
         $this->defaultProperty = [null, false];
     }

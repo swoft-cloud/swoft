@@ -2,6 +2,8 @@
 
 namespace Swoft\Di\Parser;
 
+use Swoft\Di\Collector;
+
 /**
  *
  *
@@ -15,7 +17,7 @@ class EntityParser extends AbstractParser
 {
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        $this->resourceDataProxy->entities[$className] = [];
+        Collector::$entities[$className] = [];
         return null;
     }
 }

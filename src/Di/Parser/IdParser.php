@@ -3,6 +3,7 @@
 namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Id;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -26,7 +27,7 @@ class IdParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        $this->resourceDataProxy->entities[$className]['table']['id'] = $propertyName;
+        Collector::$entities[$className]['table']['id'] = $propertyName;
         return null;
     }
 }

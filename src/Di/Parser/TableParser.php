@@ -3,6 +3,7 @@
 namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Table;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -27,7 +28,7 @@ class TableParser extends AbstractParser
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         $tableName = $objectAnnotation->getName();
-        $this->resourceDataProxy->entities[$className]['table']['name'] = $tableName;
+        Collector::$entities[$className]['table']['name'] = $tableName;
         return $this->defaultClass;
     }
 }

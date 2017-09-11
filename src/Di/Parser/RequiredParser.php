@@ -3,6 +3,7 @@
 namespace Swoft\Di\Parser;
 
 use Swoft\Di\Annotation\Required;
+use Swoft\Di\Collector;
 
 /**
  *
@@ -25,7 +26,7 @@ class RequiredParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        $this->resourceDataProxy->entities[$className]['field'][$propertyName]['required'] = true;
+        Collector::$entities[$className]['field'][$propertyName]['required'] = true;
         return null;
     }
 }

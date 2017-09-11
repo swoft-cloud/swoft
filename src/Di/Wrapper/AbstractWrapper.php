@@ -30,13 +30,11 @@ abstract class AbstractWrapper implements IWrapper
 
     protected $methodAnnotations = [];
 
-    protected $resourceDataProxy;
     protected $annotationResource;
 
-    public function __construct(AnnotationResource $annotationResource, ResourceDataProxy $resourceDataProxy)
+    public function __construct(AnnotationResource $annotationResource)
     {
         $this->annotationResource = $annotationResource;
-        $this->resourceDataProxy = $resourceDataProxy;
     }
 
     public function doWrapper(string $className, array $annotations)
@@ -161,7 +159,7 @@ abstract class AbstractWrapper implements IWrapper
      */
     private function parseMethodWithoutAnnotation(string $className, string $methodName)
     {
-        $parser = new MethodWithoutAnnotationParser($this->annotationResource, $this->resourceDataProxy);
+        $parser = new MethodWithoutAnnotationParser($this->annotationResource);
         $parser->parser($className, null, "", $methodName);
     }
 
@@ -238,7 +236,7 @@ abstract class AbstractWrapper implements IWrapper
             return null;
         }
 
-        $annotationParser = new $annotationParserClassName($this->annotationResource, $this->resourceDataProxy);
+        $annotationParser = new $annotationParserClassName($this->annotationResource);
         return $annotationParser;
     }
 

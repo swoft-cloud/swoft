@@ -5,11 +5,9 @@ namespace Swoft\Di\Resource;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Swoft\Di\Annotation\Scope;
-use Swoft\Di\AnnotationParser;
 use Swoft\Di\ObjectDefinition;
 use Swoft\Di\Parser\AbstractParser;
 use Swoft\Di\Parser\MethodWithoutAnnotationParser;
-use Swoft\Di\ResourceDataProxy;
 use Swoft\Di\Wrapper\IWrapper;
 
 /**
@@ -49,15 +47,9 @@ class AnnotationResource extends AbstractResource
 
     private $annotations = [];
 
-    /**
-     * @var ResourceDataProxy
-     */
-    private $resourceDataProxy;
-
-    public function __construct(ResourceDataProxy $resourceDataProxy)
+    public function __construct(array $properties)
     {
-        $this->resourceDataProxy = $resourceDataProxy;
-        $this->properties = $resourceDataProxy->getProperties();
+        $this->properties = $properties;
 
     }
 
@@ -147,7 +139,7 @@ class AnnotationResource extends AbstractResource
                 }
 
                 /* @var IWrapper $wrapper*/
-                $wrapper = new $annotationParserClassName($this, $this->resourceDataProxy);
+                $wrapper = new $annotationParserClassName($this);
                 $objectDefinitionAry = $wrapper->doWrapper($className, $annotation);
                 if($objectDefinitionAry != null){
                     list($beanName, $objectDefinition) = $objectDefinitionAry;
@@ -202,7 +194,7 @@ class AnnotationResource extends AbstractResource
             return null;
         }
 
-        $annotationParser = new $annotationParserClassName($this, $this->resourceDataProxy);
+        $annotationParser = new $annotationParserClassName($this);
         return $annotationParser;
     }
 
@@ -326,7 +318,7 @@ class AnnotationResource extends AbstractResource
      */
     private function parseMethodWithoutAnnotation(string $className, string $methodName)
     {
-        $parser = new MethodWithoutAnnotationParser($this, $this->resourceDataProxy);
+        $parser = new MethodWithoutAnnotationParser($this);
         $parser->parser($className, null, "", $methodName);
     }
 

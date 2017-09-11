@@ -3,6 +3,7 @@
 namespace Swoft\Helpers;
 
 use Swoft\Di\BeanFactory;
+use Swoft\Di\Collector;
 
 class ArrayHelper
 {
@@ -872,7 +873,7 @@ class ArrayHelper
 
     public static function arrayToEntity(array $array, string $className)
     {
-        $entities = BeanFactory::getResourceDataProxy()->entities;
+        $entities = Collector::$entities;
         if (!isset($className)) {
             return $array;
         }
