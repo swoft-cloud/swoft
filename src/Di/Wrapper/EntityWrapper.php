@@ -4,6 +4,7 @@ namespace Swoft\Di\Wrapper;
 
 use Swoft\Di\Annotation\Column;
 use Swoft\Di\Annotation\Entity;
+use Swoft\Di\Annotation\Enum;
 use Swoft\Di\Annotation\Id;
 use Swoft\Di\Annotation\Required;
 use Swoft\Di\Annotation\Table;
@@ -28,6 +29,7 @@ class EntityWrapper extends AbstractWrapper
     protected $propertyAnnotations
         = [
             Id::class,
+            Enum::class,
             Column::class,
             Required::class,
         ];

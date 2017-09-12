@@ -3,7 +3,10 @@
 namespace Swoft\Di\Annotation;
 
 /**
+ * 枚举注解
  *
+ * @Annotation
+ * @Target({"PROPERTY"})
  *
  * @uses      Enum
  * @version   2017年09月04日
@@ -13,5 +16,26 @@ namespace Swoft\Di\Annotation;
  */
 class Enum
 {
-    
+    /**
+     * @var array
+     */
+    private $value = [];
+
+    public function __construct(array $values)
+    {
+        if (isset($values['value'])) {
+            $this->value = $values['value'];
+        }
+        if (isset($values['value'])) {
+            $this->value = $values['value'];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getValue(): array
+    {
+        return $this->value;
+    }
 }

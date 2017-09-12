@@ -150,35 +150,6 @@ class AnnotationResource extends AbstractResource
     }
 
     /**
-     * 解析类注释
-     *
-     * @param string $className
-     * @param array  $classAnnotations
-     *
-     * @return array
-     */
-    private function parseClassAnnotations(string $className, array $classAnnotations)
-    {
-        $beanName = '';
-        $scope = Scope::SINGLETON;
-
-        // 类注解解析
-        foreach ($classAnnotations as $classAnnotation) {
-            if (!is_object($classAnnotation)) {
-                continue;
-            }
-
-            $annotationParser = $this->getAnnotationParser($classAnnotation);
-            if($annotationParser == null){
-                continue;
-            }
-            list($beanName, $scope) = $annotationParser->parser($className, $classAnnotation);
-
-        }
-        return [$beanName, $scope];
-    }
-
-    /**
      * @param $objectAnnotation
      *
      * @return AbstractParser
@@ -198,129 +169,6 @@ class AnnotationResource extends AbstractResource
         return $annotationParser;
     }
 
-    /**
-     * 解析注释属性
-     *
-     * @param AnnotationReader $reader
-     * @param array            $properties
-     * @param string           $className
-     *
-     * @return array
-     */
-    private function parseProperties(AnnotationReader $reader, array $properties, string $className)
-    {
-        $propertyInjections = [];
-
-        /* @var \ReflectionProperty $property */
-        foreach ($properties as $property) {
-            if ($property->isStatic()) {
-                continue;
-            }
-            $propertyName = $property->getName();
-            list($injectProperty, $isRef) = $this->parsePropertyAnnotations($reader, $property, $className, $propertyName);
-            if ($injectProperty == null) {
-                continue;
-            }
-            $propertyInjection = new ObjectDefinition\PropertyInjection($propertyName, $injectProperty, (bool)$isRef);
-            $propertyInjections[$propertyName] = $propertyInjection;
-        }
-
-        return $propertyInjections;
-    }
-
-    /**
-     * 解析属性注解
-     *
-     * @param AnnotationReader    $reader
-     * @param \ReflectionProperty $property
-     * @param string              $className
-     * @param string              $propertyName
-     *
-     * @return array
-     */
-    private function parsePropertyAnnotations(AnnotationReader $reader, \ReflectionProperty $property, string $className, string $propertyName)
-    {
-        $isRef = false;
-        $injectProperty = "";
-        $propertyAnnotations = $reader->getPropertyAnnotations($property);
-
-        // 没有任何注解
-        if (empty($propertyAnnotations)) {
-            return [null, false];
-        }
-
-        // 属性注解解析
-        foreach ($propertyAnnotations as $propertyAnnotation) {
-            $annotationParser = $this->getAnnotationParser($propertyAnnotation);
-            if ($annotationParser === null) {
-                $injectProperty = null;
-                $isRef = false;
-                continue;
-            }
-            list($injectProperty, $isRef) = $annotationParser->parser($className, $propertyAnnotation, $propertyName, "");
-        }
-
-        return [$injectProperty, $isRef];
-    }
-
-    /**
-     * 解析方法
-     *
-     * @param AnnotationReader    $reader
-     * @param string              $className
-     * @param \ReflectionMethod[] $publicMethods
-     */
-    private function parseMethods(AnnotationReader $reader, string $className, array $publicMethods)
-    {
-        // 循环解析
-        foreach ($publicMethods as $method) {
-            if ($method->isStatic()) {
-                continue;
-            }
-
-            // 解析方法注解
-            $methodAnnotations = $reader->getMethodAnnotations($method);
-            $this->parseMethodAnnotations($className, $method, $methodAnnotations);
-        }
-    }
-
-    /**
-     * 解析方法注解
-     *
-     * @param string            $className
-     * @param \ReflectionMethod $method
-     * @param array             $methodAnnotations
-     */
-    private function parseMethodAnnotations(string $className, \ReflectionMethod $method, array $methodAnnotations)
-    {
-        // 方法没有注解解析
-        $methodName = $method->getName();
-        if (empty($methodAnnotations)) {
-            $this->parseMethodWithoutAnnotation($className, $methodName);
-            return;
-        }
-
-        foreach ($methodAnnotations as $methodAnnotation) {
-            $annotationParser = $this->getAnnotationParser($methodAnnotation);
-            if ($annotationParser == null) {
-                $this->parseMethodWithoutAnnotation($className, $methodName);
-                continue;
-            }
-            $annotationParser->parser($className, $methodAnnotation, "", $methodName);
-        }
-    }
-
-    /**
-     * 方法没有配置路由注解解析
-     *
-     * @param string $className
-     * @param string $methodName
-     */
-    private function parseMethodWithoutAnnotation(string $className, string $methodName)
-    {
-        $parser = new MethodWithoutAnnotationParser($this);
-        $parser->parser($className, null, "", $methodName);
-    }
 
     /**
      * 注册加载器和扫描PHP文件
@@ -331,13 +179,7 @@ class AnnotationResource extends AbstractResource
     {
         $phpClass = [];
         foreach ($this->scanNamespaces as $namespace => $dir) {
-            AnnotationRegistry::registerLoader(function ($class) use ($dir) {
-                if (!class_exists($class)) {
-                    return false;
-                }
-                return true;
-            });
-
+            AnnotationRegistry::registerLoader('class_exists');
             $scanClass = $this->scanPhpFile($dir, $namespace);
             $phpClass = array_merge($phpClass, $scanClass);
         }

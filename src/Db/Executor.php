@@ -3,6 +3,10 @@
 namespace Swoft\Db;
 
 use Swoft\App;
+use Swoft\Db\Validator\IValidator;
+use Swoft\Di\Annotation\Bean;
+use Swoft\Di\BeanFactory;
+use Swoft\Exception\ValidatorException;
 
 /**
  *
@@ -133,8 +137,12 @@ class Executor
         $idValue = null;
         foreach ($fields as $proName => $proAry) {
             $default = $proAry['default'];
+            $type = $proAry['type'];
             $column = $proAry['column'];
+
             $proValue = $this->getEntityProValue($entity, $proName);
+
+            $this->validate($proAry, $proValue);
 
             if ($type == 1 && $id == $proName && $default == $proValue) {
                 continue;
@@ -149,13 +157,45 @@ class Executor
                 continue;
             }
 
-            if($idColumn == $column){
+            if ($idColumn == $column) {
                 $idValue = $proValue;
             }
             $changeFields[$column] = $proValue;
         }
 
         return [$table, $idColumn, $idValue, $changeFields];
+    }
+
+    private function validate(array $columnAry, $propertyValue)
+    {
+        $type = $columnAry['type'];
+        $length = $columnAry['length']?? -1;
+        $column = $columnAry['column'];
+        $validates = $columnAry['validates'];
+        $required = $columnAry['required']?? false;
+
+        if($propertyValue === null && $required){
+            throw new ValidatorException("数据字段验证失败，column=".$column."字段必须设置值");
+        }
+
+        $validator = [
+            'name'  => ucfirst($type),
+            'value' => [$length]
+        ];
+        array_unshift($validates, $validator);
+
+        foreach ($validates as $vald) {
+            $name = $vald['name'];
+            $params = $vald['value'];
+            $beanName = 'Validator' . $name;
+            if (!BeanFactory::hasBean($beanName)) {
+                continue;
+            }
+
+            /* @var IValidator $objValidator*/
+            $objValidator = App::getBean($beanName);
+            $objValidator->validate($column, $propertyValue, $params);
+        }
     }
 
     private function getEntityProValue($entity, $proName)

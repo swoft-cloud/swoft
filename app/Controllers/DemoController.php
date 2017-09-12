@@ -11,6 +11,7 @@ use Swoft\Di\Annotation\AutoController;
 use Swoft\Di\Annotation\Inject;
 use Swoft\Di\Annotation\RequestMapping;
 use Swoft\Di\Annotation\RequestMethod;
+use Swoft\Di\Collector;
 use Swoft\Web\Controller;
 
 /**
@@ -136,7 +137,7 @@ class DemoController extends Controller
         $users = $query->getResult();
         $sql = $query->getSql();
         $em->close();
-        $this->outputJson([$sql, $users]);
+        $this->outputJson([$sql, $users, Collector::$entities]);
     }
 
     public function actionQueryEntity(){

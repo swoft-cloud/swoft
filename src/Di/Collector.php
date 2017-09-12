@@ -14,13 +14,6 @@ namespace Swoft\Di;
 class Collector
 {
     /**
-     * properties.php配置信息
-     *
-     * @var array
-     */
-    private static $properties = [];
-
-    /**
      * 已解析的路由规则
      *
      * @var array
@@ -40,20 +33,4 @@ class Collector
      * @var array
      */
     public static $entities = [];
-
-    /**
-     * @return array
-     */
-    public static function getProperties(): array
-    {
-        return self::$properties;
-    }
-
-    /**
-     * @param array $properties
-     */
-    public  static function setProperties(array $properties)
-    {
-        self::$properties = $properties;
-    }
 }

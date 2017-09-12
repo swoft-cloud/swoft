@@ -2,6 +2,7 @@
 
 namespace Swoft\Db\Mysql;
 
+use Swoft\App;
 use Swoft\Db\DbResult;
 use Swoft\Helpers\ArrayHelper;
 
@@ -18,11 +19,16 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
 {
     public function getResult(string $className = "")
     {
-        if(empty($this->sql)){
+        if(empty($this->lastSql)){
             $this->getSql();
         }
-        $this->sql = strtr($this->sql, $this->parameters);
-        $result = $this->connect->execute($this->sql);
+
+        $sqlId = md5($this->lastSql);
+        $profileKey = 'mysql.'.$sqlId;
+        App::profileStart($profileKey);
+        $result = $this->connect->execute($this->lastSql);
+        App::profileEnd($profileKey);
+        App::debug("SQL语句执行结果 sqlId=$sqlId result=".json_encode($result)."sql=".$this->lastSql);
         if(is_array($result)){
             $result = ArrayHelper::resultToEntity($result, $className);
         }
@@ -39,12 +45,15 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
      */
     public function getDefer(string $className = "")
     {
-        $profileKey = "mysql.query";
-        $sql = $this->getStatement();
-        $this->sql = strtr($sql, $this->parameters);
+        if(empty($this->lastSql)){
+            $this->getSql();
+        }
 
+        $sqlId = md5($this->lastSql);
+        $profileKey = "mysql.".$sqlId;
         $this->connect->setDefer();
-        $result = $this->connect->execute($this->sql);
+        $result = $this->connect->execute($this->lastSql);
+        App::debug("SQL语句执行(defer) sqlId=$sqlId sql=".$this->lastSql);
 
         return new DbResult($this->pool, $this->connect, $profileKey, $result, $this->release);
     }

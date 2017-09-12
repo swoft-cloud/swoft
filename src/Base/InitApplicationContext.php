@@ -3,7 +3,6 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Di\BeanFactory;
 use Swoft\Di\Collector;
 use Swoft\Event\Event;
 

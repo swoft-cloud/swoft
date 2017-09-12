@@ -2,13 +2,14 @@
 
 namespace App\Models\Entity;
 
-use Doctrine\Common\Annotations\Annotation\Enum;
 use Swoft\Db\Model;
 use Swoft\Di\Annotation\Column;
 use Swoft\Di\Annotation\Entity;
+use Swoft\Di\Annotation\Enum;
 use Swoft\Di\Annotation\Id;
 use Swoft\Di\Annotation\Required;
 use Swoft\Di\Annotation\Table;
+use Swoft\Db\Types;
 
 /**
  *
@@ -26,7 +27,7 @@ class User extends Model
      * 主键ID
      *
      * @Id()
-     * @Column(name="id", type="int")
+     * @Column(name="id", type=Types::INT)
      * @var int
      */
     private $id;
@@ -34,7 +35,7 @@ class User extends Model
     /**
      * 名称
      *
-     * @Column(name="name", type="string", length=20)
+     * @Column(name="name", type=Types::STRING, length=20)
      * @Required()
      * @var string
      */
@@ -44,7 +45,7 @@ class User extends Model
     /**
      * 年龄
      *
-     * @Column(name="age", type="int")
+     * @Column(name="age", type=Types::INT)
      * @var int
      */
     private $age = 0;
@@ -53,7 +54,7 @@ class User extends Model
      * 性别
      *
      * @Column(name="sex", type="int")
-     * @Required()
+     * @Enum(value={1,0})
      * @var int
      */
     private $sex = 0;

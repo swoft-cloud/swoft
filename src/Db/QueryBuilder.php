@@ -249,6 +249,8 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     protected $release = false;
 
+    protected $lastSql;
+
     /**
      * QueryBuilder constructor.
      *
@@ -742,12 +744,12 @@ abstract class QueryBuilder implements IQueryBuilder
 
     public function getSql()
     {
-        if(empty($this->sql)){
+        if(empty($this->lastSql)){
             $sql = $this->getStatement();
-            $this->sql = strtr($sql, $this->parameters);
+            $this->lastSql = strtr($sql, $this->parameters);
         }
 
-        return $this->sql;
+        return $this->lastSql;
     }
 
     /**

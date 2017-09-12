@@ -23,11 +23,13 @@ class DbResult extends AbstractResult
             return false;
         }
         $result = $this->recv();
+
+        list($key, $sqlId) = explode(".", $this->profileKey);
+        App::debug("SQL语句执行结果(defer) sqlId=$sqlId result=".json_encode($result));
         if(is_array($result) && !empty($className)){
             $result = ArrayHelper::resultToEntity($result, $className);
         }
 
-        App::debug("mysql执行结果，data=" . json_encode($result));
         return $result;
     }
 }
