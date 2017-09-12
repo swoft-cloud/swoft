@@ -858,9 +858,6 @@ class ArrayHelper
 
     public static function resultToEntity(array $result, string $className)
     {
-        if (empty($className) || !is_array($result)) {
-            return $result;
-        }
         $entities = [];
         foreach ($result as $entityData) {
             if (!is_array($entityData)) {

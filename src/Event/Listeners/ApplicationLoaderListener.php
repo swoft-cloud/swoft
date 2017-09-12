@@ -3,13 +3,11 @@
 namespace Swoft\Event\Listeners;
 
 use Swoft\App;
-use Swoft\Base\ApplicationContext;
 use Swoft\Di\Annotation\Listener;
 use Swoft\Di\Collector;
-use Swoft\Di\ResourceDataProxy;
 use Swoft\Event\ApplicationEvent;
-use Swoft\Event\IApplicationListener;
 use Swoft\Event\Event;
+use Swoft\Event\IApplicationListener;
 use Swoft\Web\Router;
 
 /**

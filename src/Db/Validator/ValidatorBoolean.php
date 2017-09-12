@@ -6,6 +6,7 @@ use Swoft\Di\Annotation\Bean;
 use Swoft\Exception\ValidatorException;
 
 /**
+ * boolean字段类型验证
  *
  * @Bean("ValidatorBoolean")
  * @uses      ValidatorBoolean
@@ -16,19 +17,21 @@ use Swoft\Exception\ValidatorException;
  */
 class ValidatorBoolean implements IValidator
 {
-
     /**
-     * @param string $cloum
-     * @param mixed  $value
-     * @param array  ...$params
+     * 验证结果
+     *
+     * @param string $cloum     字段名称
+     * @param mixed  $value     字段传入值
+     * @param array  ...$params 其它参数数组传入
+     *
      * @throws ValidatorException
      *
-     * @return bool
+     * @return bool 成功返回true,失败抛异常
      */
     public function validate(string $cloum, $value, ...$params)
     {
-        if(!is_bool($value)){
-            throw new ValidatorException("数据库字段值验证失败，不是bool类型，column=".$cloum);
+        if (!is_bool($value)) {
+            throw new ValidatorException("数据库字段值验证失败，不是bool类型，column=" . $cloum);
         }
         return true;
     }

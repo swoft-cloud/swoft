@@ -18,7 +18,7 @@ interface IQueryBuilder
     /**
      * @param string $className
      *
-     * @return DbResult
+     * @return DataResult
      */
     public function getDefer(string $className = "");
 }

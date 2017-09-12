@@ -6,7 +6,7 @@ use Swoft\Db\AbstractConnect;
 use Swoole\Coroutine\Mysql;
 
 /**
- *
+ * mysql连接
  *
  * @uses      Connect
  * @version   2017年09月01日
@@ -17,43 +17,76 @@ use Swoole\Coroutine\Mysql;
 class Connect extends AbstractConnect
 {
     /**
+     * 协程Mysql连接
+     *
      * @var Mysql
      */
     private $connect = null;
 
-
-    public function beginTransaction()
+    /**
+     * 执行SQL
+     *
+     * @param string $sql
+     *
+     * @return array|bool
+     */
+    public function execute(string $sql)
     {
-        $this->connect->query("begin;");
+        return $this->connect->query($sql);
     }
 
-    public function commit()
-    {
-        $this->connect->query("commit;");
-    }
-
-    public function rollback()
-    {
-        $this->connect->query("rollback;");
-    }
-
-    public function setDefer($defer = true)
-    {
-        $this->connect->setDefer($defer);
-    }
-
+    /**
+     * 延迟收取数据包
+     *
+     * @return array|bool
+     */
     public function recv()
     {
         return $this->connect->recv();
     }
 
-    public function setAutoCommit(bool $autoCommit)
+    /**
+     * 开始事务
+     */
+    public function beginTransaction()
     {
-
+        $this->connect->query("begin;");
     }
 
-    public function createConnect($options)
+    /**
+     * 回滚事务
+     */
+    public function rollback()
     {
+        $this->connect->query("rollback;");
+    }
+
+    /**
+     * 提交事务
+     */
+    public function commit()
+    {
+        $this->connect->query("commit;");
+    }
+
+    /**
+     * 设置是否延迟收包
+     *
+     * @param bool $defer
+     */
+    public function setDefer($defer = true)
+    {
+        $this->connect->setDefer($defer);
+    }
+
+    /**
+     * 创建连接
+     *
+     * @param array $options
+     */
+    public function createConnect(array $options)
+    {
+        // 连接mysql
         $mysql = new MySQL();
         $mysql->connect([
             'host'     => $options['host'],
@@ -65,15 +98,10 @@ class Connect extends AbstractConnect
             'charset'  => $options['charset']
         ]);
 
-        if($mysql->connected == false){
-            throw new \InvalidArgumentException("mysql数据库连接出错，error=".$mysql->connect_error);
+        // 连接失败处理
+        if ($mysql->connected == false) {
+            throw new \InvalidArgumentException("mysql数据库连接出错，error=" . $mysql->connect_error);
         }
         $this->connect = $mysql;
-    }
-
-
-    public function execute(string $sql)
-    {
-        return $this->connect->query($sql);
     }
 }

@@ -24,4 +24,6 @@ interface IConnect
     public function recv();
 
     public function execute(string $sql);
+
+    public function createConnect(array $options);
 }
