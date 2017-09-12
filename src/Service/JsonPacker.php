@@ -46,16 +46,13 @@ class JsonPacker implements IPack
 
     public function checkData($data)
     {
-        if(!isset($data['status']) || !isset($data['Data']) || !isset($data['msg'])){
-
+        if (!isset($data['status']) || !isset($data['Data']) || !isset($data['msg'])) {
         }
 
         $status = $data['status'];
-        if($status != 200){
-
+        if ($status != 200) {
         }
 
         return $data['Data'];
-
     }
 }

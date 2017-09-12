@@ -84,7 +84,6 @@ class Logger extends \Monolog\Logger
 
     public function __construct()
     {
-
     }
 
     /**
@@ -402,7 +401,6 @@ class Logger extends \Monolog\Logger
         if ($this->flushRequest || count($this->messages) >= $this->flushInterval) {
             $this->flushLog();
         }
-
     }
 
     /**
@@ -487,5 +485,4 @@ class Logger extends \Monolog\Logger
         $requestTime = $contextData['requestTime']?? 0;
         return $requestTime;
     }
-
 }

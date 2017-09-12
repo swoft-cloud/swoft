@@ -5,7 +5,6 @@ namespace Swoft\Service;
 use Swoft\App;
 use Swoft\Web\AbstractResult;
 
-
 /**
  * RPC结果集
  *

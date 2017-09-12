@@ -109,16 +109,13 @@ class Request
 
     public function getCharacterEncoding(): string
     {
-
     }
 
     public function getContentLength(): int
     {
-
     }
 
     public function getContentType(): string
     {
-
     }
 }

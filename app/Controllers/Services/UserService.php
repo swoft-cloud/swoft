@@ -24,8 +24,7 @@ class UserService extends InnerService
         ];
 
         $data = [];
-        foreach ($uids as $uid){
-
+        foreach ($uids as $uid) {
             $user['uid'] = $uid;
             $data[] = $user;
         }

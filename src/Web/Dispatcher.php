@@ -184,7 +184,6 @@ class Dispatcher implements DispatcherInterface
 
         // validate validateDomains
         // $serverName = $_SERVER['SERVER_NAME'];
-
     }
 
     /**

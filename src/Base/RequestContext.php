@@ -120,7 +120,7 @@ class RequestContext
     public static function getContextDataByKey(string $key, $default = null)
     {
         $coroutineId = self::getcoroutine();
-        if(isset(self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key])){
+        if (isset(self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key])) {
             return self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key];
         }
 

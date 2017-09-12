@@ -28,7 +28,7 @@ class OpenState extends CircuitBreakerState
      *
      * @return mixed 返回结果
      */
-    function doCall($callback, $params = [], $fallback = null)
+    public function doCall($callback, $params = [], $fallback = null)
     {
         $data = $this->circuitBreaker->fallback();
 
@@ -55,8 +55,9 @@ class OpenState extends CircuitBreakerState
     /**
      * 定时器延迟执行
      */
-    public function delayCallback(){
-        if($this->circuitBreaker->isOpen()){
+    public function delayCallback()
+    {
+        if ($this->circuitBreaker->isOpen()) {
             App::debug($this->getServiceName()."服务,当前服务[开启状态]，延迟触发器已触发，准备开始切换到半开状态");
             $this->circuitBreaker->swithToHalfState();
         }

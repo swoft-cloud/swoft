@@ -48,7 +48,7 @@ class ArrayHelper
                     }
                 }
             }
-    
+
             return $object;
         } elseif (is_object($object)) {
             if (!empty($properties)) {
@@ -62,7 +62,7 @@ class ArrayHelper
                             $result[$key] = static::getValue($object, $name);
                         }
                     }
-    
+
                     return $recursive ? static::toArray($result, $properties) : $result;
                 }
             }
@@ -74,13 +74,13 @@ class ArrayHelper
                     $result[$key] = $value;
                 }
             }
-    
+
             return $recursive ? static::toArray($result, $properties) : $result;
         } else {
             return [$object];
         }
     }
-    
+
     /**
      * Merges two or more arrays into one recursively.
      * If each array has an element with the same string key value, the latter
@@ -114,10 +114,10 @@ class ArrayHelper
                 }
             }
         }
-    
+
         return $res;
     }
-    
+
     /**
      * Retrieves the value of an array element or object property with the given key or property name.
      * If the key does not exist in the array or object, the default value will be returned instead.
@@ -162,7 +162,7 @@ class ArrayHelper
         if ($key instanceof \Closure) {
             return $key($array, $default);
         }
-    
+
         if (is_array($key)) {
             $lastKey = array_pop($key);
             foreach ($key as $keyPart) {
@@ -170,16 +170,16 @@ class ArrayHelper
             }
             $key = $lastKey;
         }
-    
-        if (is_array($array) && (isset($array[$key]) || array_key_exists($key, $array)) ) {
+
+        if (is_array($array) && (isset($array[$key]) || array_key_exists($key, $array))) {
             return $array[$key];
         }
-    
+
         if (($pos = strrpos($key, '.')) !== false) {
             $array = static::getValue($array, substr($key, 0, $pos), $default);
             $key = substr($key, $pos + 1);
         }
-    
+
         if (is_object($array)) {
             // this is expected to fail if the property does not exist, or __get() is not implemented
             // it is not reliably possible to check whether a property is accessable beforehand
@@ -190,7 +190,7 @@ class ArrayHelper
             return $default;
         }
     }
-    
+
     /**
      * Removes an item from an array and returns the value. If the key does not exist in the array, the default value
      * will be returned instead.
@@ -215,13 +215,13 @@ class ArrayHelper
         if (is_array($array) && (isset($array[$key]) || array_key_exists($key, $array))) {
             $value = $array[$key];
             unset($array[$key]);
-    
+
             return $value;
         }
-    
+
         return $default;
     }
-    
+
     /**
      * Indexes and/or groups the array according to a specified key.
      * The input should be either multidimensional array or an array of objects.
@@ -326,10 +326,10 @@ class ArrayHelper
     {
         $result = [];
         $groups = (array)$groups;
-    
+
         foreach ($array as $element) {
             $lastArray = &$result;
-    
+
             foreach ($groups as $group) {
                 $value = static::getValue($element, $group);
                 if (!array_key_exists($value, $lastArray)) {
@@ -337,7 +337,7 @@ class ArrayHelper
                 }
                 $lastArray = &$lastArray[$value];
             }
-    
+
             if ($key === null) {
                 if (!empty($groups)) {
                     $lastArray[] = $element;
@@ -353,10 +353,10 @@ class ArrayHelper
             }
             unset($lastArray);
         }
-    
+
         return $result;
     }
-    
+
     /**
      * Returns the values of a specified column in an array.
      * The input array should be multidimensional or an array of objects.
@@ -395,10 +395,10 @@ class ArrayHelper
                 $result[] = static::getValue($element, $name);
             }
         }
-    
+
         return $result;
     }
-    
+
     /**
      * Builds a map (key-value pairs) from a multidimensional array or an array of objects.
      * The `$from` and `$to` parameters specify the key names or property names to set up the map.
@@ -452,10 +452,10 @@ class ArrayHelper
                 $result[$key] = $value;
             }
         }
-    
+
         return $result;
     }
-    
+
     /**
      * Checks if the given array contains the specified key.
      * This method enhances the `array_key_exists()` function by supporting case-insensitive
@@ -475,11 +475,11 @@ class ArrayHelper
                     return true;
                 }
             }
-    
+
             return false;
         }
     }
-    
+
     /**
      * Sorts an array of objects or arrays (with the same structure) by one or several keys.
      * @param array $array the array to be sorted. The array will be modified after calling this method.
@@ -520,17 +520,17 @@ class ArrayHelper
             $args[] = $direction[$i];
             $args[] = $flag;
         }
-    
+
         // This fix is used for cases when main sorting specified by columns has equal values
         // Without it it will lead to Fatal Error: Nesting level too deep - recursive dependency?
         $args[] = range(1, count($array));
         $args[] = SORT_ASC;
         $args[] = SORT_NUMERIC;
-    
+
         $args[] = &$array;
         call_user_func_array('array_multisort', $args);
     }
-    
+
     /**
      * Encodes special characters in an array of strings into HTML entities.
      * Only array values will be encoded by default.
@@ -562,10 +562,10 @@ class ArrayHelper
                 $d[$key] = $value;
             }
         }
-    
+
         return $d;
     }
-    
+
     /**
      * Decodes HTML entities into the corresponding characters in an array of strings.
      * Only array values will be decoded by default.
@@ -592,10 +592,10 @@ class ArrayHelper
                 $d[$key] = $value;
             }
         }
-    
+
         return $d;
     }
-    
+
     /**
      * Returns a value indicating whether the given array is an associative array.
      *
@@ -614,7 +614,7 @@ class ArrayHelper
         if (!is_array($array) || empty($array)) {
             return false;
         }
-    
+
         if ($allStrings) {
             foreach ($array as $key => $value) {
                 if (!is_string($key)) {
@@ -631,7 +631,7 @@ class ArrayHelper
             return false;
         }
     }
-    
+
     /**
      * Returns a value indicating whether the given array is an indexed array.
      *
@@ -650,11 +650,11 @@ class ArrayHelper
         if (!is_array($array)) {
             return false;
         }
-    
+
         if (empty($array)) {
             return true;
         }
-    
+
         if ($consecutive) {
             return array_keys($array) === range(0, count($array) - 1);
         } else {
@@ -666,7 +666,7 @@ class ArrayHelper
             return true;
         }
     }
-    
+
     /**
      * Check whether an array or [[\Traversable]] contains an element.
      *
@@ -693,10 +693,10 @@ class ArrayHelper
         } else {
             throw new InvalidParamException('Argument $haystack must be an array or implement Traversable');
         }
-    
+
         return false;
     }
-    
+
     /**
      * Checks whether a variable is an array or [[\Traversable]].
      *
@@ -711,7 +711,7 @@ class ArrayHelper
     {
         return is_array($var) || $var instanceof \Traversable;
     }
-    
+
     /**
      * Checks whether an array or [[\Traversable]] is a subset of another array or [[\Traversable]].
      *
@@ -737,7 +737,7 @@ class ArrayHelper
             throw new InvalidParamException('Argument $needles must be an array or implement Traversable');
         }
     }
-    
+
     /**
      * Filters array according to rules specified.
      *
@@ -786,12 +786,12 @@ class ArrayHelper
     {
         $result = [];
         $forbiddenVars = [];
-    
+
         foreach ($filters as $var) {
             $keys = explode('.', $var);
             $globalKey = $keys[0];
             $localKey = isset($keys[1]) ? $keys[1] : null;
-    
+
             if ($globalKey[0] === '!') {
                 $forbiddenVars[] = [
                     substr($globalKey, 1),
@@ -799,7 +799,7 @@ class ArrayHelper
                 ];
                 continue;
             }
-    
+
             if (empty($array[$globalKey])) {
                 continue;
             }
@@ -815,14 +815,14 @@ class ArrayHelper
             }
             $result[$globalKey][$localKey] = $array[$globalKey][$localKey];
         }
-    
+
         foreach ($forbiddenVars as $var) {
             list($globalKey, $localKey) = $var;
             if (array_key_exists($globalKey, $result)) {
                 unset($result[$globalKey][$localKey]);
             }
         }
-    
+
         return $result;
     }
 }

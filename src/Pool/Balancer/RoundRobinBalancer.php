@@ -18,7 +18,7 @@ class RoundRobinBalancer implements IBalancer
     public function select(array $serviceList, ...$params)
     {
         $currentIndex = $this->lastIndex + 1;
-        if($currentIndex+1 > count($serviceList)){
+        if ($currentIndex+1 > count($serviceList)) {
             $currentIndex = 0;
         }
 

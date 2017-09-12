@@ -47,14 +47,12 @@ class Application extends \Swoft\Base\Application
 
         $swfRequest = RequestContext::getRequest();
         try {
-
             // 解析URI和method
             $uri = $swfRequest->getRequestUri();
             $method = $swfRequest->getMethod();
 
             // 运行controller
             $this->runController($uri, $method);
-
         } catch (\Exception $e) {
             App::getErrorHandler()->handlerException($e);
         }
@@ -82,7 +80,6 @@ class Application extends \Swoft\Base\Application
             // 执行函数调用
             $response = $this->runService($data);
             $data = $packer->pack($response);
-
         } catch (\Exception $e) {
             $code = $e->getCode();
             $message = $e->getMessage();

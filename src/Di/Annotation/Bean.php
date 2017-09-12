@@ -67,5 +67,4 @@ final class Bean
     {
         return $this->scope;
     }
-
 }
