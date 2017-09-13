@@ -4,7 +4,7 @@ namespace Swoft\Db\Mysql;
 
 use Swoft\App;
 use Swoft\Db\DataResult;
-use Swoft\Helpers\ArrayHelper;
+use Swoft\Helper\ArrayHelper;
 
 /**
  * Mysql查询器

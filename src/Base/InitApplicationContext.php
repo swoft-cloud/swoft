@@ -3,7 +3,7 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Di\Collector;
+use Swoft\Bean\Collector;
 use Swoft\Event\Event;
 
 /**

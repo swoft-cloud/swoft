@@ -15,7 +15,7 @@ require_once __DIR__ . '/../config/Model.php';
 
 $config = require dirname(__DIR__) . '/config/Base.php';
 
-$beanFactory = new \Swoft\Di\BeanFactory($config);
+$beanFactory = new \Swoft\Bean\BeanFactory($config);
 
 \Swoft\App::setAlias("app", __DIR__);
 //var_dump($beanFactory::getBean(\App\Controllers\IndexController::class));

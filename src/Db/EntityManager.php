@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 use Swoft\App;
-use Swoft\Di\BeanFactory;
+use Swoft\Bean\BeanFactory;
 use Swoft\Exception\DbException;
 use Swoft\Pool\ConnectPool;
 use Swoft\Pool\DbPool;

@@ -3,8 +3,8 @@
 namespace Swoft\Event\Listeners;
 
 use Swoft\App;
-use Swoft\Di\Annotation\Listener;
-use Swoft\Di\Collector;
+use Swoft\Bean\Annotation\Listener;
+use Swoft\Bean\Collector;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Event\Event;
 use Swoft\Event\IApplicationListener;

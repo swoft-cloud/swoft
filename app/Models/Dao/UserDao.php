@@ -2,7 +2,7 @@
 
 namespace App\Models\Dao;
 
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 
 /**
  *

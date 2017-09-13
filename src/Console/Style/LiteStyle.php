@@ -1,8 +1,8 @@
 <?php
 namespace Swoft\Console\Style;
 
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Pool\Balancer\RandomBalancer;
 use Swoft\Pool\Balancer\RoundRobinBalancer;
 

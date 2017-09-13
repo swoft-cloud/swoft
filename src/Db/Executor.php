@@ -4,8 +4,8 @@ namespace Swoft\Db;
 
 use Swoft\App;
 use Swoft\Db\Validator\IValidator;
-use Swoft\Di\BeanFactory;
-use Swoft\Di\Collector;
+use Swoft\Bean\BeanFactory;
+use Swoft\Bean\Collector;
 use Swoft\Exception\ValidatorException;
 
 /**

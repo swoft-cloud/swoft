@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 use Swoft\App;
-use Swoft\Helpers\ArrayHelper;
+use Swoft\Helper\ArrayHelper;
 use Swoft\Web\AbstractResult;
 
 /**

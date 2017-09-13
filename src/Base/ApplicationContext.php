@@ -2,7 +2,7 @@
 
 namespace Swoft\Base;
 
-use Swoft\Di\BeanFactory;
+use Swoft\Bean\BeanFactory;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Event\IApplicationListener;
 

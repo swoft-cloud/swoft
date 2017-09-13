@@ -4,8 +4,8 @@ namespace App\Models\Data;
 
 use App\Models\Dao\UserDao;
 use App\Models\Dao\UserExtDao;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Inject;
 
 /**
  *

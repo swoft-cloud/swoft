@@ -7,11 +7,11 @@ use App\Models\Logic\IndexLogic;
 use Swoft\App;
 use Swoft\Db\QueryBuilder;
 use Swoft\Db\EntityManager;
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\RequestMapping;
-use Swoft\Di\Annotation\RequestMethod;
-use Swoft\Di\Collector;
+use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Inject;
+use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\RequestMethod;
+use Swoft\Bean\Collector;
 use Swoft\Web\Controller;
 
 /**

@@ -6,7 +6,7 @@ use App\beans\Filters\CommonParamsFilter;
 use App\beans\Filters\LoginFilter;
 use Swoft\Base\RequestContext;
 use Swoft\App;
-use Swoft\Helpers\ResponseHelper;
+use Swoft\Helper\ResponseHelper;
 
 /**
  * 控制器

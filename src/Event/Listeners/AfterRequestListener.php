@@ -4,7 +4,7 @@ namespace Swoft\Event\Listeners;
 
 use Swoft\App;
 use Swoft\Base\RequestContext;
-use Swoft\Di\Annotation\Listener;
+use Swoft\Bean\Annotation\Listener;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Event\IApplicationListener;
 use Swoft\Event\Event;

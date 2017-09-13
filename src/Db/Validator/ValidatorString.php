@@ -2,7 +2,7 @@
 
 namespace Swoft\Db\Validator;
 
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 use Swoft\Exception\ValidatorException;
 
 /**

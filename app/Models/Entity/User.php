@@ -3,12 +3,12 @@
 namespace App\Models\Entity;
 
 use Swoft\Db\Model;
-use Swoft\Di\Annotation\Column;
-use Swoft\Di\Annotation\Entity;
-use Swoft\Di\Annotation\Enum;
-use Swoft\Di\Annotation\Id;
-use Swoft\Di\Annotation\Required;
-use Swoft\Di\Annotation\Table;
+use Swoft\Bean\Annotation\Column;
+use Swoft\Bean\Annotation\Entity;
+use Swoft\Bean\Annotation\Enum;
+use Swoft\Bean\Annotation\Id;
+use Swoft\Bean\Annotation\Required;
+use Swoft\Bean\Annotation\Table;
 use Swoft\Db\Types;
 
 /**

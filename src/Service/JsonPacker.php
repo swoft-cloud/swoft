@@ -3,7 +3,7 @@
 namespace Swoft\Service;
 
 use Swoft\Base\RequestContext;
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 
 /**
  * json格式解压包
