@@ -39,5 +39,5 @@ abstract class CircuitBreakerState
         return $this->circuitBreaker->serviceName;
     }
 
-    abstract function doCall($callback, $params= [], $fallback = null);
+    abstract public function doCall($callback, $params = [], $fallback = null);
 }

@@ -50,7 +50,6 @@ class InnerService
      */
     public function beforeService(string $method, array $params)
     {
-
     }
 
     /**
@@ -61,6 +60,5 @@ class InnerService
      */
     public function afterService(string $method, array $params)
     {
-
     }
 }

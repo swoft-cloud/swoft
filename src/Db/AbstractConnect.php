@@ -15,6 +15,5 @@ abstract class AbstractConnect implements IConnect
 {
     public function __construct()
     {
-
     }
 }

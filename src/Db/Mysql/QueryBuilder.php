@@ -13,5 +13,4 @@ namespace Swoft\Db\Mysql;
  */
 class QueryBuilder
 {
-
 }

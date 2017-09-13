@@ -97,7 +97,6 @@ abstract class ConnectPool implements Pool
             $this->currentCounter++;
         }
         return $connect;
-
     }
 
     /**

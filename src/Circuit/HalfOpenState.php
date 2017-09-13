@@ -32,7 +32,7 @@ class HalfOpenState extends CircuitBreakerState
      *
      * @return mixed 返回结果
      */
-    function doCall($callback, $params = [], $fallback = null)
+    public function doCall($callback, $params = [], $fallback = null)
     {
         // 加锁
         $lock = $this->circuitBreaker->getHalfOpenLock();
@@ -40,11 +40,11 @@ class HalfOpenState extends CircuitBreakerState
         list($class ,$method) = $callback;
 
         try {
-            if($class === null){
+            if ($class === null) {
                 throw new \Exception($this->getServiceName()."服务, 建立连接失败(null)");
             }
 
-            if($class instanceof  \Swoole\Coroutine\Client && $class->isConnected() == false){
+            if ($class instanceof  \Swoole\Coroutine\Client && $class->isConnected() == false) {
                 throw new \Exception($this->circuitBreaker->serviceName."服务,当前连接已断开");
             }
 
@@ -62,15 +62,14 @@ class HalfOpenState extends CircuitBreakerState
         $swithToFailCount = $this->circuitBreaker->getSwithToFailCount();
         $swithToSuccessCount = $this->circuitBreaker->getSwithToSuccessCount();
 
-        if($failCount >= $swithToFailCount && $this->circuitBreaker->isHalfOpen()){
+        if ($failCount >= $swithToFailCount && $this->circuitBreaker->isHalfOpen()) {
             $this->circuitBreaker->swithToOpenState();
             App::trace($this->getServiceName()."服务，当前[半开状态]，失败次数达到上限，开始切换到开启状态");
         }
 
-        if($successCount >= $swithToSuccessCount){
+        if ($successCount >= $swithToSuccessCount) {
             $this->circuitBreaker->swithToCloseState();
             App::trace($this->getServiceName()."服务，当前[半开状态]，成功次数达到上限，服务以及恢复，开始切换到关闭状态");
-
         }
 
         // 释放锁

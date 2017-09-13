@@ -100,7 +100,7 @@ class Request extends \Swoft\Base\Request
      */
     public function getHeader(string $key, string $default = ""): string
     {
-        if(isset($this->header[$key])){
+        if (isset($this->header[$key])) {
             return $this->header[$key];
         }
         return $default;
@@ -115,7 +115,7 @@ class Request extends \Swoft\Base\Request
      */
     public function getUserAgent(string $deafult = "")
     {
-        if(isset($this->header['user-agent'])){
+        if (isset($this->header['user-agent'])) {
             return $this->header['user-agent'];
         }
         return $deafult;

@@ -39,6 +39,5 @@ class MysqlConnect extends AbstractConnect
 
     public function setAutoCommit(bool $autoCommit)
     {
-
     }
 }
