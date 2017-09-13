@@ -294,15 +294,6 @@ class App
     }
 
     /**
-     * 所有注释表结构信息
-     *
-     * @return array
-     */
-    public static function getEntities(){
-        return Collector::$entities;
-    }
-
-    /**
      * trace级别日志
      *
      * @param mixed $message 日志信息

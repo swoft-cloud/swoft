@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Column;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Column注解解析
  *
  * @uses      ColumnParser
  * @version   2017年09月05日
@@ -17,6 +17,8 @@ use Swoft\Di\Collector;
 class ColumnParser extends AbstractParser
 {
     /**
+     * Column注解解析
+     *
      * @param string      $className
      * @param Column      $objectAnnotation
      * @param string      $propertyName
@@ -29,6 +31,7 @@ class ColumnParser extends AbstractParser
     {
         $columnName = $objectAnnotation->getName();
 
+        // 表映射收集
         $entity =[
             'type' => $objectAnnotation->getType(),
             'length' => $objectAnnotation->getLength(),

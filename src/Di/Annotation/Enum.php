@@ -3,7 +3,7 @@
 namespace Swoft\Di\Annotation;
 
 /**
- * 枚举注解
+ * 枚举类型注解
  *
  * @Annotation
  * @Target({"PROPERTY"})
@@ -17,10 +17,17 @@ namespace Swoft\Di\Annotation;
 class Enum
 {
     /**
+     * 枚举值集合
+     *
      * @var array
      */
     private $value = [];
 
+    /**
+     * Enum constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {
@@ -32,6 +39,8 @@ class Enum
     }
 
     /**
+     * 枚举值
+     *
      * @return array
      */
     public function getValue(): array

@@ -37,7 +37,11 @@ class Column
      */
     private $length = -1;
 
-
+    /**
+     * Column constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {
@@ -55,6 +59,8 @@ class Column
     }
 
     /**
+     * 数据字段名称
+     *
      * @return string
      */
     public function getName(): string
@@ -63,6 +69,8 @@ class Column
     }
 
     /**
+     * 类型
+     *
      * @return string
      */
     public function getType(): string
@@ -71,6 +79,8 @@ class Column
     }
 
     /**
+     * 长度
+     *
      * @return int
      */
     public function getLength(): int

@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\RequestMapping;
 use Swoft\Di\Collector;
 
 /**
- *
+ * RequestMapping注解解析器
  *
  * @uses      RequestMappingParser
  * @version   2017年09月03日
@@ -18,6 +18,8 @@ class RequestMappingParser extends AbstractParser
 {
 
     /**
+     * RequestMapping注解解析
+     *
      * @param string         $className
      * @param RequestMapping $objectAnnotation
      * @param string         $propertyName
@@ -30,6 +32,8 @@ class RequestMappingParser extends AbstractParser
         if (!isset(Collector::$requestMapping[$className])) {
             return;
         }
+
+        // 路由收集
         $route = $objectAnnotation->getRoute();
         $httpMethod = $objectAnnotation->getMethod();
         Collector::$requestMapping[$className]['routes'][] = [

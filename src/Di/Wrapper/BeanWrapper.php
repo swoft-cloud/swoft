@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Bean;
 use Swoft\Di\Annotation\Inject;
 
 /**
- *
+ * Bean封装器
  *
  * @uses      BeanWrapper
  * @version   2017年09月05日
@@ -16,27 +16,58 @@ use Swoft\Di\Annotation\Inject;
  */
 class BeanWrapper extends AbstractWrapper
 {
+    /**
+     * 类注解
+     *
+     * @var array
+     */
     protected $classAnnotations
         = [
             Bean::class
         ];
 
+    /**
+     * 属性注解
+     *
+     * @var array
+     */
     protected $propertyAnnotations
         = [
             Inject::class
         ];
 
-    public function isParseClassAnnotations($annotations)
+    /**
+     * 是否解析类注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParseClassAnnotations(array $annotations)
     {
         return isset($annotations[Bean::class]);
     }
 
-    public function isParsePropertyAnnotations($annotations)
+    /**
+     * 是否解析属性注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParsePropertyAnnotations(array $annotations)
     {
         return isset($annotations[Inject::class]);
     }
 
-    public function isParseMethodAnnotations($annotations)
+    /**
+     * 是否解析方法注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParseMethodAnnotations(array $annotations)
     {
         return false;
     }

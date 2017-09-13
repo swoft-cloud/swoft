@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 /**
- *
+ * 连接接口
  *
  * @uses      IConnect
  * @version   2017年09月01日
@@ -13,17 +13,48 @@ namespace Swoft\Db;
  */
 interface IConnect
 {
-    public function beginTransaction();
-
-    public function commit();
-
-    public function rollback();
-
-    public function setDefer($defer = true);
-
-    public function recv();
-
+    /**
+     * 执行SQL
+     *
+     * @param string $sql
+     *
+     * @return array|bool
+     */
     public function execute(string $sql);
 
+    /**
+     * 开始事务
+     */
+    public function beginTransaction();
+
+    /**
+     * 延迟收取数据包
+     *
+     * @return array|bool
+     */
+    public function recv();
+
+    /**
+     * 回滚事务
+     */
+    public function rollback();
+
+    /**
+     * 提交事务
+     */
+    public function commit();
+
+    /**
+     * 设置是否延迟收包
+     *
+     * @param bool $defer
+     */
+    public function setDefer($defer = true);
+
+    /**
+     * 创建连接
+     *
+     * @param array $options
+     */
     public function createConnect(array $options);
 }

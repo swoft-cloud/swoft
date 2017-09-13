@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Enum;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Enum注解解析器
  *
  * @uses      EnumParser
  * @version   2017年09月12日
@@ -18,6 +18,8 @@ class EnumParser extends AbstractParser
 {
 
     /**
+     * Enum注解解析
+     *
      * @param string|null $className
      * @param Enum      $objectAnnotation
      * @param string      $propertyName
@@ -31,6 +33,7 @@ class EnumParser extends AbstractParser
         $annotationClass = get_class($objectAnnotation);
         $validator = basename(str_replace("\\", "/", $annotationClass));
 
+        // 表映射收集
         $validatorAry = [
             'name' => $validator,
             'value' => [$objectAnnotation->getValue()]

@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 /**
- * SQL语句
+ * SQL语句组装
  *
  * @uses      Statement
  * @version   2017年09月07日
@@ -13,52 +13,17 @@ namespace Swoft\Db;
  */
 trait Statement
 {
-    public function getInsert()
-    {
-        return $this->insert;
-    }
-
-    public function getUpdate()
-    {
-        return $this->update;
-    }
-
-    public function isSelect()
-    {
-        return !empty($this->select);
-    }
-
-    public function isQuerySql()
-    {
-        return !empty($this->sql);
-    }
-
-    public function isUpdate()
-    {
-        return !empty($this->update);
-    }
-
-    public function isInsert()
-    {
-        return !empty($this->insert);
-    }
-
-    public function isDelete()
-    {
-        return !empty($this->delete);
-    }
-
-    private function isDeleteTableFrom()
-    {
-        return $this->delete === true;
-    }
-
+    /**
+     * 组拼SQL
+     *
+     * @return string
+     */
     public function getStatement()
     {
         $statement = "";
-        if($this->isQuerySql()){
+        if ($this->isQuerySql()) {
             $statement = $this->sql;
-        }elseif ($this->isSelect()) {
+        } elseif ($this->isSelect()) {
             $statement = $this->getSelectStatement();
         } elseif ($this->isInsert()) {
             $statement = $this->getInsertStatement();
@@ -70,35 +35,47 @@ trait Statement
         return $statement;
     }
 
-    private function getSelectStatement()
+    /**
+     * select语句
+     *
+     * @return string
+     */
+    protected function getSelectStatement()
     {
         $statement = "";
         if (!$this->isSelect()) {
             return $statement;
         }
 
+        // select语句
         $statement .= $this->getSelectString();
 
+        // from语句
         if ($this->from) {
             $statement .= " " . $this->getFromString();
         }
 
+        // where语句
         if ($this->where) {
             $statement .= " " . $this->getWhereString();
         }
 
+        // groupBy语句
         if ($this->groupBy) {
             $statement .= " " . $this->getGroupByString();
         }
 
+        // having语句
         if ($this->having) {
             $statement .= " " . $this->getHavingString();
         }
 
+        // orderBy语句
         if ($this->orderBy) {
             $statement .= " " . $this->getOrderByString();
         }
 
+        // limit语句
         if ($this->limit) {
             $statement .= " " . $this->getLimitString();
         }
@@ -106,13 +83,118 @@ trait Statement
         return $statement;
     }
 
-    public function getSelectString()
+    /**
+     * insert语句
+     *
+     * @return string
+     */
+    protected function getInsertStatement()
+    {
+        $statement = "";
+        if (!$this->isInsert()) {
+            return $statement;
+        }
+
+        // insert语句
+        $statement .= $this->getInsertString();
+
+        // set语句
+        if ($this->set) {
+            $statement .= " " . $this->getSetString();
+        }
+
+        return $statement;
+    }
+
+    /**
+     * update语句
+     *
+     * @return string
+     */
+    protected function getUpdateStatement()
+    {
+        $statement = "";
+        if (!$this->isUpdate()) {
+            return $statement;
+        }
+
+        // update语句
+        $statement .= $this->getUpdateString();
+
+        // set语句
+        if ($this->set) {
+            $statement .= " " . $this->getSetString();
+        }
+
+        // where语句
+        if ($this->where) {
+            $statement .= " " . $this->getWhereString();
+        }
+
+        // orderBy语句
+        if ($this->orderBy) {
+            $statement .= " " . $this->getOrderByString();
+        }
+
+        // limit语句
+        if ($this->limit) {
+            $statement .= " " . $this->getLimitString();
+        }
+
+        return $statement;
+    }
+
+    /**
+     * delete语句
+     *
+     * @return string
+     */
+    protected function getDeleteStatement()
+    {
+        $statement = "";
+        if (!$this->isDelete()) {
+            return $statement;
+        }
+
+        // delete语句
+        $statement .= $this->getDeleteString();
+
+        // from语句
+        if ($this->from) {
+            $statement .= " " . $this->getFromString();
+        }
+
+        // where语句
+        if ($this->where) {
+            $statement .= " " . $this->getWhereString();
+        }
+
+        // orderBy语句
+        if ($this->orderBy) {
+            $statement .= " " . $this->getOrderByString();
+        }
+
+        // limit语句
+        if ($this->limit) {
+            $statement .= " " . $this->getLimitString();
+        }
+
+        return $statement;
+    }
+
+    /**
+     * select语句
+     *
+     * @return string
+     */
+    protected function getSelectString()
     {
         $statement = "";
         if (empty($this->select)) {
             return $statement;
         }
 
+        // 字段组拼
         foreach ($this->select as $column => $alias) {
             $statement .= $column;
             if ($alias != null) {
@@ -121,6 +203,7 @@ trait Statement
             $statement .= ", ";
         }
 
+        //select组拼
         $statement = substr($statement, 0, -2);
         if (!empty($statement)) {
             $statement = "SELECT " . $statement;
@@ -129,6 +212,11 @@ trait Statement
         return $statement;
     }
 
+    /**
+     * from语句
+     *
+     * @return string
+     */
     public function getFromString()
     {
 
@@ -137,6 +225,7 @@ trait Statement
             return $statement;
         }
 
+        // from语句
         $statement .= $this->getFrom();
         $fromAlias = $this->getFromAlias();
 
@@ -145,7 +234,6 @@ trait Statement
         }
         // join语句
         $statement .= " " . $this->getJoinString();
-
         $statement = rtrim($statement);
 
         if (!empty($statement)) {
@@ -155,25 +243,31 @@ trait Statement
         return $statement;
     }
 
-    public function getJoinString()
+    /**
+     * join语句
+     *
+     * @return string
+     */
+    protected function getJoinString()
     {
-
         $statement = "";
         foreach ($this->join as $i => $join) {
+
+            // join信息
             $type = $join['type'];
             $table = $join['table'];
             $alias = $join['alias'];
             $criteria = $join['criteria'];
 
+            // join类型
             $statement .= " " . $type . " " . $table;
-
             if ($alias != null) {
                 $statement .= " AS " . $alias;
             }
 
             // join条件
             if ($criteria != null) {
-                if($alias != null){
+                if ($alias != null) {
                     $table = $alias;
                 }
                 $statement = $this->getJoinCriteria($i, $table, $statement, $criteria);
@@ -184,7 +278,17 @@ trait Statement
         return $statement;
     }
 
-    public function getJoinCriteria($joinIndex, string $table, string $statement, $criteria)
+    /**
+     * join条件
+     *
+     * @param int    $joinIndex
+     * @param string $table
+     * @param string $statement
+     * @param  array $criteria
+     *
+     * @return string
+     */
+    protected function getJoinCriteria(int $joinIndex, string $table, string $statement, array $criteria)
     {
         $statement .= " ON ";
         foreach ($criteria as $x => $criterion) {
@@ -203,7 +307,16 @@ trait Statement
         return $statement;
     }
 
-    private function getJoinCriteriaUsingPreviousTable($joinIndex, $table, $column)
+    /**
+     * 前一个join条件
+     *
+     * @param int    $joinIndex
+     * @param string $table
+     * @param string $column
+     *
+     * @return string
+     */
+    protected function getJoinCriteriaUsingPreviousTable(int $joinIndex, string $table, string $column)
     {
         $joinCriteria = "";
         $previousJoinIndex = $joinIndex - 1;
@@ -211,14 +324,14 @@ trait Statement
         if (array_key_exists($previousJoinIndex, $this->join)) {
             // 上一个join存在
             $previousTable = $this->join[$previousJoinIndex]['table'];
-            if($this->join[$previousJoinIndex]['alias'] != null){
+            if ($this->join[$previousJoinIndex]['alias'] != null) {
                 $previousTable = $this->join[$previousJoinIndex]['alias'];
             }
         } elseif ($this->isSelect()) {
             // 查询
             $previousTable = $this->getFrom();
             $alias = $this->getFromAlias();
-            if($alias != null){
+            if ($alias != null) {
                 $previousTable = $alias;
             }
         } elseif ($this->isUpdate()) {
@@ -238,17 +351,12 @@ trait Statement
         return $joinCriteria;
     }
 
-    public function getFrom()
-    {
-        return $this->from['table'];
-    }
-
-    public function getFromAlias()
-    {
-        return $this->from['alias'];
-    }
-
-    public function getWhereString()
+    /**
+     * where语句
+     *
+     * @return string
+     */
+    protected function getWhereString()
     {
         $statement = $this->getCriteriaString($this->where);
 
@@ -259,7 +367,14 @@ trait Statement
         return $statement;
     }
 
-    private function getCriteriaString(array &$criteria)
+    /**
+     * where条件
+     *
+     * @param array $criteria
+     *
+     * @return string
+     */
+    protected function getCriteriaString(array &$criteria)
     {
         $statement = "";
         $useConnector = false;
@@ -283,6 +398,8 @@ trait Statement
             if ($useConnector) {
                 $statement .= " " . $criterion['connector'] . " ";
             }
+
+            // 没有括号
             $useConnector = true;
             $value = $this->getCriteriaWithoutBracket($criterion['operator'], $criterion['value']);
             $statement .= $criterion['column'] . " " . $criterion['operator'] . " " . $value;
@@ -290,25 +407,28 @@ trait Statement
         return $statement;
     }
 
-    private function getQuoteValue($value){
-        if(is_string($value)){
-            $value = '"'.$value.'"';
-        }
-        return $value;
-    }
-
-    public function getCriteriaWithoutBracket(string $operator, $criterionVaue)
+    /**
+     * 没有括号条件处理
+     *
+     * @param string $operator
+     * @param  mixed $criterionVaue
+     *
+     * @return bool|string
+     */
+    protected function getCriteriaWithoutBracket(string $operator, $criterionVaue)
     {
-
         switch ($operator) {
             case self::BETWEEN:
             case self::NOT_BETWEEN:
-                $value = $this->getQuoteValue($criterionVaue[0]) . " " . self::LOGICAL_AND . " " . $this->getQuoteValue($criterionVaue[1]);
+                $end = $this->getQuoteValue($criterionVaue[1]);
+                $start = $this->getQuoteValue($criterionVaue[0]);
+                $value = $start . " " . self::LOGICAL_AND . " " . $end;
                 break;
 
             case self::IN:
             case self::NOT_IN:
                 $value = self::BRACKET_OPEN;
+                // 数组处理
                 foreach ($criterionVaue as $criterionValue) {
                     $criterionValue = $this->getQuoteValue($criterionValue);
                     $value .= $criterionValue . ", ";
@@ -329,10 +449,14 @@ trait Statement
         return $value;
     }
 
-    public function getGroupByString()
+    /**
+     * group语句
+     *
+     * @return string
+     */
+    protected function getGroupByString()
     {
         $statement = "";
-
         foreach ($this->groupBy as $groupBy) {
             $statement .= $groupBy['column'];
             if ($groupBy['order']) {
@@ -349,7 +473,12 @@ trait Statement
         return $statement;
     }
 
-    public function getHavingString()
+    /**
+     * having语句
+     *
+     * @return string
+     */
+    protected function getHavingString()
     {
         $statement = $this->getCriteriaString($this->having);
         if (!empty($statement)) {
@@ -358,16 +487,19 @@ trait Statement
         return $statement;
     }
 
-    public function getOrderByString()
+    /**
+     * orderBy语句
+     *
+     * @return string
+     */
+    protected function getOrderByString()
     {
         $statement = "";
-
         foreach ($this->orderBy as $orderBy) {
             $statement .= $orderBy['column'] . " " . $orderBy['order'] . ", ";
         }
 
         $statement = substr($statement, 0, -2);
-
         if (!empty($statement)) {
             $statement = "ORDER BY " . $statement;
         }
@@ -375,10 +507,14 @@ trait Statement
         return $statement;
     }
 
-    public function getLimitString()
+    /**
+     * limit语句
+     *
+     * @return string
+     */
+    protected function getLimitString()
     {
         $statement = "";
-
         if (!$this->limit) {
             return $statement;
         }
@@ -395,24 +531,12 @@ trait Statement
         return $statement;
     }
 
-    private function getInsertStatement()
-    {
-        $statement = "";
-
-        if (!$this->isInsert()) {
-            return $statement;
-        }
-
-        $statement .= $this->getInsertString();
-
-        if ($this->set) {
-            $statement .= " " . $this->getSetString();
-        }
-
-        return $statement;
-    }
-
-    public function getSetString()
+    /**
+     * set语句
+     *
+     * @return string
+     */
+    protected function getSetString()
     {
         $statement = "";
         foreach ($this->set as $set) {
@@ -420,7 +544,6 @@ trait Statement
         }
 
         $statement = substr($statement, 0, -2);
-
         if (!empty($statement)) {
             $statement = "SET " . $statement;
         }
@@ -428,10 +551,14 @@ trait Statement
         return $statement;
     }
 
-    public function getInsertString()
+    /**
+     * insert语句
+     *
+     * @return string
+     */
+    protected function getInsertString()
     {
         $statement = "";
-
         if (!$this->insert) {
             return $statement;
         }
@@ -444,10 +571,14 @@ trait Statement
         return $statement;
     }
 
-    public function getUpdateString()
+    /**
+     * update语句
+     *
+     * @return string
+     */
+    protected function getUpdateString()
     {
         $statement = "";
-
         if (!$this->update) {
             return $statement;
         }
@@ -456,9 +587,7 @@ trait Statement
 
         // join条件
         $statement .= " " . $this->getJoinString();
-
         $statement = rtrim($statement);
-
         if (!empty($statement)) {
             $statement = "UPDATE " . $statement;
         }
@@ -466,72 +595,12 @@ trait Statement
         return $statement;
     }
 
-    private function getUpdateStatement($usePlaceholders = true)
-    {
-        $statement = "";
-
-        if (!$this->isUpdate()) {
-            return $statement;
-        }
-
-        $statement .= $this->getUpdateString();
-
-        if ($this->set) {
-            $statement .= " " . $this->getSetString();
-        }
-
-        if ($this->where) {
-            $statement .= " " . $this->getWhereString();
-        }
-
-        // ORDER BY and LIMIT are only applicable when updating a single table.
-        if (!$this->join) {
-            if ($this->orderBy) {
-                $statement .= " " . $this->getOrderByString();
-            }
-
-            if ($this->limit) {
-                $statement .= " " . $this->getLimitString();
-            }
-        }
-
-        return $statement;
-    }
-
-    private function getDeleteStatement()
-    {
-        $statement = "";
-
-        if (!$this->isDelete()) {
-            return $statement;
-        }
-
-        $statement .= $this->getDeleteString();
-
-        if ($this->from) {
-            $statement .= " " . $this->getFromString();
-        }
-
-        if ($this->where) {
-            $statement .= " " . $this->getWhereString();
-        }
-
-        // ORDER BY and LIMIT are only applicable when deleting from a single
-        // table.
-        if ($this->isDeleteTableFrom()) {
-            if ($this->orderBy) {
-                $statement .= " " . $this->getOrderByString();
-            }
-
-            if ($this->limit) {
-                $statement .= " " . $this->getLimitString();
-            }
-        }
-
-        return $statement;
-    }
-
-    public function getDeleteString()
+    /**
+     * delete语句
+     *
+     * @return string
+     */
+    protected function getDeleteString()
     {
         $statement = "";
 
@@ -548,6 +617,121 @@ trait Statement
             $statement = trim($statement);
         }
         return $statement;
+    }
+
+    /**
+     * 字符串转换
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    protected function getQuoteValue($value)
+    {
+        if (is_string($value)) {
+            $value = '"' . $value . '"';
+        }
+        return $value;
+    }
+
+    /**
+     * insert表
+     *
+     * @return string
+     */
+    protected function getInsert()
+    {
+        return $this->insert;
+    }
+
+    /**
+     * update表
+     *
+     * @return mixed
+     */
+    protected function getUpdate()
+    {
+        return $this->update;
+    }
+
+    /**
+     * 是否是select
+     *
+     * @return bool
+     */
+    protected function isSelect()
+    {
+        return !empty($this->select);
+    }
+
+    /**
+     * 是否是查询SQL
+     *
+     * @return bool
+     */
+    protected function isQuerySql()
+    {
+        return !empty($this->sql);
+    }
+
+    /**
+     * 是否是insert
+     *
+     * @return bool
+     */
+    protected function isInsert()
+    {
+        return !empty($this->insert);
+    }
+
+    /**
+     * 是否是删除
+     *
+     * @return bool
+     */
+    protected function isDelete()
+    {
+        return !empty($this->delete);
+    }
+
+    /**
+     * 是否是删除from
+     *
+     * @return bool
+     */
+    protected function isDeleteTableFrom()
+    {
+        return $this->delete === true;
+    }
+
+    /**
+     * 是否是update
+     *
+     * @return bool
+     */
+    protected function isUpdate()
+    {
+        return !empty($this->update);
+    }
+
+    /**
+     * from表
+     *
+     * @return string
+     */
+    protected function getFrom()
+    {
+        return $this->from['table'];
+    }
+
+    /**
+     * 别名
+     *
+     * @return string
+     */
+    protected function getFromAlias()
+    {
+        return $this->from['alias'];
     }
 }
 

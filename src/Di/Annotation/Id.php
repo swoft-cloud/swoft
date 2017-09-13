@@ -16,4 +16,5 @@ namespace Swoft\Di\Annotation;
  */
 class Id
 {
+
 }

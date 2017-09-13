@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\RequestMethod;
 use Swoft\Di\Collector;
 
 /**
- *
+ * 方法没有注解解析器
  *
  * @uses      MethodWithoutAnnotationParser
  * @version   2017年09月04日
@@ -16,16 +16,28 @@ use Swoft\Di\Collector;
  */
 class MethodWithoutAnnotationParser extends AbstractParser
 {
+    /**
+     * 方法没有注解解析
+     *
+     * @param string $className
+     * @param null   $objectAnnotation
+     * @param string $propertyName
+     * @param string $methodName
+     * @param null   $propertyValue
+     * @return mixed
+     */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
         if (!isset(Collector::$requestMapping[$className])) {
             return;
         }
 
+        // 路由收集
         Collector::$requestMapping[$className]['routes'][] = [
             'route'  => "",
             'method' => [RequestMethod::GET, RequestMethod::POST],
             'action' => $methodName
         ];
+        return null;
     }
 }

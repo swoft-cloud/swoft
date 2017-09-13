@@ -13,5 +13,10 @@ namespace Swoft\Di\Resource;
  */
 interface IResource
 {
+    /**
+     * 获取已解析的配置beans
+     *
+     * @return array
+     */
     public function getDefinitions();
 }

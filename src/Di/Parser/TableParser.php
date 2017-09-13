@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Table;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Table注解解析器
  *
  * @uses      TableParser
  * @version   2017年09月04日
@@ -18,8 +18,10 @@ class TableParser extends AbstractParser
 {
 
     /**
+     * Table注解解析
+     *
      * @param string $className
-     * @param Table $objectAnnotation
+     * @param Table  $objectAnnotation
      * @param string $propertyName
      * @param string $methodName
      *
@@ -27,6 +29,7 @@ class TableParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
+        // 表映射收集
         $tableName = $objectAnnotation->getName();
         Collector::$entities[$className]['table']['name'] = $tableName;
         return $this->defaultClass;

@@ -30,6 +30,11 @@ class RequestMapping
      */
     private $method = [RequestMethod::GET, RequestMethod::POST];
 
+    /**
+     * RequestMapping constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         if (isset($values['value'])) {

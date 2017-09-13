@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Id;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Id注解解析器
  *
  * @uses      IdParser
  * @version   2017年09月05日
@@ -18,8 +18,10 @@ class IdParser extends AbstractParser
 {
 
     /**
+     * Id注解解析
+     *
      * @param string $className
-     * @param Id $objectAnnotation
+     * @param Id     $objectAnnotation
      * @param string $propertyName
      * @param string $methodName
      *
@@ -27,6 +29,7 @@ class IdParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
+        // 表映射收集
         Collector::$entities[$className]['table']['id'] = $propertyName;
         return null;
     }

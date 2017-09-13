@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Scope;
 use Swoft\Di\Resource\AnnotationResource;
 
 /**
- *
+ * 抽象解析器
  *
  * @uses      AbstractParser
  * @version   2017年09月03日
@@ -17,14 +17,31 @@ use Swoft\Di\Resource\AnnotationResource;
 abstract class AbstractParser implements IParser
 {
     /**
+     * 注解解析资源
+     *
      * @var AnnotationResource
      */
     protected $annotationResource;
 
+    /**
+     * 默认属性解析值
+     *
+     * @var array
+     */
     protected $defaultProperty;
 
+    /**
+     * 默认类解析值
+     *
+     * @var array
+     */
     protected $defaultClass;
 
+    /**
+     * AbstractParser constructor.
+     *
+     * @param AnnotationResource $annotationResource
+     */
     public function __construct(AnnotationResource $annotationResource)
     {
         $this->annotationResource = $annotationResource;

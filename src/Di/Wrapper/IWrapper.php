@@ -3,7 +3,7 @@
 namespace Swoft\Di\Wrapper;
 
 /**
- *
+ * 封装器接口
  *
  * @uses      IWrapper
  * @version   2017年09月04日
@@ -13,5 +13,40 @@ namespace Swoft\Di\Wrapper;
  */
 interface IWrapper
 {
+    /**
+     * 封装注解
+     *
+     * @param string $className
+     * @param array  $annotations
+     *
+     * @return array|null
+     */
     public function doWrapper(string $className, array $annotations);
+
+    /**
+     * 是否解析类注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParseClassAnnotations(array $annotations);
+
+    /**
+     * 是否解析属性注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParsePropertyAnnotations(array $annotations);
+
+    /**
+     * 是否解析方法注解
+     *
+     * @param array $annotations
+     *
+     * @return bool
+     */
+    public function isParseMethodAnnotations(array $annotations);
 }

@@ -5,7 +5,7 @@ namespace Swoft\Di\Parser;
 use Swoft\Di\Annotation\Bean;
 
 /**
- *
+ * Bean注解解析器
  *
  * @uses      BeanParser
  * @version   2017年09月03日
@@ -16,6 +16,8 @@ use Swoft\Di\Annotation\Bean;
 class BeanParser extends AbstractParser
 {
     /**
+     * Bean注解解析
+     *
      * @param string $className
      * @param Bean   $objectAnnotation
      * @param string $propertyName

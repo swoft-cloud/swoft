@@ -81,12 +81,26 @@ class EntityManager implements IEntityManager
         $this->executor = new Executor($query);
     }
 
+    /**
+     * 实例化一个实体管理器
+     *
+     * @param bool $isMaster 默认从节点
+     *
+     * @return EntityManager
+     */
     public static function create($isMaster = false)
     {
         $pool = self::getPool($isMaster);
         return new EntityManager($pool);
     }
 
+    /**
+     * 实例化一个指定ID的实体管理器
+     *
+     * @param string $poolId 其它数据库连接池ID
+     *
+     * @return EntityManager
+     */
     public static function createById(string $poolId)
     {
         if (!BeanFactory::hasBean($poolId)) {
@@ -99,107 +113,169 @@ class EntityManager implements IEntityManager
     }
 
     /**
-     * @param string $sql
+     * 创建一个查询器
+     *
+     * @param string $sql sql语句，默认为空
      *
      * @return QueryBuilder
      */
     public function createQuery(string $sql = "")
     {
         $this->checkStatus();
-        $className = "Swoft\Db\\" . $this->driver . "\\QueryBuilder";
+        $className = self::getQueryClassName($this->driver);
         return new $className($this->pool, $this->connect, $sql);
     }
 
     /**
-     * @param string $className
-     * @param bool   $isMaster
-     * @param bool   $release
+     * 创建一个查询器用于ActiveRecord操作
+     *
+     * @param string $className 实体类名称
+     * @param bool   $isMaster  是否主节点，默认从节点
+     * @param bool   $release   是否释放链接
      *
      * @return QueryBuilder
      */
     public static function getQuery(string $className, $isMaster = false, $release = true)
     {
+        // 获取连接
         $pool = self::getPool($isMaster);
         $connect = $pool->getConnect();
         $driver = $connect->getDriver();
-        $entities = App::getEntities();
-        $tableName = $entities[$className]['table']['name'];
 
-        $className = "Swoft\Db\\" . $driver . "\\QueryBuilder";
-
-        /* @var QueryBuilder $query */
-        $query = new $className($pool, $connect, '', $release);
-        $query->from($tableName);
-
-        return $query;
+        // 驱动查询器
+        $className = self::getQueryClassName($driver);
+        return new $className($pool, $connect, '', $release);
     }
 
+    /**
+     * insert实体数据
+     *
+     * @param object $entity 实体
+     * @param bool   $defer  是否延迟操作
+     *
+     * @return bool 成功返回true,错误返回false
+     */
     public function save($entity, $defer = false)
     {
         $this->checkStatus();
         return $this->executor->save($entity, $defer);
     }
 
+    /**
+     * 按实体信息删除数据
+     *
+     * @param object $entity 实体
+     * @param bool   $defer  是否延迟操作
+     *
+     * @return bool 成功返回true,错误返回false
+     */
     public function delete($entity, $defer = false)
     {
         $this->checkStatus();
         return $this->executor->delete($entity, $defer);
     }
 
+    /**
+     * 根据ID删除数据
+     *
+     * @param string $className 实体类名
+     * @param mixed  $id        删除ID
+     * @param bool   $defer     是否延迟操作
+     *
+     * @return bool 成功返回true,错误返回false
+     */
     public function deleteById($className, $id, $defer = false)
     {
         $this->checkStatus();
         return $this->executor->deleteById($className, $id, $defer);
     }
 
+    /**
+     * 根据ID删除数据
+     *
+     * @param string $className 实体类名
+     * @param array  $ids       ID集合
+     * @param bool   $defer     是否延迟操作
+     *
+     * @return bool 成功返回true,错误返回false
+     */
     public function deleteByIds($className, array $ids, $defer = false)
     {
         $this->checkStatus();
         return $this->executor->deleteByIds($className, $ids, $defer);
     }
 
-    public function update($entity, $defer = false)
-    {
-        $this->checkStatus();
-        return $this->executor->update($entity, $defer);
-    }
-
-    public function find($entity, $isMaster = false)
+    /**
+     * 按实体信息查找
+     *
+     * @param object $entity 实体实例
+     *
+     * @return QueryBuilder
+     */
+    public function find($entity)
     {
         $this->checkStatus();
         return $this->executor->find($entity);
     }
 
+    /**
+     * 根据ID查找
+     *
+     * @param string $className 实体类名
+     * @param mixed  $id        ID
+     *
+     * @return QueryBuilder
+     */
     public function findById($className, $id)
     {
         $this->checkStatus();
         return $this->executor->findById($className, $id);
     }
 
+    /**
+     * 根据ids查找
+     *
+     * @param string $className 类名
+     * @param array  $ids
+     *
+     * @return QueryBuilder
+     */
     public function findByIds($className, array $ids)
     {
         $this->checkStatus();
         return $this->executor->findByIds($className, $ids);
     }
 
+    /**
+     * 开始事务
+     */
     public function beginTransaction()
     {
         $this->checkStatus();
         $this->connect->beginTransaction();
     }
 
+    /**
+     * 回滚事务
+     */
     public function rollback()
     {
         $this->checkStatus();
         $this->connect->rollback();
     }
 
+    /**
+     * 提交事务
+     */
     public function commit()
     {
         $this->checkStatus();
         $this->connect->commit();
     }
 
+    /**
+     * 关闭当前实体管理器
+     */
     public function close()
     {
         $this->isClose = true;
@@ -207,13 +283,10 @@ class EntityManager implements IEntityManager
     }
 
     /**
-     * @return AbstractConnect
+     * 检查当前实体管理器状态是否正取
+     *
+     * @throws DbException
      */
-    public function getConnect(): AbstractConnect
-    {
-        return $this->connect;
-    }
-
     private function checkStatus()
     {
         if ($this->isClose) {
@@ -222,12 +295,13 @@ class EntityManager implements IEntityManager
     }
 
     /**
+     * 获取连接池
      *
-     * @param $isMaster
+     * @param bool $isMaster 是否是主节点连接池
      *
      * @return ConnectPool
      */
-    private static function getPool($isMaster)
+    private static function getPool(bool $isMaster): ConnectPool
     {
         $dbPoolId = self::SLAVE;
         if ($isMaster) {
@@ -236,5 +310,17 @@ class EntityManager implements IEntityManager
         /* @var DbPool $dbPool */
         $pool = App::getBean($dbPoolId);
         return $pool;
+    }
+
+    /**
+     * 获取查询器类名
+     *
+     * @param string $driver 驱动
+     *
+     * @return string
+     */
+    private static function getQueryClassName(string $driver)
+    {
+        return "Swoft\Db\\" . $driver . "\\QueryBuilder";
     }
 }

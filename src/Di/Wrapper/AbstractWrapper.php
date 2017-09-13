@@ -2,19 +2,15 @@
 
 namespace Swoft\Di\Wrapper;
 
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\RequestMapping;
 use Swoft\Di\Annotation\Scope;
 use Swoft\Di\ObjectDefinition;
 use Swoft\Di\ObjectDefinition\PropertyInjection;
 use Swoft\Di\Parser\AbstractParser;
 use Swoft\Di\Parser\MethodWithoutAnnotationParser;
 use Swoft\Di\Resource\AnnotationResource;
-use Swoft\Di\ResourceDataProxy;
 
 /**
- *
+ * 抽象封装器
  *
  * @uses      AbstractWrapper
  * @version   2017年09月04日
@@ -24,19 +20,52 @@ use Swoft\Di\ResourceDataProxy;
  */
 abstract class AbstractWrapper implements IWrapper
 {
+    /**
+     * 类注解
+     *
+     * @var array
+     */
     protected $classAnnotations = [];
 
+    /**
+     * 属性注解
+     *
+     * @var array
+     */
     protected $propertyAnnotations = [];
 
+    /**
+     * 方法注解
+     *
+     * @var array
+     */
     protected $methodAnnotations = [];
 
+    /**
+     * 注解资源
+     *
+     * @var AnnotationResource
+     */
     protected $annotationResource;
 
+    /**
+     * AbstractWrapper constructor.
+     *
+     * @param AnnotationResource $annotationResource
+     */
     public function __construct(AnnotationResource $annotationResource)
     {
         $this->annotationResource = $annotationResource;
     }
 
+    /**
+     * 封装注解
+     *
+     * @param string $className
+     * @param array  $annotations
+     *
+     * @return array|null
+     */
     public function doWrapper(string $className, array $annotations)
     {
         $reflectionClass = new \ReflectionClass($className);
@@ -51,7 +80,7 @@ abstract class AbstractWrapper implements IWrapper
 
             // 解析属性
             $propertyAnnotations = $annotations['property']??[];
-            $this->parseProperties( $propertyAnnotations,$properties, $className);
+            $this->parseProperties($propertyAnnotations, $properties, $className);
 
             // 解析方法
             $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -71,7 +100,7 @@ abstract class AbstractWrapper implements IWrapper
 
         // 解析属性
         $propertyAnnotations = $annotations['property']??[];
-        $propertyInjections = $this->parseProperties( $propertyAnnotations,$properties, $className);
+        $propertyInjections = $this->parseProperties($propertyAnnotations, $properties, $className);
         $objectDefinition->setPropertyInjections($propertyInjections);
 
         // 解析方法
@@ -82,7 +111,16 @@ abstract class AbstractWrapper implements IWrapper
         return [$beanName, $objectDefinition];
     }
 
-    private function parseProperties($propertyAnnotations, array $properties, string $className)
+    /**
+     * 解析属性
+     *
+     * @param array  $propertyAnnotations
+     * @param array  $properties
+     * @param string $className
+     *
+     * @return array
+     */
+    private function parseProperties(array $propertyAnnotations, array $properties, string $className)
     {
         $propertyInjections = [];
 
@@ -107,8 +145,14 @@ abstract class AbstractWrapper implements IWrapper
         return $propertyInjections;
     }
 
-
-    private function parseMethods($methodAnnotations, string $className, array $publicMethods)
+    /**
+     * 解析方法
+     *
+     * @param array  $methodAnnotations
+     * @param string $className
+     * @param array  $publicMethods
+     */
+    private function parseMethods(array $methodAnnotations, string $className, array $publicMethods)
     {
         // 循环解析
         foreach ($publicMethods as $method) {
@@ -131,17 +175,20 @@ abstract class AbstractWrapper implements IWrapper
     {
         // 方法没有注解解析
         $methodName = $method->getName();
-        if (empty($methodAnnotations)  || !isset($methodAnnotations[$methodName]) || !$this->isParseMethodAnnotations($methodAnnotations[$methodName])) {
+        $isWithoutMethodAnnotation = empty($methodAnnotations) || !isset($methodAnnotations[$methodName]);
+        if ($isWithoutMethodAnnotation || !$this->isParseMethodAnnotations($methodAnnotations[$methodName])) {
             $this->parseMethodWithoutAnnotation($className, $methodName);
             return;
         }
 
+        // 循环方法注解解析
         foreach ($methodAnnotations[$methodName] as $methodAnnotation) {
             $annotationClass = get_class($methodAnnotation);
-            if(!in_array($annotationClass, $this->methodAnnotations)){
+            if (!in_array($annotationClass, $this->methodAnnotations)) {
                 continue;
             }
 
+            // 解析器解析
             $annotationParser = $this->getAnnotationParser($methodAnnotation);
             if ($annotationParser == null) {
                 $this->parseMethodWithoutAnnotation($className, $methodName);
@@ -163,14 +210,25 @@ abstract class AbstractWrapper implements IWrapper
         $parser->parser($className, null, "", $methodName);
     }
 
-
-    private function parsePropertyAnnotations($propertyAnnotations, string $className, string $propertyName, $propertyValue)
+    /**
+     * 属性解析
+     *
+     * @param  array $propertyAnnotations
+     * @param string $className
+     * @param string $propertyName
+     * @param mixed  $propertyValue
+     *
+     * @return array
+     */
+    private function parsePropertyAnnotations(array $propertyAnnotations, string $className, string $propertyName, $propertyValue)
     {
         $isRef = false;
         $injectProperty = "";
 
         // 没有任何注解
-        if (empty($propertyAnnotations) ||  !isset($propertyAnnotations[$propertyName]) || !$this->isParsePropertyAnnotations($propertyAnnotations[$propertyName])) {
+        if (empty($propertyAnnotations) || !isset($propertyAnnotations[$propertyName])
+            || !$this->isParsePropertyAnnotations($propertyAnnotations[$propertyName])
+        ) {
             return [null, false];
         }
 
@@ -178,9 +236,11 @@ abstract class AbstractWrapper implements IWrapper
         foreach ($propertyAnnotations[$propertyName] as $propertyAnnotation) {
 
             $annotationClass = get_class($propertyAnnotation);
-            if(!in_array($annotationClass, $this->propertyAnnotations)){
+            if (!in_array($annotationClass, $this->propertyAnnotations)) {
                 continue;
             }
+
+            // 解析器
             $annotationParser = $this->getAnnotationParser($propertyAnnotation);
             if ($annotationParser === null) {
                 $injectProperty = null;
@@ -193,26 +253,35 @@ abstract class AbstractWrapper implements IWrapper
         return [$injectProperty, $isRef];
     }
 
-    public function parseClassAnnotations($className, $annotations)
+    /**
+     * 类注解解析
+     *
+     * @param string $className
+     * @param array  $annotations
+     *
+     * @return array
+     */
+    public function parseClassAnnotations(string $className, array $annotations)
     {
         $beanName = '';
         $scope = Scope::SINGLETON;
-        if(!$this->isParseClassAnnotations($annotations)){
+        if (!$this->isParseClassAnnotations($annotations)) {
             return [$beanName, $scope];
         }
 
-
-        foreach ($annotations as $annotation){
+        foreach ($annotations as $annotation) {
             $annotationClass = get_class($annotation);
-            if(!in_array($annotationClass, $this->classAnnotations)){
+            if (!in_array($annotationClass, $this->classAnnotations)) {
                 continue;
             }
+
+            // 解析器
             $annotationParser = $this->getAnnotationParser($annotation);
-            if($annotationParser == null){
+            if ($annotationParser == null) {
                 continue;
             }
             $annotationData = $annotationParser->parser($className, $annotation);
-            if($annotationData == null){
+            if ($annotationData == null) {
                 continue;
             }
             list($beanName, $scope) = $annotationData;
@@ -221,6 +290,8 @@ abstract class AbstractWrapper implements IWrapper
     }
 
     /**
+     *  获取注解对应解析器
+     *
      * @param $objectAnnotation
      *
      * @return AbstractParser
@@ -231,6 +302,7 @@ abstract class AbstractWrapper implements IWrapper
         $classNameTmp = str_replace('\\', '/', $annotationClassName);
         $className = basename($classNameTmp);
 
+        // 解析器类名
         $annotationParserClassName = "Swoft\\Di\Parser\\" . $className . "Parser";
         if (!class_exists($annotationParserClassName)) {
             return null;
@@ -239,9 +311,4 @@ abstract class AbstractWrapper implements IWrapper
         $annotationParser = new $annotationParserClassName($this->annotationResource);
         return $annotationParser;
     }
-
-
-    abstract public function isParseClassAnnotations($annotations);
-    abstract public function isParsePropertyAnnotations($annotations);
-    abstract public function isParseMethodAnnotations($annotations);
 }

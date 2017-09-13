@@ -91,7 +91,7 @@ class Model
      */
     public static function query($isMaster = false)
     {
-        return EntityManager::getQuery(static::class, $isMaster);
+        return EntityManager::getQuery(static::class, $isMaster, true);
     }
 
     /**

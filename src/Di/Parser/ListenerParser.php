@@ -7,7 +7,7 @@ use Swoft\Di\Annotation\Scope;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Listen注解解析器
  *
  * @uses      ListenerParser
  * @version   2017年09月03日
@@ -18,6 +18,8 @@ use Swoft\Di\Collector;
 class ListenerParser extends AbstractParser
 {
     /**
+     * Listen注解解析
+     *
      * @param string   $className
      * @param Listener $objectAnnotation
      * @param string   $propertyName
@@ -30,6 +32,8 @@ class ListenerParser extends AbstractParser
         $beanName = $className;
         $scope = Scope::SINGLETON;
         $eventName = $objectAnnotation->getEvent();
+
+        // 监听器收集
         Collector::$listeners[$eventName][] = $beanName;
         return [$beanName, $scope];
     }

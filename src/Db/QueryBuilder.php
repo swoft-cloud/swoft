@@ -5,7 +5,7 @@ namespace Swoft\Db;
 use Swoft\Pool\ConnectPool;
 
 /**
- * 查询器父类
+ * 查询器
  *
  * @uses      QueryBuilder
  * @version   2017年09月02日

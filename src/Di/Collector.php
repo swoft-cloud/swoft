@@ -3,7 +3,7 @@
 namespace Swoft\Di;
 
 /**
- *
+ * 注解数据收集器
  *
  * @uses      Collector
  * @version   2017年09月11日

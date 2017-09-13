@@ -39,6 +39,8 @@ class Table
     }
 
     /**
+     * 表名
+     *
      * @return string
      */
     public function getName(): string

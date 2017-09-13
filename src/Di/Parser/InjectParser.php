@@ -3,10 +3,9 @@
 namespace Swoft\Di\Parser;
 
 use PhpDocReader\PhpDocReader;
-use Swoft\Di\Annotation\Inject;
 
 /**
- *
+ * Inject注解解析器
  *
  * @uses      InjectParser
  * @version   2017年09月03日
@@ -18,6 +17,8 @@ class InjectParser extends AbstractParser
 {
 
     /**
+     * Inject注解解析
+     *
      * @param string $className
      * @param object $objectAnnotation
      * @param string $propertyName

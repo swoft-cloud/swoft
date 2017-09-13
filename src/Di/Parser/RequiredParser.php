@@ -6,7 +6,7 @@ use Swoft\Di\Annotation\Required;
 use Swoft\Di\Collector;
 
 /**
- *
+ * Required注解解析器
  *
  * @uses      RequiredParser
  * @version   2017年09月05日
@@ -17,15 +17,18 @@ use Swoft\Di\Collector;
 class RequiredParser extends AbstractParser
 {
     /**
-     * @param string $className
+     * Required注解解析
+     *
+     * @param string   $className
      * @param Required $objectAnnotation
-     * @param string $propertyName
-     * @param string $methodName
+     * @param string   $propertyName
+     * @param string   $methodName
      *
      * @return mixed
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
+        // 表映射收集
         Collector::$entities[$className]['field'][$propertyName]['required'] = true;
         return null;
     }

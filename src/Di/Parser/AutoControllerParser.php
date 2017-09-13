@@ -7,7 +7,7 @@ use Swoft\Di\Annotation\Scope;
 use Swoft\Di\Collector;
 
 /**
- *
+ * AutoController注解解析器
  *
  * @uses      AutoControllerParser
  * @version   2017年09月03日
@@ -18,11 +18,13 @@ use Swoft\Di\Collector;
 class AutoControllerParser extends AbstractParser
 {
     /**
+     * AutoController注解解析
+     *
      * @param string         $className
      * @param AutoController $objectAnnotation
      * @param string         $propertyName
      * @param string         $methodName
-     * @param string|null         $propertyValue
+     * @param string|null    $propertyValue
      *
      * @return array
      */
@@ -31,6 +33,8 @@ class AutoControllerParser extends AbstractParser
         $beanName = $className;
         $scope = Scope::SINGLETON;
         $prefix = $objectAnnotation->getPrefix();
+
+        // 路由收集
         Collector::$requestMapping[$className]['prefix'] = $prefix;
         return [$beanName, $scope];
     }

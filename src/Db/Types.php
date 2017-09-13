@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 /**
- *
+ * 实体类型
  *
  * @uses      Types
  * @version   2017年09月12日
@@ -13,10 +13,33 @@ namespace Swoft\Db;
  */
 class Types
 {
+    /**
+     * 整数
+     */
     const INT = 'int';
+
+    /**
+     * 非负整数
+     */
     const NUMBER = 'number';
+
+    /**
+     * 字符串
+     */
     const STRING = 'string';
+
+    /**
+     * 浮点型
+     */
     const FLOAT = 'float';
+
+    /**
+     * 时间类型字符串
+     */
     const DATETIME = 'datetime';
+
+    /**
+     * bool类型
+     */
     const BOOLEAN = 'boolean';
 }
