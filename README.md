@@ -42,7 +42,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 # 快速入门
 ## 文档
-[**中文文档**](https://swoft.gitbooks.io/swoft/)
+[**中文文档**](https://doc.swoft.org)
 
 QQ交流群:548173319
 
@@ -55,8 +55,17 @@ QQ交流群:548173319
 
 ## 安装
 
+### 手动安装
+
 * clone项目
 * composer install安装依赖
+
+### composer安装
+
+* composer.phar create-project stelin/swoft swoft(未开代理，会有点慢)
+
+## 配置
+
 * 配置base.php
 * 设置启动参数swoft.ini
 

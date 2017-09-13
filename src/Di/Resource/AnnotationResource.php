@@ -4,10 +4,7 @@ namespace Swoft\Di\Resource;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Swoft\Di\Annotation\Scope;
-use Swoft\Di\ObjectDefinition;
 use Swoft\Di\Parser\AbstractParser;
-use Swoft\Di\Parser\MethodWithoutAnnotationParser;
 use Swoft\Di\Wrapper\IWrapper;
 
 /**
@@ -148,27 +145,6 @@ class AnnotationResource extends AbstractResource
             }
         }
     }
-
-    /**
-     * @param $objectAnnotation
-     *
-     * @return AbstractParser
-     */
-    private function getAnnotationParser($objectAnnotation)
-    {
-        $annotationClassName = get_class($objectAnnotation);
-        $classNameTmp = str_replace('\\', '/', $annotationClassName);
-        $className = basename($classNameTmp);
-
-        $annotationParserClassName = "Swoft\\Di\Parser\\" . $className . "Parser";
-        if (!class_exists($annotationParserClassName)) {
-            return null;
-        }
-
-        $annotationParser = new $annotationParserClassName($this);
-        return $annotationParser;
-    }
-
 
     /**
      * 注册加载器和扫描PHP文件

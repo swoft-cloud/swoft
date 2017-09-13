@@ -70,7 +70,7 @@ abstract class AbstractResult implements IResult
         App::profileEnd($this->profileKey);
 
         // 重置延迟设置
-        if($defer){
+        if ($defer) {
             $this->client->setDefer(false);
         }
 

@@ -85,7 +85,8 @@ class Response extends \Swoft\Base\Response
      *
      * @param string $charset
      */
-    public function setCharset(string $charset){
+    public function setCharset(string $charset)
+    {
         $this->charset = $charset;
     }
 

@@ -2,7 +2,7 @@
   "name": "stelin/swoft",
   "type": "library",
   "keywords": ["php", "swoole", "swoft"],
-  "description": "microservice framework base on swoole2.x",
+  "description": "microservice framework base on swoole",
   "license": "apache2.0",
   "require": {
     "phpseclib/phpseclib": "2.0.0",

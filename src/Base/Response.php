@@ -35,6 +35,5 @@ class Response
      */
     public function send()
     {
-
     }
 }

@@ -39,6 +39,4 @@ class IndexLogic
 
         return array_merge($base, $ext);
     }
-
-
 }

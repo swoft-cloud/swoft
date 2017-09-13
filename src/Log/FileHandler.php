@@ -122,5 +122,4 @@ class FileHandler extends AbstractProcessingHandler
 
         return in_array($record['level'], $this->levels);
     }
-
 }

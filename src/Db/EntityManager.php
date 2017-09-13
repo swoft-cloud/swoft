@@ -3,7 +3,6 @@
 namespace Swoft\Db;
 
 use Swoft\App;
-use Swoft\Db\Mysql\Query;
 use Swoft\Di\BeanFactory;
 use Swoft\Exception\DbException;
 use Swoft\Pool\ConnectPool;

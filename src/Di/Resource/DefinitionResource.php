@@ -108,7 +108,6 @@ class DefinitionResource extends AbstractResource
 
         // 循环解析
         foreach ($definition as $name => $property) {
-
             // 构造函数
             if (is_array($property) && $name === 0) {
                 $constructorInjection = $this->resolverConstructor($property);
@@ -143,7 +142,6 @@ class DefinitionResource extends AbstractResource
     {
         $args = [];
         foreach ($propertyValue as $key => $subArg) {
-
             // 递归解析
             if (is_array($subArg)) {
                 $args[$key] = $this->resolverArrayArgs($subArg);
@@ -169,9 +167,8 @@ class DefinitionResource extends AbstractResource
     {
         $methodArgs = [];
         foreach ($args as $arg) {
-
             // 数组参数解析
-            if(is_array($arg)){
+            if (is_array($arg)) {
                 $injectProperty = $this->resolverArrayArgs($arg);
                 $methodArgs[] = new ArgsInjection($injectProperty, false);
                 continue;

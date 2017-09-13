@@ -26,8 +26,7 @@ class ServicePool extends ConnectPool
 
         $address = $this->getConnectAddress();
         list($host, $port) = explode(":", $address);
-        if (!$client->connect($host, $port, $this->timeout))
-        {
+        if (!$client->connect($host, $port, $this->timeout)) {
             App::error("Service connect fail errorCode=".$client->errCode." host=".$host." port=".$port);
             return null;
         }
