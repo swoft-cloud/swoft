@@ -35,6 +35,20 @@ interface IConnect
     public function recv();
 
     /**
+     * 获取插入ID
+     *
+     * @return mixed
+     */
+    public function getInsertId();
+
+    /**
+     * 获取更新影响的行数
+     *
+     * @return int
+     */
+    public function getAffectedRows();
+
+    /**
      * 回滚事务
      */
     public function rollback();

@@ -42,6 +42,14 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
         App::profileEnd($profileKey);
         App::debug("SQL语句执行结果 sqlId=$sqlId result=" . json_encode($result) . "sql=" . $this->lastSql);
 
+        // 插入成功返回插入ID,更新或删除成功，返回影响行数
+        $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
+        if ($this->isInsert() && $result !== false) {
+            $result = $this->connect->getInsertId();
+        } elseif ($isUpdateOrDelete && $result !== false) {
+            $result = $this->connect->getAffectedRows();
+        }
+
         // 如果是数组，填充实体处理
         if (is_array($result) && !empty($className)) {
             $result = ArrayHelper::resultToEntity($result, $className);
@@ -75,8 +83,12 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
         // 执行SQL
         $this->connect->setDefer();
         $result = $this->connect->execute($this->lastSql);
-
         App::debug("SQL语句执行(defer) sqlId=$sqlId sql=" . $this->lastSql);
-        return new DataResult($this->pool, $this->connect, $profileKey, $result, $this->release);
+
+        $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
+        $dataResult = new DataResult($this->pool, $this->connect, $profileKey, $result, $this->release);
+        $dataResult->setIsInsert($this->isInsert());
+        $dataResult->setIsUpdateOrDelete($isUpdateOrDelete);
+        return $dataResult;
     }
 }

@@ -218,9 +218,6 @@ class Executor
             // 实体属性对应值
             $proValue = $this->getEntityProValue($entity, $proName);
 
-            // 属性值验证
-            $this->validate($proAry, $proValue);
-
             // insert逻辑
             if ($type == 1 && $id == $proName && $default == $proValue) {
                 continue;
@@ -236,6 +233,9 @@ class Executor
             if ($type == 3 && $default == $proValue) {
                 continue;
             }
+
+            // 属性值验证
+            $this->validate($proAry, $proValue);
 
             // id值赋值
             if ($idColumn == $column) {
@@ -293,6 +293,7 @@ class Executor
 
             // 验证器未定义
             if (!BeanFactory::hasBean($beanName)) {
+                App::warning("验证器不存在，beanName=" . $beanName);
                 continue;
             }
 
@@ -317,6 +318,7 @@ class Executor
             throw new \InvalidArgumentException("实体对象属性getter方法不存在，properName=" . $proName);
         }
         $proValue = $entity->$getterMethod();
+
         return $proValue;
     }
 

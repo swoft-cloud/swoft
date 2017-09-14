@@ -24,7 +24,7 @@ class Model
     /**
      * @param bool $defer
      *
-     * @return AbstractResult|bool
+     * @return DataResult|bool
      */
     public function save($defer = false)
     {
@@ -35,7 +35,7 @@ class Model
     /**
      *
      * @param bool $defer
-     * @return AbstractResult|bool
+     * @return DataResult|bool
      */
     public function delete($defer = false)
     {

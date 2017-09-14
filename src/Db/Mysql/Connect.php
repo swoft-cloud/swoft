@@ -2,6 +2,7 @@
 
 namespace Swoft\Db\Mysql;
 
+use Swoft\App;
 use Swoft\Db\AbstractConnect;
 use Swoole\Coroutine\Mysql;
 
@@ -32,7 +33,11 @@ class Connect extends AbstractConnect
      */
     public function execute(string $sql)
     {
-        return $this->connect->query($sql);
+        $result = $this->connect->query($sql);
+        if ($result === false) {
+            App::error("mysql执行出错，connectError=" . $this->connect->connect_error . " error=" . $this->connect->error);
+        }
+        return $result;
     }
 
     /**
@@ -43,6 +48,26 @@ class Connect extends AbstractConnect
     public function recv()
     {
         return $this->connect->recv();
+    }
+
+    /**
+     * 获取插入ID
+     *
+     * @return mixed
+     */
+    public function getInsertId()
+    {
+        return $this->connect->insert_id;
+    }
+
+    /**
+     * 获取更新影响的行数
+     *
+     * @return int
+     */
+    public function getAffectedRows()
+    {
+        return $this->connect->affected_rows;
     }
 
     /**

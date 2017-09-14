@@ -2,16 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Models\Entity\User;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Db\QueryBuilder;
-use Swoft\Db\EntityManager;
 use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
-use Swoft\Bean\Collector;
 use Swoft\Web\Controller;
 
 /**
@@ -76,91 +72,6 @@ class DemoController extends Controller
     public function actionIndex3()
     {
         $this->outputJson("suc3222");
-    }
-
-    public function actionQueryBuilder()
-    {
-        $em = EntityManager::create();
-        $query = $em->createQuery()
-                ->select("*")
-                ->from("user")
-                ->where('sex', ":sex")
-                ->setParameter('sex', 1)
-                ->orderBy("id", QueryBuilder::ORDER_BY_DESC);
-        $users = $query->getResult();
-
-        $sql = $query->getSql();
-
-        $em->close();
-
-        $this->outputJson([$sql, $users]);
-
-    }
-
-    public function actionAdd()
-    {
-        $user = new User();
-        $user->setName("boy");
-        $user->setAge(mt_rand(1, 100));
-        $user->setDesc("this is add user");
-        $user->setSex(1);
-//        $result = $user->save();
-        $result = $user->deferSave();
-
-//        $result = User::query()
-//            ->select('id')
-//            ->select('name')->where('sex', '1')
-//            ->orderBy("id", QueryBuilder::ORDER_BY_ASC)
-//            ->limit(6)
-//            ->getResult();
-
-//        $result = User::query()
-//            ->select('id')
-//            ->select('name')->where('sex', '1')
-//            ->orderBy("id", QueryBuilder::ORDER_BY_ASC)
-//            ->limit(6)
-//            ->getDefer();
-//
-//        $result = $result->getResult();
-
-//        $em = EntityManager::create();
-//        $result = $em->save($user);
-//        $em->close();
-
-        $this->outputJson($result->getResult());
-    }
-    public function actionQueryArray(){
-        $em = EntityManager::create();
-        $query = $em->createQuery('select * from user where name=:name and sex=:sex');
-        $query->setParameter("name", "stelin");
-        $query->setParameter("sex", 1);
-        $users = $query->getResult();
-        $sql = $query->getSql();
-        $em->close();
-        $this->outputJson([$sql, $users, Collector::$entities]);
-    }
-
-    public function actionQueryEntity(){
-        $em = EntityManager::create();
-        $query = $em->createQuery('select * from user where name=:name and sex=:sex');
-        $query->setParameter("name", "stelin");
-        $query->setParameter("sex", 1);
-        $result = $query->getResult(User::class);
-        $sql = $query->getSql();
-
-        $em->close();
-
-        $users = [];
-        /* @var User $userEntity*/
-        foreach ($result as $userEntity){
-            $user['id'] = $userEntity->getId();
-            $user['name'] = $userEntity->getName();
-            $user['age'] = $userEntity->getAge();
-            $user['sex'] = $userEntity->getSex();
-            $user['desc'] = $userEntity->getDesc();
-            $users[] = $user;
-        }
-        $this->outputJson([$sql, $users]);
     }
 
     /**

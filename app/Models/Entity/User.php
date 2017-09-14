@@ -12,6 +12,7 @@ use Swoft\Bean\Annotation\Table;
 use Swoft\Db\Types;
 
 /**
+ * 用户实体
  *
  * @Entity()
  * @Table(name="user")
@@ -68,11 +69,18 @@ class User extends Model
      */
     private $desc = "";
 
+    /**
+     * 非数据库字段，未定义映射关系
+     *
+     * @var mixed
+     */
+    private $otherProperty;
+
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -88,7 +96,7 @@ class User extends Model
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -104,7 +112,7 @@ class User extends Model
     /**
      * @return int
      */
-    public function getAge(): int
+    public function getAge()
     {
         return $this->age;
     }
@@ -120,7 +128,7 @@ class User extends Model
     /**
      * @return int
      */
-    public function getSex(): int
+    public function getSex()
     {
         return $this->sex;
     }
@@ -136,7 +144,7 @@ class User extends Model
     /**
      * @return string
      */
-    public function getDesc(): string
+    public function getDesc()
     {
         return $this->desc;
     }

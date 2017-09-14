@@ -18,6 +18,20 @@ use Swoft\Web\AbstractResult;
 class DataResult extends AbstractResult
 {
     /**
+     * 是否是插入操作
+     *
+     * @var bool
+     */
+    private $isInsert = false;
+
+    /**
+     * 是否是更新或删除操作
+     *
+     * @var bool
+     */
+    private $isUpdateOrDelete = false;
+
+    /**
      * 获取执行结果
      *
      * @param string $className 数据填充到实体的类名
@@ -32,7 +46,14 @@ class DataResult extends AbstractResult
         }
 
         // 接受包数据
-        $result = $this->recv();
+        $result = $this->recv(true);
+
+        // 插入成功返回插入ID,更新或删除成功，返回影响行数
+        if ($this->isInsert && $result !== false) {
+            $result = $this->client->getInsertId();
+        } elseif ($this->isUpdateOrDelete && $result !== false) {
+            $result = $this->client->getAffectedRows();
+        }
 
         // 日志记录处理
         list(, $sqlId) = explode(".", $this->profileKey);
@@ -44,5 +65,21 @@ class DataResult extends AbstractResult
         }
 
         return $result;
+    }
+
+    /**
+     * @param bool $isInsert
+     */
+    public function setIsInsert(bool $isInsert)
+    {
+        $this->isInsert = $isInsert;
+    }
+
+    /**
+     * @param bool $isUpdateOrDelete
+     */
+    public function setIsUpdateOrDelete(bool $isUpdateOrDelete)
+    {
+        $this->isUpdateOrDelete = $isUpdateOrDelete;
     }
 }
