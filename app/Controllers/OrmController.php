@@ -39,20 +39,82 @@ class OrmController extends Controller
     }
 
     /**
+     * 实体内容删除
+     */
+    public function actionArDelete()
+    {
+        $user = new User();
+        //        $user->setId(286);
+        $user->setAge(126);
+
+        //        $result = $user->delete();
+        $defer = $user->delete(true);
+
+        $this->outputJson($defer->getResult());
+    }
+
+    /**
+     * 删除ID测试
+     */
+    public function actionArDeleteId()
+    {
+//        $result = User::deleteById(284);
+        $result = User::deleteById(287, true);
+
+        $this->outputJson($result->getResult());
+    }
+
+    /**
+     * 删除IDs测试
+     */
+    public function actionArDeleteIds()
+    {
+//        $result = User::deleteByIds([291, 292]);
+        $result = User::deleteByIds([288, 289], true);
+
+        $this->outputJson($result->getResult());
+    }
+
+    /**
      * 更新操作
      */
     public function actionArUpdate()
     {
         $query = User::findById(285);
 
-        /* @var User $user*/
+        /* @var User $user */
         $user = $query->getResult(User::class);
-        $user->setName("upateNameUser");
+        $user->setName("upateNameUser2");
         $user->setSex(0);
 
         $result = $user->update();
+        //        $result = $user->update(true);
+        //        $result = $result->getResult();
 
         $this->outputJson([$result]);
+    }
+
+    /**
+     * 实体查找
+     */
+    public function actionArFind()
+    {
+        $user = new User();
+        $user->setSex(1);
+        $user->setAge(93);
+        $query = $user->find();
+        //        $result = $query->getResult();
+
+        /* @var User $userResult */
+        //        $userResult = $query->getResult(User::class);
+
+        $defer = $query->getDefer();
+        //        $result = $defer->getResult();
+
+        $result = $defer->getResult(User::class);
+        $ql = $query->getSql();
+        var_dump($result);
+        $this->outputJson([$ql, $result]);
     }
 
     /**
@@ -73,5 +135,22 @@ class OrmController extends Controller
         $deferResult = $query->getDefer()->getResult(User::class);
 
         $this->outputJson([$result, $userObject->getName(), $deferResult->getName()]);
+    }
+
+    /**
+     * Ar IDS查找
+     */
+    public function actionArFindIds()
+    {
+        $query = User::findByIds([285, 286]);
+
+        $sql = $query->getSql();
+
+        //        $defer = $query->getDefer();
+        //        $result = $defer->getResult(User::class);
+
+        $result = $query->getResult();
+
+        $this->outputJson([$result, $sql]);
     }
 }

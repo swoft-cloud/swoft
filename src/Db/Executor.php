@@ -3,10 +3,9 @@
 namespace Swoft\Db;
 
 use Swoft\App;
-use Swoft\Db\Validator\IValidator;
 use Swoft\Bean\BeanFactory;
 use Swoft\Bean\Collector;
-use Swoft\Exception\DbException;
+use Swoft\Db\Validator\IValidator;
 use Swoft\Exception\ValidatorException;
 
 /**
@@ -195,7 +194,7 @@ class Executor
         list($tableName, , $columnId) = $this->getTable($className);
 
         // 构建find查询器
-        $query = $this->queryBuilder->select("*")->from($tableName)->whereIn($columnId, $ids)->limit(1);
+        $query = $this->queryBuilder->select("*")->from($tableName)->whereIn($columnId, $ids);
         return $query;
     }
 

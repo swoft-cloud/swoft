@@ -36,7 +36,7 @@ class Model
      *
      * @param bool $defer
      *
-     * @return DataResult|bool
+     * @return DataResult|bool|int
      */
     public function delete($defer = false)
     {
@@ -44,12 +44,24 @@ class Model
         return $executor->delete($this, $defer);
     }
 
+    /**
+     * @param      $id
+     * @param bool $defer
+     *
+     * @return DataResult|bool|int
+     */
     public static function deleteById($id, $defer = false)
     {
         $executor = self::getExecutor(true);
         return $executor->deleteById(static::class, $id, $defer);
     }
 
+    /**
+     * @param array $ids
+     * @param bool  $defer
+     *
+     * @return DataResult|bool|int
+     */
     public static function deleteByIds(array $ids, $defer = false)
     {
         $executor = self::getExecutor(true);
@@ -67,6 +79,13 @@ class Model
         return $executor->update($this, $defer);
     }
 
+    /**
+     * 实体查询
+     *
+     * @param bool $isMaster
+     *
+     * @return QueryBuilder
+     */
     public function find($isMaster = false)
     {
         $executor = self::getExecutor($isMaster);
@@ -87,6 +106,14 @@ class Model
         return $executor->findById(static::class, $id);
     }
 
+    /**
+     * ID集合查询
+     *
+     * @param array $ids
+     * @param bool  $isMaster
+     *
+     * @return QueryBuilder
+     */
     public static function findByIds(array $ids, $isMaster = false)
     {
         $executor = self::getExecutor($isMaster);
