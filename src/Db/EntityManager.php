@@ -4,6 +4,7 @@ namespace Swoft\Db;
 
 use Swoft\App;
 use Swoft\Bean\BeanFactory;
+use Swoft\Bean\Collector;
 use Swoft\Exception\DbException;
 use Swoft\Pool\ConnectPool;
 use Swoft\Pool\DbPool;
@@ -143,8 +144,14 @@ class EntityManager implements IEntityManager
         $driver = $connect->getDriver();
 
         // 驱动查询器
-        $className = self::getQueryClassName($driver);
-        return new $className($pool, $connect, '', $release);
+        $entities = Collector::$entities;
+        $tableName = $entities[$className]['table']['name'];
+        $queryClassName = self::getQueryClassName($driver);
+
+        /* @var QueryBuilder $query */
+        $query = new $queryClassName($pool, $connect, '', $release);
+        $query->from($tableName);
+        return $query;
     }
 
     /**

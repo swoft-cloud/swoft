@@ -42,7 +42,7 @@ class Executor
      * @param object $entity 实体
      * @param bool   $defer  是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return bool 返回数据结果对象，成功返回插入ID，如果没有ID插入返回0，错误返回false
      */
     public function save($entity, $defer)
     {

@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\Entity\Count;
 use App\Models\Entity\User;
 use Swoft\Bean\Annotation\AutoController;
+use Swoft\Db\QueryBuilder;
 use Swoft\Web\Controller;
 
 /**
@@ -23,19 +25,26 @@ class OrmController extends Controller
      */
     public function actionArSave()
     {
-        $user = new User();
-        //        $user->setId(120);
-        $user->setName("stelin");
-        $user->setSex(1);
-        $user->setDesc("this my desc");
-        $user->setAge(mt_rand(1, 100));
-        $result = $user->save();
+//        $user = new User();
+//        //        $user->setId(120);
+//        $user->setName("stelin");
+//        $user->setSex(1);
+//        $user->setDesc("this my desc");
+//        $user->setAge(mt_rand(1, 100));
+//        $result = $user->save();
+//
+//        $user->setDesc("this is defer desc");
+//        $dataResult = $user->save(true);
+//        $deferResult = $dataResult->getResult();
+//
+//        $this->outputJson([$result, $deferResult]);
 
-        $user->setDesc("this is defer desc");
-        $dataResult = $user->save(true);
-        $deferResult = $dataResult->getResult();
+        $count = new Count();
+        $count->setUid(346);
+        $count->setFans(mt_rand(1,1000));
+        $count->setFollows(mt_rand(1,1000));
 
-        $this->outputJson([$result, $deferResult]);
+        $this->outputJson($count->save());
     }
 
     /**
@@ -152,5 +161,23 @@ class OrmController extends Controller
         $result = $query->getResult();
 
         $this->outputJson([$result, $sql]);
+    }
+
+    /**
+     * Ar Query
+     */
+    public function actionArQuery()
+    {
+//        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
+//        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
+        $query = User::query()->selects(['id', 'sex' => 'sex2'])
+            ->leftJoin('count', 'count.uid=user.id')
+            ->andWhere('id', 346)
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)
+            ->limit(2);
+//        $result = $query->getResult();
+        $defer = $query->getDefer();
+        $result = $defer->getResult();
+        $this->outputJson([$result, $query->getSql()]);
     }
 }

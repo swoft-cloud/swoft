@@ -318,6 +318,25 @@ abstract class QueryBuilder implements IQueryBuilder
         return $this;
     }
 
+    /**
+     * select语句
+     *
+     * @param array $columns
+     *
+     * @return QueryBuilder
+     */
+    public function selects(array $columns)
+    {
+        foreach ($columns as $key => $column) {
+            if (is_int($key)) {
+                $this->select[$column] = null;
+                continue;
+            }
+            $this->select[$key] = $column;
+        }
+        return $this;
+    }
+
 
     /**
      * from语句
@@ -744,7 +763,7 @@ abstract class QueryBuilder implements IQueryBuilder
 
     public function getSql()
     {
-        if(empty($this->lastSql)){
+        if (empty($this->lastSql)) {
             $sql = $this->getStatement();
             $this->lastSql = strtr($sql, $this->parameters);
         }

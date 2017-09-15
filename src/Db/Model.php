@@ -2,10 +2,8 @@
 
 namespace Swoft\Db;
 
-use Swoft\Web\AbstractResult;
-
 /**
- *
+ * 实体模型实现类似ActiverRecord操作
  *
  * @uses      Model
  * @version   2017年09月08日
@@ -16,15 +14,19 @@ use Swoft\Web\AbstractResult;
 class Model
 {
     /**
+     * 记录旧数据，用于更新数据对比
+     *
      * @var array
      */
     private $attrs = [];
 
 
     /**
-     * @param bool $defer
+     * 插入数据
      *
-     * @return DataResult|bool
+     * @param bool $defer 是否延迟收包
+     *
+     * @return DataResult|bool 返回数据结果对象，成功返回插入ID，如果没有ID插入返回0，错误返回false
      */
     public function save($defer = false)
     {
@@ -33,10 +35,11 @@ class Model
     }
 
     /**
+     * 删除数据
      *
-     * @param bool $defer
+     * @param bool $defer 是否延迟收包
      *
-     * @return DataResult|bool|int
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public function delete($defer = false)
     {
@@ -45,10 +48,12 @@ class Model
     }
 
     /**
-     * @param      $id
-     * @param bool $defer
+     * 根据ID删除数据
      *
-     * @return DataResult|bool|int
+     * @param mixed $id    ID
+     * @param bool  $defer 是否延迟收包
+     *
+     * @return DataResult|bool|int DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public static function deleteById($id, $defer = false)
     {
@@ -57,10 +62,12 @@ class Model
     }
 
     /**
-     * @param array $ids
-     * @param bool  $defer
+     * 删除IDS集合数据
      *
-     * @return DataResult|bool|int
+     * @param array $ids   ID集合
+     * @param bool  $defer 是否延迟收包
+     *
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public static function deleteByIds(array $ids, $defer = false)
     {
@@ -69,9 +76,11 @@ class Model
     }
 
     /**
-     * @param bool $defer
+     * 更新数据
      *
-     * @return AbstractResult|bool
+     * @param bool $defer 是否延迟收包
+     *
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public function update($defer = false)
     {
@@ -82,7 +91,7 @@ class Model
     /**
      * 实体查询
      *
-     * @param bool $isMaster
+     * @param bool $isMaster 是否主节点查询
      *
      * @return QueryBuilder
      */
@@ -109,8 +118,8 @@ class Model
     /**
      * ID集合查询
      *
-     * @param array $ids
-     * @param bool  $isMaster
+     * @param array $ids      ID集合
+     * @param bool  $isMaster 是否主节点查询
      *
      * @return QueryBuilder
      */
@@ -121,13 +130,30 @@ class Model
     }
 
     /**
-     * @param bool $isMaster
+     * 返回查询器，自定义查询
+     *
+     * @param bool $isMaster 是否主节点
      *
      * @return QueryBuilder
      */
     public static function query($isMaster = false)
     {
         return EntityManager::getQuery(static::class, $isMaster, true);
+    }
+
+
+    /**
+     * 返回数据执行器
+     *
+     * @param bool $isMaster 是否主节点
+     *
+     * @return Executor
+     */
+    private static function getExecutor($isMaster = false)
+    {
+        $queryBuilder = EntityManager::getQuery(static::class, $isMaster, true);
+        $executor = new Executor($queryBuilder, static::class);
+        return $executor;
     }
 
     /**
@@ -144,12 +170,5 @@ class Model
     public function setAttrs(array $attrs)
     {
         $this->attrs = $attrs;
-    }
-
-    private static function getExecutor($isMaster = false)
-    {
-        $queryBuilder = EntityManager::getQuery(static::class, $isMaster, true);
-        $executor = new Executor($queryBuilder, static::class);
-        return $executor;
     }
 }
