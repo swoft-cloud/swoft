@@ -32,6 +32,13 @@ class DataResult extends AbstractResult
     private $isUpdateOrDelete = false;
 
     /**
+     * 是否查找一条数据
+     *
+     * @var bool
+     */
+    private $isFindOne = false;
+
+    /**
      * 获取执行结果
      *
      * @param string $className 数据填充到实体的类名
@@ -48,12 +55,8 @@ class DataResult extends AbstractResult
         // 接受包数据
         $result = $this->recv(true);
 
-        // 插入成功返回插入ID,更新或删除成功，返回影响行数
-        if ($this->isInsert && $result !== false) {
-            $result = $this->client->getInsertId();
-        } elseif ($this->isUpdateOrDelete && $result !== false) {
-            $result = $this->client->getAffectedRows();
-        }
+        // 插入成功返回插入ID,更新或删除成功，返回影响行数,查询一条数据，返回一维数组
+        $result = $this->transferResult($result);
 
         // 日志记录处理
         list(, $sqlId) = explode(".", $this->profileKey);
@@ -81,5 +84,32 @@ class DataResult extends AbstractResult
     public function setIsUpdateOrDelete(bool $isUpdateOrDelete)
     {
         $this->isUpdateOrDelete = $isUpdateOrDelete;
+    }
+
+    /**
+     * @param bool $isFindOne
+     */
+    public function setIsFindOne(bool $isFindOne)
+    {
+        $this->isFindOne = $isFindOne;
+    }
+
+    /**
+     * 转换结果
+     *
+     * @param mixed $result 查询结果
+     *
+     * @return mixed
+     */
+    private function transferResult($result)
+    {
+        if ($this->isInsert && $result !== false) {
+            $result = $this->client->getInsertId();
+        } elseif ($this->isUpdateOrDelete && $result !== false) {
+            $result = $this->client->getAffectedRows();
+        } elseif ($this->isFindOne && $result != false) {
+            $result = $result[0]?? [];
+        }
+        return $result;
     }
 }

@@ -42,13 +42,8 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
         App::profileEnd($profileKey);
         App::debug("SQL语句执行结果 sqlId=$sqlId result=" . json_encode($result) . "sql=" . $this->lastSql);
 
-        // 插入成功返回插入ID,更新或删除成功，返回影响行数
-        $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
-        if ($this->isInsert() && $result !== false) {
-            $result = $this->connect->getInsertId();
-        } elseif ($isUpdateOrDelete && $result !== false) {
-            $result = $this->connect->getAffectedRows();
-        }
+        // 插入成功返回插入ID,更新或删除成功，返回影响行数,查询一条数据，返回一维数组
+        $result = $this->transferResult($result);
 
         // 如果是数组，填充实体处理
         if (is_array($result) && !empty($className)) {
@@ -65,11 +60,9 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
     /**
      * 返回数据结果对象
      *
-     * @param string $className 数据填充到实体的类名
-     *
      * @return DataResult 返回数据结果对象
      */
-    public function getDefer(string $className = "")
+    public function getDefer()
     {
         // 如果没有组合SQL
         if (empty($this->lastSql)) {
@@ -86,9 +79,35 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
         App::debug("SQL语句执行(defer) sqlId=$sqlId sql=" . $this->lastSql);
 
         $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
+        $isFindOne = $this->isSelect() && isset($this->limit['limit']) && $this->limit['limit'] == 1;
         $dataResult = new DataResult($this->pool, $this->connect, $profileKey, $result, $this->release);
+
+        // 结果转换参数
         $dataResult->setIsInsert($this->isInsert());
         $dataResult->setIsUpdateOrDelete($isUpdateOrDelete);
+        $dataResult->setIsFindOne($isFindOne);
+
         return $dataResult;
+    }
+
+    /**
+     * 转换结果
+     *
+     * @param mixed $result 查询结果
+     *
+     * @return mixed
+     */
+    private function transferResult($result)
+    {
+        $isFindOne = isset($this->limit['limit']) && $this->limit['limit'] == 1;
+        $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
+        if ($this->isInsert() && $result !== false) {
+            $result = $this->connect->getInsertId();
+        } elseif ($isUpdateOrDelete && $result !== false) {
+            $result = $this->connect->getAffectedRows();
+        } elseif ($this->isSelect() && $result !== false && $isFindOne) {
+            $result = $result[0]?? [];
+        }
+        return $result;
     }
 }

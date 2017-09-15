@@ -6,6 +6,7 @@ use Swoft\App;
 use Swoft\Db\Validator\IValidator;
 use Swoft\Bean\BeanFactory;
 use Swoft\Bean\Collector;
+use Swoft\Exception\DbException;
 use Swoft\Exception\ValidatorException;
 
 /**
@@ -123,13 +124,17 @@ class Executor
      * @param object $entity 具体实体实例
      * @param bool   $defer  是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return bool 成功返回true,错误返回false, 0=没有数据变化
      */
     public function update($entity, $defer)
     {
         // 实体映射数据
         list($table, $idColumn, $idValue, $fields) = $this->getFields($entity, 2);
 
+        if (empty($fields)) {
+            App::warning("更新的数据不能为空(没有数据发生改变 table=" . $table . " id=" . $idColumn . " value=" . $idValue);
+            return 0;
+        }
         // 构建update查询器
         $this->queryBuilder->update($table)->where($idColumn, $idValue);
         foreach ($fields as $column => $value) {
@@ -224,8 +229,7 @@ class Executor
             }
 
             // update逻辑
-            $isUpate = $default == $proValue || $proName == $id;
-            if ($type == 2 && $isUpate) {
+            if ($type == 2 && null === $proValue) {
                 continue;
             }
 

@@ -37,4 +37,41 @@ class OrmController extends Controller
 
         $this->outputJson([$result, $deferResult]);
     }
+
+    /**
+     * 更新操作
+     */
+    public function actionArUpdate()
+    {
+        $query = User::findById(285);
+
+        /* @var User $user*/
+        $user = $query->getResult(User::class);
+        $user->setName("upateNameUser");
+        $user->setSex(0);
+
+        $result = $user->update();
+
+        $this->outputJson([$result]);
+    }
+
+    /**
+     * Ar ID查找
+     */
+    public function actionArFindId()
+    {
+        $query = User::findById(236);
+        $result = $query->getResult();
+
+        /* @var User $userObject */
+        $userObject = $query->getResult(User::class);
+
+        $query = User::findById(238);
+        //        $deferResult = $query->getDefer()->getResult();
+
+        /* @var User $deferResult */
+        $deferResult = $query->getDefer()->getResult(User::class);
+
+        $this->outputJson([$result, $userObject->getName(), $deferResult->getName()]);
+    }
 }

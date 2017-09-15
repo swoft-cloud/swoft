@@ -29,7 +29,7 @@ class User extends Model
      *
      * @Id()
      * @Column(name="id", type=Types::INT)
-     * @var int
+     * @var null|int
      */
     private $id;
 
@@ -38,7 +38,7 @@ class User extends Model
      *
      * @Column(name="name", type=Types::STRING, length=20)
      * @Required()
-     * @var string
+     * @var null|string
      */
     private $name;
 
@@ -76,9 +76,8 @@ class User extends Model
      */
     private $otherProperty;
 
-
     /**
-     * @return int
+     * @return int|null
      */
     public function getId()
     {
@@ -86,15 +85,15 @@ class User extends Model
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getName()
     {
@@ -102,9 +101,9 @@ class User extends Model
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -112,7 +111,7 @@ class User extends Model
     /**
      * @return int
      */
-    public function getAge()
+    public function getAge(): int
     {
         return $this->age;
     }
@@ -128,7 +127,7 @@ class User extends Model
     /**
      * @return int
      */
-    public function getSex()
+    public function getSex(): int
     {
         return $this->sex;
     }
@@ -144,7 +143,7 @@ class User extends Model
     /**
      * @return string
      */
-    public function getDesc()
+    public function getDesc(): string
     {
         return $this->desc;
     }
@@ -155,5 +154,21 @@ class User extends Model
     public function setDesc(string $desc)
     {
         $this->desc = $desc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOtherProperty()
+    {
+        return $this->otherProperty;
+    }
+
+    /**
+     * @param mixed $otherProperty
+     */
+    public function setOtherProperty($otherProperty)
+    {
+        $this->otherProperty = $otherProperty;
     }
 }

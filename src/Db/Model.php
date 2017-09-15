@@ -28,30 +28,31 @@ class Model
      */
     public function save($defer = false)
     {
-        $executor = $this->getExecutor(true);
+        $executor = self::getExecutor(true);
         return $executor->save($this, $defer);
     }
 
     /**
      *
      * @param bool $defer
+     *
      * @return DataResult|bool
      */
     public function delete($defer = false)
     {
-        $executor = $this->getExecutor(true);
+        $executor = self::getExecutor(true);
         return $executor->delete($this, $defer);
     }
 
-    public function deleteById($id, $defer = false)
+    public static function deleteById($id, $defer = false)
     {
-        $executor = $this->getExecutor(true);
+        $executor = self::getExecutor(true);
         return $executor->deleteById(static::class, $id, $defer);
     }
 
-    public function deleteByIds(array $ids, $defer = false)
+    public static function deleteByIds(array $ids, $defer = false)
     {
-        $executor = $this->getExecutor(true);
+        $executor = self::getExecutor(true);
         return $executor->deleteByIds(static::class, $ids, $defer);
     }
 
@@ -62,25 +63,33 @@ class Model
      */
     public function update($defer = false)
     {
-        $executor = $this->getExecutor(true);
+        $executor = self::getExecutor(true);
         return $executor->update($this, $defer);
     }
 
-    public function find($entity, $isMaster = false)
+    public function find($isMaster = false)
     {
-        $executor = $this->getExecutor($isMaster);
-        return $executor->find($entity);
+        $executor = self::getExecutor($isMaster);
+        return $executor->find($this);
     }
 
-    public function findById($id, $isMaster = false)
+    /**
+     * ID查找
+     *
+     * @param mixed $id       id值
+     * @param bool  $isMaster 是否是主节点，默认从节点
+     *
+     * @return QueryBuilder
+     */
+    public static function findById($id, $isMaster = false)
     {
-        $executor = $this->getExecutor($isMaster);
+        $executor = self::getExecutor($isMaster);
         return $executor->findById(static::class, $id);
     }
 
-    public function findByIds(array $ids, $isMaster = false)
+    public static function findByIds(array $ids, $isMaster = false)
     {
-        $executor = $this->getExecutor($isMaster);
+        $executor = self::getExecutor($isMaster);
         return $executor->findByIds(static::class, $ids);
     }
 
@@ -110,7 +119,7 @@ class Model
         $this->attrs = $attrs;
     }
 
-    private function getExecutor($isMaster = false)
+    private static function getExecutor($isMaster = false)
     {
         $queryBuilder = EntityManager::getQuery(static::class, $isMaster, true);
         $executor = new Executor($queryBuilder, static::class);

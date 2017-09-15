@@ -25,9 +25,7 @@ interface IQueryBuilder
     /**
      * 返回数据结果对象
      *
-     * @param string $className 数据填充到实体的类名
-     *
      * @return DataResult 返回数据结果对象
      */
-    public function getDefer(string $className = "");
+    public function getDefer();
 }

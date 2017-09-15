@@ -2,7 +2,9 @@
 
 namespace Swoft\Helper;
 
+use MongoDB\BSON\Type;
 use Swoft\Bean\Collector;
+use Swoft\Db\Types;
 
 class ArrayHelper
 {
@@ -857,6 +859,9 @@ class ArrayHelper
 
     public static function resultToEntity(array $result, string $className)
     {
+        if (!isset($result[0])) {
+            return ArrayHelper::arrayToEntity($result, $className);
+        }
         $entities = [];
         foreach ($result as $entityData) {
             if (!is_array($entityData)) {
@@ -873,7 +878,6 @@ class ArrayHelper
         if (!isset($className)) {
             return $array;
         }
-
         $attrs = [];
         $object = new $className();
         foreach ($array as $col => $value) {
@@ -883,6 +887,10 @@ class ArrayHelper
 
             $field = $entities[$className]['column'][$col];
             $setterMethod = "set" . ucfirst($field);
+
+            $type = Collector::$entities[$className]['field'][$field]['type'];
+            $value = self::trasferTypes($type, $value);
+
             if (method_exists($object, $setterMethod)) {
                 $attrs[$field] = $value;
                 $object->$setterMethod($value);
@@ -892,5 +900,19 @@ class ArrayHelper
             $object->setAttrs($attrs);
         }
         return $object;
+    }
+
+    public static function trasferTypes($type, $value)
+    {
+        if ($type == Types::INT || $type == Types::NUMBER) {
+            $value = (int)$value;
+        } elseif ($type == Types::STRING) {
+            $value = (string)$value;
+        } elseif ($type == Types::BOOLEAN) {
+            $value = (bool)$value;
+        } elseif ($type == Types::FLOAT) {
+            $value = (float)$value;
+        }
+        return $value;
     }
 }

@@ -218,7 +218,7 @@ abstract class QueryBuilder implements IQueryBuilder
      *
      * @var array
      */
-    private $limit = [];
+    protected $limit = [];
 
     /**
      * 参数集合
