@@ -26,7 +26,7 @@ class Model
      *
      * @param bool $defer 是否延迟收包
      *
-     * @return DataResult|bool 返回数据结果对象，成功返回插入ID，如果没有ID插入返回0，错误返回false
+     * @return DataResult|bool 返回数据结果对象，成功返回插入ID，如果ID传值，插入数据库返回0，错误返回false
      */
     public function save($defer = false)
     {
