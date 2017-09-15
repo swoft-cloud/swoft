@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
 use Swoft\Bean\Annotation\AutoController;
+use Swoft\Db\EntityManager;
 use Swoft\Db\QueryBuilder;
 use Swoft\Web\Controller;
 
@@ -25,26 +26,46 @@ class OrmController extends Controller
      */
     public function actionArSave()
     {
-//        $user = new User();
-//        //        $user->setId(120);
-//        $user->setName("stelin");
-//        $user->setSex(1);
-//        $user->setDesc("this my desc");
-//        $user->setAge(mt_rand(1, 100));
-//        $result = $user->save();
-//
-//        $user->setDesc("this is defer desc");
-//        $dataResult = $user->save(true);
-//        $deferResult = $dataResult->getResult();
-//
-//        $this->outputJson([$result, $deferResult]);
+        //        $user = new User();
+        //        //        $user->setId(120);
+        //        $user->setName("stelin");
+        //        $user->setSex(1);
+        //        $user->setDesc("this my desc");
+        //        $user->setAge(mt_rand(1, 100));
+        //        $result = $user->save();
+        //
+        //        $user->setDesc("this is defer desc");
+        //        $dataResult = $user->save(true);
+        //        $deferResult = $dataResult->getResult();
+        //
+        //        $this->outputJson([$result, $deferResult]);
 
         $count = new Count();
         $count->setUid(346);
-        $count->setFans(mt_rand(1,1000));
-        $count->setFollows(mt_rand(1,1000));
+        $count->setFans(mt_rand(1, 1000));
+        $count->setFollows(mt_rand(1, 1000));
 
         $this->outputJson($count->save());
+    }
+
+    /**
+     * EM查找
+     */
+    public function actionSave()
+    {
+        $user = new User();
+        $user->setName("stelin");
+        $user->setSex(1);
+        $user->setDesc("this my desc");
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+//        $result = $em->save($user);
+        $defer = $em->save($user, true);
+        $result = $defer->getResult();
+        $em->close();
+
+        $this->outputJson([$result]);
     }
 
     /**
@@ -67,7 +88,7 @@ class OrmController extends Controller
      */
     public function actionArDeleteId()
     {
-//        $result = User::deleteById(284);
+        //        $result = User::deleteById(284);
         $result = User::deleteById(287, true);
 
         $this->outputJson($result->getResult());
@@ -78,7 +99,7 @@ class OrmController extends Controller
      */
     public function actionArDeleteIds()
     {
-//        $result = User::deleteByIds([291, 292]);
+        //        $result = User::deleteByIds([291, 292]);
         $result = User::deleteByIds([288, 289], true);
 
         $this->outputJson($result->getResult());
@@ -168,16 +189,43 @@ class OrmController extends Controller
      */
     public function actionArQuery()
     {
-//        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
-//        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
-        $query = User::query()->selects(['id', 'sex' => 'sex2'])
-            ->leftJoin('count', 'count.uid=user.id')
-            ->andWhere('id', 346)
-            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)
-            ->limit(2);
-//        $result = $query->getResult();
+        //        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
+        //        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
+        $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin('count', 'count.uid=user.id')->andWhere('id', 346)
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
+        //        $result = $query->getResult();
         $defer = $query->getDefer();
         $result = $defer->getResult();
         $this->outputJson([$result, $query->getSql()]);
+    }
+
+    /**
+     * EM 事务测试
+     */
+    public function actionTs(){
+        $user = new User();
+        $user->setName("stelin");
+        $user->setSex(1);
+        $user->setDesc("this my desc");
+        $user->setAge(mt_rand(1, 100));
+
+        $count = new Count();
+        $count->setFans(mt_rand(1, 1000));
+        $count->setFollows(mt_rand(1, 1000));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $uid = $em->save($user);
+        $count->setUid($uid);
+
+        $result = $em->save($count);
+        if($result === false){
+            $em->rollback();
+        }else{
+            $em->commit();
+        }
+        $em->close();
+
+        $this->outputJson([$uid, $result]);
     }
 }

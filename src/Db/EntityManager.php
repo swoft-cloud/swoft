@@ -45,13 +45,6 @@ class EntityManager implements IEntityManager
     private $connect;
 
     /**
-     * 实体执行器
-     *
-     * @var Executor
-     */
-    private $executor;
-
-    /**
      * 连接池
      *
      * @var ConnectPool
@@ -76,10 +69,6 @@ class EntityManager implements IEntityManager
         $this->pool = $pool;
         $this->connect = $pool->getConnect();
         $this->driver = $this->connect->getDriver();
-
-        // 初始化实体执行器
-        $query = self::createQuery();
-        $this->executor = new Executor($query);
     }
 
     /**
@@ -160,12 +149,13 @@ class EntityManager implements IEntityManager
      * @param object $entity 实体
      * @param bool   $defer  是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return DataResult|bool 返回数据结果对象，成功返回插入ID，如果没有ID插入返回0，错误返回false
      */
     public function save($entity, $defer = false)
     {
         $this->checkStatus();
-        return $this->executor->save($entity, $defer);
+        $executor = $this->getExecutor();
+        return $executor->save($entity, $defer);
     }
 
     /**
@@ -179,7 +169,8 @@ class EntityManager implements IEntityManager
     public function delete($entity, $defer = false)
     {
         $this->checkStatus();
-        return $this->executor->delete($entity, $defer);
+        $executor = $this->getExecutor();
+        return $executor->delete($entity, $defer);
     }
 
     /**
@@ -194,7 +185,8 @@ class EntityManager implements IEntityManager
     public function deleteById($className, $id, $defer = false)
     {
         $this->checkStatus();
-        return $this->executor->deleteById($className, $id, $defer);
+        $executor = $this->getExecutor();
+        return $executor->deleteById($className, $id, $defer);
     }
 
     /**
@@ -209,7 +201,8 @@ class EntityManager implements IEntityManager
     public function deleteByIds($className, array $ids, $defer = false)
     {
         $this->checkStatus();
-        return $this->executor->deleteByIds($className, $ids, $defer);
+        $executor = $this->getExecutor();
+        return $executor->deleteByIds($className, $ids, $defer);
     }
 
     /**
@@ -222,7 +215,8 @@ class EntityManager implements IEntityManager
     public function find($entity)
     {
         $this->checkStatus();
-        return $this->executor->find($entity);
+        $executor = $this->getExecutor();
+        return $executor->find($entity);
     }
 
     /**
@@ -236,7 +230,8 @@ class EntityManager implements IEntityManager
     public function findById($className, $id)
     {
         $this->checkStatus();
-        return $this->executor->findById($className, $id);
+        $executor = $this->getExecutor();
+        return $executor->findById($className, $id);
     }
 
     /**
@@ -250,7 +245,8 @@ class EntityManager implements IEntityManager
     public function findByIds($className, array $ids)
     {
         $this->checkStatus();
-        return $this->executor->findByIds($className, $ids);
+        $executor = $this->getExecutor();
+        return $executor->findByIds($className, $ids);
     }
 
     /**
@@ -317,6 +313,18 @@ class EntityManager implements IEntityManager
         /* @var DbPool $dbPool */
         $pool = App::getBean($dbPoolId);
         return $pool;
+    }
+
+    /**
+     * 获取执行器
+     *
+     * @return Executor
+     */
+    private function getExecutor()
+    {
+        // 初始化实体执行器
+        $query = self::createQuery();
+        return new Executor($query);
     }
 
     /**
