@@ -7,6 +7,7 @@ use App\Models\Entity\User;
 use Swoft\Bean\Annotation\AutoController;
 use Swoft\Db\EntityManager;
 use Swoft\Db\QueryBuilder;
+use Swoft\Db\Types;
 use Swoft\Web\Controller;
 
 /**
@@ -60,7 +61,7 @@ class OrmController extends Controller
         $user->setAge(mt_rand(1, 100));
 
         $em = EntityManager::create();
-//        $result = $em->save($user);
+        //        $result = $em->save($user);
         $defer = $em->save($user, true);
         $result = $defer->getResult();
         $em->close();
@@ -81,6 +82,46 @@ class OrmController extends Controller
         $defer = $user->delete(true);
 
         $this->outputJson($defer->getResult());
+    }
+
+    /**
+     * Em 删除
+     */
+    public function actionDelete()
+    {
+        $user = new User();
+        $user->setId(418);
+
+        $em = EntityManager::create();
+        //        $result = $em->delete($user);
+        $result = $em->delete($user, true);
+        $em->close();
+
+        $this->outputJson([$result->getResult()]);
+    }
+
+    /**
+     * EM deleteId
+     */
+    public function actionDeleteId()
+    {
+        $em = EntityManager::create();
+        //        $result = $em->deleteById(Count::class, 396);
+        $result = $em->deleteById(Count::class, 406, true);
+        $em->close();
+        $this->outputJson([$result->getResult()]);
+    }
+
+    /**
+     * EM DeleteIds
+     */
+    public function actionDeleteIds()
+    {
+        $em = EntityManager::create();
+        //        $result = $em->deleteByIds(Count::class, [409, 410]);
+        $result = $em->deleteByIds(Count::class, [411, 412], true);
+        $em->close();
+        $this->outputJson([$result->getResult()]);
     }
 
     /**
@@ -148,6 +189,25 @@ class OrmController extends Controller
     }
 
     /**
+     * EM find
+     */
+    public function actionFind()
+    {
+        $user = new User();
+        $user->setSex(1);
+        $em = EntityManager::create();
+        $query = $em->find($user);
+        //        $result = $query->getResult();
+        //        $result = $query->getResult(User::class);
+        //        $result = $query->getDefer()->getResult();
+        $result = $query->getDefer()->getResult(User::class);
+        $sql = $query->getSql();
+        $em->close();
+
+        $this->outputJson([$result, $sql]);
+    }
+
+    /**
      * Ar ID查找
      */
     public function actionArFindId()
@@ -168,11 +228,27 @@ class OrmController extends Controller
     }
 
     /**
+     * EM find id
+     */
+    public function actionFindId()
+    {
+        $em = EntityManager::create();
+        $query = $em->findById(User::class, 396);
+        //        $result = $query->getResult();
+        //        $result = $query->getResult(User::class);
+        $result = $query->getDefer()->getResult();
+        $sql = $query->getSql();
+        $em->close();
+
+        $this->outputJson([$result, $sql]);
+    }
+
+    /**
      * Ar IDS查找
      */
     public function actionArFindIds()
     {
-        $query = User::findByIds([285, 286]);
+        $query = User::findByIds([416, 417]);
 
         $sql = $query->getSql();
 
@@ -185,13 +261,29 @@ class OrmController extends Controller
     }
 
     /**
+     * EM find ids
+     */
+    public function actionFindIds()
+    {
+        $em = EntityManager::create();
+        $query = $em->findByIds(User::class, [396, 403]);
+        $result = $query->getResult();
+        //                $result = $query->getResult(User::class);
+        //        $result = $query->getDefer()->getResult(User::class);
+        $sql = $query->getSql();
+        $em->close();
+
+        $this->outputJson([$result, $sql]);
+    }
+
+    /**
      * Ar Query
      */
     public function actionArQuery()
     {
         //        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
         //        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
-        $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin('count', 'count.uid=user.id')->andWhere('id', 346)
+        $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 416)
             ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
         //        $result = $query->getResult();
         $defer = $query->getDefer();
@@ -202,7 +294,8 @@ class OrmController extends Controller
     /**
      * EM 事务测试
      */
-    public function actionTs(){
+    public function actionTs()
+    {
         $user = new User();
         $user->setName("stelin");
         $user->setSex(1);
@@ -219,13 +312,72 @@ class OrmController extends Controller
         $count->setUid($uid);
 
         $result = $em->save($count);
-        if($result === false){
+        if ($result === false) {
             $em->rollback();
-        }else{
+        } else {
             $em->commit();
         }
         $em->close();
 
         $this->outputJson([$uid, $result]);
+    }
+
+    public function actionQuery()
+    {
+        $em = EntityManager::create();
+        $query = $em->createQuery();
+        $query->select("*")->from(User::class, 'u')->leftJoin(Count::class, ['u.id=c.uid'], 'c')->whereIn('u.id', [419, 420, 421])
+            ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
+        //        $result = $query->getResult();
+        $result = $query->getDefer()->getResult();
+        $sql = $query->getSql();
+        $em->close();
+
+        $this->outputJson([$result, $sql]);
+    }
+
+    /**
+     * 并发执行两个语句
+     */
+    public function actionArCon()
+    {
+        $query1 = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 419)
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->getDefer();
+
+        $query2 = User::query()->select("*")->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 420)
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->getDefer();
+
+        $result1 = $query1->getResult();
+        $result2 = $query2->getResult();
+        $this->outputJson([$result1, $result2]);
+    }
+
+
+    public function actionSql()
+    {
+        $params = [
+            ['uid', 419],
+            ['uid2', 420],
+            ['uid3', 421, Types::INT],
+        ];
+        $em = EntityManager::create();
+        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (:uid, :uid1, :uid3) ORDER BY u.id DESC LIMIT 2";
+        $query = $em->createQuery($querySql);
+        //                $query->setParameter('uid', 419);
+        //                $query->setParameter('uid2', 420);
+        //                $query->setParameter('uid3', 421);
+        $query->setParameters($params);
+
+        //        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?1, ?2, ?3) ORDER BY u.id DESC LIMIT 2";
+        //        $query = $em->createQuery($querySql);
+        //        $query->setParameter(1, 419);
+        //        $query->setParameter(2, 420);
+        //        $query->setParameter(3, 421);
+
+        $result = $query->getResult();
+        $sql = $query->getSql();
+        $em->close();
+
+        $this->outputJson([$result, $sql]);
     }
 }

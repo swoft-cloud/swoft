@@ -2,7 +2,6 @@
 
 namespace Swoft\Web;
 
-use App\Controllers\ErrorController;
 use Swoft\App;
 
 /**
@@ -19,7 +18,7 @@ class ErrorHandler
     /**
      * @var string 统一错误error
      */
-//    private $errorAction = "/error/index";
+    //    private $errorAction = "/error/index";
     private $errorAction = "";
 
     /**
@@ -81,7 +80,6 @@ class ErrorHandler
         if (!App::isWorkerStatus()) {
             throw $exception;
         }
-
 
         $reponse = App::getResponse();
         $reponse->setException($exception);

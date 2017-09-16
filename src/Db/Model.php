@@ -53,7 +53,7 @@ class Model
      * @param mixed $id    ID
      * @param bool  $defer 是否延迟收包
      *
-     * @return DataResult|bool|int DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public static function deleteById($id, $defer = false)
     {

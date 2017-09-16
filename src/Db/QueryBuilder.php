@@ -2,6 +2,10 @@
 
 namespace Swoft\Db;
 
+use Swoft\App;
+use Swoft\Bean\Collector;
+use Swoft\Exception\DbException;
+use Swoft\Helper\ArrayHelper;
 use Swoft\Pool\ConnectPool;
 
 /**
@@ -276,7 +280,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function insert(string $tableName)
     {
-        $this->insert = $tableName;
+        $this->insert = $this->getTableNameByClassName($tableName);
         return $this;
     }
 
@@ -289,7 +293,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function update(string $tableName)
     {
-        $this->update = $tableName;
+        $this->update = $this->getTableNameByClassName($tableName);
         return $this;
     }
 
@@ -348,7 +352,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function from(string $table, string $alias = null)
     {
-        $this->from['table'] = $table;
+        $this->from['table'] = $this->getTableNameByClassName($table);
         $this->from['alias'] = $alias;
         return $this;
     }
@@ -364,6 +368,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function innerJoin(string $table, $criteria = null, string $alias = null)
     {
+        $table = $this->getTableNameByClassName($table);
         $this->join($table, $criteria, self::INNER_JOIN, $alias);
         return $this;
     }
@@ -379,6 +384,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function leftJoin(string $table, $criteria = null, string $alias = null)
     {
+        $table = $this->getTableNameByClassName($table);
         $this->join($table, $criteria, self::LEFT_JOIN, $alias);
         return $this;
     }
@@ -394,6 +400,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function rightJoin(string $table, $criteria = null, string $alias = null)
     {
+        $table = $this->getTableNameByClassName($table);
         $this->join($table, $criteria, self::RIGHT_JOIN, $alias);
         return $this;
     }
@@ -736,31 +743,59 @@ abstract class QueryBuilder implements IQueryBuilder
     /**
      * 设置参数
      *
-     * @param mixed  $key
-     * @param mixed  $value
-     * @param string $type
+     * @param mixed  $key   参数名称整数和字符串，(?n|:name)
+     * @param mixed  $value 值
+     * @param string $type  类型，默认按照$value传值的类型
      *
      * @return QueryBuilder
      */
     public function setParameter($key, $value, $type = null)
     {
-        if (!is_int($key)) {
-            $key = ":" . $key;
-        }
-
-        if ($type == "string" || ($type == null && is_string($value))) {
-            $value = '"' . $value . '"';
-        }
+        list($key, $value) = $this->transferParameter($key, $value, $type);
         $this->parameters[$key] = $value;
 
         return $this;
     }
 
+    /**
+     * 设置多个参数
+     *
+     * @param array $parameters     数组设置参数，如果类型不传，默认按照value传值的类型
+     *                              <pre>
+     *                              [
+     *                              [key,value, type],
+     *                              [key,value]
+     *                              ...
+     *                              ]
+     *                              </pre>
+     */
     public function setParameters(array $parameters)
     {
-        $this->parameters = $parameters;
+        // 循环设置每个参数
+        foreach ($parameters as $parameter) {
+            $key = null;
+            $type = null;
+            $value = null;
+
+            if (count($parameter) >= 3) {
+                list($key, $value, $type) = $parameter;
+            } elseif (count($parameter) == 2) {
+                list($key, $value) = $parameter;
+            }
+
+            if ($key == null || $value == null) {
+                App::warning("sql参数设置格式错误，parameters=" . json_encode($parameters));
+                continue;
+            }
+            $this->setParameter($key, $value, $type);
+        }
     }
 
+    /**
+     * 返回执行的SQL
+     *
+     * @return string
+     */
     public function getSql()
     {
         if (empty($this->lastSql)) {
@@ -842,5 +877,57 @@ abstract class QueryBuilder implements IQueryBuilder
             'connector' => $connector,
         );
         return $this;
+    }
+
+    /**
+     * 实体类名获取表名
+     *
+     * @param string $tableName
+     *
+     * @return string
+     * @throws DbException
+     */
+    private function getTableNameByClassName($tableName)
+    {
+        // 不是实体类名
+        if (strpos($tableName, '\\') === false) {
+            return $tableName;
+        }
+
+        $entities = Collector::$entities;
+        if (!isset($entities[$tableName]['table']['name'])) {
+            throw new DbException("类不是实体，className=" . $tableName);
+        }
+        $name = $entities[$tableName]['table']['name'];
+        return $name;
+    }
+
+    /**
+     * 参数个数转换
+     *
+     * @param mixed  $key
+     * @param mixed  $value
+     * @param string $type
+     *
+     * @return array
+     */
+    private function transferParameter($key, $value, $type)
+    {
+        if (is_int($key)) {
+            $key = "?" . $key;
+        } else {
+            $key = ":" . $key;
+        }
+
+        // 参数值类型转换
+        if ($type !== null) {
+            $value = ArrayHelper::trasferTypes($type, $value);
+        }
+
+        if ($type == null && is_string($value) || $type == Types::STRING) {
+            $value = '"' . $value . '"';
+        }
+
+        return [$key, $value];
     }
 }

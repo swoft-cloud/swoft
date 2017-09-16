@@ -164,7 +164,7 @@ class EntityManager implements IEntityManager
      * @param object $entity 实体
      * @param bool   $defer  是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public function delete($entity, $defer = false)
     {
@@ -180,7 +180,7 @@ class EntityManager implements IEntityManager
      * @param mixed  $id        删除ID
      * @param bool   $defer     是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public function deleteById($className, $id, $defer = false)
     {
@@ -196,7 +196,7 @@ class EntityManager implements IEntityManager
      * @param array  $ids       ID集合
      * @param bool   $defer     是否延迟操作
      *
-     * @return bool 成功返回true,错误返回false
+     * @return DataResult|bool|int 返回数据结果对象，成功返回影响行数，如果失败返回false
      */
     public function deleteByIds($className, array $ids, $defer = false)
     {

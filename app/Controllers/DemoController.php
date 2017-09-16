@@ -71,6 +71,7 @@ class DemoController extends Controller
      */
     public function actionIndex3()
     {
+        $a = new AAA();
         $this->outputJson("suc3222");
     }
 
