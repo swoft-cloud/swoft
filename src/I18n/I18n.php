@@ -65,7 +65,7 @@ class I18n
     {
         $key = $category;
         $categoryFile = 'default';
-        if(strpos($category, '.')){
+        if (strpos($category, '.')) {
             list($categoryFile, $key) = explode(".", $category);
         }
         if (!isset($this->messages[$language][$categoryFile][$key])) {

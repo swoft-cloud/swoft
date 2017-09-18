@@ -13,5 +13,4 @@ namespace Swoft\Exception;
  */
 class MysqlException extends \Exception
 {
-
 }

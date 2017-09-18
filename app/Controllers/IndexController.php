@@ -199,7 +199,8 @@ class IndexController extends Controller
     /**
      * @RequestMapping()
      */
-    public function actionPost(){
+    public function actionPost()
+    {
         $this->outputJson([
             'post' => $this->post(),
             'get' => $this->get()

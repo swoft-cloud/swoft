@@ -16,5 +16,4 @@ namespace Swoft\Di\Annotation;
  */
 class RestController
 {
-
 }

@@ -93,7 +93,6 @@ class Container
 
     public function create(string $beanName, array $definition)
     {
-
     }
 
     /**
@@ -250,7 +249,7 @@ class Container
         /* @var ArgsInjection $parameter */
         foreach ($constructorInject->getParameters() as $parameter) {
             $argValue = $parameter->getValue();
-            if(is_array($argValue)){
+            if (is_array($argValue)) {
                 $constructorParameters[] = $this->injectArrayArgs($argValue);
                 continue;
             }
@@ -333,7 +332,6 @@ class Container
     {
         $injectAry = [];
         foreach ($injectProperty as $key => $property) {
-
             // 递归循环注入
             if (is_array($property)) {
                 $injectAry[$key] = $this->injectArrayArgs($property);

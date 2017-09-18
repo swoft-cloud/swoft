@@ -28,7 +28,7 @@ class RedisPool extends ConnectPool
         /* @var \Redis $redis*/
         $redis = new \Swoole\Coroutine\Redis();
         $result = $redis->connect($host, $port, $this->timeout);
-        if($result == false){
+        if ($result == false) {
             App::error("redis连接失败，host=".$host." port=".$port." timeout=".$this->timeout);
             return null;
         }

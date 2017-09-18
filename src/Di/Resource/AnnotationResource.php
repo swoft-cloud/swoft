@@ -160,7 +160,7 @@ class AnnotationResource extends AbstractResource
             }
 
             // @Listener注解
-            if($classAnnotation instanceof Listener){
+            if ($classAnnotation instanceof Listener) {
                 $beanName = $className;
                 $scope = Scope::SINGLETON;
                 $eventName = $classAnnotation->getEvent();

@@ -26,7 +26,6 @@ class DbPool extends ConnectPool
 
     public function createConnect()
     {
-
     }
 
     public function reConnect($client)

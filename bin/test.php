@@ -6,4 +6,4 @@ function test($a, ...$params)
 }
 
 
-test(1,1,2,3,3);
+test(1, 1, 2, 3, 3);

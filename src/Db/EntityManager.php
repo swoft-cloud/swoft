@@ -18,27 +18,22 @@ class EntityManager implements IEntityManager
 
     public function create($isMaster = false)
     {
-        
     }
 
     public function beginTransaction()
     {
-
     }
 
     public function commit()
     {
-
     }
 
     public function rollback()
     {
-
     }
 
     public function createQuery($sql = '')
     {
-
     }
 
     public function createQueryBuilder()

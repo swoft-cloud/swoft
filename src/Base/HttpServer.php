@@ -82,7 +82,7 @@ class HttpServer
             throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
         }
 
-        if(isset($setings['setting']['log_file'])){
+        if (isset($setings['setting']['log_file'])) {
             $logPath = $setings['setting']['log_file'];
             $setings['setting']['log_file'] = App::getAlias($logPath);
         }
@@ -91,7 +91,6 @@ class HttpServer
         $this->http = $setings['http'];
         $this->status = $setings['server'];
         $this->setting = $setings['setting'];
-
     }
 
     /**
