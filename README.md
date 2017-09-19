@@ -19,6 +19,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - 国际化(i18n)
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池Mysql、Redis、RPC
+- 数据库ORM
 - inotify自动reload
 - 强大的日志系统
 
@@ -26,7 +27,6 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 - 连接池等待队列
 - restful风格
-- 数据库ORM(自动验证、模型、db)
 - crontab定时任务
 - 服务监控
 - 日志统计分析
