@@ -48,7 +48,13 @@ abstract class ConnectPool implements Pool
     protected $useProvider = false;
 
     /**
-     * @var string 有效连接地址，多个逗号分开"127.0.0.1:88,127.0.0.1:89"
+     * @var array 有效连接地址
+     * <pre>
+     * [
+     *  '127.0.0.1:88',
+     *  '127.0.0.1:88'
+     * ]
+     * </pre>
      */
     protected $uri = "";
 
@@ -144,7 +150,7 @@ abstract class ConnectPool implements Pool
             App::error($this->serviceName."服务，没有配置uri");
             throw new \InvalidArgumentException($this->serviceName."服务，没有配置uri");
         }
-        return explode(',', $this->uri);
+        return $this->uri;
     }
 
     abstract public function createConnect();

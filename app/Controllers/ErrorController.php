@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Swoft\App;
-use Swoft\Di\Annotation\AutoController;
+use Swoft\Bean\Annotation\AutoController;
 use Swoft\Web\Controller;
 
 /**

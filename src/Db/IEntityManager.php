@@ -3,7 +3,7 @@
 namespace Swoft\Db;
 
 /**
- *
+ * 实体管理器接口
  *
  * @uses      IEntityManager
  * @version   2017年09月01日
@@ -13,25 +13,46 @@ namespace Swoft\Db;
  */
 interface IEntityManager
 {
-    public function create($isMaster = false);
+    /**
+     * 实例化一个实体管理器
+     *
+     * @param bool $isMaster 默认从节点
+     *
+     * @return EntityManager
+     */
+    public static function create($isMaster = false);
 
-    public function beginTransaction();
+    /**
+     * 实例化一个指定ID的实体管理器
+     *
+     * @param string $poolId 其它数据库连接池ID
+     *
+     * @return EntityManager
+     */
+    public static function createById(string $poolId);
 
-    public function commit();
-
+    /**
+     * 回滚事务
+     */
     public function rollback();
 
-    public function createQuery($sql = '');
+    /**
+     * 开始事务
+     */
+    public function beginTransaction();
 
-    public function createQueryBuilder();
+    /**
+     * 提交事务
+     */
+    public function commit();
 
-    public function save($entity);
 
-    public function update($entity);
-
-    public function delete($entity);
-
-    public function findByPk($entity, ...$params);
-
-    public function find($entity);
+    /**
+     * 创建一个查询器
+     *
+     * @param string $sql sql语句，默认为空
+     *
+     * @return QueryBuilder
+     */
+    public function createQuery(string $sql = '');
 }
