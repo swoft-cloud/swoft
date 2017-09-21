@@ -4,11 +4,11 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Inject;
+use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Web\Controller;
-use Swoft\Di\Annotation\RequestMethod;
 
 /**
  * 控制器demo
@@ -71,7 +71,8 @@ class DemoController extends Controller
      */
     public function actionIndex3()
     {
-        $this->outputJson("suc3");
+        $a = new AAA();
+        $this->outputJson("suc3222");
     }
 
     /**

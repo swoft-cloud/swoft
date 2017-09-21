@@ -6,7 +6,7 @@ use Swoft\App;
 use Swoft\Base\RequestContext;
 use Swoft\Event\Event;
 use Swoft\Filter\FilterChain;
-use Swoft\Helpers\ResponseHelper;
+use Swoft\Helper\ResponseHelper;
 
 /**
  * 应用主体

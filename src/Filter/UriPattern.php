@@ -2,7 +2,7 @@
 
 namespace Swoft\Filter;
 
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 
 /**
  * 过滤器规则匹配

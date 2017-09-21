@@ -4,8 +4,8 @@ namespace App\Models\Logic;
 
 use App\Models\Data\UserData;
 use App\Models\Data\UserExtData;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Inject;
 
 /**
  *

@@ -13,6 +13,9 @@ namespace Swoft\Event;
  */
 class Event
 {
+    // 应用初始化加载监听器
+    const APPLICATION_LOADER = "applicationLoader";
+
     // 请求前事件
     const BEFORE_REQUEST = "beforeRequest";
 

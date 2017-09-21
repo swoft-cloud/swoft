@@ -2,53 +2,173 @@
 
 namespace App\Models\Entity;
 
-use App\Models\Logic\IndexLogic;
-use Monolog\Logger;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Db\Model;
+use Swoft\Bean\Annotation\Column;
+use Swoft\Bean\Annotation\Entity;
+use Swoft\Bean\Annotation\Enum;
+use Swoft\Bean\Annotation\Id;
+use Swoft\Bean\Annotation\Required;
+use Swoft\Bean\Annotation\Table;
+use Swoft\Db\Types;
 
 /**
- * @Bean(name="userModel")
+ * 用户实体
  *
+ * @Entity()
+ * @Table(name="user")
  * @uses      User
  * @version   2017年08月23日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class User
+class User extends Model
 {
     /**
-     * @Inject("${logger}")
-     * @var Logger
+     * 主键ID
+     *
+     * @Id()
+     * @Column(name="id", type=Types::INT)
+     * @var null|int
      */
-    private $d2;
+    private $id;
 
     /**
-     * @Inject()
-     * @var IndexLogic
+     * 名称
+     *
+     * @Column(name="name", type=Types::STRING, length=20)
+     * @Required()
+     * @var null|string
      */
-    private $data;
+    private $name;
+
 
     /**
-     * @Inject("${config.Service.user.timeout}")
+     * 年龄
+     *
+     * @Column(name="age", type=Types::INT)
      * @var int
      */
-    private $data2;
+    private $age = 0;
 
     /**
-     * @Inject(name="${config.user.stelin.steln}")
+     * 性别
+     *
+     * @Column(name="sex", type="int")
+     * @Enum(value={1,0})
+     * @var int
+     */
+    private $sex = 0;
+
+
+    /**
+     * 描述
+     *
+     * @Column(name="description", type="string")
      * @var string
      */
-    private $data3;
+    private $desc = "";
 
-    private $data4;
+    /**
+     * 非数据库字段，未定义映射关系
+     *
+     * @var mixed
+     */
+    private $otherProperty;
 
-    private $data5;
-
-
-    public function getData()
+    /**
+     * @return int|null
+     */
+    public function getId()
     {
-        return $this->data;
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param null|string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param int $age
+     */
+    public function setAge(int $age)
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSex(): int
+    {
+        return $this->sex;
+    }
+
+    /**
+     * @param int $sex
+     */
+    public function setSex(int $sex)
+    {
+        $this->sex = $sex;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDesc(): string
+    {
+        return $this->desc;
+    }
+
+    /**
+     * @param string $desc
+     */
+    public function setDesc(string $desc)
+    {
+        $this->desc = $desc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOtherProperty()
+    {
+        return $this->otherProperty;
+    }
+
+    /**
+     * @param mixed $otherProperty
+     */
+    public function setOtherProperty($otherProperty)
+    {
+        $this->otherProperty = $otherProperty;
     }
 }

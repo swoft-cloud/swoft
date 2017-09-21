@@ -36,6 +36,8 @@ abstract class AbstractResult implements IResult
      */
     protected $sendResult = true;
 
+    protected $release = true;
+
     /**
      * AbstractResult constructor.
      *
@@ -43,13 +45,15 @@ abstract class AbstractResult implements IResult
      * @param mixed       $client
      * @param string      $profileKey
      * @param bool        $result
+     * @param bool        $release
      */
-    public function __construct($connectPool, $client, string $profileKey, $result)
+    public function __construct($connectPool, $client, string $profileKey, $result, $release = true)
     {
         $this->connectPool = $connectPool;
         $this->client = $client;
         $this->profileKey = $profileKey;
         $this->sendResult = $result;
+        $this->release = $release;
     }
 
     /**
@@ -69,7 +73,10 @@ abstract class AbstractResult implements IResult
         if ($defer) {
             $this->client->setDefer(false);
         }
-        $this->connectPool->release($this->client);
+
+        if($this->release){
+            $this->connectPool->release($this->client);
+        }
         return $result;
     }
 }
