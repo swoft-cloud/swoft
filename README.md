@@ -41,6 +41,14 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 * 2017-09-02 别名机制、事件机制、国际化(i18n),命名空间统一大写。
 * 2017-09-19 数据库ORM
 
+# 系统架构
+
+<p align="center">
+    <a href="https://github.com/stelin/swoft" target="_blank">
+        <img src="https://github.com/swoft-cloud/swoft-doc/blob/master/assets/images/architecture.png" alt="swoft" />
+    </a>
+</p>
+
 # 快速入门
 ## 文档
 [**中文文档**](https://doc.swoft.org)
