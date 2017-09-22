@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\Cache\RedisClient;
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Inject;
+use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Http\HttpClient;
 use Swoft\Service\Service;
 use Swoft\App;
@@ -199,7 +199,8 @@ class IndexController extends Controller
     /**
      * @RequestMapping()
      */
-    public function actionPost(){
+    public function actionPost()
+    {
         $this->outputJson([
             'post' => $this->post(),
             'get' => $this->get()

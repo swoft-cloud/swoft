@@ -3,10 +3,10 @@
 namespace Swoft\Event\Listeners;
 
 use Swoft\Base\RequestContext;
-use Swoft\Di\Annotation\Listener;
+use Swoft\Bean\Annotation\Listener;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Event\IApplicationListener;
-use  Swoft\Event\Event;
+use Swoft\Event\Event;
 
 /**
  * rpc请求处理之前事件
@@ -30,7 +30,7 @@ class BeforeReceiveListener implements IApplicationListener
      */
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params)
     {
-        if(!isset($params[0])){
+        if (!isset($params[0])) {
             return ;
         }
 

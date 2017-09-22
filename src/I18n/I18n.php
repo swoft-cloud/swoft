@@ -3,8 +3,8 @@
 namespace Swoft\I18n;
 
 use Swoft\App;
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Inject;
 
 /**
  * 国际化
@@ -65,7 +65,7 @@ class I18n
     {
         $key = $category;
         $categoryFile = 'default';
-        if(strpos($category, '.')){
+        if (strpos($category, '.')) {
             list($categoryFile, $key) = explode(".", $category);
         }
         if (!isset($this->messages[$language][$categoryFile][$key])) {

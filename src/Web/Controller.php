@@ -6,7 +6,7 @@ use App\beans\Filters\CommonParamsFilter;
 use App\beans\Filters\LoginFilter;
 use Swoft\Base\RequestContext;
 use Swoft\App;
-use Swoft\Helpers\ResponseHelper;
+use Swoft\Helper\ResponseHelper;
 
 /**
  * 控制器
@@ -87,7 +87,7 @@ class Controller extends \Swoft\Base\Controller
     private function checkTemplateFile(string $viewsPath, string $templateId)
     {
         $file = $viewsPath.$templateId;
-        if(!file_exists($file)){
+        if (!file_exists($file)) {
             App::error($file."模板文件不存在");
             throw new \InvalidArgumentException($file."模板文件不存在");
         }

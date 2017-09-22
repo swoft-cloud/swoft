@@ -3,7 +3,7 @@
 namespace Swoft\Web;
 
 use Swoft\App;
-use Swoft\Helpers\ResponseHelper;
+use Swoft\Helper\ResponseHelper;
 
 /**
  * 内部服务基类
@@ -50,7 +50,6 @@ class InnerService
      */
     public function beforeService(string $method, array $params)
     {
-
     }
 
     /**
@@ -61,6 +60,5 @@ class InnerService
      */
     public function afterService(string $method, array $params)
     {
-
     }
 }

@@ -35,11 +35,11 @@ class Controller
      */
     public function run(string $actionId, array $params = []): \Swoft\Web\Response
     {
-        if(empty($actionId)){
+        if (empty($actionId)) {
             $actionId = $this->defaultAction;
         }
         $response = $this->runAction($actionId, $params);
-        if(!($response instanceof \Swoft\Web\Response)){
+        if (!($response instanceof \Swoft\Web\Response)) {
             $response = RequestContext::getResponse();
         }
         return $response;
@@ -92,7 +92,7 @@ class Controller
     public function getMethodName(string $actionId)
     {
         $methodName = $this->actionPrefix.ucfirst($actionId);
-        if(method_exists($this, $methodName) == false){
+        if (method_exists($this, $methodName) == false) {
             App::error("控制器执行action方法不存在，method=".$methodName);
             throw new \BadMethodCallException("控制器执行action方法不存在，method=".$methodName);
         }
@@ -107,7 +107,6 @@ class Controller
      */
     protected function beforeAction(string $actionId, array $params = [])
     {
-
     }
 
     /**
@@ -118,7 +117,6 @@ class Controller
      */
     protected function afterAction(string $actionId, array $params = [])
     {
-
     }
 
     /**

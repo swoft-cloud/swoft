@@ -119,7 +119,8 @@ class HttpServer extends \Swoft\Base\HttpServer
      *
      * @param Process $process
      */
-    public function reloadCallback(Process $process){
+    public function reloadCallback(Process $process)
+    {
         $processName = $this->status['pname'] . " reload process";
         $process->name($processName);
         $inotify = new Inotify($this);

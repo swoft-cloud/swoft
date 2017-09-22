@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers\Services;
 
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 use Swoft\Web\InnerService;
 
 /**
@@ -24,8 +24,7 @@ class UserService extends InnerService
         ];
 
         $data = [];
-        foreach ($uids as $uid){
-
+        foreach ($uids as $uid) {
             $user['uid'] = $uid;
             $data[] = $user;
         }

@@ -21,7 +21,7 @@ class LoginFilter extends Filter
     public function doFilter(Request $request, Response $response, FilterChain $filterChain, int $currentIndex = 0)
     {
         $uid = $request->getParameter('uid');
-        if($uid != 6){
+        if ($uid != 6) {
             $this->denyFilter($request, $response);
             return false;
         }

@@ -2,14 +2,17 @@
 
 namespace App\Models\Entity;
 
-use Doctrine\Common\Annotations\Annotation\Enum;
-use Swoft\Di\Annotation\Column;
-use Swoft\Di\Annotation\Entity;
-use Swoft\Di\Annotation\Id;
-use Swoft\Di\Annotation\Required;
-use Swoft\Di\Annotation\Table;
+use Swoft\Db\Model;
+use Swoft\Bean\Annotation\Column;
+use Swoft\Bean\Annotation\Entity;
+use Swoft\Bean\Annotation\Enum;
+use Swoft\Bean\Annotation\Id;
+use Swoft\Bean\Annotation\Required;
+use Swoft\Bean\Annotation\Table;
+use Swoft\Db\Types;
 
 /**
+ * 用户实体
  *
  * @Entity()
  * @Table(name="user")
@@ -19,23 +22,23 @@ use Swoft\Di\Annotation\Table;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class User
+class User extends Model
 {
     /**
      * 主键ID
      *
      * @Id()
-     * @Column(name="id", type="int")
-     * @var int
+     * @Column(name="id", type=Types::INT)
+     * @var null|int
      */
     private $id;
 
     /**
      * 名称
      *
-     * @Column(name="name", type="string", length=20)
+     * @Column(name="name", type=Types::STRING, length=20)
      * @Required()
-     * @var string
+     * @var null|string
      */
     private $name;
 
@@ -43,7 +46,7 @@ class User
     /**
      * 年龄
      *
-     * @Column(name="age", type="int")
+     * @Column(name="age", type=Types::INT)
      * @var int
      */
     private $age = 0;
@@ -52,7 +55,7 @@ class User
      * 性别
      *
      * @Column(name="sex", type="int")
-     * @Required()
+     * @Enum(value={1,0})
      * @var int
      */
     private $sex = 0;
@@ -66,35 +69,41 @@ class User
      */
     private $desc = "";
 
+    /**
+     * 非数据库字段，未定义映射关系
+     *
+     * @var mixed
+     */
+    private $otherProperty;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      */
-    public function setName(string $name)
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -145,5 +154,21 @@ class User
     public function setDesc(string $desc)
     {
         $this->desc = $desc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOtherProperty()
+    {
+        return $this->otherProperty;
+    }
+
+    /**
+     * @param mixed $otherProperty
+     */
+    public function setOtherProperty($otherProperty)
+    {
+        $this->otherProperty = $otherProperty;
     }
 }

@@ -3,11 +3,11 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Di\BeanFactory;
+use Swoft\Bean\Collector;
 use Swoft\Event\Event;
 
 /**
- *
+ * 应用初始化
  *
  * @uses      InitApplicationContext
  * @version   2017年09月04日
@@ -17,29 +17,43 @@ use Swoft\Event\Event;
  */
 class InitApplicationContext
 {
+    /**
+     * 初始化
+     */
     public function init()
     {
+        // 注册监听器
         $this->registerListeners();
+        // 初始化时间
         $this->applicationLoader();
+        // 路由加载
         $this->autoloadRoutes();
     }
+
+    /**
+     * 注册监听器
+     */
     private function registerListeners()
     {
         // 监听器注册
-        $listeners = BeanFactory::getResourceDataProxy()->listeners;
+        $listeners = Collector::$listeners;
         ApplicationContext::registerListeners($listeners);
     }
 
+    /**
+     * 初始化事件
+     */
     private function applicationLoader()
     {
         // 应用初始化加载事件
-        $resourceDataProxy = BeanFactory::getResourceDataProxy();
-        App::trigger(Event::APPLICATION_LOADER, null, $resourceDataProxy);
+        App::trigger(Event::APPLICATION_LOADER, null);
     }
 
+    /**
+     * 重新加载路由
+     */
     private function autoloadRoutes()
     {
-        // 重新加载路由
         require_once BASE_PATH . '/app/routes.php';
     }
 }

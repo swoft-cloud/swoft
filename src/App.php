@@ -2,11 +2,12 @@
 
 namespace Swoft;
 
-use App\Models\Logic\IndexLogic;
 use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
+use Swoft\Bean\BeanFactory;
+use Swoft\Bean\Collector;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
@@ -112,7 +113,8 @@ class App
     /**
      * @return Application
      */
-    public static function getApplication(){
+    public static function getApplication()
+    {
         return ApplicationContext::getBean('application');
     }
 
@@ -269,13 +271,13 @@ class App
      */
     public static function getAlias(string $alias)
     {
-        if(isset(self::$aliases[$alias])){
+        if (isset(self::$aliases[$alias])) {
             return self::$aliases[$alias];
         }
 
         // $path不是别名，直接返回
         $isAlias = strpos($alias, '@');
-        if($isAlias === false){
+        if ($isAlias === false) {
             return $alias;
         }
 

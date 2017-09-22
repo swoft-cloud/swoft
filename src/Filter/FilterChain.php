@@ -89,6 +89,5 @@ class FilterChain implements IFilter
      */
     public function denyFilter(Request $request, Response $response)
     {
-
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Swoft\Console\Style;
 
-use Swoft\Di\Annotation\Bean;
-use Swoft\Di\Annotation\Inject;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Pool\Balancer\RandomBalancer;
 use Swoft\Pool\Balancer\RoundRobinBalancer;
 
@@ -114,7 +114,7 @@ class LiteStyle
             return $text;
         }
 
-        if(is_string($style)) {
+        if (is_string($style)) {
             $out = self::$styles[$style] ?? self::NORMAL;
         } elseif (is_int($style)) {
             $out = $style;
@@ -126,7 +126,7 @@ class LiteStyle
             $out = self::NORMAL;
         }
 
-//        $result = chr(27). "$out{$text}" . chr(27) . chr(27) . "[0m". chr(27);
+        // $result = chr(27). "$out{$text}" . chr(27) . chr(27) . "[0m". chr(27);
         return "\033[{$out}m{$text}\033[0m";
     }
 

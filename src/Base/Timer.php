@@ -3,7 +3,7 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 
 /**
  * 定时器
@@ -137,10 +137,10 @@ class Timer
     private function afterTimer(string $name)
     {
         unset($this->timers[$name]);
-
         // 目前有bug,协程发生切换，先忽略
-//        App::getLogger()->appendNoticeLog();
-//        RequestContext::destory();
+
+        //App::getLogger()->appendNoticeLog();
+        //RequestContext::destory();
     }
 
     /**

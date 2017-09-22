@@ -2,15 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Models\Entity\User;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Db\EntityManager;
-use Swoft\Di\Annotation\AutoController;
-use Swoft\Di\Annotation\Inject;
-use Swoft\Di\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Inject;
+use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Web\Controller;
-use Swoft\Di\Annotation\RequestMethod;
 
 /**
  * 控制器demo
@@ -73,41 +71,8 @@ class DemoController extends Controller
      */
     public function actionIndex3()
     {
+        $a = new AAA();
         $this->outputJson("suc3222");
-    }
-
-    public function actionQueryArray(){
-        $em = EntityManager::create();
-        $query = $em->createQuery('select * from user where name=:name and sex=:sex');
-        $query->setParameter("name", "stelin");
-        $query->setParameter("sex", 1);
-        $users = $query->getResult();
-        $sql = $query->getSql();
-        $em->close();
-        $this->outputJson([$sql, $users]);
-    }
-
-    public function actionQueryEntity(){
-        $em = EntityManager::create();
-        $query = $em->createQuery('select * from user where name=:name and sex=:sex');
-        $query->setParameter("name", "stelin");
-        $query->setParameter("sex", 1);
-        $result = $query->getResult(User::class);
-        $sql = $query->getSql();
-
-        $em->close();
-
-        $users = [];
-        /* @var User $userEntity*/
-        foreach ($result as $userEntity){
-            $user['id'] = $userEntity->getId();
-            $user['name'] = $userEntity->getName();
-            $user['age'] = $userEntity->getAge();
-            $user['sex'] = $userEntity->getSex();
-            $user['desc'] = $userEntity->getDesc();
-            $users[] = $user;
-        }
-        $this->outputJson([$sql, $users]);
     }
 
     /**

@@ -23,7 +23,7 @@ class CommonParamsFilter extends Filter
     {
         // 过滤验证
         $result = true;
-        if($result == true){
+        if ($result == true) {
             return $filterChain->doFilter($request, $response, $filterChain, $currentIndex);
         }
 
