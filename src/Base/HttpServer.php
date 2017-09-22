@@ -3,6 +3,8 @@
 namespace Swoft\Base;
 
 use Swoft\App;
+use Swoft\Crontab\Crontab;
+use Swoole\Process;
 
 /**
  * Http服务器
@@ -36,6 +38,11 @@ class HttpServer
     protected $setting;
 
     /**
+     * @var array crontab配置信息
+     */
+    protected $crontab;
+
+    /**
      * @var \Swoole\Server\Port tcp监听器
      */
     protected $listen;
@@ -67,30 +74,40 @@ class HttpServer
     protected function loadSwoftConfig()
     {
         $settingsPath = App::getAlias('@settings');
-        $setings = parse_ini_file($settingsPath, true);
-        if (!isset($setings['tcp'])) {
-            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($setings));
+        $settings = parse_ini_file($settingsPath, true);
+        if (!isset($settings['tcp'])) {
+            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($settings));
         }
-        if (!isset($setings['http'])) {
-            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($setings));
+        if (!isset($settings['http'])) {
+            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($settings));
         }
-        if (!isset($setings['server'])) {
-            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($setings));
-        }
-
-        if (!isset($setings['setting'])) {
-            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($setings));
+        if (!isset($settings['server'])) {
+            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($settings));
         }
 
-        if (isset($setings['setting']['log_file'])) {
-            $logPath = $setings['setting']['log_file'];
-            $setings['setting']['log_file'] = App::getAlias($logPath);
+        if (!isset($settings['setting'])) {
+            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($settings));
         }
 
-        $this->tcp = $setings['tcp'];
-        $this->http = $setings['http'];
-        $this->status = $setings['server'];
-        $this->setting = $setings['setting'];
+        if (isset($settings['setting']['log_file'])) {
+            $logPath = $settings['setting']['log_file'];
+            $settings['setting']['log_file'] = App::getAlias($logPath);
+        }
+
+        if (!isset($settings['crontab'])) {
+            $settings['crontab']['enable'] = 0;
+        } else {
+            if ($settings['crontab']['enable'] === 1) {
+                !isset($settings['setting']['task_worker_num']) && $settings['setting']['task_worker_num'] = 0;
+                $settings['setting']['task_worker_num'] = (int)(abs($settings['setting']['task_worker_num'])) + Crontab::TASKER_NUM;
+            }
+        }
+
+        $this->tcp = $settings['tcp'];
+        $this->http = $settings['http'];
+        $this->status = $settings['server'];
+        $this->setting = $settings['setting'];
+        $this->crontab = $settings['crontab'];
     }
 
     /**
@@ -212,5 +229,111 @@ class HttpServer
     public function setScriptFile(string $scriptFile)
     {
         $this->scriptFile = $scriptFile;
+    }
+
+    /**
+     * 加载Bean
+     */
+    protected function initLoadBean() : bool
+    {
+        require_once BASE_PATH . '/config/reload.php';
+
+        return true;
+    }
+
+    /**
+     * 唤醒crontab
+     * 
+     * @param \Swoole\Server $server
+     * @param int            $workerId
+     *
+     * @return bool
+     */
+    protected function wakeUpCrontab(\Swoole\Server $server, int $workerId) : bool
+    {
+        if (!$this->crontab['enable']) {
+            return false;
+        }
+
+        $setting = $server->setting;
+
+        // 第1/2个tasker进程添加定时器
+        if (($taskerId = $workerId - $setting['worker_num']) === 0 || ($taskerId = $workerId - $setting['worker_num']) === 1) {
+            if (($crontab = App::getCrontab())->getTaskList()) {
+                if ($taskerId === 1) {
+                    swoole_set_process_name('php-swf : timer-crontab');
+                    // 分整点载入
+                    $server->after(((60 - date('s')) * 1000), function () use ($server, $crontab) {
+                        // 每分钟检查一次,把下一分钟需要执行的任务列出来
+                        $crontab->checkTask();
+                        $server->tick(60 * 1000, function () use ($crontab) {
+                            $crontab->checkTask();
+                        });
+                    });
+                } else {
+                    $server->tick(0.5 * 1000, function () use ($crontab) {
+                        $tasks = $crontab->getExecTasks();
+                        if (!empty($tasks)) {
+                            foreach ($tasks as $task) {
+                                $process = new Process(function (Process $process) use ($task, $crontab) {
+                                    $process->exec($task['cmd'], $task['args']);
+                                    $crontab->finishTask($task['key']);
+                                }, false, false);
+                                $process->name('php-swf : exec-crontab');
+                                $pid = $process->start();
+
+                                //回收子进程
+                                $ret =  \Swoole\Process::wait();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 判断task进程是否为crontab进程
+     * 如果启用了crontab , 由于tasker进程的第1/2个tasker进程用于crontab
+     * 如果投递task任务到第1/2个tasker进程的话，将不处理内容
+     *
+     * @param \Swoole\Server $server
+     * @param int            $workerId
+     *
+     * @return bool
+     */
+    protected function isCrontabTask($server, int $workerId) : bool
+    {
+        $taskerId = $workerId - $server->setting['worker_num'];
+
+        if ((int)$this->crontab['enable'] && in_array($taskerId, [0, 1])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Tasker进程回调
+     *
+     * @param \Swoole\Server $server
+     * @param int            $taskId
+     * @param int            $workerId
+     * @param mixed          $data
+     *
+     */
+    public function onTask(\Swoole\Server $server, int $taskId, int $workerId, $data)
+    {
+        if ($this->isCrontabTask($server, $workerId)) {
+            throw new \InvalidArgumentException('不允许投递到corntab进程');
+        }
+
+        $ret = $this->onTaskWork($server, $taskId, $workerId, $data);
+
+        if ($ret !== null) {
+            return $ret;
+        }
     }
 }

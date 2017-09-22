@@ -97,5 +97,5 @@ return [
             '${noticeHandler}',
             '${applicationHandler}'
         ]
-    ],
+    ]
 ];
