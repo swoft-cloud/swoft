@@ -1,9 +1,7 @@
 <?php
 // beans配置
 $definitions = require_once BASE_PATH . '/config/base.php';
+$beanFactory = new \Swoft\Bean\BeanFactory($definitions);
 
-// 初始化beans
-$beanFactory = new \Swoft\Di\BeanFactory($definitions);
-
-// 重新加载路由
-require_once BASE_PATH . '/app/routes.php';
+$initApplicationContext = new \Swoft\Base\InitApplicationContext();
+$initApplicationContext->init();

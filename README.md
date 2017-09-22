@@ -19,6 +19,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - 国际化(i18n)
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池Mysql、Redis、RPC
+- 数据库ORM
 - inotify自动reload
 - 强大的日志系统
 
@@ -26,7 +27,6 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 - 连接池等待队列
 - restful风格
-- 数据库ORM(自动验证、模型、db)
 - crontab定时任务
 - 服务监控
 - 日志统计分析
@@ -39,6 +39,15 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 * 2017-08-24 重写IOC容器，新增控制器路由注解注册，不再依赖php-di。使用时，重新composer安装
 * 2017-08-28 inotify自动reload
 * 2017-09-02 别名机制、事件机制、国际化(i18n),命名空间统一大写。
+* 2017-09-19 数据库ORM
+
+# 系统架构
+
+<p align="center">
+    <a href="https://github.com/stelin/swoft" target="_blank">
+        <img src="https://github.com/swoft-cloud/swoft-doc/blob/master/assets/images/architecture.png" alt="swoft" />
+    </a>
+</p>
 
 # 快速入门
 ## 文档

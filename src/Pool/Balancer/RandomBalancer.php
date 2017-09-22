@@ -2,7 +2,7 @@
 
 namespace Swoft\Pool\Balancer;
 
-use Swoft\Di\Annotation\Bean;
+use Swoft\Bean\Annotation\Bean;
 
 /**
  * 随机选取负责

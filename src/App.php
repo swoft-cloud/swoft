@@ -2,11 +2,12 @@
 
 namespace Swoft;
 
-use App\Models\Logic\IndexLogic;
 use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
+use Swoft\Bean\BeanFactory;
+use Swoft\Bean\Collector;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;

@@ -3,7 +3,7 @@
 namespace Swoft\Web;
 
 use Swoft\App;
-use Swoft\Helpers\ResponseHelper;
+use Swoft\Helper\ResponseHelper;
 
 /**
  * 内部服务基类
