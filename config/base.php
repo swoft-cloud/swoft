@@ -133,5 +133,5 @@ return [
             '${noticeHandler}',
             '${applicationHandler}'
         ]
-    ],
+    ]
 ];

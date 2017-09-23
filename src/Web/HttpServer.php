@@ -4,7 +4,7 @@ namespace Swoft\Web;
 
 use Swoft\App;
 use Swoft\Base\Inotify;
-use Swoole\Process;
+use Swoft\Di\BeanFactory;
 
 /**
  * http服务器
@@ -31,6 +31,11 @@ class HttpServer extends \Swoft\Base\HttpServer
         $this->swoft->on('workerstart', [$this, 'onWorkerStart']);
         $this->swoft->on('managerstart', [$this, 'onManagerStart']);
         $this->swoft->on('request', [$this, 'onRequest']);
+
+        if ($this->setting['task_worker_num']) {
+            $this->swoft->on('task', [$this, 'onTask']);
+            $this->swoft->on('finish', [$this, 'onFinish']);
+        }
 
         if ((int)$this->tcp['enable'] === 1) {
             $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
@@ -85,7 +90,8 @@ class HttpServer extends \Swoft\Base\HttpServer
         }
 
         // reload重新加载文件
-        $this->beforeOnWorkerStart();
+        $this->beforeOnWorkerStart($server, $workerId);
+
     }
 
     /**
@@ -132,6 +138,8 @@ class HttpServer extends \Swoft\Base\HttpServer
      */
     private function beforeStart()
     {
+        $this->sharedMemory();
+
         if (!AUTO_RELOAD || !extension_loaded('inotify')) {
             echo "自动reload未开启，请检查配置(AUTO_RELOAD)和inotify扩展是否安装正确! \n";
             return;
@@ -143,20 +151,76 @@ class HttpServer extends \Swoft\Base\HttpServer
     }
 
     /**
-     * worker start之前运行
+     * master进程加载前
      */
-    private function beforeOnWorkerStart()
+    private function sharedMemory()
     {
-        require_once BASE_PATH . '/config/reload.php';
+        App::setCrontab();
     }
 
+    /**
+     * worker start之前运行
+     *
+     * @param \Swoole\Http\Server $server
+     * @param int                 $workerId
+     */
+    private function beforeOnWorkerStart(\Swoole\Http\Server $server, int $workerId)
+    {
+        // 加载bean
+        $this->initLoadBean();
+
+        // 校验是否启动crontab
+        $this->wakeUpCrontab($server, $workerId);
+    }
+
+    /**
+     * 连接成功后回调函数
+     *
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $from_id
+     *
+     */
     public function onConnect(\Swoole\Server $server, int $fd, int $from_id)
     {
         var_dump("connnect------");
     }
 
+    /**
+     * 连接断开成功后回调函数
+     *
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $reactorId
+     *
+     */
     public function onClose(\Swoole\Server $server, int $fd, int $reactorId)
     {
         var_dump("close------");
+    }
+
+    /**
+     * Tasker内容回调
+     *
+     * @param \Swoole\Server $server
+     * @param int            $taskId
+     * @param int            $workerId
+     * @param mixed          $data
+     */
+    public function onTaskWork(\Swoole\Server $server, int $taskId, int $workerId, $data)
+    {
+       // do you want to do
+    }
+
+    /**
+     * worker收到tasker消息的回调函数
+     *
+     * @param \Swoole\Server $server
+     * @param int            $taskId
+     * @param string         $data
+     */
+    public function onFinish(\Swoole\Server $server, int $taskId, string $data)
+    {
+        var_dump(__FUNCTION__);
     }
 }

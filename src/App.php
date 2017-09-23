@@ -16,6 +16,7 @@ use Swoft\Service\IPack;
 use Swoft\Web\Application;
 use Swoft\Web\ErrorHandler;
 use Swoft\Web\HttpServer;
+use Swoft\Crontab\Crontab;
 
 /**
  * 应用简写类
@@ -51,6 +52,11 @@ class App
     public static $properties;
 
     /**
+     * crontab
+     */
+    public static $crontab;
+
+    /**
      * 别名库
      *
      * @var array
@@ -59,10 +65,44 @@ class App
         '@Swoft' => __DIR__
     ];
 
+    /**
+     * 获取mysqlBean对象
+     */
     public static function getMysqlPool()
     {
         return self::getBean('mysql');
     }
+
+    /**
+     * 设置crontab对象
+     *
+     * @return Crontab
+     */
+    public static function setCrontab() : Crontab
+    {
+        if ((!self::$crontab instanceof Crontab)) {
+            self::$crontab = Crontab::getInstance();
+            self::$crontab->init();
+
+            self::$crontab->setTaskConfig(require_once BASE_PATH . '/config/crontab.php');
+
+            self::$crontab->initLoad();
+
+        }
+
+        return self::getCrontab();
+    }
+
+    /**
+     * 获取crontab
+     *
+     * @return Crontab | null
+     */
+    public static function getCrontab()
+    {
+        return self::$crontab;
+    }
+
 
     /**
      * redis连接池
