@@ -4,6 +4,8 @@ namespace Swoft\Web;
 
 use Swoft\App;
 use Swoft\Base\Inotify;
+use Swoft\Base\RequestContext;
+use Swoft\Task\Task;
 use Swoole\Http\Server;
 use Swoole\Process;
 
@@ -19,6 +21,11 @@ use Swoole\Process;
 class HttpServer extends \Swoft\Base\HttpServer
 {
     /**
+     * @var \swoole_process
+     */
+    private $process;
+
+    /**
      * 启动Http Server
      */
     public function start()
@@ -32,11 +39,8 @@ class HttpServer extends \Swoft\Base\HttpServer
         $this->swoft->on('workerstart', [$this, 'onWorkerStart']);
         $this->swoft->on('managerstart', [$this, 'onManagerStart']);
         $this->swoft->on('request', [$this, 'onRequest']);
-
-        if ($this->setting['task_worker_num']) {
-            $this->swoft->on('task', [$this, 'onTask']);
-            $this->swoft->on('finish', [$this, 'onFinish']);
-        }
+        $this->swoft->on('task', [$this, 'onTask']);
+        $this->swoft->on('finish', [$this, 'onFinish']);
 
         if ((int)$this->tcp['enable'] === 1) {
             $this->listen = $this->swoft->listen($this->tcp['host'], $this->tcp['port'], $this->tcp['type']);
@@ -63,6 +67,7 @@ class HttpServer extends \Swoft\Base\HttpServer
         file_put_contents($this->status['pfile'], $server->master_pid);
         file_put_contents($this->status['pfile'], ',' . $server->manager_pid, FILE_APPEND);
         swoole_set_process_name($this->status['pname'] . " master process (" . $this->scriptFile . ")");
+
     }
 
     /**
@@ -73,13 +78,38 @@ class HttpServer extends \Swoft\Base\HttpServer
     public function onManagerStart(Server $server)
     {
         swoole_set_process_name($this->status['pname'] . " manager process");
+
+        //        $process = new \swoole_process(function (\swoole_process $process) {
+        //
+        //            swoole_timer_tick(1000, function(){
+        //                echo "timeout\n";
+        //            });
+        //        }, false);
+        //
+        //        $process->name('php-swf crontab-execute');
+        //        $pid = $process->start();
+        //        var_dump($pid);
+        //
+        //        $process2 = new \swoole_process(function (\swoole_process $process) {
+        //
+        //            swoole_timer_tick(1000, function(){
+        //                echo "timeout\n";
+        //            });
+        //        }, false);
+        //
+        //        $process2->name('php-swf crontab-scan');
+        //        $pid = $process2->start();
+        //
+        //        var_dump($pid);
+        //
+        //        $pids = \Swoole\Process::wait();
     }
 
     /**
      * worker进程启动前初始化
      *
      * @param Server $server
-     * @param int                 $workerId
+     * @param int    $workerId
      */
     public function onWorkerStart(Server $server, int $workerId)
     {
@@ -89,6 +119,7 @@ class HttpServer extends \Swoft\Base\HttpServer
         } else {
             swoole_set_process_name($this->status['pname'] . " worker process");
         }
+
 
         // reload重新加载文件
         $this->beforeOnWorkerStart($server, $workerId);
@@ -148,7 +179,12 @@ class HttpServer extends \Swoft\Base\HttpServer
 
         // 添加重新加载进程
         $reloadProcess = new Process([$this, 'reloadCallback'], false, 2);
+
+
+        //        $this->process = $process;
+
         $this->swoft->addProcess($reloadProcess);
+        //        $this->swoft->addProcess($process);
     }
 
     /**
@@ -163,15 +199,34 @@ class HttpServer extends \Swoft\Base\HttpServer
      * worker start之前运行
      *
      * @param Server $server
-     * @param int                 $workerId
+     * @param int    $workerId
      */
     private function beforeOnWorkerStart(Server $server, int $workerId)
     {
         // 加载bean
         $this->initLoadBean();
 
+
+        if (false) {
+            $process = new \swoole_process(function (\swoole_process $process) {
+                $process->name('php-swf crontab-execute');
+                swoole_timer_tick(1000, function () {
+                    var_dump(App::getBean('config'));
+                });
+            }, false);
+            $process->start();
+
+
+            $process2 = new \swoole_process(function (\swoole_process $process) {
+                $process->name('php-swf crontab-scan');
+                swoole_timer_tick(1000, function () {
+                    var_dump(App::getBean('config'));
+                });
+            }, false);
+            $process2->start();
+        }
         // 校验是否启动crontab
-        $this->wakeUpCrontab($server, $workerId);
+        //        $this->wakeUpCrontab($server, $workerId);
     }
 
     /**
@@ -201,16 +256,42 @@ class HttpServer extends \Swoft\Base\HttpServer
     }
 
     /**
-     * Tasker内容回调
+     * Tasker进程回调
      *
      * @param \Swoole\Server $server
      * @param int            $taskId
      * @param int            $workerId
      * @param mixed          $data
+     *
+     * @return mixed
+     *
      */
-    public function onTaskWork(\Swoole\Server $server, int $taskId, int $workerId, $data)
+    public function onTask(\Swoole\Server $server, int $taskId, int $workerId, $data)
     {
-       // do you want to do
+        // 用户自定义的任务，不是字符串
+        if(!is_string($data)){
+            return parent::onTask($server, $taskId, $workerId, $data);
+        }
+
+        // 用户自定义的任务，不是序列化字符串
+        $task = @unserialize($data);
+        if($task === false){
+            return parent::onTask($server, $taskId, $workerId, $data);
+        }
+
+        // 用户自定义的任务，不存在类型
+        if (!isset($task['type'])) {
+            return parent::onTask($server, $taskId, $workerId, $data);
+        }
+
+        $name = $task['name'];
+        $type = $task['type'];
+        $method = $task['method'];
+        $params = $task['params'];
+
+        $result = Task::run($name, $method, $params);
+
+        return $result;
     }
 
     /**
@@ -218,9 +299,9 @@ class HttpServer extends \Swoft\Base\HttpServer
      *
      * @param \Swoole\Server $server
      * @param int            $taskId
-     * @param string         $data
+     * @param mixed          $data
      */
-    public function onFinish(\Swoole\Server $server, int $taskId, string $data)
+    public function onFinish(\Swoole\Server $server, int $taskId, $data)
     {
         var_dump(__FUNCTION__);
     }

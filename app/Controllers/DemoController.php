@@ -8,6 +8,8 @@ use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
+use Swoft\Bean\Collector;
+use Swoft\Task\Task;
 use Swoft\Web\Controller;
 
 /**
@@ -71,7 +73,11 @@ class DemoController extends Controller
      */
     public function actionIndex3()
     {
-        $this->outputJson("ddddd23338888");
+        $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
+        $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
+
+        var_dump(Collector::$crontab);
+        $this->outputJson("ddddd23338333888".json_encode($result));
     }
 
     /**

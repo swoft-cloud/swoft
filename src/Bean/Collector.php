@@ -33,4 +33,11 @@ class Collector
      * @var array
      */
     public static $entities = [];
+
+    /**
+     * 定时任务列表
+     *
+     * @var array
+     */
+    public static $crontab = [];
 }

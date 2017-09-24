@@ -3,32 +3,25 @@
 namespace Swoft\Bean\Annotation;
 
 /**
- * bean注解
+ * task注解
  *
  * @Annotation
  * @Target("CLASS")
  *
- * @uses      Bean
- * @version   2017年08月18日
+ * @uses      Task
+ * @version   2017年09月24日
  * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
+ * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Bean
+class Task
 {
     /**
-     * bean名称
+     * 任务名称
      *
      * @var string
      */
     private $name = "";
-
-    /**
-     * bean类型
-     *
-     * @var int
-     */
-    private $scope = Scope::SINGLETON;
 
     /**
      * Bean constructor.
@@ -43,28 +36,15 @@ class Bean
         if (isset($values['name'])) {
             $this->name = $values['name'];
         }
-        if (isset($values['scope'])) {
-            $this->scope = $values['scope'];
-        }
     }
 
     /**
-     * 获取bean名称
+     * 获取任务名称
      *
      * @return string
      */
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * 获取bean类型
-     *
-     * @return int
-     */
-    public function getScope()
-    {
-        return $this->scope;
     }
 }

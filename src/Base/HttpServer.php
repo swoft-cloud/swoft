@@ -234,7 +234,7 @@ class HttpServer
     /**
      * 加载Bean
      */
-    protected function initLoadBean() : bool
+    protected function initLoadBean(): bool
     {
         require_once BASE_PATH . '/config/reload.php';
 
@@ -243,13 +243,13 @@ class HttpServer
 
     /**
      * 唤醒crontab
-     * 
+     *
      * @param \Swoole\Server $server
      * @param int            $workerId
      *
      * @return bool
      */
-    protected function wakeUpCrontab(\Swoole\Server $server, int $workerId) : bool
+    protected function wakeUpCrontab(\Swoole\Server $server, int $workerId): bool
     {
         if (!$this->crontab['enable']) {
             return false;
@@ -283,7 +283,7 @@ class HttpServer
                                 $pid = $process->start();
 
                                 //回收子进程
-                                $ret =  \Swoole\Process::wait();
+                                $ret = \Swoole\Process::wait();
                             }
                         }
                     });
@@ -304,7 +304,7 @@ class HttpServer
      *
      * @return bool
      */
-    protected function isCrontabTask($server, int $workerId) : bool
+    protected function isCrontabTask($server, int $workerId): bool
     {
         $taskerId = $workerId - $server->setting['worker_num'];
 
@@ -323,17 +323,11 @@ class HttpServer
      * @param int            $workerId
      * @param mixed          $data
      *
+     * @return mixed
+     *
      */
     public function onTask(\Swoole\Server $server, int $taskId, int $workerId, $data)
     {
-        if ($this->isCrontabTask($server, $workerId)) {
-            throw new \InvalidArgumentException('不允许投递到corntab进程');
-        }
-
-        $ret = $this->onTaskWork($server, $taskId, $workerId, $data);
-
-        if ($ret !== null) {
-            return $ret;
-        }
+        return $data;
     }
 }
