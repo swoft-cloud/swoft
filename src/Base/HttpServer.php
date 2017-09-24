@@ -43,7 +43,7 @@ class HttpServer
     protected $crontab;
 
     /**
-     * @var \Swoole\Server\Port tcp监听器
+     * @var tcp监听器
      */
     protected $listen;
 

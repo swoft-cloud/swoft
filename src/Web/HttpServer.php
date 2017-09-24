@@ -4,7 +4,8 @@ namespace Swoft\Web;
 
 use Swoft\App;
 use Swoft\Base\Inotify;
-use Swoft\Di\BeanFactory;
+use Swoole\Http\Server;
+use Swoole\Process;
 
 /**
  * http服务器
@@ -24,7 +25,7 @@ class HttpServer extends \Swoft\Base\HttpServer
     {
         App::$server = $this;
 
-        $this->swoft = new \Swoole\Http\Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
+        $this->swoft = new Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
 
         $this->swoft->set($this->setting);
         $this->swoft->on('start', [$this, 'onStart']);
@@ -55,9 +56,9 @@ class HttpServer extends \Swoft\Base\HttpServer
     /**
      * master进程启动前初始化
      *
-     * @param \Swoole\Http\Server $server
+     * @param Server $server
      */
-    public function onStart(\Swoole\Http\Server $server)
+    public function onStart(Server $server)
     {
         file_put_contents($this->status['pfile'], $server->master_pid);
         file_put_contents($this->status['pfile'], ',' . $server->manager_pid, FILE_APPEND);
@@ -67,9 +68,9 @@ class HttpServer extends \Swoft\Base\HttpServer
     /**
      * mananger进程启动前初始化
      *
-     * @param \Swoole\Http\Server $server
+     * @param Server $server
      */
-    public function onManagerStart(\Swoole\Http\Server $server)
+    public function onManagerStart(Server $server)
     {
         swoole_set_process_name($this->status['pname'] . " manager process");
     }
@@ -77,10 +78,10 @@ class HttpServer extends \Swoft\Base\HttpServer
     /**
      * worker进程启动前初始化
      *
-     * @param \Swoole\Http\Server $server
+     * @param Server $server
      * @param int                 $workerId
      */
-    public function onWorkerStart(\Swoole\Http\Server $server, int $workerId)
+    public function onWorkerStart(Server $server, int $workerId)
     {
         $setting = $server->setting;
         if ($workerId >= $setting['worker_num']) {
@@ -161,10 +162,10 @@ class HttpServer extends \Swoft\Base\HttpServer
     /**
      * worker start之前运行
      *
-     * @param \Swoole\Http\Server $server
+     * @param Server $server
      * @param int                 $workerId
      */
-    private function beforeOnWorkerStart(\Swoole\Http\Server $server, int $workerId)
+    private function beforeOnWorkerStart(Server $server, int $workerId)
     {
         // 加载bean
         $this->initLoadBean();
