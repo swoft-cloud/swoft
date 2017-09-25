@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: inhere
- * Date: 2017-09-12
- * Time: 14:33
- */
 
 namespace Swoft\Base;
 
@@ -12,13 +6,19 @@ use Swoft\Helper\PhpHelper;
 use Swoole\Coroutine as SwCoroutine;
 
 /**
- * Class Coroutine
- * @package Swoft\Base
+ * swoft协程
+ *
+ * @uses      Coroutine
+ * @version   2017年09月25日
+ * @author    inhere <in.798@qq.com>
+ * @copyright Copyright 2010-2016 Swoft software
+ * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class Coroutine
 {
     /**
-     * the Coroutine id map
+     * 协程ID映射表
+     *
      * @var array
      * [
      *  child id => top id,
@@ -29,7 +29,8 @@ class Coroutine
     private static $idMap = [];
 
     /**
-     * get current coroutine id
+     * 当前协程ID
+     *
      * @return int|string
      */
     public static function id()
@@ -38,26 +39,27 @@ class Coroutine
     }
 
     /**
-     * get top coroutine id
+     * 顶层协程ID
+     *
      * @return int|string
      */
     public static function tid()
     {
         $id = SwCoroutine::getuid();
-
         return self::$idMap[$id] ?? $id;
     }
 
     /**
      * 创建子协程
+     *
      * @param callable $cb
+     *
      * @return bool
      */
     public static function create(callable $cb)
     {
         $tid = self::tid();
-
-        return SwCoroutine::create(function() use($cb, $tid) {
+        return SwCoroutine::create(function () use ($cb, $tid) {
             $id = SwCoroutine::getuid();
             self::$idMap[$id] = $tid;
 
@@ -67,19 +69,21 @@ class Coroutine
 
     /**
      * 挂起当前协程
-     * @param string $coId
+     *
+     * @param string $corId
      */
-    public static function suspend($coId)
+    public static function suspend($corId)
     {
-        SwCoroutine::suspend($coId);
+        SwCoroutine::suspend($corId);
     }
 
     /**
      * 恢复某个协程，使其继续运行。
-     * @param string $coId
+     *
+     * @param string $corId
      */
-    public static function resume($coId)
+    public static function resume($corId)
     {
-        SwCoroutine::resume($coId);
+        SwCoroutine::resume($corId);
     }
 }

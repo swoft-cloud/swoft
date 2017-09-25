@@ -420,16 +420,6 @@ class App
     }
 
     /**
-     * 当前协程ID
-     *
-     * @return int
-     */
-    public static function getCoroutineId()
-    {
-        return \Swoole\Coroutine::getuid();
-    }
-
-    /**
      * @return bool 当前是否是worker状态
      */
     public static function isWorkerStatus()

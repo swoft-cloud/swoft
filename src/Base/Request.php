@@ -4,6 +4,7 @@ namespace Swoft\Base;
 
 /**
  * 请求request对象，每个请求实例化一个
+ *
  * @uses      Request
  * @version   2017年05月11日
  * @author    stelin <phpcrazy@126.com>
@@ -49,6 +50,7 @@ class Request
 
     /**
      * Request constructor.
+     *
      * @param \Swoole\Http\Request $request
      */
     public function __construct(\Swoole\Http\Request $request)
@@ -74,8 +76,10 @@ class Request
 
     /**
      * 从GET/POST中获取一个参数，
-     * @param string $name 参数名称
-     * @param mixed $default 默认值
+     *
+     * @param string $name    参数名称
+     * @param mixed  $default 默认值
+     *
      * @return mixed
      */
     public function getParameter(string $name, $default = null)
@@ -91,6 +95,7 @@ class Request
 
     /**
      * 请求参数，等同$_REQUEST
+     *
      * @return array
      */
     public function getParameters(): array
@@ -100,8 +105,10 @@ class Request
 
     /**
      * GET参数，等同$_GET
+     *
      * @param mixed $name
      * @param mixed $default
+     *
      * @return mixed
      */
     public function getQuery($name = null, $default = null)
@@ -115,6 +122,7 @@ class Request
 
     /**
      * GET参数，等同$_GET
+     *
      * @return array
      */
     public function getGetParameters()
@@ -124,8 +132,10 @@ class Request
 
     /**
      * GET参数，等同$_GET
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return array
      */
     public function getGetParameter($name, $default = null)
@@ -135,8 +145,10 @@ class Request
 
     /**
      * POST参数，等同$_POST
+     *
      * @param mixed $name
      * @param mixed $default
+     *
      * @return array
      */
     public function getPost($name = null, $default = null)
@@ -150,6 +162,7 @@ class Request
 
     /**
      * POST参数，等同$_POST
+     *
      * @return array
      */
     public function getPostParameters()
@@ -159,8 +172,10 @@ class Request
 
     /**
      * POST参数，等同$_POST
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return array
      */
     public function getPostParameter($name, $default = null)
@@ -179,6 +194,7 @@ class Request
     /**
      * Is this an XHR request?
      * Note: This method is not part of the PSR-7 standard.
+     *
      * @return bool
      */
     public function isXhr()
@@ -222,15 +238,14 @@ class Request
     /**
      * 获取header
      *
-     * @param string $key       KEY名称
-     * @param string $default   默认值
+     * @param string $key     KEY名称
+     * @param string $default 默认值
      *
      * @return string
      */
     public function getHeader(string $key, string $default = ''): string
     {
         $key = strtolower($key);
-
         return $this->headers[$key] ?? $default;
     }
 

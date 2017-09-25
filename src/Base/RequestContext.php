@@ -168,7 +168,7 @@ class RequestContext
      */
     private static function getcoroutine()
     {
-        $coroutineId = \Swoole\Coroutine::getuid();
+        $coroutineId = Coroutine::tid();
         return $coroutineId;
     }
 }

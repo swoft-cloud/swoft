@@ -2,7 +2,7 @@
 
 namespace Swoft\Log;
 
-use Swoft\App;
+use Swoft\Base\Coroutine;
 use Swoft\Base\RequestContext;
 
 /**
@@ -171,7 +171,7 @@ class Logger extends \Monolog\Logger
         }
 
         $key = urlencode($key);
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (is_array($val)) {
             $this->pushlogs[$cid][] = "$key=" . json_encode($val);
         } elseif (is_bool($val)) {
@@ -193,7 +193,7 @@ class Logger extends \Monolog\Logger
         if (is_string($name) == false || empty($name)) {
             return;
         }
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $this->profileStacks[$cid][$name]['start'] = microtime(true);
     }
 
@@ -208,7 +208,7 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->profiles[$cid][$name])) {
             $this->profiles[$cid][$name] = [
                 'cost'  => 0,
@@ -226,7 +226,7 @@ class Logger extends \Monolog\Logger
     public function getProfilesInfos()
     {
         $profileAry = [];
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $profiles = $this->profiles[$cid]?? [];
         foreach ($profiles as $key => $profile) {
             if (!isset($profile['cost']) || !isset($profile['total'])) {
@@ -252,7 +252,7 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->countings[$cid][$name])) {
             $this->countings[$cid][$name] = ['hit' => 0, 'total' => 0];
         }
@@ -267,7 +267,7 @@ class Logger extends \Monolog\Logger
      */
     public function getCountingInfo()
     {
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->countings[$cid]) || empty($this->countings[$cid])) {
             return "";
         }
@@ -362,7 +362,7 @@ class Logger extends \Monolog\Logger
      */
     public function appendNoticeLog()
     {
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $ts = $this->getLoggerTime();
 
         // php耗时单位ms毫秒

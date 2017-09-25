@@ -2,6 +2,7 @@
 
 namespace Swoft\Event\Listeners;
 
+use Swoft\App;
 use Swoft\Base\RequestContext;
 use Swoft\Bean\Annotation\Listener;
 use Swoft\Event\ApplicationEvent;
@@ -29,8 +30,8 @@ class BeforeRequestListener implements IApplicationListener
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params)
     {
         // header获取日志ID和spanid请求跨度ID
-        $logid = RequestContext::getRequest()->getHeaders('logid', uniqid());
-        $spanid = RequestContext::getRequest()->getHeaders('spanid', 0);
+        $logid = RequestContext::getRequest()->getHeader('logid', uniqid());
+        $spanid = RequestContext::getRequest()->getHeader('spanid', 0);
         $uri = RequestContext::getRequest()->getRequestUri();
 
         $contextData = [

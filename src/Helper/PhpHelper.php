@@ -1,22 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: inhere
- * Date: 2017-09-25
- * Time: 11:00
- */
 
 namespace Swoft\Helper;
 
 /**
- * Class PhpHelper
- * @package Swoft\Helper
+ * php帮助类
+ *
+ * @uses      PhpHelper
+ * @version   2017年09月25日
+ * @author    inhere <in.798@qq.com>
+ * @copyright Copyright 2010-2016 Swoft software
+ * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class PhpHelper
 {
     /**
-     * @param $cb
-     * @param array $args
+     * 调用
+     *
+     * @param mixed $cb   callback函数，多种格式
+     * @param array $args 参数
+     *
      * @return mixed
      */
     public static function call($cb, array $args = [])
@@ -25,10 +27,9 @@ class PhpHelper
             $ret = $cb(...$args);
         } elseif (is_array($cb)) {
             list($obj, $mhd) = $cb;
-
             $ret = is_object($obj) ? $obj->$mhd(...$args) : $obj::$mhd(...$args);
         } else {
-            $ret = call_user_func_array($cb, $args);
+            $ret = \Swoole\Coroutine::call_user_func_array($cb, $args);
         }
 
         return $ret;
