@@ -6,14 +6,14 @@
  * Time: 14:33
  */
 
-namespace Sws\Context;
+namespace Swoft\Base;
 
 use Swoft\Helper\PhpHelper;
 use Swoole\Coroutine as SwCoroutine;
 
 /**
  * Class Coroutine
- * @package Sws\Context
+ * @package Swoft\Base
  */
 class Coroutine
 {
