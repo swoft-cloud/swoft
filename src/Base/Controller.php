@@ -18,12 +18,12 @@ class Controller
     /**
      * @var string action方法前缀
      */
-    protected $actionPrefix = "action";
+    protected $actionPrefix = 'action';
 
     /**
      * @var string 默认action
      */
-    protected $defaultAction = "index";
+    protected $defaultAction = 'index';
 
     /**
      * 执行action
@@ -92,7 +92,8 @@ class Controller
     public function getMethodName(string $actionId)
     {
         $methodName = $this->actionPrefix.ucfirst($actionId);
-        if (method_exists($this, $methodName) == false) {
+
+        if (!method_exists($this, $methodName)) {
             App::error("控制器执行action方法不存在，method=".$methodName);
             throw new \BadMethodCallException("控制器执行action方法不存在，method=".$methodName);
         }
@@ -127,7 +128,7 @@ class Controller
      *
      * @return mixed
      */
-    protected function get($name = "", $default = null)
+    protected function get($name = '', $default = null)
     {
         if (!empty($name)) {
             return App::getRequest()->getParameter($name, $default);
@@ -143,7 +144,7 @@ class Controller
      *
      * @return mixed
      */
-    protected function post($name = "", $default = null)
+    protected function post($name = '', $default = null)
     {
         if (!empty($name)) {
             return App::getRequest()->getParameter($name, $default);
@@ -159,12 +160,23 @@ class Controller
      *
      * @return mixed
      */
-    protected function request($name = "", $default = null)
+    protected function request($name = '', $default = null)
     {
         if (!empty($name)) {
             return App::getRequest()->getParameter($name, $default);
         }
         return App::getRequest()->getParameters();
+    }
+
+    /**
+     * 重定向
+     * @param string $url
+     * @param null|int $status
+     * @return Response
+     */
+    protected function redirect($url, $status = null)
+    {
+        return App::getResponse()->redirect($url, $status);
     }
 
     /**

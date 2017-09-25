@@ -14,16 +14,6 @@ namespace Swoft\Web;
 class Request extends \Swoft\Base\Request
 {
     /**
-     * 请求方法
-     *
-     * @return string
-     */
-    public function getMethod(): string
-    {
-        return $this->server['request_method'];
-    }
-
-    /**
      * 请求path
      *
      * @return string
@@ -74,50 +64,18 @@ class Request extends \Swoft\Base\Request
     }
 
     /**
-     * 获取所有header
-     *
-     * @return array
-     * <pre>
-     * [
-     *  'host' => '192.168.99.100',
-     *  'connection' => 'keep-alive',
-     *  ...
-     * ]
-     * </pre>
-     */
-    public function getHeaders()
-    {
-        return $this->header;
-    }
-
-    /**
-     * 获取header
-     *
-     * @param string $key       KEY名称
-     * @param string $default   默认值
-     *
-     * @return string
-     */
-    public function getHeader(string $key, string $default = ""): string
-    {
-        if (isset($this->header[$key])) {
-            return $this->header[$key];
-        }
-        return $default;
-    }
-
-    /**
      * 获取用户user agent
      *
-     * @param string $deafult 默认值
+     * @param string $default 默认值
      *
      * @return string
      */
-    public function getUserAgent(string $deafult = "")
+    public function getUserAgent(string $default = '')
     {
-        if (isset($this->header['user-agent'])) {
-            return $this->header['user-agent'];
+        if (isset($this->headers['user-agent'])) {
+            return $this->headers['user-agent'];
         }
-        return $deafult;
+
+        return $default;
     }
 }

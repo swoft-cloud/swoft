@@ -19,16 +19,6 @@ use Swoft\Helper\ResponseHelper;
  */
 class Controller extends \Swoft\Base\Controller
 {
-    /**
-     * 重定向
-     *
-     * @param string $uri
-     * @param array  $params
-     */
-    public function redirect(string $uri, array $params = [])
-    {
-//        $this->run($uri, $params);
-    }
 
     /**
      * 数据模板显示

@@ -25,10 +25,11 @@ use Swoft\App;
  */
 class Router implements RouterInterface
 {
+    /** @var int 已注册的路由数 */
     private $routeCounter = 0;
 
     /**
-     * some available patterns regex
+     * 内置的一些匹配参数
      * $router->get('/user/{num}', 'handler');
      * @var array
      */
@@ -134,7 +135,7 @@ class Router implements RouterInterface
     private $vagueRoutes = [];
 
     /**
-     * There are last route caches
+     * 最近的路由缓存数组(最大数量由 {@see $tmpCacheNumber}控制)
      * @var array
      * [
      *     'path' => [
@@ -156,31 +157,28 @@ class Router implements RouterInterface
 /// router config
 //////////////////////////////////////////////////////////////////////
 
-    /** @var DispatcherInterface */
-    private $dispatcher;
-
-    /** @var bool ignore last '/' char. If is True, will clear last '/'. */
+    /** @var bool 是否忽略最后的URl斜线 '/'. */
     public $ignoreLastSep = false;
 
-    /** @var int */
+    /** @var int 动态路由缓存数 */
     public $tmpCacheNumber = 0;
 
     /**
-     * match all request.
-     *  1. If is a valid URI path, will match all request uri to the path.
-     *  2. If is a closure, will match all request then call it
-     * eg: '/site/maintenance' or `function () { echo 'System Maintaining ... ...'; }`
+     * 配置此项可用于拦截所有请求。 （例如网站维护时）
+     *  1. 是个URI字符串， 直接用于解析路由
+     *  2. 是个闭包回调，直接调用
+     * eg: '/site/maintenance' OR `function () { '系统维护中 :)'; }`
      * @var mixed
      */
     public $matchAll;
 
-    /** @var bool auto route match like yii framework. If is True, will auto find the handler controller file. */
+    /** @var bool 自动匹配路由(像yii框架)。 如果为True，将自动查找控制器文件。 */
     public $autoRoute = false;
 
-    /** @var string The default Controllers namespace, is valid when `$autoRoute = true`. eg: 'App\\Controllers' */
+    /** @var string 默认的控制器命名空间, 当开启自动匹配路由时有效. eg: 'App\\Controllers' */
     public $controllerNamespace = '';
 
-    /** @var string controller suffix, is valid when `$autoRoute = true`. eg: 'AutoController' */
+    /** @var string 控制器后缀, 当开启自动匹配路由时有效. eg: 'Controller' */
     public $controllerSuffix = '';
 
     /**
@@ -246,8 +244,7 @@ class Router implements RouterInterface
     }
 
     /**
-     * Create a route group with a common prefix.
-     * All routes created in the passed callback will have the given group prefix prepended.
+     * 添加路由组
      * @param string $prefix
      * @param \Closure $callback
      * @param array $opts
@@ -268,13 +265,13 @@ class Router implements RouterInterface
     }
 
     /**
-     * @param string|array $method The match request method.
+     * @param string|array $method 匹配请求方法
      * e.g
      *  string: 'get'
      *  array: ['get','post']
-     * @param string $route The route path string. eg: '/user/login'
-     * @param callable|string $handler
-     * @param array $opts some option Data
+     * @param string $route 路由PATH. eg: '/user/login'
+     * @param callable|string $handler 路由处理器
+     * @param array $opts 选项数据
      * [
      *     'tokens' => [ 'id' => '[0-9]+', ],
      *     'domains'  => [ 'a-domain.com', '*.b-domain.com'],
@@ -387,6 +384,7 @@ class Router implements RouterInterface
     }
 
     /**
+     * 解析路由PATH
      * @param string $route
      * @param array $tokens
      * @param array $conf
@@ -471,7 +469,7 @@ class Router implements RouterInterface
 //////////////////////////////////////////////////////////////////////
 
     /**
-     * find the matched route info for the given request uri path
+     * 找到给定请求uri路径的匹配路由信息
      * @param string $method
      * @param string $path
      * @return mixed
@@ -590,7 +588,7 @@ class Router implements RouterInterface
     }
 
     /**
-     * handle auto route match, when config `'autoRoute' => true`
+     * 自动路由的匹配处理。(当配置了 `'autoRoute' => true`)
      * @param string $path The route path
      * @param string $controllerNamespace controller namespace. eg: 'App\\Controllers'
      * @param string $controllerSuffix controller suffix. eg: 'AutoController'
@@ -648,28 +646,6 @@ class Router implements RouterInterface
         $class = sprintf('%s\\%s\\%s', $cnp, implode('\\', $ary), ucfirst($n1) . $sfx);
 
         return class_exists($class) ? "$class@$n2" : false;
-    }
-
-//////////////////////////////////////////////////////////////////////
-/// route callback handler dispatch
-//////////////////////////////////////////////////////////////////////
-
-    /**
-     * Runs the callback for the given request
-     * @param DispatcherInterface $dispatcher
-     * @return mixed
-     */
-    public function dispatch(DispatcherInterface $dispatcher = null)
-    {
-        if ($dispatcher) {
-            $this->dispatcher = $dispatcher;
-        } elseif (!$this->dispatcher) {
-            $this->dispatcher = new Dispatcher;
-        }
-
-        return $this->dispatcher->setMatcher(function ($path, $method) {
-            return $this->match($path, $method);
-        })->dispatch();
     }
 
 //////////////////////////////////////////////////////////////////////
@@ -796,26 +772,6 @@ class Router implements RouterInterface
     }
 
     /**
-     * @return DispatcherInterface
-     */
-    public function getDispatcher()
-    {
-        return $this->dispatcher;
-    }
-
-    /**
-     * @param DispatcherInterface $dispatcher
-     * @return $this
-     */
-    public function setDispatcher(DispatcherInterface $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-
-        return $this;
-    }
-
-
-    /**
      * 自动注册路由
      *
      * @param array $requestMapping
@@ -823,7 +779,7 @@ class Router implements RouterInterface
     public function registerRoutes(array $requestMapping)
     {
         foreach ($requestMapping as $className => $mapping) {
-            if (!isset($mapping['prefix']) || !isset($mapping['routes'])) {
+            if (!isset($mapping['prefix'], $mapping['routes'])) {
                 continue;
             }
 
@@ -853,7 +809,7 @@ class Router implements RouterInterface
     {
         // 循环注册路由
         foreach ($routes as $route) {
-            if (!isset($route['route']) || !isset($route['method']) || !isset($route['action'])) {
+            if (!isset($route['route'], $route['method'], $route['action'])) {
                 continue;
             }
             $mapRoute = $route['route'];
@@ -865,8 +821,8 @@ class Router implements RouterInterface
             $mapRoute = empty($mapRoute) ? $actionMethod : $mapRoute;
 
             // '/'开头的路由是一个单独的路由，未使用'/'需要和控制器组拼成一个路由
-            $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . "/" . $mapRoute;
-            $handler = $className . "@" . $actionMethod;
+            $uri = strpos($mapRoute, '/') === 0 ? $mapRoute : $controllerPrefix . '/' . $mapRoute;
+            $handler = $className . '@' . $actionMethod;
 
             // 注入路由规则
             $this->map($method, $uri, $handler);
@@ -905,10 +861,12 @@ class Router implements RouterInterface
 
         // 注解注入为空，解析控制器prefix
         $reg = '/^.*\\\(\w+)Controller$/';
-        $result = preg_match($reg, $className, $match);
-        if ($result) {
-            $prefix = "/" . lcfirst($match[1]);
-            return $prefix;
+        $prefix = '';
+
+        if ($result = preg_match($reg, $className, $match)) {
+            $prefix = '/' . lcfirst($match[1]);
         }
+
+        return $prefix;
     }
 }

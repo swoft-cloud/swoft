@@ -50,7 +50,7 @@ class ConsulProvider implements ServiceProvider
                 continue;
             }
             $serviceInfo = $service['Service'];
-            if (!isset($serviceInfo['Address']) || !isset($serviceInfo['Port'])) {
+            if (!isset($serviceInfo['Address'], $serviceInfo['Port'])) {
                 App::warning("consul[Address] Or consul[Port] 服务健康节点集合，数据格式不不正确，Data=".$result);
                 continue;
             }
@@ -80,7 +80,7 @@ class ConsulProvider implements ServiceProvider
         $hostName = gethostname();
         $service = [
             'ID'                => $serviceName . "-" . $hostName,
-            "Name"              => "user",
+            'Name'              => 'user',
             'Tags'              => $tags,
             'Address'           => $host,
             'Port'              => $port,

@@ -1,6 +1,7 @@
 .buildpath
 .settings/
 .project
+*.patch
 .idea/
 .git/
 runtime/
