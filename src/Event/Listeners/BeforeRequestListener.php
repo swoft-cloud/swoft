@@ -29,8 +29,8 @@ class BeforeRequestListener implements IApplicationListener
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params)
     {
         // header获取日志ID和spanid请求跨度ID
-        $logid = RequestContext::getRequest()->getHeader('logid', uniqid());
-        $spanid = RequestContext::getRequest()->getHeader('spanid', 0);
+        $logid = RequestContext::getRequest()->getHeaders('logid', uniqid());
+        $spanid = RequestContext::getRequest()->getHeaders('spanid', 0);
         $uri = RequestContext::getRequest()->getRequestUri();
 
         $contextData = [
