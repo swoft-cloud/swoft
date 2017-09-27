@@ -3,6 +3,7 @@
 namespace Swoft\Base;
 
 use Swoft\App;
+use Swoft\Task\Task;
 
 /**
  * 请求上下文
@@ -129,6 +130,30 @@ class RequestContext
     }
 
     /**
+     * 请求logid
+     *
+     * @return string
+     */
+    public static function getLogid()
+    {
+        $contextData = self::getCoroutineContext(self::COROUTINE_DATA);
+        $logid = $contextData['logid']?? "";
+        return $logid;
+    }
+
+    /**
+     * 请求跨度值
+     *
+     * @return int
+     */
+    public static function getSpanid()
+    {
+        $contextData = self::getCoroutineContext(self::COROUTINE_DATA);
+        $spanid = $contextData['spanid']?? 0;
+        return $spanid;
+    }
+
+    /**
      * 销毁当前协程数据
      */
     public static function destory()
@@ -168,7 +193,9 @@ class RequestContext
      */
     private static function getcoroutine()
     {
-        $coroutineId = Coroutine::tid();
-        return $coroutineId;
+        if(App::isWorkerStatus()){
+            return Coroutine::tid();
+        }
+        return Task::logid();
     }
 }

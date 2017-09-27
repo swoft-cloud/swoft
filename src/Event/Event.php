@@ -24,4 +24,10 @@ class Event
 
     // rpc前事件
     const BEFORE_RECEIVE = "beforeReceive";
+
+    // 任务前置事件
+    const BEFORE_TASK = "beforeTask";
+
+    // 任务后置事件
+    const AFTER_TASK = "afterTask";
 }

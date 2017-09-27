@@ -72,6 +72,7 @@ class DemoController extends Controller
                 App::trace("this is child child trace".Coroutine::id());
             });
         });
+
         $this->outputJson("3333232111111");
     }
 

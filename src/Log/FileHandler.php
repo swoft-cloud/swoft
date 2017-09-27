@@ -53,11 +53,46 @@ class FileHandler extends AbstractProcessingHandler
      */
     protected function write(array $records)
     {
-        $logFile = App::getAlias($this->logFile);
-
-        $messageText = implode("\n", $records) . "\n";
+        // 参数
         $this->createDir();
+        $isTask = App::isWorkerStatus();
+        $logFile = App::getAlias($this->logFile);
+        $messageText = implode("\n", $records) . "\n";
 
+        // 同步写
+        if($isTask === false){
+            return $this->syncWrite($logFile, $messageText);
+        }
+        // 异步写
+        $this->aysncWrite($logFile, $messageText);
+    }
+
+    /**
+     * 同步写文件
+     *
+     * @param string $logFile     日志路径
+     * @param string $messageText 文本信息
+     */
+    private function syncWrite(string $logFile, string $messageText)
+    {
+        $fp = fopen($logFile, 'a');
+        if ($fp === false) {
+            throw new \InvalidArgumentException("Unable to append to log file: {$this->logFile}");
+        }
+        flock($fp, LOCK_EX);
+        fwrite($fp, $messageText);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+    }
+
+    /**
+     * 异步写文件
+     *
+     * @param string $logFile     日志路径
+     * @param string $messageText 文本信息
+     */
+    private function aysncWrite(string $logFile, string $messageText)
+    {
         while (true) {
             $result = \Swoole\Async::writeFile($logFile, $messageText, null, FILE_APPEND);
             if ($result == true) {

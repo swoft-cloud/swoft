@@ -144,9 +144,9 @@ class Logger extends \Monolog\Logger
     public function formateRecord($message, $context, $level, $levelName, $ts, $extra)
     {
         $record = array(
-            "logid"      => $this->getLogid(),
-            "spanid"     => $this->getSpanid(),
-            'messages'    => $message,
+            "logid"      => RequestContext::getLogid(),
+            "spanid"     => RequestContext::getSpanid(),
+            'messages'   => $message,
             'context'    => $context,
             'level'      => $level,
             'level_name' => $levelName,
@@ -426,6 +426,20 @@ class Logger extends \Monolog\Logger
     }
 
     /**
+     * 日志初始化
+     */
+    public function initialize()
+    {
+        $cid = Coroutine::tid();
+        unset($this->profiles[$cid]);
+        unset($this->countings[$cid]);
+        unset($this->pushlogs[$cid]);
+        unset($this->profileStacks[$cid]);
+
+        $this->messages[] = [];
+    }
+
+    /**
      * 添加一条trace日志
      *
      * @param       $message 日志信息
@@ -436,30 +450,6 @@ class Logger extends \Monolog\Logger
     public function addTrace($message, array $context = array())
     {
         return $this->addRecord(static::TRACE, $message, $context);
-    }
-
-    /**
-     * 请求logid
-     *
-     * @return string
-     */
-    private function getLogid()
-    {
-        $contextData = RequestContext::getContextData();
-        $logid = $contextData['logid']?? "";
-        return $logid;
-    }
-
-    /**
-     * 请求跨度值
-     *
-     * @return int
-     */
-    private function getSpanid()
-    {
-        $contextData = RequestContext::getContextData();
-        $spanid = $contextData['spanid']?? 0;
-        return $spanid;
     }
 
     /**

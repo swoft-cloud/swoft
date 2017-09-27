@@ -5,6 +5,8 @@ namespace Swoft\Web;
 use Swoft\App;
 use Swoft\Base\Inotify;
 use Swoft\Base\RequestContext;
+use Swoft\Event\Event;
+use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Task\Task;
 use Swoole\Http\Server;
 use Swoole\Process;
@@ -288,10 +290,18 @@ class HttpServer extends \Swoft\Base\HttpServer
         $type = $task['type'];
         $method = $task['method'];
         $params = $task['params'];
+        $logid = $task['logid'] ?? uniqid();
+        $spanid = $task['spanid'] ?? 0;
 
+        $event = new BeforeTaskEvent($this,$logid, $spanid, $name, $method, $type);
+        App::trigger(Event::BEFORE_TASK, $event);
         $result = Task::run($name, $method, $params);
+        App::trigger(Event::AFTER_TASK, null, $type);
 
-        return $result;
+        if($type == Task::TYPE_CRON){
+            return $result;
+        }
+        $server->finish($result);
     }
 
     /**
@@ -303,6 +313,6 @@ class HttpServer extends \Swoft\Base\HttpServer
      */
     public function onFinish(\Swoole\Server $server, int $taskId, $data)
     {
-        var_dump(__FUNCTION__);
+        var_dump($data,'----------((((((9999999999');
     }
 }

@@ -39,8 +39,10 @@ class Response
 
     /**
      * 重定向
-     * @param string $url
+     *
+     * @param string   $url
      * @param null|int $status
+     *
      * @return mixed
      */
     public function redirect($url, $status = null)
@@ -61,9 +63,11 @@ class Response
 
     /**
      * Json 响应
-     * @param  mixed $data The data
-     * @param  int $status The HTTP status code.
-     * @param  int $encodingOptions Json encoding options
+     *
+     * @param  mixed $data            The data
+     * @param  int   $status          The HTTP status code.
+     * @param  int   $encodingOptions Json encoding options
+     *
      * @throws \RuntimeException
      * @return static
      */

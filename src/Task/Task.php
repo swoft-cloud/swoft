@@ -3,6 +3,7 @@
 namespace Swoft\Task;
 
 use Swoft\App;
+use Swoft\Base\RequestContext;
 use Swoft\Bean\BeanFactory;
 
 /**
@@ -33,6 +34,20 @@ class Task
     const TYPE_CRON = 'cron';
 
     /**
+     * 任务ID
+     *
+     * @var int
+     */
+    private static $taskId;
+
+    /**
+     * 上下文日志ID
+     *
+     * @var string
+     */
+    private static $logid;
+
+    /**
      * 投递任务
      *
      * @param string $taskName   任务名称
@@ -51,7 +66,12 @@ class Task
         // 投递协程任务
         if ($type == self::TYPE_COR) {
             $tasks[0] = $data;
-            return $server->taskCo($tasks);
+            $prifleKey = 'task'.'.'.$taskName.'.'.$methodName;
+
+            App::profileStart($prifleKey);
+            $result = $server->taskCo($tasks);
+            App::profileEnd($prifleKey);
+            return $result;
         }
 
         // 投递异步任务
@@ -174,6 +194,41 @@ class Task
     }
 
     /**
+     * 任务ID
+     *
+     * @return int
+     */
+    public static function id()
+    {
+        return self::$taskId;
+    }
+
+    /**
+     * 任务上下文日志ID，定时任务自动生产唯一ID
+     *
+     * @return string
+     */
+    public static function logid(){
+        return self::$logid;
+    }
+
+    /**
+     * @param int $taskId
+     */
+    public static function setTaskId(int $taskId)
+    {
+        self::$taskId = $taskId;
+    }
+
+    /**
+     * @param string $logid
+     */
+    public static function setLogid(string $logid)
+    {
+        self::$logid = $logid;
+    }
+
+    /**
      * 任务数据打包
      *
      * @param string $taskName   任务名称
@@ -191,6 +246,12 @@ class Task
             'params' => $params,
             'type'   => $type
         ];
+
+        // 不是定时任务，传递logid和spanid
+        if($type !== self::TYPE_CRON){
+            $task['logid'] = RequestContext::getLogid();
+            $task['spanid'] = RequestContext::getSpanid();
+        }
         return serialize($task);
     }
 }
