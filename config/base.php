@@ -1,4 +1,5 @@
 <?php
+
 return [
     'config'       => [
         'properties' => require_once __DIR__ . '/' . APP_ENV . '/properties.php',
@@ -13,6 +14,10 @@ return [
         'ignoreLastSep'       => false,
         'tmpCacheNumber'      => 1000,
         'matchAll'            => '',
+    ],
+    'renderer' => [
+        'class' => \Swoft\Web\ViewRenderer::class,
+        'viewsPath' => dirname(__DIR__) . '/resources/views',
     ],
     'errorHandler' => [
         'class'       => \Swoft\Web\ErrorHandler::class,
