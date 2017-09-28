@@ -16,11 +16,6 @@ namespace Swoft\Web;
 class ViewRenderer
 {
     /**
-     * in layout file '...<body>{_CONTENT_}</body>...'
-     */
-    const CONTENT_MARK = '{_CONTENT_}';
-
-    /**
      * 视图存放基础路径
      * @var string
      */
@@ -39,6 +34,12 @@ class ViewRenderer
 
     /** @var string  */
     protected $suffix = 'php';
+
+    /**
+     * in layout file '...<body>{_CONTENT_}</body>...'
+     * @var string
+     */
+    protected $placeholder = '{_CONTENT_}';
 
     /**
      * constructor.
@@ -66,14 +67,7 @@ class ViewRenderer
     {
         $output = $this->fetch($view, $data);
 
-        // render layout
-        if ($layout = $layout ?: $this->layout) {
-            $mark = self::CONTENT_MARK;
-            $main = $this->fetch($layout, $data);
-            $output = preg_replace("/$mark/", $output, $main, 1);
-        }
-
-        return $output;
+        return $this->renderContent($output, $data, $layout);
     }
 
     /**
@@ -87,20 +81,32 @@ class ViewRenderer
     }
 
     /**
-     * @param string $output
+     * @param string $content
      * @param array $data
+     * @param string|null $layout override default layout file
      * @return string
      */
-    public function renderBody($output, array $data = [])
+    public function renderBody($content, array $data = [], $layout = null)
+    {
+        return $this->renderContent($content, $data, $layout);
+    }
+
+    /**
+     * @param string $content
+     * @param array $data
+     * @param string|null $layout override default layout file
+     * @return string
+     */
+    public function renderContent($content, array $data = [], $layout = null)
     {
         // render layout
-        if ($this->layout) {
-            $mark = self::CONTENT_MARK;
-            $main = $this->fetch($this->layout, $data);
-            $output = preg_replace("/$mark/", $output, $main, 1);
+        if ($layout = $layout ?: $this->layout) {
+            $mark = $this->placeholder;
+            $main = $this->fetch($layout, $data);
+            $content = preg_replace("/$mark/", $content, $main, 1);
         }
 
-        return $output;
+        return $content;
     }
 
     /**
@@ -160,9 +166,7 @@ class ViewRenderer
      */
     public function setViewsPath($viewsPath)
     {
-        if ($viewsPath) {
-            $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
-        }
+        $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
     }
 
     /**
@@ -237,6 +241,22 @@ class ViewRenderer
     {
         extract($data, EXTR_OVERWRITE);
         include $view;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceholder(): string
+    {
+        return $this->placeholder;
+    }
+
+    /**
+     * @param string $placeholder
+     */
+    public function setPlaceholder(string $placeholder)
+    {
+        $this->placeholder = $placeholder;
     }
 
     /**
