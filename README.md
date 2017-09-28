@@ -71,7 +71,7 @@ QQ交流群:548173319
 
 ### composer安装
 
-* composer.phar create-project stelin/swoft swoft(未开代理，会有点慢)
+* composer.phar create-project stelin/swoft swoft dev-master(未开代理，会有点慢)
 
 ## 配置
 
