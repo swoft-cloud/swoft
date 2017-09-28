@@ -166,7 +166,9 @@ class ViewRenderer
      */
     public function setViewsPath($viewsPath)
     {
-        $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
+        if ($viewsPath) {
+            $this->viewsPath = rtrim($viewsPath, '/\\') . '/';
+        }
     }
 
     /**
