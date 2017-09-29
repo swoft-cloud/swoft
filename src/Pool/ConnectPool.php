@@ -123,7 +123,7 @@ abstract class ConnectPool implements Pool
      *
      * @return string 如:"127.0.0.1:88"
      */
-    protected function getConnectAddress()
+    public function getConnectAddress()
     {
         $serviceList = $this->getServiceList();
         return $this->balancer->select($serviceList);
@@ -151,6 +151,14 @@ abstract class ConnectPool implements Pool
             throw new \InvalidArgumentException($this->serviceName."服务，没有配置uri");
         }
         return $this->uri;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeout(): int
+    {
+        return $this->timeout;
     }
 
     abstract public function createConnect();

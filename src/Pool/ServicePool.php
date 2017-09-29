@@ -2,7 +2,7 @@
 
 namespace Swoft\Pool;
 
-use Swoft\App;
+use Swoft\Service\ServiceConnect;
 
 /**
  * RPC服务连接池
@@ -18,20 +18,11 @@ class ServicePool extends ConnectPool
     /**
      * 创建连接
      *
-     * @return null|\Swoole\Coroutine\Client
+     * @return ServiceConnect
      */
     public function createConnect()
     {
-        $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
-
-        $address = $this->getConnectAddress();
-        list($host, $port) = explode(":", $address);
-        if (!$client->connect($host, $port, $this->timeout)) {
-            App::error("Service connect fail errorCode=".$client->errCode." host=".$host." port=".$port);
-            return null;
-        }
-
-        return $client;
+        return new ServiceConnect($this);
     }
 
     public function reConnect($client)

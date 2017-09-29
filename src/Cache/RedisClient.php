@@ -70,7 +70,7 @@ class RedisClient
         $profileKey = self::getRedisProfile($method);
         $connectPool = App::getBean(self::SERVICE_NAME);
 
-        /* @var $client \Swoole\Coroutine\Redis */
+        /* @var $client RedisConnect */
         $client = $connectPool->getConnect();
         App::profileStart($profileKey);
         $result = $client->$method(...$params);
@@ -93,7 +93,7 @@ class RedisClient
         $profileKey = self::getRedisProfile($method);
         $connectPool = App::getBean(self::SERVICE_NAME);
 
-        /* @var $client \Swoole\Coroutine\Redis */
+        /* @var $client RedisConnect */
         $client = $connectPool->getConnect();
         $client->setDefer();
         $result = $client->$method(...$params);

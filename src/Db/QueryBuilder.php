@@ -244,7 +244,7 @@ abstract class QueryBuilder implements IQueryBuilder
     protected $pool;
 
     /**
-     * @var AbstractConnect
+     * @var AbstractDbConnect
      */
     protected $connect;
 
@@ -259,11 +259,11 @@ abstract class QueryBuilder implements IQueryBuilder
      * QueryBuilder constructor.
      *
      * @param ConnectPool     $connectPool
-     * @param AbstractConnect $connect
+     * @param AbstractDbConnect $connect
      * @param string          $sql
      * @param bool            $release
      */
-    public function __construct(ConnectPool $connectPool, AbstractConnect $connect, string $sql = "", bool $release = false)
+    public function __construct(ConnectPool $connectPool, AbstractDbConnect $connect, string $sql = "", bool $release = false)
     {
         $this->sql = $sql;
         $this->connect = $connect;
