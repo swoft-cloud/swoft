@@ -5,6 +5,7 @@ namespace App\Tasks;
 use Swoft\App;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
+use Swoft\Redis\Cache\RedisClient;
 
 /**
  * 测试task
@@ -32,7 +33,9 @@ class TestTask
         $status++;
         echo "this cor task \n";
         App::trace("this is task log");
-        return 'cor' . " $p1" . " $p2 " . $status;
+//        RedisClient::set('name', 'stelin boy');
+        $name = RedisClient::get('name');
+        return 'cor' . " $p1" . " $p2 " . $status." ".$name;
     }
 
     /**
@@ -45,8 +48,9 @@ class TestTask
         static $status = 1;
         $status++;
         echo "this async task \n";
+        $name = RedisClient::get('name');
         App::trace("this is task log");
-        return 'async-' . $status;
+        return 'async-' . $status.'-'.$name;
     }
 
     /**

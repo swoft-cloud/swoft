@@ -2,7 +2,9 @@
 
 namespace Swoft\Pool;
 
-use Swoft\Cache\RedisConnect;
+use Swoft\App;
+use Swoft\Redis\Cache\RedisConnect;
+use Swoft\Redis\Cache\SyncRedisConnect;
 
 /**
  * redis连接池
@@ -18,11 +20,14 @@ class RedisPool extends ConnectPool
     /**
      * 创建一个连接
      *
-     * @return RedisConnect
+     * @return RedisConnect|SyncRedisConnect
      */
     public function createConnect()
     {
-        return new RedisConnect($this);
+        if (App::isWorkerStatus()) {
+            return new RedisConnect($this);
+        }
+        return new SyncRedisConnect($this);
     }
 
     public function reConnect($client)

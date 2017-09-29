@@ -3,11 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
-use Swoft\Cache\RedisClient;
 use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Http\HttpClient;
+use Swoft\Redis\Cache\RedisClient;
 use Swoft\Service\Service;
 use Swoft\App;
 use Swoft\Web\Controller;
