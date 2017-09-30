@@ -2,6 +2,7 @@
 
 namespace Swoft\Db\Mysql;
 
+use Swoft\App;
 use Swoft\Db\AbstractDbConnect;
 use Swoole\Coroutine\Mysql;
 
@@ -24,15 +25,22 @@ class MysqlConnect extends AbstractDbConnect
     private $connect = null;
 
     /**
-     * 执行SQL
+     * SQL语句
      *
-     * @param string $sql
-     *
-     * @return array|bool
+     * @var string
      */
-    public function execute(string $sql)
+    private $sql = "";
+
+
+    public function prepare(string $sql)
     {
-        $result = $this->connect->query($sql);
+        $this->sql = $sql;
+    }
+
+    public function execute(array $params = null)
+    {
+        $this->formatSqlByParams($params);
+        $result = $this->connect->query($this->sql);
         if ($result === false) {
             App::error("mysql执行出错，connectError=" . $this->connect->connect_error . " error=" . $this->connect->error);
         }
@@ -148,6 +156,42 @@ class MysqlConnect extends AbstractDbConnect
         return $this->connectPool->getDriver();
     }
 
+    public function getSql()
+    {
+        return $this->sql;
+    }
+
+    public function destory()
+    {
+        $this->sql = "";
+    }
+
+
+    private function formatSqlByParams(array $params = null)
+    {
+        if (empty($params)) {
+            return;
+        }
+        if (strpos($this->sql, '?') !== false) {
+            $this->sql = $this->transferQuestionMark();
+        }
+
+        $this->sql = strtr($this->sql, $params);
+    }
+
+    private function transferQuestionMark()
+    {
+        $sqlAry = explode('?', $this->sql);
+
+        $sql = "";
+        for ($i = 0; $i < count($sqlAry);$i++){
+            $n = $i+1;
+            $sql .= $sqlAry[$i]."?".$n." ";
+        }
+
+        $this->sql = $sql;
+    }
+
     private function parseUri($uri)
     {
         $parseAry = parse_url($uri);
@@ -170,4 +214,5 @@ class MysqlConnect extends AbstractDbConnect
         unset($configs['query']);
         return $configs;
     }
+
 }

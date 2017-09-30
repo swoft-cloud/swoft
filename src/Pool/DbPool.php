@@ -2,6 +2,8 @@
 
 namespace Swoft\Pool;
 
+use Swoft\App;
+
 /**
  *
  *
@@ -24,7 +26,11 @@ class DbPool extends ConnectPool
 
     public function createConnect()
     {
-        $connectClassName = "Swoft\Db\\".$this->driver."\\".$this->driver."Connect";
+        if(App::isWorkerStatus()){
+            $connectClassName = "Swoft\Db\\".$this->driver."\\".$this->driver."Connect";
+        }else{
+            $connectClassName = "Swoft\Db\\".$this->driver."\\Sync".$this->driver."Connect";
+        }
         if(!class_exists($connectClassName)){
             throw new \InvalidArgumentException("暂时不支持该驱动数据库，driver=".$this->driver);
         }

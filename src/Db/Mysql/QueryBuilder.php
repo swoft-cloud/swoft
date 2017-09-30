@@ -26,21 +26,19 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
      */
     public function getResult(string $className = "")
     {
-        // 如果没有组合SQL
-        if (empty($this->lastSql)) {
-            $this->getSql();
-        }
+        $sql = $this->getStatement();
 
         // sqlId用于记录日志
-        $sqlId = md5($this->lastSql);
+        $sqlId = md5($sql);
         $profileKey = 'mysql.' . $sqlId;
         App::profileStart($profileKey);
 
         // 执行SQL
-        $result = $this->connect->execute($this->lastSql);
+        $this->connect->prepare($sql);
+        $result = $this->connect->execute($this->parameters);
 
         App::profileEnd($profileKey);
-        App::debug("SQL语句执行结果 sqlId=$sqlId result=" . json_encode($result) . "sql=" . $this->lastSql);
+        App::debug("SQL语句执行结果 sqlId=$sqlId result=" . json_encode($result) . "sql=" . $sql);
 
         // 插入成功返回插入ID,更新或删除成功，返回影响行数,查询一条数据，返回一维数组
         $result = $this->transferResult($result);
@@ -64,19 +62,17 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
      */
     public function getDefer()
     {
-        // 如果没有组合SQL
-        if (empty($this->lastSql)) {
-            $this->getSql();
-        }
+        $sql = $this->getStatement();
 
         // sqlId用于记录日志
-        $sqlId = md5($this->lastSql);
+        $sqlId = md5($sql);
         $profileKey = "mysql." . $sqlId;
 
         // 执行SQL
         $this->connect->setDefer();
-        $result = $this->connect->execute($this->lastSql);
-        App::debug("SQL语句执行(defer) sqlId=$sqlId sql=" . $this->lastSql);
+        $this->connect->prepare($sql);
+        $result = $this->connect->execute($this->parameters);
+        App::debug("SQL语句执行(defer) sqlId=$sqlId sql=" . $sql);
 
         $isUpdateOrDelete = $this->isDelete() || $this->isUpdate();
         $isFindOne = $this->isSelect() && isset($this->limit['limit']) && $this->limit['limit'] == 1;
@@ -110,4 +106,22 @@ class QueryBuilder extends \Swoft\Db\QueryBuilder
         }
         return $result;
     }
+
+    /**
+     * @param mixed $key
+     *
+     * @return string
+     */
+    protected function formatParamsKey($key): string
+    {
+        if(is_string($key)){
+            return ":" . $key;
+        }
+        if(App::isWorkerStatus()){
+            return "?" . $key;
+        }
+
+        return $key;
+    }
+
 }

@@ -13,26 +13,13 @@ namespace Swoft\Db;
  */
 interface IDbConnect
 {
-    /**
-     * 执行SQL
-     *
-     * @param string $sql
-     *
-     * @return array|bool
-     */
-    public function execute(string $sql);
+    public function prepare(string $sql);
 
+    public function execute(array $params = null);
     /**
      * 开始事务
      */
     public function beginTransaction();
-
-    /**
-     * 延迟收取数据包
-     *
-     * @return array|bool
-     */
-    public function recv();
 
     /**
      * 获取插入ID
@@ -54,14 +41,25 @@ interface IDbConnect
     public function rollback();
 
     /**
+     * 提交事务
+     */
+    public function commit();
+
+    /**
+     * 延迟收取数据包
+     *
+     * @return array|bool
+     */
+    public function recv();
+
+    /**
      * 设置是否延迟收包
      *
      * @param bool $defer
      */
     public function setDefer($defer = true);
 
-    /**
-     * 提交事务
-     */
-    public function commit();
+    public function destory();
+
+    public function getSql();
 }

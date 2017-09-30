@@ -15,5 +15,11 @@ use Swoft\Pool\AbstractConnect;
  */
 abstract class AbstractDbConnect extends AbstractConnect implements IDbConnect
 {
+    public function recv()
+    {
+    }
 
+    public function setDefer($defer = true)
+    {
+    }
 }

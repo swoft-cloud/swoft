@@ -258,10 +258,10 @@ abstract class QueryBuilder implements IQueryBuilder
     /**
      * QueryBuilder constructor.
      *
-     * @param ConnectPool     $connectPool
+     * @param ConnectPool       $connectPool
      * @param AbstractDbConnect $connect
-     * @param string          $sql
-     * @param bool            $release
+     * @param string            $sql
+     * @param bool              $release
      */
     public function __construct(ConnectPool $connectPool, AbstractDbConnect $connect, string $sql = "", bool $release = false)
     {
@@ -909,15 +909,16 @@ abstract class QueryBuilder implements IQueryBuilder
      * @param mixed  $value
      * @param string $type
      *
+     * @throws DbException
+     *
      * @return array
      */
     private function transferParameter($key, $value, $type)
     {
-        if (is_int($key)) {
-            $key = "?" . $key;
-        } else {
-            $key = ":" . $key;
+        if (!is_int($key) || !is_string($key)) {
+            throw new DbException("参数key,只能是字符串和整数");
         }
+        $key = $this->formatParamsKey($key);
 
         // 参数值类型转换
         if ($type !== null) {
@@ -930,4 +931,6 @@ abstract class QueryBuilder implements IQueryBuilder
 
         return [$key, $value];
     }
+
+    abstract protected function formatParamsKey($key): string;
 }

@@ -2,6 +2,7 @@
 
 namespace Swoft\Db\Mysql;
 
+use Swoft\App;
 use Swoft\Db\AbstractDbConnect;
 
 /**
@@ -20,7 +21,12 @@ class SyncMysqlConnect extends AbstractDbConnect
      */
     private $connect;
 
+    /**
+     * @var \PDOStatement
+     */
+    private $stmt;
 
+    private $sql;
 
     public function createConnect()
     {
@@ -36,25 +42,46 @@ class SyncMysqlConnect extends AbstractDbConnect
         $charset = $options['charset'];
         $timeout = $options['timeout'];
 
+        $pdoOptions = [
+            \PDO::ATTR_TIMEOUT    => $timeout,
+            \PDO::ATTR_PERSISTENT => true,
+        ];
         $dsn = "mysql:host=$host;port=$port;dbname=$dbName;charset=$charset";
-        $pdo = new \PDO($dsn, $user, $passwd, array(PDO::ATTR_PERSISTENT => true));
+        $this->connect = new \PDO($dsn, $user, $passwd, $pdoOptions);
+    }
 
-        $this->connect = $pdo;
+    public function prepare(string $sql)
+    {
+        $this->sql = $sql . " Params:";
+        $this->stmt = $this->connect->prepare($sql);
+    }
+
+    public function execute(array $params = null)
+    {
+        $this->bindParams($params);
+        $this->formatSqlByParams($params);
+        $result = $this->stmt->execute();
+        App::info($this->sql);
+        if ($result !== true) {
+            App::error("数据库执行错误，sql=" . $this->stmt->debugDumpParams());
+            return $result;
+        }
+
+        return $this->stmt->fetchAll();
+    }
+
+    private function bindParams(array $params = null)
+    {
+        if (empty($params)) {
+            return;
+        }
+
+        foreach ($params as $key => $value){
+            $this->stmt->bindValue($key, $value);
+        }
     }
 
     public function reConnect()
-    {
-
-    }
-
-    /**
-     * 执行SQL
-     *
-     * @param string $sql
-     *
-     * @return array|bool
-     */
-    public function execute(string $sql)
     {
 
     }
@@ -65,16 +92,6 @@ class SyncMysqlConnect extends AbstractDbConnect
     public function beginTransaction()
     {
         $this->connect->beginTransaction();
-    }
-
-    /**
-     * 延迟收取数据包
-     *
-     * @return array|bool
-     */
-    public function recv()
-    {
-
     }
 
     /**
@@ -94,6 +111,7 @@ class SyncMysqlConnect extends AbstractDbConnect
      */
     public function getAffectedRows()
     {
+        return $this->stmt->rowCount();
     }
 
     /**
@@ -105,19 +123,31 @@ class SyncMysqlConnect extends AbstractDbConnect
     }
 
     /**
-     * 设置是否延迟收包
-     *
-     * @param bool $defer
-     */
-    public function setDefer($defer = true)
-    {
-    }
-
-    /**
      * 提交事务
      */
     public function commit()
     {
         $this->connect->rollBack();
+    }
+
+    public function destory()
+    {
+        $this->sql = "";
+        $this->stmt = null;
+    }
+
+    public function getSql()
+    {
+        return $this->getSql();
+    }
+
+    private function formatSqlByParams($params)
+    {
+        if (empty($params)) {
+            return;
+        }
+        foreach ($params as $key => $value) {
+            $this->sql .= " $key=" . $value;
+        }
     }
 }
