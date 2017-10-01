@@ -2,9 +2,12 @@
 
 namespace App\Tasks;
 
+use App\Models\Entity\Count;
+use App\Models\Entity\User;
 use Swoft\App;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
+use Swoft\Db\EntityManager;
 use Swoft\Redis\Cache\RedisClient;
 
 /**
@@ -33,9 +36,36 @@ class TestTask
         $status++;
         echo "this cor task \n";
         App::trace("this is task log");
-//        RedisClient::set('name', 'stelin boy');
+        //        RedisClient::set('name', 'stelin boy');
         $name = RedisClient::get('name');
-        return 'cor' . " $p1" . " $p2 " . $status." ".$name;
+        return 'cor' . " $p1" . " $p2 " . $status . " " . $name;
+    }
+
+    public function testMysql()
+    {
+        $user = new User();
+        $user->setName("stelin");
+        $user->setSex(1);
+        $user->setDesc("this my desc");
+        $user->setAge(mt_rand(1, 100));
+
+        $count = new Count();
+        $count->setFans(mt_rand(1, 1000));
+        $count->setFollows(mt_rand(1, 1000));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $uid = $em->save($user);
+        $count->setUid(intval($uid));
+
+        $result = $em->save($count);
+        if ($result === false) {
+            $em->rollback();
+        } else {
+            $em->commit();
+        }
+        $em->close();
+        return $result;
     }
 
     /**
@@ -50,7 +80,7 @@ class TestTask
         echo "this async task \n";
         $name = RedisClient::get('name');
         App::trace("this is task log");
-        return 'async-' . $status.'-'.$name;
+        return 'async-' . $status . '-' . $name;
     }
 
     /**

@@ -67,7 +67,7 @@ class SyncMysqlConnect extends AbstractDbConnect
             return $result;
         }
 
-        return $this->stmt->fetchAll();
+        return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function bindParams(array $params = null)
@@ -101,7 +101,7 @@ class SyncMysqlConnect extends AbstractDbConnect
      */
     public function getInsertId()
     {
-        $this->connect->lastInsertId();
+        return $this->connect->lastInsertId();
     }
 
     /**
@@ -127,7 +127,7 @@ class SyncMysqlConnect extends AbstractDbConnect
      */
     public function commit()
     {
-        $this->connect->rollBack();
+        $this->connect->commit();
     }
 
     public function destory()
@@ -138,7 +138,7 @@ class SyncMysqlConnect extends AbstractDbConnect
 
     public function getSql()
     {
-        return $this->getSql();
+        return $this->sql;
     }
 
     private function formatSqlByParams($params)
