@@ -40,6 +40,7 @@ class MysqlConnect extends AbstractDbConnect
     public function execute(array $params = null)
     {
         $this->formatSqlByParams($params);
+        var_dump($this->sql);
         $result = $this->connect->query($this->sql);
         if ($result === false) {
             App::error("mysql执行出错，connectError=" . $this->connect->connect_error . " error=" . $this->connect->error);
@@ -173,9 +174,10 @@ class MysqlConnect extends AbstractDbConnect
             return;
         }
         if (strpos($this->sql, '?') !== false) {
-            $this->sql = $this->transferQuestionMark();
+            $this->transferQuestionMark();
         }
 
+        var_dump($this->sql, $params);
         $this->sql = strtr($this->sql, $params);
     }
 
@@ -184,9 +186,13 @@ class MysqlConnect extends AbstractDbConnect
         $sqlAry = explode('?', $this->sql);
 
         $sql = "";
-        for ($i = 0; $i < count($sqlAry);$i++){
+        $maxBlock = count($sqlAry);
+        for ($i = 0; $i <$maxBlock ;$i++){
             $n = $i+1;
-            $sql .= $sqlAry[$i]."?".$n." ";
+            $sql .= $sqlAry[$i];
+            if($maxBlock > $i+1){
+                $sql .= "?".$n." ";
+            }
         }
 
         $this->sql = $sql;

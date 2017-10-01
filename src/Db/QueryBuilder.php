@@ -798,12 +798,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     public function getSql()
     {
-        if (empty($this->lastSql)) {
-            $sql = $this->getStatement();
-            $this->lastSql = strtr($sql, $this->parameters);
-        }
-
-        return $this->lastSql;
+        return $this->connect->getSql();
     }
 
     /**
@@ -915,7 +910,7 @@ abstract class QueryBuilder implements IQueryBuilder
      */
     private function transferParameter($key, $value, $type)
     {
-        if (!is_int($key) || !is_string($key)) {
+        if (!is_int($key) && !is_string($key)) {
             throw new DbException("参数key,只能是字符串和整数");
         }
         $key = $this->formatParamsKey($key);
