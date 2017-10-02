@@ -3,6 +3,7 @@
 namespace Swoft\Pool;
 
 use Swoft\App;
+use Swoft\Service\AbstractServiceConnect;
 use Swoft\Service\ServiceConnect;
 use Swoft\Service\SyncServiceConnect;
 
@@ -20,7 +21,7 @@ class ServicePool extends ConnectPool
     /**
      * 创建连接
      *
-     * @return ServiceConnect|SyncServiceConnect
+     * @return AbstractServiceConnect
      */
     public function createConnect()
     {

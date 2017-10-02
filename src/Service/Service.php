@@ -58,7 +58,7 @@ class Service
         /* @var  $connectPool ServicePool */
         $connectPool = App::getBean($serviceName . "Pool");
 
-        /* @var $client ServiceConnect */
+        /* @var $client AbstractServiceConnect */
         $client = $connectPool->getConnect();
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);
@@ -102,7 +102,7 @@ class Service
         /* @var $connectPool ServicePool */
         $connectPool = App::getBean($serviceName . "Pool");
 
-        /* @var $client \Swoole\Coroutine\Client */
+        /* @var $client AbstractServiceConnect */
         $client = $connectPool->getConnect();
         $packer = App::getPacker();
         $data = $packer->formatData($func, $params);
