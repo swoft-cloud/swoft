@@ -81,13 +81,14 @@ class DemoController extends Controller
      */
     public function actionIndex3()
     {
-        $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
-        $mysql = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
-        $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
-        $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
+//        $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
+//        $mysql = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
+//        $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
+        $rpc = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
+//        $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
 
         var_dump(Collector::$crontab);
-        $this->outputJson([$http]);
+        $this->outputJson([$rpc]);
     }
 
     /**

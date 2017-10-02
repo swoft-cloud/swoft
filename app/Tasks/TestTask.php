@@ -10,6 +10,7 @@ use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
 use Swoft\Http\HttpClient;
 use Swoft\Redis\Cache\RedisClient;
+use Swoft\Service\Service;
 
 /**
  * 测试task
@@ -82,6 +83,13 @@ class TestTask
         $data['result2'] = $result2;
         return $data;
     }
+
+    public function testRpc()
+    {
+        $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
+        return $result;
+    }
+
 
     /**
      * 异步task

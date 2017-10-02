@@ -2,7 +2,9 @@
 
 namespace Swoft\Pool;
 
+use Swoft\App;
 use Swoft\Service\ServiceConnect;
+use Swoft\Service\SyncServiceConnect;
 
 /**
  * RPC服务连接池
@@ -18,11 +20,14 @@ class ServicePool extends ConnectPool
     /**
      * 创建连接
      *
-     * @return ServiceConnect
+     * @return ServiceConnect|SyncServiceConnect
      */
     public function createConnect()
     {
-        return new ServiceConnect($this);
+        if(App::isWorkerStatus()){
+            return new ServiceConnect($this);
+        }
+        return new SyncServiceConnect($this);
     }
 
     public function reConnect($client)
