@@ -8,6 +8,7 @@ use Swoft\App;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
+use Swoft\Http\HttpClient;
 use Swoft\Redis\Cache\RedisClient;
 
 /**
@@ -66,6 +67,20 @@ class TestTask
         }
         $em->close();
         return $result;
+    }
+
+    public function testHttp()
+    {
+        $requestData = [
+            'name' => 'boy',
+            'desc' => 'php'
+        ];
+
+        $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
+        $result2 = HttpClient::call("http://www.baidu.com/", HttpClient::GET, []);
+        $data['result'] = $result;
+        $data['result2'] = $result2;
+        return $data;
     }
 
     /**

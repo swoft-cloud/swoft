@@ -54,10 +54,11 @@ class Task
      * @param string $methodName 任务job(类方法名)
      * @param array  $params     参数
      * @param string $type       类型默认协程任务投递
+     * @param int    $timeout    超时时间单位秒
      *
      * @return  mixed
      */
-    public static function deliver(string $taskName, string $methodName, array $params = [], string $type = self::TYPE_COR)
+    public static function deliver(string $taskName, string $methodName, array $params = [], string $type = self::TYPE_COR, $timeout = 3)
     {
         // httpServer
         $server = App::$server->getServer();
@@ -66,10 +67,10 @@ class Task
         // 投递协程任务
         if ($type == self::TYPE_COR) {
             $tasks[0] = $data;
-            $prifleKey = 'task'.'.'.$taskName.'.'.$methodName;
+            $prifleKey = 'task' . '.' . $taskName . '.' . $methodName;
 
             App::profileStart($prifleKey);
-            $result = $server->taskCo($tasks);
+            $result = $server->taskCo($tasks, $timeout);
             App::profileEnd($prifleKey);
             return $result;
         }
@@ -208,7 +209,8 @@ class Task
      *
      * @return string
      */
-    public static function logid(){
+    public static function logid()
+    {
         return self::$logid;
     }
 
@@ -248,7 +250,7 @@ class Task
         ];
 
         // 不是定时任务，传递logid和spanid
-        if($type !== self::TYPE_CRON){
+        if ($type !== self::TYPE_CRON) {
             $task['logid'] = RequestContext::getLogid();
             $task['spanid'] = RequestContext::getSpanid();
         }

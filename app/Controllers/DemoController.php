@@ -83,10 +83,11 @@ class DemoController extends Controller
     {
         $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
         $mysql = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
+        $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 10);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
 
         var_dump(Collector::$crontab);
-        $this->outputJson($mysql);
+        $this->outputJson([$http]);
     }
 
     /**
