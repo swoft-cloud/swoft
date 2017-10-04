@@ -7,6 +7,7 @@ return [
         'App\Models',
         'App\Beans',
         'App\Tasks',
+        'App\Process',
     ],
     'I18n' =>[
         'sourceLanguage' => '@root/messages/',

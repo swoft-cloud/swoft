@@ -3,12 +3,13 @@
 namespace Swoft\Web;
 
 use Swoft\App;
+use Swoft\Base\Context;
 use Swoft\Base\Inotify;
-use Swoft\Base\RequestContext;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Task\Task;
 use Swoole\Http\Server;
+use Swoole\Lock;
 use Swoole\Process;
 
 /**
@@ -23,9 +24,9 @@ use Swoole\Process;
 class HttpServer extends \Swoft\Base\HttpServer
 {
     /**
-     * @var \swoole_process
+     * @var Lock;
      */
-    private $process;
+    private $workerLock;
 
     /**
      * 启动Http Server
@@ -33,6 +34,7 @@ class HttpServer extends \Swoft\Base\HttpServer
     public function start()
     {
         App::$server = $this;
+        $this->workerLock = new Lock(SWOOLE_RWLOCK);
 
         $this->swoft = new Server($this->http['host'], $this->http['port'], $this->http['model'], $this->http['type']);
 
@@ -115,17 +117,17 @@ class HttpServer extends \Swoft\Base\HttpServer
      */
     public function onWorkerStart(Server $server, int $workerId)
     {
-        $setting = $server->setting;
-        if ($workerId >= $setting['worker_num']) {
-            swoole_set_process_name($this->status['pname'] . " task process");
-        } else {
-            swoole_set_process_name($this->status['pname'] . " worker process");
-        }
-
-
         // reload重新加载文件
         $this->beforeOnWorkerStart($server, $workerId);
 
+        $setting = $server->setting;
+        if ($workerId >= $setting['worker_num']) {
+            Context::setStatus(Context::TASK);
+            swoole_set_process_name($this->status['pname'] . " task process");
+        } else {
+            Context::setStatus(Context::WORKER);
+            swoole_set_process_name($this->status['pname'] . " worker process");
+        }
     }
 
     /**
@@ -208,27 +210,18 @@ class HttpServer extends \Swoft\Base\HttpServer
         // 加载bean
         $this->initLoadBean();
 
-
-        if (false) {
-            $process = new \swoole_process(function (\swoole_process $process) {
-                $process->name('php-swf crontab-execute');
-                swoole_timer_tick(1000, function () {
-                    var_dump(App::getBean('config'));
-                });
-            }, false);
-            $process->start();
-
-
-            $process2 = new \swoole_process(function (\swoole_process $process) {
-                $process->name('php-swf crontab-scan');
-                swoole_timer_tick(1000, function () {
-                    var_dump(App::getBean('config'));
-                });
-            }, false);
-            $process2->start();
-        }
+        $this->initProcess();
         // 校验是否启动crontab
         //        $this->wakeUpCrontab($server, $workerId);
+    }
+
+    private function initProcess(){
+        $isTask = $this->swoft->taskworker;
+        if( $isTask === false && $this->workerLock->trylock()){
+            Context::setStatus(Context::PROCESS);
+            $pname = $this->status['pname'];
+            \Swoft\Process\Process::run($pname);
+        }
     }
 
     /**
@@ -270,6 +263,9 @@ class HttpServer extends \Swoft\Base\HttpServer
      */
     public function onTask(\Swoole\Server $server, int $taskId, int $workerId, $data)
     {
+        // 设置taskId
+        Task::setId($taskId);
+
         // 用户自定义的任务，不是字符串
         if(!is_string($data)){
             return parent::onTask($server, $taskId, $workerId, $data);

@@ -34,18 +34,9 @@ class Task
     const TYPE_CRON = 'cron';
 
     /**
-     * 任务ID
-     *
-     * @var int
-     */
-    private static $taskId;
-
-    /**
-     * 上下文日志ID
-     *
      * @var string
      */
-    private static $logid;
+    private static $id;
 
     /**
      * 投递任务
@@ -195,39 +186,19 @@ class Task
     }
 
     /**
-     * 任务ID
-     *
-     * @return int
-     */
-    public static function id()
-    {
-        return self::$taskId;
-    }
-
-    /**
-     * 任务上下文日志ID，定时任务自动生产唯一ID
-     *
      * @return string
      */
-    public static function logid()
+    public static function getId(): string
     {
-        return self::$logid;
+        return self::$id;
     }
 
     /**
-     * @param int $taskId
+     * @param string $id
      */
-    public static function setTaskId(int $taskId)
+    public static function setId(string $id)
     {
-        self::$taskId = $taskId;
-    }
-
-    /**
-     * @param string $logid
-     */
-    public static function setLogid(string $logid)
-    {
-        self::$logid = $logid;
+        self::$id = $id;
     }
 
     /**

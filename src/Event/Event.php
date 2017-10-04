@@ -30,4 +30,10 @@ class Event
 
     // 任务后置事件
     const AFTER_TASK = "afterTask";
+
+    // 进程前置事件
+    const BEFORE_PROCESS = "beforeProcess";
+
+    // 进程后置事件
+    const AFTER_PROCESS = "afterProcess";
 }

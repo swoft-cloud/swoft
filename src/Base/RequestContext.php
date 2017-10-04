@@ -73,7 +73,7 @@ class RequestContext
      */
     public static function setRequest(\Swoole\Http\Request $request)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_REQUEST] = new \Swoft\Web\Request($request);
     }
 
@@ -84,7 +84,7 @@ class RequestContext
      */
     public static function setResponse(\Swoole\Http\Response $response)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_RESPONSE] = new \Swoft\Web\Response($response);
     }
 
@@ -95,7 +95,7 @@ class RequestContext
      */
     public static function setContextData(array $contextData = [])
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = $contextData;
     }
 
@@ -107,7 +107,7 @@ class RequestContext
      */
     public static function setContextDataByKey(string $key, $val)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key] = $val;
     }
 
@@ -115,17 +115,18 @@ class RequestContext
      * 获取当前请求数据一个KEY的值
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getContextDataByKey(string $key, $default = null)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (isset(self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key])) {
             return self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key];
         }
 
-        App::warning("RequestContext data数据不存在key,key=".$key);
+        App::warning("RequestContext data数据不存在key,key=" . $key);
         return $default;
     }
 
@@ -158,7 +159,7 @@ class RequestContext
      */
     public static function destory()
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (isset(self::$coroutineLocal[$coroutineId])) {
             unset(self::$coroutineLocal[$coroutineId]);
         }
@@ -167,16 +168,16 @@ class RequestContext
     /**
      * 获取协程上下文
      *
-     * @param string $name  协程ID
+     * @param string $name 协程ID
      *
      * @return mixed|null
      */
     private static function getCoroutineContext(string $name)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (!isset(self::$coroutineLocal[$coroutineId])) {
-            App::error("协程上下文不存在，coroutineId=".$coroutineId);
-            throw new \InvalidArgumentException("协程上下文不存在，coroutineId=".$coroutineId);
+            App::error("协程上下文不存在，coroutineId=" . $coroutineId);
+            throw new \InvalidArgumentException("协程上下文不存在，coroutineId=" . $coroutineId);
         }
 
         $coroutineContext = self::$coroutineLocal[$coroutineId];
@@ -191,11 +192,8 @@ class RequestContext
      *
      * @return int
      */
-    private static function getcoroutine()
+    private static function getcoroutineId()
     {
-        if(App::isWorkerStatus()){
-            return Coroutine::tid();
-        }
-        return Task::logid();
+        return Coroutine::tid();
     }
 }

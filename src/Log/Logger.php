@@ -359,8 +359,10 @@ class Logger extends \Monolog\Logger
 
     /**
      * 请求完成追加一条notice日志
+     *
+     * @param bool $flush 是否刷新日志
      */
-    public function appendNoticeLog()
+    public function appendNoticeLog($flush = false)
     {
         $cid = Coroutine::tid();
         $ts = $this->getLoggerTime();
@@ -398,7 +400,8 @@ class Logger extends \Monolog\Logger
         $this->messages[] = $message;
 
         // 一个请求完成刷新一次或达到刷新的次数
-        if ($this->flushRequest || count($this->messages) >= $this->flushInterval) {
+        $isReached = count($this->messages) >= $this->flushInterval;
+        if ($this->flushRequest || $isReached || $flush) {
             $this->flushLog();
         }
     }
@@ -430,11 +433,10 @@ class Logger extends \Monolog\Logger
      */
     public function initialize()
     {
-        $cid = Coroutine::tid();
-        unset($this->profiles[$cid]);
-        unset($this->countings[$cid]);
-        unset($this->pushlogs[$cid]);
-        unset($this->profileStacks[$cid]);
+        $this->profiles = [];
+        $this->countings = [];
+        $this->pushlogs = [];
+        $this->profileStacks = [];
 
         $this->messages[] = [];
     }

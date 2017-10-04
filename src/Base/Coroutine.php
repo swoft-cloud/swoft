@@ -3,6 +3,8 @@
 namespace Swoft\Base;
 
 use Swoft\Helper\PhpHelper;
+use Swoft\Process\Process;
+use Swoft\Task\Task;
 use Swoole\Coroutine as SwCoroutine;
 
 /**
@@ -35,7 +37,17 @@ class Coroutine
      */
     public static function id()
     {
-        return SwCoroutine::getuid();
+        $cid = SwCoroutine::getuid();
+        $context = Context::getStatus();
+
+        if ($context == Context::WORKER || $cid !== -1) {
+            return $cid;
+        }
+        if($context == Context::TASK){
+            return Task::getId();
+        }
+
+        return Process::getId();
     }
 
     /**
@@ -45,7 +57,7 @@ class Coroutine
      */
     public static function tid()
     {
-        $id = SwCoroutine::getuid();
+        $id = self::id();
         return self::$idMap[$id] ?? $id;
     }
 
