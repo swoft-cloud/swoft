@@ -44,9 +44,11 @@ class Process
     public static function run(string $processPrefix)
     {
         $processes = Collector::$processses;
-        foreach ($processes as $processName => $processAry) {
-            $iout = $processAry['inout'];
+        foreach ($processes as $className => $processAry) {
+            $log = $processAry['log'];
             $pipe = $processAry['pipe'];
+            $iout = $processAry['inout'];
+            $processName = $processAry['name'];
             if (!BeanFactory::hasBean($processName)) {
                 echo "启动的进程不存在，processName=" . $processName;
                 continue;
@@ -54,8 +56,8 @@ class Process
 
             $processable = App::getBean($processName);
 
-            $process = new \Swoole\Process(function (\Swoole\Process $process) use ($processable, $processPrefix, $processName) {
-                App::trigger(Event::BEFORE_PROCESS, null, $processName, $process);
+            $process = new \Swoole\Process(function (\Swoole\Process $process) use ($processable, $processPrefix, $processName, $log) {
+                App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, $log);
                 PhpHelper::call([$processable, 'run'], [$process, $processPrefix]);
                 App::trigger(Event::AFTER_PROCESS);
             }, $iout, $pipe);
@@ -68,7 +70,6 @@ class Process
      */
     public static function getId(): string
     {
-        var_dump(self::$id, '&&&&&&&');
         return self::$id;
     }
 

@@ -5,12 +5,14 @@ namespace App\Process;
 use Swoft\App;
 use Swoft\Base\Context;
 use Swoft\Bean\Annotation\AutoProcess;
+use Swoft\Bean\Annotation\Log;
 use Swoft\Process\IProcess;
 use Swoole\Process;
 
 /**
  *
  * @AutoProcess(name="myProcess")
+ * @Log(5)
  * @uses      MyProcess
  * @version   2017年10月02日
  * @author    stelin <phpcrazy@126.com>

@@ -4,6 +4,7 @@ namespace Swoft\Bean\Wrapper;
 
 use Swoft\Bean\Annotation\AutoProcess;
 use Swoft\Bean\Annotation\Inject;
+use Swoft\Bean\Annotation\Log;
 
 /**
  * 进程注解封装器
@@ -23,7 +24,8 @@ class AutoProcessWrapper extends AbstractWrapper
      */
     protected $classAnnotations
         = [
-            AutoProcess::class
+            AutoProcess::class,
+            Log::class
         ];
 
     /**

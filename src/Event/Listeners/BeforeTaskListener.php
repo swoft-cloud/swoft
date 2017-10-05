@@ -38,7 +38,7 @@ class BeforeTaskListener implements IApplicationListener
         $spanid = $beforeEvent->getSpanid();
         $method = $beforeEvent->getMethod();
         $taskName = $beforeEvent->getTaskName();
-        $uri = $taskName."->".$method;
+        $uri = 'task.'.$taskName.'.'.$method;
 
         $contextData = [
             'logid'       => $logid,

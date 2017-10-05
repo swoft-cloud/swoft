@@ -31,10 +31,12 @@ class AutoProcessParser extends AbstractParser
     {
         $name = $objectAnnotation->getName();
         $beanName = empty($name) ? $className : $name;
-        Collector::$processses[$beanName] = [
+        Collector::$processses[$className] = [
+            'name' => $beanName,
             'inout' => $objectAnnotation->isInout(),
             'pipe'  => $objectAnnotation->isPipe(),
         ];
+
         return [$beanName, Scope::SINGLETON];
     }
 }

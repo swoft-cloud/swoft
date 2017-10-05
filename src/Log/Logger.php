@@ -25,42 +25,42 @@ class Logger extends \Monolog\Logger
     /**
      * @var string 日志系统名称
      */
-    public $name = "Swoft";
+    protected $name = SYSTEM_NAME;
 
     /**
      * @var int 刷新日志条数
      */
-    public $flushInterval = 1;
+    protected $flushInterval = 1;
 
     /**
      * @var bool 每个请求完成刷新一次日志到磁盘，默认未开启
      */
-    public $flushRequest = false;
+    protected $flushRequest = false;
 
     /**
      * @var array 性能日志
      */
-    public $profiles = [];
+    protected $profiles = [];
 
     /**
      * @var array 计算日志
      */
-    public $countings = [];
+    protected $countings = [];
 
     /**
      * @var array 标记日志
      */
-    public $pushlogs = [];
+    protected $pushlogs = [];
 
     /**
      * @var array 标记栈
      */
-    public $profileStacks = [];
+    protected $profileStacks = [];
 
     /**
      * @var array 日志数据记录
      */
-    public $messages = [];
+    protected $messages = [];
 
 
     protected $processors = [];
@@ -452,6 +452,14 @@ class Logger extends \Monolog\Logger
     public function addTrace($message, array $context = array())
     {
         return $this->addRecord(static::TRACE, $message, $context);
+    }
+
+    /**
+     * @param int $flushInterval
+     */
+    public function setFlushInterval(int $flushInterval)
+    {
+        $this->flushInterval = $flushInterval;
     }
 
     /**

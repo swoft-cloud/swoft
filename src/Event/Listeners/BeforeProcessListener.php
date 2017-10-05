@@ -29,17 +29,20 @@ class BeforeProcessListener implements IApplicationListener
      */
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params)
     {
-        if (!isset($params[0]) || !isset($params[1])) {
+        if (count($params) < 3) {
             return;
         }
 
-        $logid = uniqid();
         $spanid = 0;
+        $logid = uniqid();
+
         /* @var Process $process */
+        $log = $params[2];
         $process = $params[1];
         $processName = $params[0];
         $processPid = $process->pid;
         $uri = 'process-' . $processName;
+        $flushInterval = $log['flushInterval'];
 
         $contextData = [
             'logid'       => $logid,
@@ -49,6 +52,7 @@ class BeforeProcessListener implements IApplicationListener
         ];
 
         \Swoft\Process\Process::setId($processPid);
+        App::getLogger()->setFlushInterval($flushInterval);
         RequestContext::setContextData($contextData);
 
         // 日志初始化
