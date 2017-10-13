@@ -194,7 +194,6 @@ class Input implements IInput
                 return $this->getOpt($name);
             }
         }
-
         return $default;
     }
 

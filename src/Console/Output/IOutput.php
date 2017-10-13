@@ -13,5 +13,5 @@ namespace Swoft\Console\Output;
  */
 interface IOutput
 {
-    public static function writeln($messages = '', $newline = true, $quit = false);
+    public function writeln($messages = '', $newline = true, $quit = false);
 }

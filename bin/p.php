@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__. '/bootstrap.php';
+
+$app = new \Swoft\Console\Console();
+$app->run();
+
+exit();
 //$input = new \Swoft\Console\Input\Input();
 //
 //$read = $input->read('select a or b', true);

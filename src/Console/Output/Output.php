@@ -18,7 +18,7 @@ class Output implements IOutput
     const GAP_CHAR = '  ';
     const LEFT_CHAR = '  ';
 
-    public static function writeln($messages = '', $newline = true, $quit = false)
+    public function writeln($messages = '', $newline = true, $quit = false)
     {
         $messages = Style::t($messages);
         echo $messages;
@@ -30,12 +30,10 @@ class Output implements IOutput
         }
     }
 
-    public static function writeList(array $list, $titleStyle = null, string $cmdStyle = null, string $descStyle = null)
+    public function writeList(array $list, $titleStyle = 'comment', string $cmdStyle = 'info', string $descStyle = null)
     {
         foreach ($list as $title => $items) {
-            if ($titleStyle != null) {
-                $title = "<$titleStyle>$title</$titleStyle>";
-            }
+            $title = "<$titleStyle>$title</$titleStyle>";
             self::writeln($title);
             foreach ($items as $cmd => $desc) {
                 if (is_int($cmd)) {
@@ -43,9 +41,7 @@ class Output implements IOutput
                 } else {
                     $maxLength = self::getCmdMaxLength(array_keys($items));
                     $cmd = str_pad($cmd, $maxLength, ' ');
-                    if ($cmd != null) {
-                        $cmd = "<$cmdStyle>$cmd</$cmdStyle>";
-                    }
+                    $cmd = "<$cmdStyle>$cmd</$cmdStyle>";
                     $message = self::LEFT_CHAR . $cmd . self::GAP_CHAR . $desc;
                 }
                 self::writeln($message);
@@ -55,7 +51,7 @@ class Output implements IOutput
         }
     }
 
-    private static function getCmdMaxLength(array $cmds)
+    private function getCmdMaxLength(array $cmds)
     {
         $max = 0;
         foreach ($cmds as $cmd) {

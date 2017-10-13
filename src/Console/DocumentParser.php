@@ -5,13 +5,13 @@ namespace Swoft\Console;
 /**
  *
  *
- * @uses      AnnotationParser
+ * @uses      DocumentParser
  * @version   2017年10月08日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class AnnotationParser
+class DocumentParser
 {
     /*
      * 以下三个方法来自 yii2 console/Controller.php
