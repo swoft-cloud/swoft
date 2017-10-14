@@ -44,8 +44,6 @@ class HttpServer extends RpcServer
         if ((int)$this->serverSetting['tcpable'] === 1) {
             $this->listen = $this->server->listen($this->tcpSetting['host'], $this->tcpSetting['port'], $this->tcpSetting['type']);
             $tcpSetting = $this->getListenTcpSetting();
-            var_dump($tcpSetting);
-            var_dump($this->listen);
             $this->listen->set($tcpSetting);
             $this->listen->on('connect', [$this, 'onConnect']);
             $this->listen->on('receive', [$this, 'onReceive']);

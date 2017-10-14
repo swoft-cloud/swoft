@@ -67,6 +67,11 @@ abstract class AbstractServer implements IServer
     protected $workerLock;
 
     /**
+     * @var
+     */
+    protected $status;
+
+    /**
      * AbstractServer constructor.
      */
     public function __construct()

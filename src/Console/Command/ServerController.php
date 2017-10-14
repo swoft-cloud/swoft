@@ -165,6 +165,9 @@ class ServerController extends ConsoleCommand
         $this->startCommand();
     }
 
+    /**
+     * 设置启动选项
+     */
     private function setStartArgs()
     {
 
