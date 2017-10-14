@@ -3,7 +3,7 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Web\HttpServer;
+use Swoft\Server\IServer;
 
 /**
  * 文件更新自动监听
@@ -39,13 +39,18 @@ class Inotify
      */
     private $fileTypes = ['php'];
 
-    private $httpServer;
+    /**
+     * server服务器
+     *
+     * @var IServer
+     */
+    private $server;
 
     private $watchFiles = [];
 
-    public function __construct(HttpServer $httpServer)
+    public function __construct(IServer $server)
     {
-        $this->httpServer = new HttpServer();
+        $this->server = $server;
         $this->watchDir = App::getAlias('@app');
     }
 
@@ -133,8 +138,8 @@ class Inotify
         sleep(3);
 
         echo "inotify开始自动reloading...\n";
-        $this->httpServer->isRunning();
-        $this->httpServer->reload();
+        $this->server->isRunning();
+        $this->server->reload();
         echo "inotify自动成功\n";
     }
 

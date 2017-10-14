@@ -3,7 +3,7 @@
 namespace Swoft\Console\Command;
 
 /**
- * 实体管理集合命令
+ * database entity commands
  *
  * @uses      EntityController
  * @version   2017年10月11日

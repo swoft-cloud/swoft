@@ -212,20 +212,23 @@ class HttpServer
     }
 
     /**
-     * 设置守护进程启动
+     * 设置是否守护进程启动
      *
+     * @param int $daemonize
      */
-    public function setDaemonize()
+    public function setDaemonize(int $daemonize)
     {
-        $this->setting['daemonize'] = 1;
+        $this->setting['daemonize'] = $daemonize;
     }
 
     /**
-     * 设置启动RPC
+     * 设置是否启动RPC
+     *
+     * @param int $daemonize
      */
-    public function setRpcEnable()
+    public function setRpc(int $daemonize)
     {
-        $this->tcp['enable'] = 1;
+        $this->setting['daemonize'] = $daemonize;
     }
 
     /**

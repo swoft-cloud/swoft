@@ -5,7 +5,7 @@ namespace Swoft\Console\Command;
 use Swoft\Console\ConsoleCommand;
 
 /**
- * RPC服务器命令集合
+ * rpc server commands
  *
  * @uses      RpcController
  * @version   2017年10月11日

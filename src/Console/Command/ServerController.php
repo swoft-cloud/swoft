@@ -5,10 +5,10 @@ namespace Swoft\Console\Command;
 use Swoft\Console\ConsoleCommand;
 use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
-use Swoft\Web\HttpServer;
+use Swoft\Server\HttpServer;
 
 /**
- * HTTP服务器命令集合
+ * http server commands
  *
  * @uses      ServerController
  * @version   2017年10月06日
@@ -50,13 +50,13 @@ class ServerController extends ConsoleCommand
     {
         // 是否正在运行
         if ($this->httpServer->isRunning()) {
-            $serverStatus = $this->httpServer->getServerStatus();
+            $serverStatus = $this->httpServer->getServerSetting();
             $this->output->writeln("<error>The server have been running!(PID: {$serverStatus['masterPid']})</error>", true, true);
         }
 
         $this->setStartArgs();
-        $httpStatus = $this->httpServer->getHttpStatus();
-        $tcpStatus = $this->httpServer->getTcpStatus();
+        $httpStatus = $this->httpServer->getHttpSetting();
+        $tcpStatus = $this->httpServer->getTcpSetting();
 
         // http启动参数
         $httpHost = $httpStatus['host'];
@@ -69,6 +69,7 @@ class ServerController extends ConsoleCommand
         $tcpHost = $tcpStatus['host'];
         $tcpPort = $tcpStatus['port'];
         $tcpType = $tcpStatus['type'];
+        $tcpEnable = $tcpEnable ? 1 : 0;
 
         // 信息面板
         $lines = [
@@ -127,7 +128,7 @@ class ServerController extends ConsoleCommand
             $this->output->writeln('<error>The server is not running! cannot stop</error>', true, true);
         }
 
-        $serverStatus = $this->httpServer->getServerStatus();
+        $serverStatus = $this->httpServer->getServerSetting();
         $pidFile = $serverStatus['pfile'];
 
         @unlink($pidFile);
@@ -160,19 +161,20 @@ class ServerController extends ConsoleCommand
         }
 
         // 重启默认是守护进程
-        $this->httpServer->setDaemonize(1);
+        $this->httpServer->setDaemonize();
         $this->startCommand();
     }
 
-    private function setStartArgs(){
+    private function setStartArgs()
+    {
 
         $enable = $this->input->hasOpt('r');
         $daemonize = $this->input->hasOpt('d');
 
-        if($daemonize){
+        if ($daemonize) {
             $this->httpServer->setDaemonize();
         }
-        if($enable){
+        if ($enable) {
             $this->httpServer->setRpcEnable();
         }
     }

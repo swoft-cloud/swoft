@@ -86,11 +86,11 @@ class Console implements IApplication
         }
 
         $script = $this->input->getFullScript();
-        $itemList['Usage:'] = [$script];
+        $itemList['Usage:'] = ["php $script"];
         $itemList['Commands:'] = $commands;
         $itemList['Options:'] = [
-            '-v,--version' => '版本信息',
-            '-h,--help'    => '帮助信息'
+            '-v,--version' => 'show version',
+            '-h,--help'    => 'show help'
         ];
 
         $this->output->writeList($itemList, 'comment', 'info');
