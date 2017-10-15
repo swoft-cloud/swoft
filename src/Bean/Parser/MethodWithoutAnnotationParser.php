@@ -24,20 +24,27 @@ class MethodWithoutAnnotationParser extends AbstractParser
      * @param string $propertyName
      * @param string $methodName
      * @param null   $propertyValue
+     *
      * @return mixed
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        if (!isset(Collector::$requestMapping[$className])) {
-            return;
+        if (isset(Collector::$requestMapping[$className])) {
+            // 路由收集
+            Collector::$requestMapping[$className]['routes'][] = [
+                'route'  => "",
+                'method' => [RequestMethod::GET, RequestMethod::POST],
+                'action' => $methodName
+            ];
         }
 
-        // 路由收集
-        Collector::$requestMapping[$className]['routes'][] = [
-            'route'  => "",
-            'method' => [RequestMethod::GET, RequestMethod::POST],
-            'action' => $methodName
-        ];
+        if (isset(Collector::$serviceMapping[$className])) {
+            Collector::$serviceMapping[$className]['routes'][] = [
+                'mappedName' => "",
+                'methodName' => $methodName
+            ];
+        }
+
         return null;
     }
 }

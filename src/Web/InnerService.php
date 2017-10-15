@@ -48,7 +48,7 @@ class InnerService
      * @param string $method 方法名称
      * @param array  $params 调用函数参数
      */
-    public function beforeService(string $method, array $params)
+    protected function beforeService(string $method, array $params)
     {
     }
 
@@ -58,7 +58,7 @@ class InnerService
      * @param string $method 方法名称
      * @param array  $params 调用函数参数
      */
-    public function afterService(string $method, array $params)
+    protected function afterService(string $method, array $params)
     {
     }
 }

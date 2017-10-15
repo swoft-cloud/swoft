@@ -122,25 +122,9 @@ abstract class Application
         $func = $data['func']?? '';
         $params = $data['params']?? [];
 
-        list($servicePrefix, $method) = explode('::', $func);
-
-        $namespace = $this->serviceNameSpace;
-        $class = $servicePrefix . 'Service';
-        $className = $namespace . "\\" . $class;
-        if (!class_exists($className)) {
-            App::error('内部服务调用的class不存在,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的class不存在,class=' . $className);
-        }
-
-        if ($className instanceof InnerService) {
-            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的class不是InnerService子类,class=' . $className);
-        }
-
-        if (empty($method)) {
-            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的method为空,method=' . $method);
-        }
+        /* @var Router $router */
+        $router = App::getBean('router');
+        list($className, $method) = $router->serviceMatch($func);
 
         /* @var $service InnerService */
         $service = App::getBean($className);

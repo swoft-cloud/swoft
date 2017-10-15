@@ -3,6 +3,7 @@
 namespace Swoft\Web;
 
 use Swoft\App;
+use Swoft\Bean\Collector;
 
 /**
  * 路由组件
@@ -31,14 +32,16 @@ class Router implements RouterInterface
     /**
      * 内置的一些匹配参数
      * $router->get('/user/{num}', 'handler');
+     *
      * @var array
      */
-    private static $globalTokens = [
-        'any' => '[^/]+',   // match any except '/'
-        'num' => '[0-9]+',  // match a number
-        'act' => '[a-zA-Z][\w-]+', // match a action name
-        'all' => '.*'
-    ];
+    private static $globalTokens
+        = [
+            'any' => '[^/]+',   // match any except '/'
+            'num' => '[0-9]+',  // match a number
+            'act' => '[a-zA-Z][\w-]+', // match a action name
+            'all' => '.*'
+        ];
 
     /** @var string */
     private $currentGroupPrefix;
@@ -52,6 +55,7 @@ class Router implements RouterInterface
     /**
      * static Routes - no dynamic argument match
      * 整个路由 path 都是静态字符串 e.g. '/user/login'
+     *
      * @var array
      * [
      *     '/user/login' => [
@@ -73,6 +77,7 @@ class Router implements RouterInterface
      * regular Routes - have dynamic arguments, but the first node is normal.
      * 第一节是个静态字符串，称之为有规律的动态路由。按第一节的信息进行存储
      * e.g '/hello[/{name}]' '/user/{id}'
+     *
      * @var array[]
      * [
      *     // 先用第一个字符作为 key，进行分组
@@ -121,6 +126,7 @@ class Router implements RouterInterface
      * vague Routes - have dynamic arguments,but the first node is exists regex.
      * 第一节就包含了正则匹配，称之为无规律/模糊的动态路由
      * e.g '/{some}/{some2}'
+     *
      * @var array
      * [
      *     [
@@ -136,6 +142,7 @@ class Router implements RouterInterface
 
     /**
      * 最近的路由缓存数组(最大数量由 {@see $tmpCacheNumber}控制)
+     *
      * @var array
      * [
      *     'path' => [
@@ -153,9 +160,9 @@ class Router implements RouterInterface
      */
     private $routeCaches = [];
 
-//////////////////////////////////////////////////////////////////////
-/// router config
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /// router config
+    //////////////////////////////////////////////////////////////////////
 
     /** @var bool 是否忽略最后的URl斜线 '/'. */
     public $ignoreLastSep = false;
@@ -168,6 +175,7 @@ class Router implements RouterInterface
      *  1. 是个URI字符串， 直接用于解析路由
      *  2. 是个闭包回调，直接调用
      * eg: '/site/maintenance' OR `function () { '系统维护中 :)'; }`
+     *
      * @var mixed
      */
     public $matchAll;
@@ -182,8 +190,24 @@ class Router implements RouterInterface
     public $controllerSuffix = '';
 
     /**
+     * service后缀
+     *
+     * @var string
+     */
+    private $serviceSuffix = 'Service';
+
+    /**
+     * service路由
+     *
+     * @var array
+     */
+    private $serviceRoutes = [];
+
+    /**
      * object creator.
+     *
      * @param array $config
+     *
      * @return self
      * @throws \LogicException
      */
@@ -194,7 +218,9 @@ class Router implements RouterInterface
 
     /**
      * object constructor.
+     *
      * @param array $config
+     *
      * @throws \LogicException
      */
     public function __construct(array $config = [])
@@ -207,6 +233,7 @@ class Router implements RouterInterface
 
     /**
      * @param array $config
+     *
      * @throws \LogicException
      */
     public function setConfig(array $config)
@@ -222,14 +249,16 @@ class Router implements RouterInterface
         }
     }
 
-//////////////////////////////////////////////////////////////////////
-/// route collection
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /// route collection
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Defines a route callback and method
+     *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return Router
      * @throws \LogicException
      * @throws \InvalidArgumentException
@@ -245,9 +274,10 @@ class Router implements RouterInterface
 
     /**
      * 添加路由组
-     * @param string $prefix
+     *
+     * @param string   $prefix
      * @param \Closure $callback
-     * @param array $opts
+     * @param array    $opts
      */
     public function group($prefix, \Closure $callback, array $opts = [])
     {
@@ -265,18 +295,19 @@ class Router implements RouterInterface
     }
 
     /**
-     * @param string|array $method 匹配请求方法
-     * e.g
-     *  string: 'get'
-     *  array: ['get','post']
-     * @param string $route 路由PATH. eg: '/user/login'
+     * @param string|array    $method  匹配请求方法
+     *                                 e.g
+     *                                 string: 'get'
+     *                                 array: ['get','post']
+     * @param string          $route   路由PATH. eg: '/user/login'
      * @param callable|string $handler 路由处理器
-     * @param array $opts 选项数据
-     * [
-     *     'tokens' => [ 'id' => '[0-9]+', ],
-     *     'domains'  => [ 'a-domain.com', '*.b-domain.com'],
-     *     'schema' => 'https',
-     * ]
+     * @param array           $opts    选项数据
+     *                                 [
+     *                                 'tokens' => [ 'id' => '[0-9]+', ],
+     *                                 'domains'  => [ 'a-domain.com', '*.b-domain.com'],
+     *                                 'schema' => 'https',
+     *                                 ]
+     *
      * @return static
      * @throws \LogicException
      * @throws \InvalidArgumentException
@@ -320,18 +351,18 @@ class Router implements RouterInterface
 
         $this->routeCounter++;
         $opts = array_replace([
-            'tokens' => null,
+            'tokens'  => null,
             'domains' => null,
-            'schema' => null, // ['http','https'],
+            'schema'  => null, // ['http','https'],
             // route Event. custom design ...
             // 'enter' => null,
             // 'leave' => null,
         ], $this->currentGroupOption, $opts);
 
         $conf = [
-            'method' => $method,
+            'method'  => $method,
             'handler' => $handler,
-            'option' => $opts,
+            'option'  => $opts,
         ];
 
         // no dynamic param tokens
@@ -344,11 +375,7 @@ class Router implements RouterInterface
         // have dynamic param tokens
 
         // replace token name To pattern regex
-        list($first, $conf) = static::parseRoute(
-            $route,
-            static::getAvailableTokens(self::$globalTokens, $opts['tokens']),
-            $conf
-        );
+        list($first, $conf) = static::parseRoute($route, static::getAvailableTokens(self::$globalTokens, $opts['tokens']), $conf);
 
         // route string is regular
         if ($first) {
@@ -364,6 +391,7 @@ class Router implements RouterInterface
     /**
      * @param $method
      * @param $handler
+     *
      * @throws \InvalidArgumentException
      */
     public static function validateArguments($method, $handler)
@@ -385,9 +413,11 @@ class Router implements RouterInterface
 
     /**
      * 解析路由PATH
+     *
      * @param string $route
-     * @param array $tokens
-     * @param array $conf
+     * @param array  $tokens
+     * @param array  $conf
+     *
      * @return string
      * @throws \LogicException
      */
@@ -450,6 +480,7 @@ class Router implements RouterInterface
     /**
      * @param array $tokens
      * @param array $tmpTokens
+     *
      * @return array
      */
     public static function getAvailableTokens(array $tokens, $tmpTokens)
@@ -464,14 +495,16 @@ class Router implements RouterInterface
         return $tokens;
     }
 
-//////////////////////////////////////////////////////////////////////
-/// route match
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /// route match
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * 找到给定请求uri路径的匹配路由信息
+     *
      * @param string $method
      * @param string $path
+     *
      * @return mixed
      */
     public function match($path, $method)
@@ -577,10 +610,13 @@ class Router implements RouterInterface
 
         // handle Auto Route
         if ($this->autoRoute && ($handler = self::matchAutoRoute($path, $this->controllerNamespace, $this->controllerSuffix))) {
-            return [$path, [
-                'path' => $path,
-                'handler' => $handler,
-            ]];
+            return [
+                $path,
+                [
+                    'path'    => $path,
+                    'handler' => $handler,
+                ]
+            ];
         }
 
         // oo ... not found
@@ -589,9 +625,11 @@ class Router implements RouterInterface
 
     /**
      * 自动路由的匹配处理。(当配置了 `'autoRoute' => true`)
-     * @param string $path The route path
+     *
+     * @param string $path                The route path
      * @param string $controllerNamespace controller namespace. eg: 'App\\Controllers'
-     * @param string $controllerSuffix controller suffix. eg: 'AutoController'
+     * @param string $controllerSuffix    controller suffix. eg: 'AutoController'
+     *
      * @return bool|callable
      */
     public static function matchAutoRoute($path, $controllerNamespace, $controllerSuffix)
@@ -648,9 +686,9 @@ class Router implements RouterInterface
         return class_exists($class) ? "$class@$n2" : false;
     }
 
-//////////////////////////////////////////////////////////////////////
-/// helper methods
-//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /// helper methods
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @param array $tokens
@@ -682,7 +720,9 @@ class Router implements RouterInterface
 
     /**
      * convert 'first-second' to 'firstSecond'
+     *
      * @param $str
+     *
      * @return mixed|string
      */
     public static function convertNodeStr($str)
@@ -798,6 +838,59 @@ class Router implements RouterInterface
     }
 
     /**
+     * 自动注册service路由
+     *
+     * @param array $serviceMapping
+     */
+    public function registerServices(array $serviceMapping)
+    {
+        foreach ($serviceMapping as $className => $mapping) {
+            $prefix = $mapping['name'];
+            $routes = $mapping['routes'];
+            $prefix = $this->getPrefix($this->serviceSuffix, $prefix, $className);
+
+            $this->registerService($className, $routes, $prefix);
+        }
+    }
+
+    /**
+     * 匹配路由
+     *
+     * @param $func
+     *
+     * @return mixed
+     */
+    public function serviceMatch($func)
+    {
+        if(!isset($func)){
+            throw new \InvalidArgumentException('service调用的函数不存在，func=' . $func);
+        }
+
+        return $this->serviceRoutes[$func];
+    }
+
+    /**
+     * 注册一个路由
+     *
+     * @param string $className
+     * @param array  $routes
+     * @param string $prefix
+     */
+    private function registerService(string $className, array $routes, string $prefix)
+    {
+        foreach ($routes as $route) {
+            $mappedName = $route['mappedName'];
+            $methodName = $route['methodName'];
+            if (empty($mappedName)) {
+                $mappedName = $methodName;
+            }
+
+            $serviceKey = "$prefix::$mappedName";
+            $this->serviceRoutes[$serviceKey] = [$className, $methodName];
+        }
+    }
+
+    /**
      * 注册路由
      *
      * @param string $className        类名
@@ -865,6 +958,33 @@ class Router implements RouterInterface
 
         if ($result = preg_match($reg, $className, $match)) {
             $prefix = '/' . lcfirst($match[1]);
+        }
+
+        return $prefix;
+    }
+
+    /**
+     * 获取类前缀
+     *
+     * @param string $suffix
+     * @param string $prefix
+     * @param string $className
+     *
+     * @return string
+     */
+    private function getPrefix(string $suffix, string $prefix, string $className)
+    {
+        // 注解注入不为空，直接返回prefix
+        if (!empty($prefix)) {
+            return $prefix;
+        }
+
+        // 注解注入为空，解析控制器prefix
+        $reg = '/^.*\\\(\w+)' . $suffix . '$/';
+        $prefix = '';
+
+        if ($result = preg_match($reg, $className, $match)) {
+            $prefix = ucfirst($match[1]);
         }
 
         return $prefix;

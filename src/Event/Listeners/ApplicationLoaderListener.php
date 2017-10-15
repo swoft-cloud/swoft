@@ -27,7 +27,9 @@ class ApplicationLoaderListener implements IApplicationListener
         /* @var Router $router */
         $router = App::getBean('router');
         $requestMapping = Collector::$requestMapping;
+        $serviceMapping = Collector::$serviceMapping;
         $router->registerRoutes($requestMapping);
+        $router->registerServices($serviceMapping);
 
         App::setProperties();
     }
