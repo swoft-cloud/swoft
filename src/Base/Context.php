@@ -3,7 +3,7 @@
 namespace Swoft\Base;
 
 /**
- *
+ * 当前运行上下文
  *
  * @uses      Context
  * @version   2017年10月04日
@@ -28,9 +28,16 @@ class Context
      */
     const PROCESS = 3;
 
+    /**
+     * 默认worker
+     *
+     * @var int
+     */
     private static $status = self::WORKER;
 
     /**
+     * 获取当前运行环境
+     *
      * @return int
      */
     public static function getStatus(): int
@@ -39,6 +46,8 @@ class Context
     }
 
     /**
+     * 设置当前运行环境
+     *
      * @param int $status
      */
     public static function setStatus(int $status)

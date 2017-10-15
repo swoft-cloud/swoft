@@ -3,7 +3,6 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Task\Task;
 
 /**
  * 请求上下文

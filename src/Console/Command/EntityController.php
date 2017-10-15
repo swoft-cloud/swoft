@@ -14,7 +14,7 @@ namespace Swoft\Console\Command;
 class EntityController
 {
     /**
-     * 自动创建实体
+     * auto create entity by table structure
      *
      * @usage
      * entity:{command} [arguments] [options]

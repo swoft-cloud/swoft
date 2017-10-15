@@ -43,7 +43,7 @@ class Coroutine
         if ($context == Context::WORKER || $cid !== -1) {
             return $cid;
         }
-        if($context == Context::TASK){
+        if ($context == Context::TASK) {
             return Task::getId();
         }
 

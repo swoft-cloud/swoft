@@ -6,17 +6,15 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
-use Swoft\Bean\BeanFactory;
-use Swoft\Bean\Collector;
+use Swoft\Crontab\Crontab;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
+use Swoft\Server\IServer;
 use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
 use Swoft\Web\ErrorHandler;
-use Swoft\Web\HttpServer;
-use Swoft\Crontab\Crontab;
 
 /**
  * 应用简写类
@@ -38,9 +36,9 @@ class App
     public static $app;
 
     /**
-     * http服务器对象
+     * 服务器对象
      *
-     * @var HttpServer
+     * @var IServer
      */
     public static $server;
 

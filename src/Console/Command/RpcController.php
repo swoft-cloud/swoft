@@ -25,6 +25,12 @@ class RpcController extends ConsoleCommand
      */
     private $rpcServer;
 
+    /**
+     * RpcController constructor.
+     *
+     * @param Input  $input  输入
+     * @param Output $output 输出
+     */
     public function __construct(Input $input, Output $output)
     {
         parent::__construct($input, $output);
@@ -52,6 +58,7 @@ class RpcController extends ConsoleCommand
             $this->output->writeln("<error>The server have been running!(PID: {$serverStatus['masterPid']})</error>", true, true);
         }
 
+        // 选项参数解析
         $this->setStartArgs();
         $tcpStatus = $this->rpcServer->getTcpSetting();
 
@@ -68,9 +75,9 @@ class RpcController extends ConsoleCommand
             "* tcp | Host: <note>$tcpHost</note>, port: <note>$tcpPort</note>, Model: <note>$tcpModel</note>, type: <note>$tcpType</note>",
             '**********************************************************',
         ];
-
         $this->output->writeln(implode("\n", $lines));
 
+        // 启动
         $this->rpcServer->start();
     }
 
@@ -93,6 +100,7 @@ class RpcController extends ConsoleCommand
             $this->output->writeln('<error>The server is not running! cannot reload</error>', true, true);
         }
 
+        // 打印信息
         $this->output->writeln("<info>Server {$this->input->getFullScript()} is reloading</info>");
 
         // 重载
@@ -117,6 +125,7 @@ class RpcController extends ConsoleCommand
             $this->output->writeln('<error>The server is not running! cannot stop</error>', true, true);
         }
 
+        // swoft.ini server配置
         $serverStatus = $this->rpcServer->getServerSetting();
         $pidFile = $serverStatus['pfile'];
 
@@ -161,6 +170,7 @@ class RpcController extends ConsoleCommand
     {
         $daemonize = $this->input->hasOpt('d');
 
+        // 设置后台启动
         if ($daemonize) {
             $this->rpcServer->setDaemonize();
         }

@@ -29,6 +29,12 @@ class ConsoleCommand
      */
     protected $output;
 
+    /**
+     * ConsoleCommand constructor.
+     *
+     * @param Input  $input  输入
+     * @param Output $output 输出
+     */
     public function __construct(Input $input, Output $output)
     {
         $this->input = $input;

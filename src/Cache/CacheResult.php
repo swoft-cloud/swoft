@@ -5,7 +5,7 @@ namespace Swoft\Cache;
 use Swoft\Web\AbstractResult;
 
 /**
- * redis返回数据
+ * redis延迟收包，返回数据结构
  *
  * @uses      CacheResult
  * @version   2017年07月15日
@@ -15,6 +15,11 @@ use Swoft\Web\AbstractResult;
  */
 class CacheResult extends AbstractResult
 {
+    /**
+     * 返回收包结果
+     *
+     * @return mixed
+     */
     public function getResult()
     {
         return $this->recv(true);
