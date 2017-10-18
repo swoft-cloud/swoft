@@ -29,14 +29,16 @@ abstract class Application
     protected $name;
 
     /**
+     * 错误action，统一错误处理
+     *
+     * @var string
+     */
+    protected $errorAction;
+
+    /**
      * @var bool 是否使用第三方(consul/etcd/zk)注册服务
      */
     protected $useProvider = false;
-
-    /**
-     * @var string 内部服务命令空间
-     */
-    protected $serviceNameSpace = "App\\Controllers\\Services";
 
     public $count = 0;
 
@@ -46,9 +48,6 @@ abstract class Application
     public function init()
     {
         App::$app = $this;
-
-        // 注册全局错误错误
-        $this->registerErrorHandler();
     }
 
     /**
@@ -134,13 +133,12 @@ abstract class Application
     }
 
     /**
-     * 注册全局错误解析
+     * 获取errorAction
+     *
+     * @return string
      */
-    public function registerErrorHandler()
+    public function getErrorAction(): string
     {
-        ini_set('display_errors', false);
-
-        $errorHandler = App::getErrorHandler();
-        $errorHandler->register();
+        return $this->errorAction;
     }
 }

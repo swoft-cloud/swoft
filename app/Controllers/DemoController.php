@@ -13,6 +13,7 @@ use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Collector;
 use Swoft\Task\Task;
 use Swoft\Web\Controller;
+use Swoole\Mysql\Exception;
 
 /**
  * 控制器demo
@@ -94,7 +95,7 @@ class DemoController extends Controller
 
     public function actionIndex6()
     {
-        var_dump(Collector::$processses);
+        throw new Exception('AAAA');
         $this->outputJson(['data6']);
     }
 

@@ -49,8 +49,8 @@ class ServerController extends ConsoleCommand
     public function startCommand()
     {
         // 是否正在运行
+        $serverStatus = $this->httpServer->getServerSetting();
         if ($this->httpServer->isRunning()) {
-            $serverStatus = $this->httpServer->getServerSetting();
             $this->output->writeln("<error>The server have been running!(PID: {$serverStatus['masterPid']})</error>", true, true);
         }
 
@@ -65,7 +65,7 @@ class ServerController extends ConsoleCommand
         $httpType = $httpStatus['type'];
 
         // tcp启动参数
-        $tcpEnable = $tcpStatus['enable'];
+        $tcpEnable = $serverStatus['tcpable'];
         $tcpHost = $tcpStatus['host'];
         $tcpPort = $tcpStatus['port'];
         $tcpType = $tcpStatus['type'];

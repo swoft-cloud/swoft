@@ -46,17 +46,12 @@ class Application extends \Swoft\Base\Application
         App::trigger(Event::BEFORE_REQUEST);
 
         $swfRequest = RequestContext::getRequest();
-        try {
-            // 解析URI和method
-            $uri = $swfRequest->getRequestUri();
-            $method = $swfRequest->getMethod();
+        // 解析URI和method
+        $uri = $swfRequest->getRequestUri();
+        $method = $swfRequest->getMethod();
 
-            // 运行controller
-            $this->runController($uri, $method);
-        } catch (\Exception $e) {
-            App::getErrorHandler()->handlerException($e);
-        }
-
+        // 运行controller
+        $this->runController($uri, $method);
         App::trigger(Event::AFTER_REQUEST);
     }
 

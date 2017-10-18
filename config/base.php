@@ -7,6 +7,7 @@ return [
     'application'  => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
+        'errorAction' => '/error/index',
         'useProvider' => false,
     ],
     'router'       => [
@@ -19,11 +20,6 @@ return [
         'class' => \Swoft\Web\ViewRenderer::class,
         'viewsPath' => dirname(__DIR__) . '/resources/views',
     ],
-    'errorHandler' => [
-        'class'       => \Swoft\Web\ErrorHandler::class,
-        'errorAction' => '/error/index',
-    ],
-
     'commonParamsFilter' => [
         'class'      => \App\beans\Filters\CommonParamsFilter::class,
         'uriPattern' => '/*',

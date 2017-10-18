@@ -157,16 +157,6 @@ class App
     }
 
     /**
-     * 全局错误处理器
-     *
-     * @return ErrorHandler
-     */
-    public static function getErrorHandler()
-    {
-        return ApplicationContext::getBean('errorHandler');
-    }
-
-    /**
      * 获取config bean
      *
      * @return mixed

@@ -6,6 +6,7 @@ use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
 use Swoft\Console\Style\Style;
 use Swoft\Helper\PhpHelper;
+use Swoft\Web\ErrorHandler;
 
 /**
  *
@@ -42,12 +43,19 @@ class Console implements IApplication
 
     private $scanCmds = [];
 
+    private $errorHandler;
+
+    /**
+     * Console constructor.
+     */
     public function __construct()
     {
         Style::init();
         $this->input = new Input();
         $this->output = new Output();
+        $this->errorHandler = new ErrorHandler();
         $this->init();
+        $this->errorHandler->register();
     }
 
     public function run()
