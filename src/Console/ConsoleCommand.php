@@ -41,7 +41,42 @@ class ConsoleCommand
         $this->output = $output;
     }
 
-    public function runCommand(string $command)
+    /**
+     * display all commands
+     */
+    public function indexCommand()
+    {
+        $reflectionClass = new \ReflectionClass($this);
+        $methods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $classDocument = $reflectionClass->getDocComment();
+        $classDocAry = DocumentParser::tagList($classDocument);
+        $classDesc = $classDocAry['description'];
+
+        $methodCommands = [];
+        foreach ($methods as $method){
+            $methodName = $method->getName();
+            if(strpos($methodName, self::COMMAND_SUFFIX) === false){
+                continue;
+            }
+
+            $methodDocument = $method->getDocComment();
+            $methodDocAry = DocumentParser::tagList($methodDocument);
+            $command = str_replace(self::COMMAND_SUFFIX,'', $methodName);
+            $methodCommands[$command] = $methodDocAry['description'];
+        }
+
+        $list = [
+            'Description:' => [$classDesc],
+            'Usage:' => ['server:{command} [arguments] [options]'],
+            'Commands:' => $methodCommands,
+            'Options:' => [
+                '-h,--help' => 'Show help of the command group or specified command action'
+            ]
+        ];
+        $this->output->writeList($list);
+    }
+
+    public function run(string $command)
     {
         $commandMethod = ucfirst($command) . self::COMMAND_SUFFIX;
 
@@ -49,7 +84,8 @@ class ConsoleCommand
             $this->output->writeln('<error>命令不存在</error>', true, true);
         }
 
-        if ($this->input->hasOpt('h') || $this->input->hasOpt('help')) {
+        $isHelp = $this->input->hasOpt('h') || $this->input->hasOpt('help');
+        if ($isHelp && $command != 'index') {
             $this->showCommandHelp($this, $commandMethod);
             return;
         }

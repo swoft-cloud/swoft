@@ -161,7 +161,7 @@ class Console implements IApplication
 
             $cmdController = new $controllerClass($this->input, $this->output);
 
-            PhpHelper::call([$cmdController, 'runCommand'], [$command]);
+            PhpHelper::call([$cmdController, 'run'], [$command]);
 
             break;
         }
