@@ -5,7 +5,7 @@ namespace Swoft\Db;
 use Swoft\Pool\AbstractConnect;
 
 /**
- *
+ * 数据库抽象连接
  *
  * @uses      AbstractDbConnect
  * @version   2017年09月29日
@@ -15,10 +15,18 @@ use Swoft\Pool\AbstractConnect;
  */
 abstract class AbstractDbConnect extends AbstractConnect implements IDbConnect
 {
+    /**
+     * 收包
+     */
     public function recv()
     {
     }
 
+    /**
+     * 设置延迟收包
+     *
+     * @param bool $defer
+     */
     public function setDefer($defer = true)
     {
     }
@@ -33,7 +41,14 @@ abstract class AbstractDbConnect extends AbstractConnect implements IDbConnect
         return $this->connectPool->getDriver();
     }
 
-    protected function parseUri($uri)
+    /**
+     * 解析mysql连接串
+     *
+     * @param string $uri
+     *
+     * @return array
+     */
+    protected function parseUri(string $uri)
     {
         $parseAry = parse_url($uri);
         if (!isset($parseAry['host']) || !isset($parseAry['port']) || !isset($parseAry['path']) || !isset($parseAry['query'])) {

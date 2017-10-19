@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Base\Context;
+use Swoft\Base\ApplicationContext;
 use Swoft\Base\Coroutine;
 use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
@@ -89,7 +89,7 @@ class DemoController extends Controller
         $rpc = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
 
-        var_dump(Collector::$crontab, Context::getStatus());
+        var_dump(Collector::$crontab, ApplicationContext::getContext());
         $this->outputJson([$rpc]);
     }
 

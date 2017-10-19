@@ -6,7 +6,7 @@ use Swoft\App;
 use Swoft\Db\AbstractDbConnect;
 
 /**
- *
+ * 同步Mysql连接
  *
  * @uses      SyncMysqlConnect
  * @version   2017年09月30日
@@ -17,19 +17,32 @@ use Swoft\Db\AbstractDbConnect;
 class SyncMysqlConnect extends AbstractDbConnect
 {
     /**
+     * Mysql连接
+     *
      * @var \PDO
      */
     private $connect;
 
     /**
+     * 预处理
+     *
      * @var \PDOStatement
      */
     private $stmt;
 
+    /**
+     * SQL语句
+     *
+     * @var string
+     */
     private $sql;
 
+    /**
+     * 创建连接
+     */
     public function createConnect()
     {
+        // 配置信息初始化
         $uri = $this->connectPool->getConnectAddress();
         $options = $this->parseUri($uri);
         $options['timeout'] = $this->connectPool->getTimeout();
@@ -42,6 +55,7 @@ class SyncMysqlConnect extends AbstractDbConnect
         $charset = $options['charset'];
         $timeout = $options['timeout'];
 
+        // 组拼$dsn串
         $pdoOptions = [
             \PDO::ATTR_TIMEOUT    => $timeout,
             \PDO::ATTR_PERSISTENT => true,
@@ -50,12 +64,24 @@ class SyncMysqlConnect extends AbstractDbConnect
         $this->connect = new \PDO($dsn, $user, $passwd, $pdoOptions);
     }
 
+    /**
+     * 预处理
+     *
+     * @param string $sql
+     */
     public function prepare(string $sql)
     {
         $this->sql = $sql . " Params:";
         $this->stmt = $this->connect->prepare($sql);
     }
 
+    /**
+     * 执行SQL
+     *
+     * @param array|null $params
+     *
+     * @return array|bool
+     */
     public function execute(array $params = null)
     {
         $this->bindParams($params);
@@ -70,17 +96,25 @@ class SyncMysqlConnect extends AbstractDbConnect
         return $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * 绑定参数
+     *
+     * @param array|null $params
+     */
     private function bindParams(array $params = null)
     {
         if (empty($params)) {
             return;
         }
 
-        foreach ($params as $key => $value){
+        foreach ($params as $key => $value) {
             $this->stmt->bindValue($key, $value);
         }
     }
 
+    /**
+     * 重连接
+     */
     public function reConnect()
     {
 
@@ -130,18 +164,31 @@ class SyncMysqlConnect extends AbstractDbConnect
         $this->connect->commit();
     }
 
+    /**
+     * 销毁SQL
+     */
     public function destory()
     {
         $this->sql = "";
         $this->stmt = null;
     }
 
+    /**
+     * SQL语句
+     *
+     * @return string
+     */
     public function getSql()
     {
         return $this->sql;
     }
 
-    private function formatSqlByParams($params)
+    /**
+     * 格式化参数
+     *
+     * @param array $params
+     */
+    private function formatSqlByParams(array $params)
     {
         if (empty($params)) {
             return;

@@ -18,6 +18,33 @@ use Swoft\Event\IApplicationListener;
 class ApplicationContext
 {
     /**
+     * 控制台
+     */
+    const CONSOLE = 0;
+
+    /**
+     * worker
+     */
+    const WORKER = 1;
+
+    /**
+     * task
+     */
+    const TASK = 2;
+
+    /**
+     * 自定义进程
+     */
+    const PROCESS = 3;
+
+    /**
+     * 默认worker
+     *
+     * @var int
+     */
+    private static $context = self::CONSOLE;
+
+    /**
      * 监听器集合
      *
      * @var array
@@ -78,6 +105,26 @@ class ApplicationContext
     public static function containsBean($name)
     {
         return BeanFactory::hasBean($name);
+    }
+
+    /**
+     * 获取当前运行环境
+     *
+     * @return int
+     */
+    public static function getContext(): int
+    {
+        return self::$context;
+    }
+
+    /**
+     * 设置当前运行环境
+     *
+     * @param int $context
+     */
+    public static function setContext(int $context)
+    {
+        self::$context = $context;
     }
 
     /**

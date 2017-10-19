@@ -5,7 +5,7 @@ namespace App\Tasks;
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
 use Swoft\App;
-use Swoft\Base\Context;
+use Swoft\Base\ApplicationContext;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
@@ -87,7 +87,7 @@ class TestTask
 
     public function testRpc()
     {
-        var_dump('^^^^^^^^^^^', Context::getStatus());
+        var_dump('^^^^^^^^^^^', ApplicationContext::getContext());
         App::trace("this rpc task worker");
         $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
         return $result;

@@ -17,7 +17,6 @@ use Swoft\Web\Router;
  */
 abstract class Application
 {
-
     /**
      * @var string 应用ID
      */

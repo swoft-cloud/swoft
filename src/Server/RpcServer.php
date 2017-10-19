@@ -3,7 +3,7 @@
 namespace Swoft\Server;
 
 use Swoft\App;
-use Swoft\Base\Context;
+use Swoft\Base\ApplicationContext;
 use Swoft\Base\Inotify;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
@@ -85,12 +85,12 @@ class RpcServer extends AbstractServer
         // worker和task进程初始化
         $setting = $server->setting;
         if ($workerId >= $setting['worker_num']) {
-            Context::setStatus(Context::TASK);
+            ApplicationContext::setContext(ApplicationContext::TASK);
             swoole_set_process_name($this->serverSetting['pname'] . " task process");
             return;
         }
 
-        Context::setStatus(Context::WORKER);
+        ApplicationContext::setContext(ApplicationContext::WORKER);
         swoole_set_process_name($this->serverSetting['pname'] . " worker process");
     }
 
@@ -253,9 +253,11 @@ class RpcServer extends AbstractServer
     {
         $isTask = $this->server->taskworker;
         if ($isTask === false && $this->workerLock->trylock()) {
-            Context::setStatus(Context::PROCESS);
+            ApplicationContext::setContext(ApplicationContext::PROCESS);
             $pname = $this->serverSetting['pname'];
             \Swoft\Process\Process::run($pname);
         }
+
+        Process::wait(false);
     }
 }

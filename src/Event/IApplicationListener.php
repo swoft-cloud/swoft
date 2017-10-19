@@ -13,5 +13,13 @@ namespace Swoft\Event;
  */
 interface IApplicationListener
 {
+    /**
+     * 事件执行逻辑
+     *
+     * @param ApplicationEvent|null $event     事件对象
+     * @param array                 ...$params 参数
+     *
+     * @return mixed
+     */
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params);
 }

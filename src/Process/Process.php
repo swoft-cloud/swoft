@@ -44,6 +44,8 @@ class Process
     public static function run(string $processPrefix)
     {
         $processes = Collector::$processses;
+
+        var_dump($processes);
         foreach ($processes as $className => $processAry) {
             $log = $processAry['log'];
             $pipe = $processAry['pipe'];

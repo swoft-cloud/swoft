@@ -9,6 +9,7 @@ use Swoft\Event\Event;
 use Swoft\Event\IApplicationListener;
 
 /**
+ * 进程后置事件
  *
  * @Listener(Event::AFTER_PROCESS)
  * @uses      AfterProcessListener

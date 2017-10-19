@@ -11,6 +11,7 @@ use Swoft\Event\Event;
 use Swoole\Process;
 
 /**
+ * 进程开始事件
  *
  * @Listener(Event::BEFORE_PROCESS)
  * @uses      BeforeProcessListener

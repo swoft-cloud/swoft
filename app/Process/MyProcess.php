@@ -3,7 +3,7 @@
 namespace App\Process;
 
 use Swoft\App;
-use Swoft\Base\Context;
+use Swoft\Base\ApplicationContext;
 use Swoft\Bean\Annotation\AutoProcess;
 use Swoft\Bean\Annotation\Log;
 use Swoft\Process\IProcess;
@@ -31,7 +31,7 @@ class MyProcess implements IProcess
         $i = 0;
         while (true) {
             App::profileStart("sleep");
-            echo "this is my process2 ................\n". Context::getStatus();
+            echo "this is my process2 ................\n". ApplicationContext::getContext();
             App::trace("this is trace");
             App::info("this is trace");
             sleep(2);

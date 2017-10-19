@@ -6,10 +6,9 @@ use Swoft\App;
 use Swoft\Base\RequestContext;
 use Swoft\Bean\Annotation\Listener;
 use Swoft\Event\ApplicationEvent;
+use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Event\IApplicationListener;
-use Swoft\Event\Event;
-use Swoft\Task\Task;
 
 /**
  * 任务前置事件

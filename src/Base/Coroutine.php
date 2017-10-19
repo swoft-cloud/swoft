@@ -38,12 +38,12 @@ class Coroutine
     public static function id()
     {
         $cid = SwCoroutine::getuid();
-        $context = Context::getStatus();
+        $context = ApplicationContext::getContext();
 
-        if ($context == Context::WORKER || $cid !== -1) {
+        if ($context == ApplicationContext::WORKER || $cid !== -1) {
             return $cid;
         }
-        if ($context == Context::TASK) {
+        if ($context == ApplicationContext::TASK) {
             return Task::getId();
         }
 

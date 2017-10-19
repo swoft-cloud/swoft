@@ -7,7 +7,7 @@ use Swoft\Db\AbstractDbConnect;
 use Swoole\Coroutine\Mysql;
 
 /**
- *
+ * Mysql协程连接
  *
  * @uses      MysqlConnect
  * @version   2017年09月29日
@@ -32,15 +32,26 @@ class MysqlConnect extends AbstractDbConnect
     private $sql = "";
 
 
+    /**
+     * 预处理语句
+     *
+     * @param string $sql
+     */
     public function prepare(string $sql)
     {
         $this->sql = $sql;
     }
 
+    /**
+     * 执行语句
+     *
+     * @param array|null $params
+     *
+     * @return array|bool
+     */
     public function execute(array $params = null)
     {
         $this->formatSqlByParams($params);
-        var_dump($this->sql);
         $result = $this->connect->query($this->sql);
         if ($result === false) {
             App::error("mysql执行出错，connectError=" . $this->connect->connect_error . " error=" . $this->connect->error);
@@ -118,7 +129,6 @@ class MysqlConnect extends AbstractDbConnect
      */
     public function createConnect()
     {
-
         $uri = $this->connectPool->getConnectAddress();
         $options = $this->parseUri($uri);
         $options['timeout'] = $this->connectPool->getTimeout();
@@ -142,27 +152,44 @@ class MysqlConnect extends AbstractDbConnect
         $this->connect = $mysql;
     }
 
+    /**
+     * 重新连接
+     */
     public function reConnect()
     {
 
     }
 
+    /**
+     * Sql语句
+     *
+     * @return string
+     */
     public function getSql()
     {
         return $this->sql;
     }
 
+    /**
+     * 销毁SQL
+     */
     public function destory()
     {
         $this->sql = "";
     }
 
-
+    /**
+     * 格式化sql参数
+     *
+     * @param array|null $params
+     */
     private function formatSqlByParams(array $params = null)
     {
         if (empty($params)) {
             return;
         }
+
+        // ?方式传递参数
         if (strpos($this->sql, '?') !== false) {
             $this->transferQuestionMark();
         }
@@ -170,17 +197,20 @@ class MysqlConnect extends AbstractDbConnect
         $this->sql = strtr($this->sql, $params);
     }
 
+    /**
+     * 格式化?标记
+     */
     private function transferQuestionMark()
     {
         $sqlAry = explode('?', $this->sql);
 
         $sql = "";
         $maxBlock = count($sqlAry);
-        for ($i = 0; $i <$maxBlock ;$i++){
-            $n = $i+1;
+        for ($i = 0; $i < $maxBlock; $i++) {
+            $n = $i + 1;
             $sql .= $sqlAry[$i];
-            if($maxBlock > $i+1){
-                $sql .= "?".$n." ";
+            if ($maxBlock > $i + 1) {
+                $sql .= "?" . $n . " ";
             }
         }
 

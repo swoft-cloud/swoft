@@ -16,10 +16,39 @@ use Swoft\Event\ApplicationEvent;
  */
 class BeforeTaskEvent extends ApplicationEvent
 {
+    /**
+     * 日志ID
+     *
+     * @var string
+     */
     private $logid;
+
+    /**
+     * 跨度ID
+     *
+     * @var int
+     */
     private $spanid;
+
+    /**
+     * 任务名称
+     *
+     * @var string
+     */
     private $taskName;
+
+    /**
+     * 方法
+     *
+     * @var string
+     */
     private $method;
+
+    /**
+     * 任务类型
+     *
+     * @var string
+     */
     private $type;
 
     /**

@@ -11,6 +11,7 @@ use Swoft\Event\IApplicationListener;
 use Swoft\Web\Router;
 
 /**
+ * 应用加载事件
  *
  * @Listener(Event::APPLICATION_LOADER)
  * @uses      ApplicationLoaderListener
