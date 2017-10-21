@@ -7,6 +7,7 @@ use Swoft\Bean\BeanFactory;
 use Swoft\Bean\Collector;
 use Swoft\Event\Event;
 use Swoft\Helper\PhpHelper;
+use Swoft\Server\AbstractServer;
 
 /**
  * swoft进程
@@ -41,30 +42,30 @@ class Process
         return null;
     }
 
-    public static function run(string $processPrefix)
+    public static function create(AbstractServer $server, string $processName, string $processClassName):\Swoole\Process
     {
-        $processes = Collector::$processses;
-
-        var_dump($processes);
-        foreach ($processes as $className => $processAry) {
-            $log = $processAry['log'];
-            $pipe = $processAry['pipe'];
-            $iout = $processAry['inout'];
-            $processName = $processAry['name'];
-            if (!BeanFactory::hasBean($processName)) {
-                echo "启动的进程不存在，processName=" . $processName;
-                continue;
-            }
-
-            $processable = App::getBean($processName);
-
-            $process = new \Swoole\Process(function (\Swoole\Process $process) use ($processable, $processPrefix, $processName, $log) {
-                App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, $log);
-                PhpHelper::call([$processable, 'run'], [$process, $processPrefix]);
-                App::trigger(Event::AFTER_PROCESS);
-            }, $iout, $pipe);
-            $process->start();
+        if(!class_exists($processClassName)){
+            throw new \InvalidArgumentException('自定义进程不存在，className='.$processClassName);
         }
+
+        /* @var AbstractProcess $processClass*/
+        $processClass = new $processClassName();
+        if(!is_subclass_of($processClass, AbstractProcess::class)){
+            throw new \InvalidArgumentException('自定义进程类，不是AbstractProcess子类，className='.$processClassName);
+        }
+
+        $pipe = $processClass->isPipe();
+        $iout = $processClass->isInout();
+        $processPrefix = 'php-swoft';
+
+        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($server, $processClass, $processPrefix, $processName) {
+            require_once BASE_PATH . '/config/reload.php';
+            App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, null);
+            PhpHelper::call([$processClass, 'run'], [$server, $process, $processPrefix]);
+            App::trigger(Event::AFTER_PROCESS);
+        }, $iout, $pipe);
+
+        return $process;
     }
 
     /**

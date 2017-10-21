@@ -39,6 +39,13 @@ abstract class AbstractServer implements IServer
     protected $serverSetting = [];
 
     /**
+     * 自定义进程配置
+     *
+     * @var array
+     */
+    protected $processSetting = [];
+
+    /**
      * swoole启动参数
      *
      * @var array
@@ -117,6 +124,7 @@ abstract class AbstractServer implements IServer
         $this->tcpSetting = $settings['tcp'];
         $this->httpSetting = $settings['http'];
         $this->serverSetting = $settings['server'];
+        $this->processSetting = $settings['process'];
         $this->setting = $settings['setting'];
     }
 

@@ -3,6 +3,7 @@
 namespace Swoft\Web;
 
 use Swoft\App;
+use Swoft\Base\ApplicationContext;
 
 /**
  * 错误处理
@@ -71,9 +72,9 @@ class ErrorHandler
      */
     public function renderException(\Throwable $exception)
     {
-        if (!App::isWorkerStatus()) {
-            throw $exception;
-        }
+       if(ApplicationContext::getContext() == ApplicationContext::CONSOLE){
+           throw $exception;
+       }
 
         App::error($exception);
         $reponse = App::getResponse();

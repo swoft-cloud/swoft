@@ -47,11 +47,4 @@ class Collector
      * @var array
      */
     public static $crontab = [];
-
-    /**
-     * 进程列表
-     *
-     * @var array
-     */
-    public static $processses = [];
 }

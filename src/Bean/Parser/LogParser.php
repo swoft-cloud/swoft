@@ -29,9 +29,6 @@ class LogParser extends AbstractParser
      */
     public function parser(string $className, $objectAnnotation = null, string $propertyName = "", string $methodName = "", $propertyValue = null)
     {
-        if(isset(Collector::$processses[$className])){
-            Collector::$processses[$className]['log']['flushInterval'] = $objectAnnotation->getFlushInterval();
-        }
         if(isset(Collector::$crontab[$className])){
             Collector::$crontab[$className]['log']['flushInterval'] = $objectAnnotation->getFlushInterval();
         }

@@ -111,8 +111,8 @@ class RpcServer extends AbstractServer
      * 连接成功后回调函数
      *
      * @param Server $server
-     * @param int            $fd
-     * @param int            $from_id
+     * @param int    $fd
+     * @param int    $from_id
      *
      */
     public function onConnect(Server $server, int $fd, int $from_id)
@@ -124,8 +124,8 @@ class RpcServer extends AbstractServer
      * 连接断开成功后回调函数
      *
      * @param Server $server
-     * @param int            $fd
-     * @param int            $reactorId
+     * @param int    $fd
+     * @param int    $reactorId
      *
      */
     public function onClose(Server $server, int $fd, int $reactorId)
@@ -187,8 +187,8 @@ class RpcServer extends AbstractServer
      * worker收到tasker消息的回调函数
      *
      * @param Server $server
-     * @param int            $taskId
-     * @param mixed          $data
+     * @param int    $taskId
+     * @param mixed  $data
      */
     public function onFinish(Server $server, int $taskId, $data)
     {
@@ -200,14 +200,15 @@ class RpcServer extends AbstractServer
      */
     protected function beforeStart()
     {
-        if (!AUTO_RELOAD || !extension_loaded('inotify')) {
-            echo "自动reload未开启，请检查配置(AUTO_RELOAD)和inotify扩展是否安装正确! \n";
-            return;
-        }
+        $this->addUserProcesses();
+    }
 
-        // 启动重载进程
-        $reloadProcess = new Process([$this, 'reloadCallback'], false, 2);
-        $this->server->addProcess($reloadProcess);
+    private function addUserProcesses()
+    {
+        foreach ($this->processSetting as $name => $processClassName) {
+            $userProcess = \Swoft\Process\Process::create($this, $name, $processClassName);
+            $this->server->addProcess($userProcess);
+        }
     }
 
     /**
@@ -233,9 +234,6 @@ class RpcServer extends AbstractServer
     {
         // 加载bean
         $this->reloadBean();
-
-        // 自动加载自定义进程
-        $this->autoloadProcess();
     }
 
     /**
@@ -244,20 +242,5 @@ class RpcServer extends AbstractServer
     protected function reloadBean()
     {
         require_once BASE_PATH . '/config/reload.php';
-    }
-
-    /**
-     * 加载自定义进程
-     */
-    private function autoloadProcess()
-    {
-        $isTask = $this->server->taskworker;
-        if ($isTask === false && $this->workerLock->trylock()) {
-            ApplicationContext::setContext(ApplicationContext::PROCESS);
-            $pname = $this->serverSetting['pname'];
-            \Swoft\Process\Process::run($pname);
-        }
-
-        Process::wait(false);
     }
 }

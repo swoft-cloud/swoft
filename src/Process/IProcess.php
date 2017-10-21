@@ -2,6 +2,7 @@
 
 namespace Swoft\Process;
 
+use Swoft\Server\AbstractServer;
 use Swoole\Process;
 
 /**
@@ -15,5 +16,5 @@ use Swoole\Process;
  */
 interface IProcess
 {
-    public function run(Process $process, string $processPrefix);
+    public function run(AbstractServer $server, Process $process, string $processPrefix);
 }

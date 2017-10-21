@@ -3,11 +3,13 @@
 namespace Swoft\Base;
 
 use Swoft\App;
+use Swoft\Bean\Annotation\Bean;
 use Swoft\Server\IServer;
 
 /**
  * 文件更新自动监听
  *
+ * @Bean("inotify")
  * @uses      Inotify
  * @version   2017年08月25日
  * @author    stelin <phpcrazy@126.com>
@@ -48,9 +50,8 @@ class Inotify
 
     private $watchFiles = [];
 
-    public function __construct(IServer $server)
+    public function init()
     {
-        $this->server = $server;
         $this->watchDir = App::getAlias('@app');
     }
 
@@ -81,6 +82,14 @@ class Inotify
 
         // swoole Event add
         $this->addSwooleEvent($inotify);
+    }
+
+    /**
+     * @param IServer $server
+     */
+    public function setServer(IServer $server)
+    {
+        $this->server = $server;
     }
 
     /**

@@ -38,12 +38,11 @@ class BeforeProcessListener implements IApplicationListener
         $logid = uniqid();
 
         /* @var Process $process */
-        $log = $params[2];
         $process = $params[1];
         $processName = $params[0];
         $processPid = $process->pid;
         $uri = 'process-' . $processName;
-        $flushInterval = $log['flushInterval'];
+        $flushInterval = 10;
 
         $contextData = [
             'logid'       => $logid,
