@@ -9,7 +9,7 @@ use Swoft\Helper\PhpHelper;
 use Swoft\Web\ErrorHandler;
 
 /**
- *
+ * 命令行
  *
  * @uses      Application
  * @version   2017年10月06日
@@ -17,13 +17,27 @@ use Swoft\Web\ErrorHandler;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Console implements IApplication
+class Console implements IConsole
 {
+    /**
+     * 默认命令组
+     */
     const DEFAULT_CMD = 'server';
+
+    /**
+     * 命令分隔符
+     */
     const DELIMITER = ':';
 
+    /**
+     * 命令后缀
+     */
     const CONTROLLER_SUFFIX = 'Controller';
-    const ABBREVIATE_CMDS
+
+    /**
+     * 默认命令
+     */
+    const DEFAULT_CMDS
         = [
             'start',
             'reload',
@@ -32,58 +46,89 @@ class Console implements IApplication
         ];
 
     /**
+     * 参数输入
+     *
      * @var Input
      */
     private $input;
 
     /**
+     * 参数输出
+     *
      * @var Output
      */
     private $output;
 
+    /**
+     * 命令扫描目录
+     *
+     * @var array
+     */
     private $scanCmds = [];
 
+    /**
+     * 错误处理器
+     *
+     * @var ErrorHandler
+     */
     private $errorHandler;
 
     /**
-     * Console constructor.
+     * 初始化
      */
     public function __construct()
     {
+        // 初始化样式
         Style::init();
+
+        // 初始化组件
+        $this->registerNamespace();
         $this->input = new Input();
         $this->output = new Output();
         $this->errorHandler = new ErrorHandler();
-        $this->init();
         $this->errorHandler->register();
     }
 
+    /**
+     * 运行命令行
+     */
     public function run()
     {
+        // 默认命令解析
         $cmd = $this->input->getCommand();
-        if (in_array($cmd, self::ABBREVIATE_CMDS)) {
-            $cmd = 'server:' . $cmd;
+        if (in_array($cmd, self::DEFAULT_CMDS)) {
+            $cmd = sprintf("%s:%s", self::DEFAULT_CMD, $cmd);
         }
 
+        // 没有任何命令输入
         if (empty($cmd)) {
             $this->baseCommand();
         }
 
+        // 运行命令
         $this->dispather($cmd);
     }
 
+    /**
+     * 引导命令界面
+     */
     private function baseCommand()
     {
+        // 版本命令解析
         if ($this->input->hasOpt('v') || $this->input->hasOpt('version')) {
             $this->showVersion();
         }
 
+        // 显示命令列表
         $this->showCommandList();
     }
 
+    /**
+     * 显示命令列表
+     */
     private function showCommandList()
     {
-        $itemList = [];
+        // 命令目录扫描
         $commands = [];
         foreach ($this->scanCmds as $namespace => $dir) {
             $iterator = new \RecursiveDirectoryIterator($dir);
@@ -93,42 +138,51 @@ class Console implements IApplication
             $commands = array_merge($commands, $scanCommands);
         }
 
+        // 组拼命令结构
+        $commandList = [];
         $script = $this->input->getFullScript();
-        $itemList['Usage:'] = ["php $script"];
-        $itemList['Commands:'] = $commands;
-        $itemList['Options:'] = [
+        $commandList['Usage:'] = ["php $script"];
+        $commandList['Commands:'] = $commands;
+        $commandList['Options:'] = [
             '-v,--version' => 'show version',
             '-h,--help'    => 'show help'
         ];
 
-        $this->output->writeList($itemList, 'comment', 'info');
+        // 显示命令组列表
+        $this->output->writeList($commandList, 'comment', 'info');
     }
 
     /**
+     * 解析命令和命令描述
      *
-     * @param string         $namespace
-     * @param \SplFileInfo[] $files
+     * @param string         $namespace 命名空间
+     * @param \SplFileInfo[] $files     文件集合
      *
      * @return array
      */
     private function parserCmdAndDesc($namespace, $files)
     {
         $commands = [];
-
         foreach ($files as $file) {
+
+            // 排除非PHP文件
             $ext = pathinfo($file, PATHINFO_EXTENSION);
             if ($ext != 'php') {
                 continue;
             }
 
+            // 命令类名
             $fileName = $file->getFilename();
             list($class) = explode('.', $fileName);
             $className = $namespace . '\\' . $class;
 
+            // 反射获取命令描述
             $rc = new \ReflectionClass($className);
             $docComment = $rc->getDocComment();
             $docAry = DocumentParser::tagList($docComment);
             $desc = $docAry['description'];
+
+            // 解析出命令
             $cmdName = str_replace(self::CONTROLLER_SUFFIX, '', $class);
             $cmd = strtolower($cmdName);
 
@@ -138,36 +192,50 @@ class Console implements IApplication
         return $commands;
     }
 
+    /**
+     * 显示版本信息
+     */
     private function showVersion()
     {
         $this->output->writeln('<info>swoft 1.0 beta</info>', true);
     }
 
+    /**
+     * 运行命令
+     *
+     * @param string $cmd
+     */
     private function dispather(string $cmd)
     {
+        // 默认命令处理
         if (strpos($cmd, self::DELIMITER) === false) {
             $cmd = $cmd . self::DELIMITER . "index";
         }
 
+        // 类和命令
         list($controllerName, $command) = explode(self::DELIMITER, $cmd);
 
+        // 命令匹配
         $namespaces = array_keys($this->scanCmds);
         foreach ($namespaces as $namespace) {
             $controllerClass = $namespace . "\\" . ucfirst($controllerName) . self::CONTROLLER_SUFFIX;
 
+            // 类不存在
             if (!class_exists($controllerClass)) {
                 continue;
             }
 
+            // 选择第一个匹配的类
             $cmdController = new $controllerClass($this->input, $this->output);
-
             PhpHelper::call([$cmdController, 'run'], [$command]);
-
             break;
         }
     }
 
-    private function init()
+    /**
+     * 扫描命名空间注入
+     */
+    private function registerNamespace()
     {
         $this->scanCmds['Swoft\Console\Command'] = dirname(__FILE__) . "/Command";
     }

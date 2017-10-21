@@ -72,15 +72,22 @@ class ErrorHandler
      */
     public function renderException(\Throwable $exception)
     {
-       if(ApplicationContext::getContext() == ApplicationContext::CONSOLE){
-           throw $exception;
-       }
+        // 当前命令行
+        $context = ApplicationContext::getContext();
+        if ($context == ApplicationContext::CONSOLE) {
+            throw $exception;
+        }
 
+        // 记录错误日志
         App::error($exception);
-        $reponse = App::getResponse();
-        $reponse->setException($exception);
 
-        $errorAction = App::$app->getErrorAction();
-        App::$app->runController($errorAction);
+        // 当前worker进程
+        if (App::isWorkerStatus()) {
+            $reponse = App::getResponse();
+            $reponse->setException($exception);
+
+            $errorAction = App::$app->getErrorAction();
+            App::$app->runController($errorAction);
+        }
     }
 }

@@ -34,7 +34,6 @@ class ServerController extends ConsoleCommand
 
     /**
      * 启动HTTP服务器
-     * 启动HTTP服务器
      *
      * @usage
      * server:{command} [arguments] [options]
