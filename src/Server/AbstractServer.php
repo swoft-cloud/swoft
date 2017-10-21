@@ -263,6 +263,16 @@ abstract class AbstractServer implements IServer
     }
 
     /**
+     * pname名称
+     *
+     * @return string
+     */
+    public function getPname()
+    {
+        return $this->serverSetting['pname'];
+    }
+
+    /**
      * Tasker进程回调
      *
      * @param Server $server   server

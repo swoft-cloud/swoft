@@ -42,7 +42,7 @@ class Process
         return null;
     }
 
-    public static function create(AbstractServer $server, string $processName, string $processClassName):\Swoole\Process
+    public static function create(AbstractServer $server, string $processName, string $processClassName): ?\Swoole\Process
     {
         if(!class_exists($processClassName)){
             throw new \InvalidArgumentException('自定义进程不存在，className='.$processClassName);
@@ -54,14 +54,18 @@ class Process
             throw new \InvalidArgumentException('自定义进程类，不是AbstractProcess子类，className='.$processClassName);
         }
 
+        $isReady = $processClass->isReady();
+        if($isReady == false){
+            return null;
+        }
+
         $pipe = $processClass->isPipe();
         $iout = $processClass->isInout();
-        $processPrefix = 'php-swoft';
 
-        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($server, $processClass, $processPrefix, $processName) {
+        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($server, $processClass, $processName) {
             require_once BASE_PATH . '/config/reload.php';
             App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, null);
-            PhpHelper::call([$processClass, 'run'], [$server, $process, $processPrefix]);
+            PhpHelper::call([$processClass, 'run'], [$server, $process]);
             App::trigger(Event::AFTER_PROCESS);
         }, $iout, $pipe);
 

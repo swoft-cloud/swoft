@@ -41,4 +41,9 @@ abstract class AbstractProcess implements IProcess
     {
         return $this->flushInterval;
     }
+
+    public function isReady()
+    {
+        return true;
+    }
 }

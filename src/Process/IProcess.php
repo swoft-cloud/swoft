@@ -16,5 +16,9 @@ use Swoole\Process;
  */
 interface IProcess
 {
-    public function run(AbstractServer $server, Process $process, string $processPrefix);
+    /**
+     * @return bool
+     */
+    public function isReady();
+    public function run(AbstractServer $server, Process $process);
 }

@@ -207,6 +207,9 @@ class RpcServer extends AbstractServer
     {
         foreach ($this->processSetting as $name => $processClassName) {
             $userProcess = \Swoft\Process\Process::create($this, $name, $processClassName);
+            if($userProcess === null){
+                continue;
+            }
             $this->server->addProcess($userProcess);
         }
     }

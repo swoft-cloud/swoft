@@ -19,13 +19,24 @@ use Swoole\Process;
  */
 class ReloadProcess extends AbstractProcess
 {
-    public function run(AbstractServer $server, Process $process, string $processPrefix)
+    public function run(AbstractServer $server, Process $process)
     {
-        $process->name('php-swoft reload process');
+        $pname = $server->getPname();
+        $processName = "$pname reload process";
+        $process->name($processName);
 
-        /* @var Inotify $inotify*/
+        /* @var Inotify $inotify */
         $inotify = App::getBean('inotify');
         $inotify->setServer($server);
         $inotify->run();
+    }
+
+    public function isReady()
+    {
+        if (!AUTO_RELOAD || !extension_loaded('inotify')) {
+            echo "自动reload未开启，请检查配置(AUTO_RELOAD)和inotify扩展是否安装正确! \n";
+            return false;
+        }
+        return true;
     }
 }
