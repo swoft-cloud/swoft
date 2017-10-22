@@ -3,7 +3,7 @@
 namespace Swoft\Console\Input;
 
 /**
- *
+ * 输入接口
  *
  * @uses      IInput
  * @version   2017年10月06日
@@ -24,11 +24,15 @@ interface IInput
     public function read($question = null, $nl = false): string;
 
     /**
+     * 获取执行的脚本
+     *
      * @return string
      */
     public function getScript(): string;
 
     /**
+     * 获取执行的命令
+     *
      * @param string $default
      *
      * @return string
@@ -36,12 +40,14 @@ interface IInput
     public function getCommand($default = ''): string;
 
     /**
+     * 获取输入参数集合
+     *
      * @return array
      */
     public function getArgs(): array;
 
     /**
-     * get Argument
+     * 获取输入某个参数
      *
      * @param null|int|string $name
      * @param mixed           $default
@@ -51,11 +57,15 @@ interface IInput
     public function getArg($name, $default = null);
 
     /**
+     * 获取输入选项集合
+     *
      * @return array
      */
     public function getOpts(): array;
 
     /**
+     * 获取某一个选项参数
+     *
      * @param string $name
      * @param null   $default
      *

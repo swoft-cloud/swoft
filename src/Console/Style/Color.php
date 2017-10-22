@@ -3,7 +3,7 @@
 namespace Swoft\Console\Style;
 
 /**
- *
+ * 命令行颜色
  *
  * @uses      Color
  * @version   2017年10月08日
@@ -14,16 +14,16 @@ namespace Swoft\Console\Style;
 final class Color
 {
     /**
-     * Foreground base value
+     * 前景色
      */
     const FG_BASE = 30;
 
     /**
-     * Background base value
+     * 背景色
      */
     const BG_BASE = 40;
 
-    // color
+    // 颜色组
     const BLACK = 'black';
     const RED = 'red';
     const GREEN = 'green';
@@ -34,7 +34,7 @@ final class Color
     const WHITE = 'white';
     const NORMAL = 'normal';
 
-    // color option
+    // 颜色选项
     const BOLD = 'bold';       // 加粗
     const FUZZY = 'fuzzy';      // 模糊(不是所有的终端仿真器都支持)
     const ITALIC = 'italic';     // 斜体(不是所有的终端仿真器都支持)
@@ -43,6 +43,7 @@ final class Color
     const REVERSE = 'reverse';    // 颠倒的 交换背景色与前景色
     const CONCEALED = 'concealed';  // 隐匿的
 
+    // 颜色集合
     const COLORS
         = [
             'black'   => 0,
@@ -56,6 +57,9 @@ final class Color
             'normal'  => 9,
         ];
 
+    /**
+     * 颜色选项集合
+     */
     const OPTIONS
         = [
             'bold'       => 1,       // 22 加粗
@@ -67,34 +71,69 @@ final class Color
             'concealed'  => 8,  // 28 隐匿的
         ];
 
+    /**
+     * 当前前景色
+     *
+     * @var int
+     */
     private $fgColor = 0;
 
+    /**
+     * 当前背景色
+     *
+     * @var int
+     */
     private $bgColor = 0;
 
+    /**
+     * 当前颜色选项
+     *
+     * @var array
+     */
     private $options = [];
 
+    /**
+     * 新建一个颜色
+     *
+     * @param string $fg      前景色
+     * @param string $bg      背景色
+     * @param array  $options 选项
+     *
+     * @return Color
+     */
     public static function make(string $fg = '', string $bg = '', array $options = [])
     {
         return new self($fg, $bg, $options);
     }
 
+    /**
+     * 初始化
+     *
+     * @param string $fg      前景色
+     * @param string $bg      背景色
+     * @param array  $options 选项
+     */
     private function __construct(string $fg = '', string $bg = '', array $options = [])
     {
+        // 前景和背景色取值验证
         $fgNotExist = !empty($fg) && !array_key_exists($fg, self::COLORS);
         $bgNotExist = !empty($bg) && !array_key_exists($bg, self::COLORS);
         if ($fgNotExist || $bgNotExist) {
             throw new \InvalidArgumentException("Foreground和Background参数值，不存在，检查后再试！");
         }
 
+        // 前景色
         if (!empty($fg)) {
             $this->fgColor = self::FG_BASE + self::COLORS[$fg];
         }
 
+        // 背景色
         if (!empty($bg)) {
             $this->bgColor = self::BG_BASE + self::COLORS[$bg];
         }
 
         foreach ($options as $option) {
+            // 选项不存在
             if (!array_key_exists($option, self::OPTIONS)) {
                 throw new \InvalidArgumentException("选项参数不存在，option=" . $option);
             }
@@ -102,19 +141,29 @@ final class Color
         }
     }
 
+    /**
+     * 字符串显示
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->getStyle();
     }
 
+    /**
+     * 获取当前颜色值
+     *
+     * @return string
+     */
     public function getStyle()
     {
         $values = $this->options;
-        if($this->bgColor > 0){
+        if ($this->bgColor > 0) {
             array_unshift($values, $this->bgColor);
         }
 
-        if($this->fgColor > 0){
+        if ($this->fgColor > 0) {
             array_unshift($values, $this->fgColor);
         }
 

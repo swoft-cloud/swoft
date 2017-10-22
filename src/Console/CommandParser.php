@@ -3,7 +3,7 @@
 namespace Swoft\Console;
 
 /**
- *
+ * 命令解析
  *
  * @uses      CommandParser
  * @version   2017年10月06日
@@ -13,9 +13,25 @@ namespace Swoft\Console;
  */
 class CommandParser
 {
+    /**
+     * true字符
+     */
     const TRUE_WORDS = '|on|yes|true|';
+
+    /**
+     * false字符
+     */
     const FALSE_WORDS = '|off|no|false|';
 
+    /**
+     * 解析命令
+     *
+     * @param array $params
+     * @param array $noValues
+     * @param bool  $mergeOpts
+     *
+     * @return array
+     */
     public static function parse(array $params, array $noValues = [], $mergeOpts = false): array
     {
         $args = $sOpts = $lOpts = [];
@@ -83,7 +99,15 @@ class CommandParser
         return [$args, $sOpts, $lOpts];
     }
 
-    public static function filterBool($val, $enable = true)
+    /**
+     * 过滤布尔值
+     *
+     * @param mixed $val    值
+     * @param bool  $enable 是否启用
+     *
+     * @return bool
+     */
+    private static function filterBool($val, $enable = true)
     {
         if ($enable) {
             if (is_bool($val) || is_numeric($val)) {

@@ -8,7 +8,7 @@ use Swoft\Console\Output\Output;
 use Swoft\Server\RpcServer;
 
 /**
- * rpc server commands
+ * the group command list of rpc server
  *
  * @uses      RpcController
  * @version   2017年10月11日
@@ -26,7 +26,7 @@ class RpcController extends ConsoleCommand
     private $rpcServer;
 
     /**
-     * RpcController constructor.
+     * 初始化
      *
      * @param Input  $input  输入
      * @param Output $output 输出
@@ -34,7 +34,6 @@ class RpcController extends ConsoleCommand
     public function __construct(Input $input, Output $output)
     {
         parent::__construct($input, $output);
-
         $this->rpcServer = new RpcServer();
     }
 
@@ -45,7 +44,7 @@ class RpcController extends ConsoleCommand
      * rpc:{command} [arguments] [options]
      *
      * @options
-     * -d,--d start by daemonize
+     * -d,--d start by daemonized process
      *
      * @example
      * php swoft.php rpc:start -d
@@ -82,13 +81,13 @@ class RpcController extends ConsoleCommand
     }
 
     /**
-     * reload rpc server
+     * reload worker process
      *
      * @usage
      * rpc:{command} [arguments] [options]
      *
      * @options
-     * -t only reload tasks
+     * -t only to reload task processes, default to reload worker and task
      *
      * @example
      * php swoft.php rpc:reload
@@ -125,7 +124,7 @@ class RpcController extends ConsoleCommand
             $this->output->writeln('<error>The server is not running! cannot stop</error>', true, true);
         }
 
-        // swoft.ini server配置
+        // pid文件
         $serverStatus = $this->rpcServer->getServerSetting();
         $pidFile = $serverStatus['pfile'];
 

@@ -3,7 +3,7 @@
 namespace Swoft\Console\Style;
 
 /**
- *
+ * 命令行样式
  *
  * @uses      Style
  * @version   2017年10月08日
@@ -13,6 +13,7 @@ namespace Swoft\Console\Style;
  */
 class Style
 {
+    // 默认样式集合
     const NORMAL = 'normal';
     const FAINTLY = 'faintly';
     const BOLD = 'bold';
@@ -33,48 +34,26 @@ class Style
     const RED = 'red';
     const YELLOW = 'yellow';
 
+    /**
+     * tag样式表情匹配正则
+     */
     const TAGS_REG = '/<([a-z=;]+)>(.*?)<\/\\1>/s';
+
+    /**
+     * 移除颜色匹配正则
+     */
     const STRIP_REG = '/<[\/]?[a-z=;]+>/';
 
     /**
-     * Array of Style objects
+     * 所有初始化的样式tag标签
      *
      * @var array
      */
     private static $tags = [];
 
-
-    public static function t(string $message)
-    {
-        if (!self::isSupportColor()) {
-            return static::stripColor($message);
-        }
-
-
-        preg_match_all(self::TAGS_REG, $message, $matches);
-        if (!$matches) {
-            return $message;
-        }
-
-        foreach ((array)$matches[0] as $i => $m) {
-            if (array_key_exists($matches[1][$i], self::$tags)) {
-
-                $message = self::replaceColor($message, $matches[1][$i], $matches[2][$i], (string)self::$tags[$matches[1][$i]]);
-            }
-        }
-        return $message;
-    }
-
-    public static function addTag(string $name, string $fg = '', string $bg = '', array $options = [])
-    {
-        self::$tags[$name] = Color::make($fg, $bg, $options);
-    }
-
-    public static function addTagByColor(string $name, Color $color)
-    {
-        self::$tags[$name] = $color;
-    }
-
+    /**
+     * 初始化颜色标签
+     */
     public static function init()
     {
         self::$tags[self::NORMAL] = Color::make('normal');
@@ -98,26 +77,101 @@ class Style
         self::$tags[self::YELLOW] = Color::make('yellow');
     }
 
-    private static function replaceColor($text, $tag, $match, $style): string
+    /**
+     * 颜色翻译
+     *
+     * @param string $message 文字
+     *
+     * @return mixed|string
+     */
+    public static function t(string $message)
+    {
+        // 不支持颜色，移除颜色标签
+        if (!self::isSupportColor()) {
+            return static::stripColor($message);
+        }
+
+        $isMatch = preg_match_all(self::TAGS_REG, $message, $matches);
+        // 未匹配颜色标签
+        if ($isMatch == false) {
+            return $message;
+        }
+
+        // 颜色标签处理
+        foreach ((array)$matches[0] as $i => $m) {
+            if (array_key_exists($matches[1][$i], self::$tags)) {
+                $message = self::replaceColor($message, $matches[1][$i], $matches[2][$i], (string)self::$tags[$matches[1][$i]]);
+            }
+        }
+        return $message;
+    }
+
+    /**
+     * 根据信息，新增一个tag颜色标签
+     *
+     * @param string $name    名称
+     * @param string $fg      前景色
+     * @param string $bg      背景色
+     * @param array  $options 颜色选项
+     */
+    public static function addTag(string $name, string $fg = '', string $bg = '', array $options = [])
+    {
+        self::$tags[$name] = Color::make($fg, $bg, $options);
+    }
+
+    /**
+     * 根据颜色对象，新增一个tag颜色标签
+     *
+     * @param string $name
+     * @param Color  $color
+     */
+    public static function addTagByColor(string $name, Color $color)
+    {
+        self::$tags[$name] = $color;
+    }
+
+    /**
+     * 标签替换成颜色
+     *
+     * @param string $text
+     * @param string $tag
+     * @param string $match
+     * @param string $style
+     *
+     * @return string
+     */
+    private static function replaceColor(string $text, string $tag, string $match, string $style): string
     {
         $replace = sprintf("\033[%sm%s\033[0m", $style, $match);
         return str_replace("<$tag>$match</$tag>", $replace, $text);
     }
 
-    private static function stripColor($string)
+    /**
+     * 移除颜色标签
+     *
+     * @param string $message
+     *
+     * @return mixed
+     */
+    private static function stripColor(string $message)
     {
-        return preg_replace(self::STRIP_REG, '', $string);
+        return preg_replace(self::STRIP_REG, '', $message);
     }
 
+    /**
+     * 命令行是否支持颜色
+     *
+     * @return bool
+     */
     private static function isSupportColor()
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            return '10.0.10586' === PHP_WINDOWS_VERSION_MAJOR . '.' . PHP_WINDOWS_VERSION_MINOR . '.' . PHP_WINDOWS_VERSION_BUILD
-                || // 0 == strpos(PHP_WINDOWS_VERSION_MAJOR . '.' . PHP_WINDOWS_VERSION_MINOR . PHP_WINDOWS_VERSION_BUILD, '10.') ||
-                false !== getenv('ANSICON')
-                || 'ON' === getenv('ConEmuANSI')
-                || 'xterm' === getenv('TERM')// || 'cygwin' === getenv('TERM')
-                ;
+            $term = 'xterm' === getenv('TERM');
+            $ansicon = false !== getenv('ANSICON');
+            $conemuansi = 'ON' === getenv('ConEmuANSI');
+            $windowsVersion = '10.0.10586' === PHP_WINDOWS_VERSION_MAJOR . '.' . PHP_WINDOWS_VERSION_MINOR . '.' . PHP_WINDOWS_VERSION_BUILD;
+            $isSupport = $windowsVersion || $ansicon || $conemuansi || $term;
+            return $isSupport;
         }
 
         if (!defined('STDOUT')) {
@@ -127,6 +181,13 @@ class Style
         return self::isInteractive(STDOUT);
     }
 
+    /**
+     * 是否是交互是终端
+     *
+     * @param mixed $fileDescriptor
+     *
+     * @return bool
+     */
     private static function isInteractive($fileDescriptor)
     {
         return function_exists('posix_isatty') && @posix_isatty($fileDescriptor);

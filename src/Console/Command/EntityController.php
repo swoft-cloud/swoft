@@ -2,8 +2,10 @@
 
 namespace Swoft\Console\Command;
 
+use Swoft\Console\ConsoleCommand;
+
 /**
- * database entity commands
+ * the group command list of database entity
  *
  * @uses      EntityController
  * @version   2017年10月11日
@@ -11,7 +13,7 @@ namespace Swoft\Console\Command;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class EntityController
+class EntityController extends ConsoleCommand
 {
     /**
      * auto create entity by table structure

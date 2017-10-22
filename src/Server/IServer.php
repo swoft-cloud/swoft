@@ -30,7 +30,4 @@ interface IServer
     public function getServerSetting();
 
     public function setDaemonize();
-
-    public function setRpcEnable();
-
 }

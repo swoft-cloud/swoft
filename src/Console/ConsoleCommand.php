@@ -107,6 +107,10 @@ class ConsoleCommand
             return;
         }
 
+        // 命令不存在处理
+        if (!method_exists($this, $commandMethod)) {
+            $this->output->writeln('<error>命令不存在</error>', true, true);
+        }
         // 执行命令
         PhpHelper::call([$this, $commandMethod]);
     }

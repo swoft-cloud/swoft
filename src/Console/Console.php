@@ -216,6 +216,7 @@ class Console implements IConsole
         list($controllerName, $command) = explode(self::DELIMITER, $cmd);
 
         // 命令匹配
+        $isMatch = false;
         $namespaces = array_keys($this->scanCmds);
         foreach ($namespaces as $namespace) {
             $controllerClass = $namespace . "\\" . ucfirst($controllerName) . self::CONTROLLER_SUFFIX;
@@ -226,9 +227,15 @@ class Console implements IConsole
             }
 
             // 选择第一个匹配的类
+            $isMatch = true;
             $cmdController = new $controllerClass($this->input, $this->output);
             PhpHelper::call([$cmdController, 'run'], [$command]);
             break;
+        }
+
+        // 未匹配到命令
+        if ($isMatch == false) {
+            $this->output->writeln('<error>命令不存在</error>', true, true);
         }
     }
 

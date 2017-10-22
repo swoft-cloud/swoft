@@ -8,7 +8,7 @@ use Swoft\Console\Output\Output;
 use Swoft\Server\HttpServer;
 
 /**
- * http server commands
+ * the group command list of http-server
  *
  * @uses      ServerController
  * @version   2017年10月06日
@@ -25,25 +25,29 @@ class ServerController extends ConsoleCommand
      */
     private $httpServer;
 
+    /**
+     * 初始化
+     *
+     * @param Input  $input  输入
+     * @param Output $output 输出
+     */
     public function __construct(Input $input, Output $output)
     {
         parent::__construct($input, $output);
-
         $this->httpServer = new HttpServer();
     }
 
     /**
-     * 启动HTTP服务器
+     * start http server
      *
      * @usage
      * server:{command} [arguments] [options]
      *
      * @options
-     * -d,--d 后台启动
-     * -r,--r 启动RPC服务，默认读取配置
+     * -d,--d start by daemonized process
      *
      * @example
-     * php swoft.php server:start -d
+     * php swoft.php server:start -d -r
      */
     public function startCommand()
     {
@@ -53,6 +57,7 @@ class ServerController extends ConsoleCommand
             $this->output->writeln("<error>The server have been running!(PID: {$serverStatus['masterPid']})</error>", true, true);
         }
 
+        // 启动参数
         $this->setStartArgs();
         $httpStatus = $this->httpServer->getHttpSetting();
         $tcpStatus = $this->httpServer->getTcpSetting();
@@ -79,22 +84,22 @@ class ServerController extends ConsoleCommand
             '**********************************************************',
         ];
 
+        // 启动服务器
         $this->output->writeln(implode("\n", $lines));
-
         $this->httpServer->start();
     }
 
     /**
-     * 重载HTTP服务器
+     * reload worker process
      *
      * @usage
      * server:{command} [arguments] [options]
      *
      * @options
-     * -t 只重载任务
+     * -t only to reload task processes, default to reload worker and task
      *
      * @example
-     * php swoft.php server:reload -d
+     * php swoft.php server:reload
      */
     public function reloadCommand()
     {
@@ -112,13 +117,13 @@ class ServerController extends ConsoleCommand
     }
 
     /**
-     * 停止HTTP服务器
+     * stop http server
      *
      * @usage
      * server:{command} [arguments] [options]
      *
      * @example
-     * php swoft.php server:stop -d
+     * php swoft.php server:stop
      */
     public function stopCommand()
     {
@@ -127,6 +132,7 @@ class ServerController extends ConsoleCommand
             $this->output->writeln('<error>The server is not running! cannot stop</error>', true, true);
         }
 
+        // pid文件
         $serverStatus = $this->httpServer->getServerSetting();
         $pidFile = $serverStatus['pfile'];
 
@@ -144,13 +150,13 @@ class ServerController extends ConsoleCommand
     }
 
     /**
-     * 重启HTTP服务器
+     * restart http server
      *
      * @usage
      * server:{command} [arguments] [options]
      *
      * @example
-     * php swoft.php server:restart -d
+     * php swoft.php server:restart
      */
     public function restartCommand()
     {
@@ -165,19 +171,14 @@ class ServerController extends ConsoleCommand
     }
 
     /**
-     * 设置启动选项
+     * 设置启动选项，覆盖swoft.ini配置选项
      */
     private function setStartArgs()
     {
-
-        $enable = $this->input->hasOpt('r');
         $daemonize = $this->input->hasOpt('d');
 
         if ($daemonize) {
             $this->httpServer->setDaemonize();
-        }
-        if ($enable) {
-            $this->httpServer->setRpcEnable();
         }
     }
 }

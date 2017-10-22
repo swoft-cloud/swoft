@@ -255,14 +255,6 @@ abstract class AbstractServer implements IServer
     }
 
     /**
-     * 设置启动RPC
-     */
-    public function setRpcEnable()
-    {
-        $this->tcpSetting['enable'] = 1;
-    }
-
-    /**
      * pname名称
      *
      * @return string
