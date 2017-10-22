@@ -101,6 +101,15 @@ class App
         return self::$crontab;
     }
 
+    /**
+     * swoft版本
+     *
+     * @return string
+     */
+    public static function version()
+    {
+        return '0.2';
+    }
 
     /**
      * redis连接池

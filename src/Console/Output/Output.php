@@ -52,6 +52,21 @@ class Output implements IOutput
     }
 
     /**
+     * 输出显示LOGO图标
+     */
+    public function writeLogo()
+    {
+        $logo = "<info>
+ ____                __ _
+/ ___|_      _____  / _| |_
+\___ \ \ /\ / / _ \| |_| __|
+ ___) \ V  V / (_) |  _| |_
+|____/ \_/\_/ \___/|_|  \__|
+</info>";
+        $this->writeln($logo);
+    }
+
+    /**
      * 输出一个列表
      *
      * @param array       $list       列表数据

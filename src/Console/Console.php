@@ -2,6 +2,7 @@
 
 namespace Swoft\Console;
 
+use Swoft\App;
 use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
 use Swoft\Console\Style\Style;
@@ -103,6 +104,7 @@ class Console implements IConsole
         // 没有任何命令输入
         if (empty($cmd)) {
             $this->baseCommand();
+            return;
         }
 
         // 运行命令
@@ -117,6 +119,7 @@ class Console implements IConsole
         // 版本命令解析
         if ($this->input->hasOpt('v') || $this->input->hasOpt('version')) {
             $this->showVersion();
+            return;
         }
 
         // 显示命令列表
@@ -147,6 +150,9 @@ class Console implements IConsole
             '-v,--version' => 'show version',
             '-h,--help'    => 'show help'
         ];
+
+        // 显示Logo
+        $this->output->writeLogo();
 
         // 显示命令组列表
         $this->output->writeList($commandList, 'comment', 'info');
@@ -197,7 +203,15 @@ class Console implements IConsole
      */
     private function showVersion()
     {
-        $this->output->writeln('<info>swoft 1.0 beta</info>', true);
+        // 当前版本信息
+        $swoftVersion = App::version();
+        $phpVersio = phpversion();
+        $swooleVersion = swoole_version();
+
+        // 显示面板
+        $this->output->writeLogo();
+        $this->output->writeln("swoft: <info>$swoftVersion</info>, php: <info>$phpVersio</info>, swoole: <info>$swooleVersion</info>", true);
+        $this->output->writeln("");
     }
 
     /**
