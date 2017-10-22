@@ -18,8 +18,6 @@ interface IApplicationListener
      *
      * @param ApplicationEvent|null $event     事件对象
      * @param array                 ...$params 参数
-     *
-     * @return mixed
      */
     public function onApplicationEvent(ApplicationEvent $event = null, ...$params);
 }

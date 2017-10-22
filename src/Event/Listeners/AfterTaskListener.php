@@ -35,7 +35,6 @@ class AfterTaskListener implements IApplicationListener
         }
 
         $type = $params[0];
-
         App::getLogger()->appendNoticeLog(true);
         if($type != Task::TYPE_CRON){
             RequestContext::destory();

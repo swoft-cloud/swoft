@@ -3,13 +3,12 @@
 namespace Swoft\Process;
 
 use Swoft\App;
-use Swoft\Base\Coroutine;
 use Swoft\Base\Inotify;
 use Swoft\Server\AbstractServer;
 use Swoole\Process;
 
 /**
- *
+ * reload进程
  *
  * @uses      ReloadProcess
  * @version   2017年10月21日
@@ -19,18 +18,28 @@ use Swoole\Process;
  */
 class ReloadProcess extends AbstractProcess
 {
-    public function run(AbstractServer $server, Process $process)
+    /**
+     * 运行进程逻辑
+     *
+     * @param Process        $process
+     */
+    public function run( Process $process)
     {
-        $pname = $server->getPname();
+        $pname = $this->server->getPname();
         $processName = "$pname reload process";
         $process->name($processName);
 
         /* @var Inotify $inotify */
         $inotify = App::getBean('inotify');
-        $inotify->setServer($server);
+        $inotify->setServer($this->server);
         $inotify->run();
     }
 
+    /**
+     * 进程启动准备工作
+     *
+     * @return bool
+     */
     public function isReady()
     {
         if (!AUTO_RELOAD || !extension_loaded('inotify')) {

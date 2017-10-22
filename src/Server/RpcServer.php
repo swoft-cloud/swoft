@@ -215,19 +215,6 @@ class RpcServer extends AbstractServer
     }
 
     /**
-     * 重新加载reload回调函数
-     *
-     * @param Process $process
-     */
-    public function reloadCallback(Process $process)
-    {
-        $processName = $this->serverSetting['pname'] . " reload process";
-        $process->name($processName);
-        $inotify = new Inotify($this);
-        $inotify->run();
-    }
-
-    /**
      * worker start之前运行
      *
      * @param Server $server   server

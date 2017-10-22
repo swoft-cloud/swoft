@@ -4,10 +4,10 @@ namespace App\Process;
 
 use Swoft\App;
 use Swoft\Process\AbstractProcess;
-use Swoft\Server\AbstractServer;
 use Swoole\Process;
 
 /**
+ * 自定义进程demo
  *
  * @uses      MyProcess
  * @version   2017年10月02日
@@ -17,9 +17,9 @@ use Swoole\Process;
  */
 class MyProcess extends AbstractProcess
 {
-    public function run(AbstractServer $server,Process $process)
+    public function run(Process $process)
     {
-        $pname = $server->getPname();
+        $pname = $this->server->getPname();
         $processName = "$pname myProcess process";
         $process->name($processName);
 

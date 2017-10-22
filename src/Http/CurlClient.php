@@ -5,7 +5,7 @@ namespace Swoft\Http;
 use Swoft\App;
 
 /**
- *
+ * CURL客户端
  *
  * @uses      CurlClient
  * @version   2017年10月02日
@@ -13,11 +13,22 @@ use Swoft\App;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class CurlClient  extends AbstractHttpClient
+class CurlClient extends AbstractHttpClient
 {
+    /**
+     * CURL调用
+     *
+     * @param string $url     地址
+     * @param string $method  方法,默认get
+     * @param mixed  $data    数组格式传递数据
+     * @param int    $timeout 超时时间，单位毫秒
+     * @param array  $headers 请求header
+     *
+     * @return mixed
+     */
     public static function call(string $url, string $method = self::GET, $data, int $timeout = 3, array $headers = [])
     {
-        $profileKey = 'http.'.$url;
+        $profileKey = 'http.' . $url;
         $paramsBuild = self::getContentData($data);
 
         if ($method == self::GET && !empty($data)) {
@@ -68,10 +79,10 @@ class CurlClient  extends AbstractHttpClient
 
         $result = curl_exec($curl);
         $error = curl_errno($curl);
-        if(!empty($error)){
-            App::error("httpClient curl出错 url = $url error=".$error." params=".json_encode($data));
+        if (!empty($error)) {
+            App::error("httpClient curl出错 url = $url error=" . $error . " params=" . json_encode($data));
         }
-        //        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+//        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
         App::profileEnd($profileKey);

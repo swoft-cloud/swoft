@@ -6,7 +6,7 @@ use Swoft\Server\AbstractServer;
 use Swoole\Process;
 
 /**
- *
+ * 进程接口
  *
  * @uses      IProcess
  * @version   2017年10月02日
@@ -17,8 +17,16 @@ use Swoole\Process;
 interface IProcess
 {
     /**
+     * 进程启动前准备工作是否完成
+     *
      * @return bool
      */
     public function isReady();
-    public function run(AbstractServer $server, Process $process);
+
+    /**
+     * 运行进程程序
+     *
+     * @param Process        $process
+     */
+    public function run(Process $process);
 }

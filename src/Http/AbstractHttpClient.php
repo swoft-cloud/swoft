@@ -3,7 +3,7 @@
 namespace Swoft\Http;
 
 /**
- *
+ * 抽象HTTP
  *
  * @uses      AbstractHttpClient
  * @version   2017年10月02日
@@ -11,7 +11,7 @@ namespace Swoft\Http;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class AbstractHttpClient implements IHttpClient
+abstract class AbstractHttpClient implements IHttpClient
 {
     /**
      * 请求header处理

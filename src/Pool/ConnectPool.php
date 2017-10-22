@@ -15,7 +15,7 @@ use Swoft\Service\ServiceProvider;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-abstract class ConnectPool implements Pool
+abstract class ConnectPool implements IPool
 {
     /**
      * @var string 服务清楚

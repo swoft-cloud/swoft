@@ -3,8 +3,6 @@
 namespace Swoft\Process;
 
 use Swoft\App;
-use Swoft\Bean\BeanFactory;
-use Swoft\Bean\Collector;
 use Swoft\Event\Event;
 use Swoft\Helper\PhpHelper;
 use Swoft\Server\AbstractServer;
@@ -49,7 +47,7 @@ class Process
         }
 
         /* @var AbstractProcess $processClass*/
-        $processClass = new $processClassName();
+        $processClass = new $processClassName($server);
         if(!is_subclass_of($processClass, AbstractProcess::class)){
             throw new \InvalidArgumentException('自定义进程类，不是AbstractProcess子类，className='.$processClassName);
         }
@@ -62,10 +60,10 @@ class Process
         $pipe = $processClass->isPipe();
         $iout = $processClass->isInout();
 
-        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($server, $processClass, $processName) {
+        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($processClass, $processName) {
             require_once BASE_PATH . '/config/reload.php';
             App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, null);
-            PhpHelper::call([$processClass, 'run'], [$server, $process]);
+            PhpHelper::call([$processClass, 'run'], [$process]);
             App::trigger(Event::AFTER_PROCESS);
         }, $iout, $pipe);
 

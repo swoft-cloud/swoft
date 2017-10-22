@@ -176,7 +176,7 @@ class RequestContext
         $coroutineId = self::getcoroutineId();
         if (!isset(self::$coroutineLocal[$coroutineId])) {
             App::error("协程上下文不存在，coroutineId=" . $coroutineId);
-            throw new \InvalidArgumentException("协程上下文不存在，coroutineId=" . $coroutineId);
+            return null;
         }
 
         $coroutineContext = self::$coroutineLocal[$coroutineId];

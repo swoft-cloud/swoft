@@ -16,13 +16,18 @@ use Swoft\Web\AbstractResult;
  */
 class HttpResult extends AbstractResult
 {
+    /**
+     * 返回数据结果
+     *
+     * @return mixed
+     */
     public function getResult()
     {
         $this->client->recv();
         $result = $this->client->body;
         $this->client->close();
 
-        App::debug("http调用结果=".json_encode($result));
+        App::debug("http调用结果=" . json_encode($result));
         return $result;
     }
 }

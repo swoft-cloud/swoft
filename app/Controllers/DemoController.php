@@ -95,9 +95,9 @@ class DemoController extends Controller
 
     public function actionIndex6()
     {
-        throw new Exception('AAAA');
-        $a = $b;
-//        $A = new AAA();
+//        throw new Exception('AAAA');
+//        $a = $b;
+        $A = new AAA();
         $this->outputJson(['data6']);
     }
 

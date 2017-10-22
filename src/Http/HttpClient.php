@@ -6,7 +6,7 @@ use Swoft\App;
 use Swoole\Coroutine\Http\Client;
 
 /**
- * HTTP调用
+ * HTTP调用，支持协程和同步两种客户端，底层自动实现切换
  *
  * @uses      HttpClient
  * @version   2017年07月15日
@@ -14,7 +14,7 @@ use Swoole\Coroutine\Http\Client;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class HttpClient  extends AbstractHttpClient
+class HttpClient extends AbstractHttpClient
 {
     /**
      * http调用

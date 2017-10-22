@@ -2,8 +2,10 @@
 
 namespace Swoft\Process;
 
+use Swoft\Server\AbstractServer;
+
 /**
- *
+ * 抽象进程
  *
  * @uses      AbstractProcess
  * @version   2017年10月21日
@@ -13,12 +15,40 @@ namespace Swoft\Process;
  */
 abstract class AbstractProcess implements IProcess
 {
+    /**
+     * inout
+     *
+     * @var bool
+     */
     protected $inout = false;
-    protected $pipe = true;
-
-    protected $logg = 1;
 
     /**
+     * 是否开启通道
+     *
+     * @var bool
+     */
+    protected $pipe = true;
+
+    /**
+     * server服务对象
+     *
+     * @var AbstractServer
+     */
+    protected $server;
+
+    /**
+     * 初始化
+     *
+     * @param AbstractServer $server
+     */
+    public function __construct(AbstractServer $server)
+    {
+        $this->server = $server;
+    }
+
+    /**
+     * 是否启用inout
+     *
      * @return bool
      */
     public function isInout(): bool
@@ -27,6 +57,8 @@ abstract class AbstractProcess implements IProcess
     }
 
     /**
+     * 是否启用通道
+     *
      * @return bool
      */
     public function isPipe(): bool
@@ -35,13 +67,10 @@ abstract class AbstractProcess implements IProcess
     }
 
     /**
-     * @return int
+     * 进程启动前准备工作是否完成
+     *
+     * @return bool
      */
-    public function getFlushInterval(): int
-    {
-        return $this->flushInterval;
-    }
-
     public function isReady()
     {
         return true;
