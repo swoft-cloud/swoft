@@ -4,11 +4,9 @@ namespace Swoft\Server;
 
 use Swoft\App;
 use Swoft\Base\ApplicationContext;
-use Swoft\Base\Inotify;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Task\Task;
-use Swoole\Process;
 use Swoole\Server;
 
 /**
@@ -200,14 +198,18 @@ class RpcServer extends AbstractServer
      */
     protected function beforeStart()
     {
+        // 添加用户自定义进程
         $this->addUserProcesses();
     }
 
+    /**
+     * 添加自定义进程
+     */
     private function addUserProcesses()
     {
         foreach ($this->processSetting as $name => $processClassName) {
             $userProcess = \Swoft\Process\Process::create($this, $name, $processClassName);
-            if($userProcess === null){
+            if ($userProcess === null) {
                 continue;
             }
             $this->server->addProcess($userProcess);

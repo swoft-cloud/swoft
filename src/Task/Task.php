@@ -186,6 +186,8 @@ class Task
     }
 
     /**
+     * 任务ID
+     *
      * @return string
      */
     public static function getId(): string
@@ -194,6 +196,8 @@ class Task
     }
 
     /**
+     * 初始化任务ID
+     *
      * @param string $id
      */
     public static function setId(string $id)
