@@ -17,6 +17,11 @@ use Swoole\Process;
  */
 class MyProcess extends AbstractProcess
 {
+    /**
+     * 实际进程运行逻辑
+     *
+     * @param Process $process 进程对象
+     */
     public function run(Process $process)
     {
         $pname = $this->server->getPname();
@@ -24,9 +29,9 @@ class MyProcess extends AbstractProcess
         $process->name($processName);
 
         $i = 1;
-        while (true){
+        while (true) {
             echo "this my process \n";
-            App::trace("my process count=".$i);
+            App::trace("my process count=" . $i);
             sleep(10);
             $i++;
         }

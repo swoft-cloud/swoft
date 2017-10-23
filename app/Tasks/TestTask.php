@@ -4,8 +4,10 @@ namespace App\Tasks;
 
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
+use App\Models\Logic\IndexLogic;
 use Swoft\App;
 use Swoft\Base\ApplicationContext;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
@@ -26,7 +28,15 @@ use Swoft\Service\Service;
 class TestTask
 {
     /**
-     * 协程task
+     * 逻辑层
+     *
+     * @Inject()
+     * @var IndexLogic
+     */
+    private $logic;
+
+    /**
+     * 任务中,使用redis自动切换成同步redis
      *
      * @param mixed $p1
      * @param mixed $p2
@@ -44,6 +54,11 @@ class TestTask
         return 'cor' . " $p1" . " $p2 " . $status . " " . $name;
     }
 
+    /**
+     * 任务中使用mysql自动切换为同步mysql
+     *
+     * @return bool|\Swoft\Db\DataResult
+     */
     public function testMysql()
     {
         $user = new User();
@@ -71,6 +86,11 @@ class TestTask
         return $result;
     }
 
+    /**
+     * 任务中使用HTTP，自动切换成同步curl
+     *
+     * @return mixed
+     */
     public function testHttp()
     {
         $requestData = [
@@ -85,11 +105,16 @@ class TestTask
         return $data;
     }
 
+    /**
+     * 任务中使用rpc,自动切换成同步TCP
+     *
+     * @return mixed
+     */
     public function testRpc()
     {
         var_dump('^^^^^^^^^^^', ApplicationContext::getContext());
         App::trace("this rpc task worker");
-        $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
+        $result = Service::call("user", 'User::getUserInfo', [2, 6, 8]);
         return $result;
     }
 
@@ -110,6 +135,8 @@ class TestTask
     }
 
     /**
+     * crontab定时任务，目前开发中...
+     *
      * @Scheduled(cron="0 0/1 8-20 * * ?")
      */
     public function cronTask()
