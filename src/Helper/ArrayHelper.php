@@ -2,7 +2,6 @@
 
 namespace Swoft\Helper;
 
-use MongoDB\BSON\Type;
 use Swoft\Bean\Collector;
 use Swoft\Db\Types;
 

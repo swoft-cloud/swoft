@@ -3,6 +3,9 @@
 namespace Swoft\Web;
 
 use Swoft\App;
+use Swoft\Base\ApplicationContext;
+use Swoft\Base\Coroutine;
+use Swoft\Base\RequestContext;
 
 /**
  * 错误处理
@@ -15,12 +18,6 @@ use Swoft\App;
  */
 class ErrorHandler
 {
-    /**
-     * @var string 统一错误error
-     */
-    //    private $errorAction = "/error/index";
-    private $errorAction = "";
-
     /**
      * 注册错误监听器
      */
@@ -77,13 +74,23 @@ class ErrorHandler
      */
     public function renderException(\Throwable $exception)
     {
-        if (!App::isWorkerStatus()) {
+        // 当前命令行
+        $context = ApplicationContext::getContext();
+        if ($context == ApplicationContext::CONSOLE) {
             throw $exception;
         }
 
-        $reponse = App::getResponse();
-        $reponse->setException($exception);
+        // 记录错误日志
+        App::error($exception);
 
-        App::$app->runController($this->errorAction);
+        // 当前worker进程
+        $cid = Coroutine::id();
+        if (App::isWorkerStatus()) {
+            $reponse = RequestContext::getResponse($cid);
+            $reponse->setException($exception);
+
+            $errorAction = App::$app->getErrorAction();
+            App::$app->runController($errorAction);
+        }
     }
 }

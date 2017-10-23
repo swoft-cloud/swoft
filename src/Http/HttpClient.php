@@ -3,9 +3,10 @@
 namespace Swoft\Http;
 
 use Swoft\App;
+use Swoole\Coroutine\Http\Client;
 
 /**
- * HTTP调用
+ * HTTP调用，支持协程和同步两种客户端，底层自动实现切换
  *
  * @uses      HttpClient
  * @version   2017年07月15日
@@ -13,33 +14,8 @@ use Swoft\App;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class HttpClient
+class HttpClient extends AbstractHttpClient
 {
-    /**
-     * get方法
-     */
-    const GET = "GET";
-
-    /**
-     * post方法
-     */
-    const POST = "POST";
-
-    /**
-     * put方法
-     */
-    const PUT = "PUT";
-
-    /**
-     * delete方法
-     */
-    const DELETE = "DELETE";
-
-    /**
-     * patch方法
-     */
-    const PATCH = "PATCH";
-
     /**
      * http调用
      *
@@ -59,14 +35,18 @@ class HttpClient
      *
      * @return mixed
      */
-    public static function call(string $url, string $method = self::GET, $data = array(), int $timeout = 200, array $headers = [])
+    public static function call(string $url, string $method = self::GET, $data, int $timeout = 200, array $headers = [])
     {
+        if (App::isWorkerStatus() === false) {
+            return CurlClient::call($url, $method, $data, $timeout, $headers);
+        }
+
         $profileKey = $method . "." . $url;
         list($host, $port, $uri) = self::parseUrl($url);
         $headers = self::getRequestHeader($headers, $method);
 
         App::profileStart($profileKey);
-        $client = new \Swoole\Coroutine\Http\Client($host, $port);
+        $client = new Client($host, $port);
         $client->setHeaders($headers);
         $client->set(['timeout' => $timeout]);
         $client->setMethod($method);
@@ -106,7 +86,7 @@ class HttpClient
      *
      * @return HttpResult
      */
-    public static function deferCall(string $url, string $method = self::GET, $data = array(), int $timeout = 200, array $headers = [])
+    public static function deferCall(string $url, string $method = self::GET, $data, int $timeout = 200, array $headers = [])
     {
         $profileKey = $method . "." . $url;
         list($host, $port, $uri) = self::parseUrl($url);
@@ -126,44 +106,6 @@ class HttpClient
         $client->setDefer();
         $result = $client->execute($uri);
         return new HttpResult(null, $client, $profileKey, $result);
-    }
-
-
-    /**
-     * 请求header处理
-     *
-     * @param array  $header header参数
-     * @param string $method HTTP方法
-     *
-     * @return array
-     */
-    private static function getRequestHeader(array $header, string $method)
-    {
-        if ($method == self::GET) {
-            return $header;
-        }
-        if ($method == self::POST && !isset($header['Content-Type'])) {
-            $header['Content-Type'] = 'application/x-www-form-urlencoded';
-        }
-        return $header;
-    }
-
-    /**
-     * 内容实体转换
-     *
-     * @param mixed $data 内存实体
-     *
-     * @return string
-     */
-    private static function getContentData($data)
-    {
-        if (is_string($data)) {
-            return $data;
-        }
-        if (is_array($data)) {
-            $data = http_build_query($data);
-        }
-        return (string)$data;
     }
 
     /**

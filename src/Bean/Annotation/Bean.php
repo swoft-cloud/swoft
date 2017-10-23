@@ -14,7 +14,7 @@ namespace Swoft\Bean\Annotation;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-final class Bean
+class Bean
 {
     /**
      * bean名称

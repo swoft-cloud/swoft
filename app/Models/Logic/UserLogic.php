@@ -1,22 +1,23 @@
 <?php
-namespace App\Controllers\Services;
+
+namespace App\Models\Logic;
 
 use Swoft\Bean\Annotation\Bean;
-use Swoft\Web\InnerService;
 
 /**
- * RPC服务函数
+ * 用户逻辑层
+ * 同时可以被controller server task使用
  *
  * @Bean()
- * @uses      UserService
- * @version   2017年07月14日
+ * @uses      UserLogic
+ * @version   2017年10月15日
  * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
+ * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class UserService extends InnerService
+class UserLogic
 {
-    public function getUserInfo(...$uids)
+    public function getUserInfo(array $uids)
     {
         $user = [
             'name' => 'boby',

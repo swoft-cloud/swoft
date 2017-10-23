@@ -2,8 +2,10 @@
 
 namespace Swoft\Pool;
 
+use Swoft\App;
+
 /**
- *
+ * 数据库连接池
  *
  * @uses      DbPool
  * @version   2017年09月01日
@@ -24,15 +26,15 @@ class DbPool extends ConnectPool
 
     public function createConnect()
     {
-        $uri = $this->getConnectAddress();
-        $options = $this->parseUri($uri);
-        $options['timeout'] = $this->timeout;
-
-        $connectClassName = "Swoft\Db\\".$this->driver."\\Connect";
-        if(!class_exists($connectClassName)){
-            throw new \InvalidArgumentException("暂时不支持该驱动数据库，driver=".$this->driver);
+        if (App::isWorkerStatus()) {
+            $connectClassName = "Swoft\Db\\" . $this->driver . "\\" . $this->driver . "Connect";
+        } else {
+            $connectClassName = "Swoft\Db\\" . $this->driver . "\\Sync" . $this->driver . "Connect";
         }
-        return new $connectClassName($this->driver, $options);
+        if (!class_exists($connectClassName)) {
+            throw new \InvalidArgumentException("暂时不支持该驱动数据库，driver=" . $this->driver);
+        }
+        return new $connectClassName($this);
     }
 
     public function reConnect($client)
@@ -40,26 +42,13 @@ class DbPool extends ConnectPool
 
     }
 
-    private function parseUri($uri)
+    /**
+     * 返回数据库驱动
+     *
+     * @return string
+     */
+    public function getDriver(): string
     {
-        $parseAry = parse_url($uri);
-        if(!isset($parseAry['host']) || !isset($parseAry['port']) || !isset($parseAry['path']) || !isset($parseAry['query'])){
-            throw new \InvalidArgumentException("数据量连接uri格式不正确，uri=".$uri);
-        }
-        $parseAry['database'] = str_replace('/', '', $parseAry['path']);
-        $query = $parseAry['query'];
-        parse_str($query, $options);
-
-        if(!isset($options['user']) || !isset($options['password'])){
-            throw new \InvalidArgumentException("数据量连接uri格式不正确，未配置用户名和密码，uri=".$uri);
-        }
-        if(!isset($options['charset'])){
-            $options['charset'] = "";
-        }
-
-        $configs = array_merge($parseAry, $options);
-        unset($configs['path']);
-        unset($configs['query']);
-        return $configs;
+        return $this->driver;
     }
 }

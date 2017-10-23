@@ -21,6 +21,13 @@ class Collector
     public static $requestMapping = [];
 
     /**
+     * 已解析的Service映射
+     *
+     * @var array
+     */
+    public static $serviceMapping = [];
+
+    /**
      * 监听器
      *
      * @var array
@@ -33,4 +40,11 @@ class Collector
      * @var array
      */
     public static $entities = [];
+
+    /**
+     * 定时任务列表
+     *
+     * @var array
+     */
+    public static $crontab = [];
 }

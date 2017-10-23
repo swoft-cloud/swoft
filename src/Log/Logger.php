@@ -2,7 +2,7 @@
 
 namespace Swoft\Log;
 
-use Swoft\App;
+use Swoft\Base\Coroutine;
 use Swoft\Base\RequestContext;
 
 /**
@@ -25,42 +25,42 @@ class Logger extends \Monolog\Logger
     /**
      * @var string 日志系统名称
      */
-    public $name = "Swoft";
+    protected $name = SYSTEM_NAME;
 
     /**
      * @var int 刷新日志条数
      */
-    public $flushInterval = 1;
+    protected $flushInterval = 1;
 
     /**
      * @var bool 每个请求完成刷新一次日志到磁盘，默认未开启
      */
-    public $flushRequest = false;
+    protected $flushRequest = false;
 
     /**
      * @var array 性能日志
      */
-    public $profiles = [];
+    protected $profiles = [];
 
     /**
      * @var array 计算日志
      */
-    public $countings = [];
+    protected $countings = [];
 
     /**
      * @var array 标记日志
      */
-    public $pushlogs = [];
+    protected $pushlogs = [];
 
     /**
      * @var array 标记栈
      */
-    public $profileStacks = [];
+    protected $profileStacks = [];
 
     /**
      * @var array 日志数据记录
      */
-    public $messages = [];
+    protected $messages = [];
 
 
     protected $processors = [];
@@ -144,9 +144,9 @@ class Logger extends \Monolog\Logger
     public function formateRecord($message, $context, $level, $levelName, $ts, $extra)
     {
         $record = array(
-            "logid"      => $this->getLogid(),
-            "spanid"     => $this->getSpanid(),
-            'messages'    => $message,
+            "logid"      => RequestContext::getLogid(),
+            "spanid"     => RequestContext::getSpanid(),
+            'messages'   => $message,
             'context'    => $context,
             'level'      => $level,
             'level_name' => $levelName,
@@ -171,7 +171,7 @@ class Logger extends \Monolog\Logger
         }
 
         $key = urlencode($key);
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (is_array($val)) {
             $this->pushlogs[$cid][] = "$key=" . json_encode($val);
         } elseif (is_bool($val)) {
@@ -193,7 +193,7 @@ class Logger extends \Monolog\Logger
         if (is_string($name) == false || empty($name)) {
             return;
         }
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $this->profileStacks[$cid][$name]['start'] = microtime(true);
     }
 
@@ -208,7 +208,7 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->profiles[$cid][$name])) {
             $this->profiles[$cid][$name] = [
                 'cost'  => 0,
@@ -226,7 +226,7 @@ class Logger extends \Monolog\Logger
     public function getProfilesInfos()
     {
         $profileAry = [];
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $profiles = $this->profiles[$cid]?? [];
         foreach ($profiles as $key => $profile) {
             if (!isset($profile['cost']) || !isset($profile['total'])) {
@@ -252,7 +252,7 @@ class Logger extends \Monolog\Logger
             return;
         }
 
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->countings[$cid][$name])) {
             $this->countings[$cid][$name] = ['hit' => 0, 'total' => 0];
         }
@@ -267,7 +267,7 @@ class Logger extends \Monolog\Logger
      */
     public function getCountingInfo()
     {
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         if (!isset($this->countings[$cid]) || empty($this->countings[$cid])) {
             return "";
         }
@@ -359,10 +359,12 @@ class Logger extends \Monolog\Logger
 
     /**
      * 请求完成追加一条notice日志
+     *
+     * @param bool $flush 是否刷新日志
      */
-    public function appendNoticeLog()
+    public function appendNoticeLog($flush = false)
     {
-        $cid = App::getCoroutineId();
+        $cid = Coroutine::tid();
         $ts = $this->getLoggerTime();
 
         // php耗时单位ms毫秒
@@ -398,7 +400,8 @@ class Logger extends \Monolog\Logger
         $this->messages[] = $message;
 
         // 一个请求完成刷新一次或达到刷新的次数
-        if ($this->flushRequest || count($this->messages) >= $this->flushInterval) {
+        $isReached = count($this->messages) >= $this->flushInterval;
+        if ($this->flushRequest || $isReached || $flush) {
             $this->flushLog();
         }
     }
@@ -426,6 +429,19 @@ class Logger extends \Monolog\Logger
     }
 
     /**
+     * 日志初始化
+     */
+    public function initialize()
+    {
+        $this->profiles = [];
+        $this->countings = [];
+        $this->pushlogs = [];
+        $this->profileStacks = [];
+
+        $this->messages[] = [];
+    }
+
+    /**
      * 添加一条trace日志
      *
      * @param       $message 日志信息
@@ -439,27 +455,11 @@ class Logger extends \Monolog\Logger
     }
 
     /**
-     * 请求logid
-     *
-     * @return string
+     * @param int $flushInterval
      */
-    private function getLogid()
+    public function setFlushInterval(int $flushInterval)
     {
-        $contextData = RequestContext::getContextData();
-        $logid = $contextData['logid']?? "";
-        return $logid;
-    }
-
-    /**
-     * 请求跨度值
-     *
-     * @return int
-     */
-    private function getSpanid()
-    {
-        $contextData = RequestContext::getContextData();
-        $spanid = $contextData['spanid']?? 0;
-        return $spanid;
+        $this->flushInterval = $flushInterval;
     }
 
     /**

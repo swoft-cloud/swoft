@@ -3,11 +3,13 @@
 namespace Swoft\Base;
 
 use Swoft\App;
-use Swoft\Web\HttpServer;
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Server\IServer;
 
 /**
  * 文件更新自动监听
  *
+ * @Bean("inotify")
  * @uses      Inotify
  * @version   2017年08月25日
  * @author    stelin <phpcrazy@126.com>
@@ -16,6 +18,8 @@ use Swoft\Web\HttpServer;
  */
 class Inotify
 {
+    const CREATE_DIR_MASK = 1073742080;
+
     /**
      * 监听文件变化的路径
      *
@@ -28,7 +32,7 @@ class Inotify
      *
      * @var int
      */
-    private $events = IN_MODIFY | IN_DELETE | IN_CREATE | IN_MOVE;
+    private $events = IN_MODIFY | IN_CREATE | IN_IGNORED | IN_DELETE;
 
     /**
      * 监听文件后缀类型，默认PHP
@@ -37,11 +41,17 @@ class Inotify
      */
     private $fileTypes = ['php'];
 
-    private $httpServer;
+    /**
+     * server服务器
+     *
+     * @var IServer
+     */
+    private $server;
 
-    public function __construct(HttpServer $httpServer)
+    private $watchFiles = [];
+
+    public function init()
     {
-        $this->httpServer = new HttpServer();
         $this->watchDir = App::getAlias('@app');
     }
 
@@ -50,29 +60,36 @@ class Inotify
      */
     public function run()
     {
-        global $watchFiles;
 
         $inotify = inotify_init();
 
         // 设置为非阻塞
         stream_set_blocking($inotify, 0);
 
+        $tempFiles = [];
         $iterator = new \RecursiveDirectoryIterator($this->watchDir);
         $files = new \RecursiveIteratorIterator($iterator);
         foreach ($files as $file) {
-            // 监听类型判断
-            $fileType = pathinfo($file, PATHINFO_EXTENSION);
-            if (!in_array($fileType, $this->fileTypes)) {
-                continue;
-            }
+            $path = dirname($file);
 
-            // 监听文件
-            $wid = inotify_add_watch($inotify, $file, $this->events);
-            $watchFiles[$wid] = $file;
+            // 只监听目录
+            if (!isset($tempFiles[$path])) {
+                $wd = inotify_add_watch($inotify, $path, $this->events);
+                $tempFiles[$path] = $wd;
+                $this->watchFiles[$wd] = $path;
+            }
         }
 
         // swoole Event add
         $this->addSwooleEvent($inotify);
+    }
+
+    /**
+     * @param IServer $server
+     */
+    public function setServer(IServer $server)
+    {
+        $this->server = $server;
     }
 
     /**
@@ -82,10 +99,8 @@ class Inotify
      */
     private function addSwooleEvent($inotify)
     {
-        global $watchFiles;
-
         // swoole Event add
-        swoole_event_add($inotify, function ($inotify) use ($watchFiles) {
+        swoole_event_add($inotify, function ($inotify) {
             // 读取有事件变化的文件
             $events = inotify_read($inotify);
             if ($events) {
@@ -102,28 +117,27 @@ class Inotify
      */
     private function reloadFiles($inotify, $events)
     {
-        global $watchFiles;
-
         $isReload = false;
+
         // 更新的文件监控
         foreach ($events as $event) {
             $wid = $event['wd'];
-            if (!isset($watchFiles[$wid])) {
+            if (!isset($this->watchFiles[$wid])) {
                 continue;
             }
 
-            $file = $watchFiles[$wid];
+            $mask = $event['mask'];
+            $fileName = $event['name'];
+            $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
 
-            // 删除旧的监控
-            unset($watchFiles[$wid]);
+            // 不是监控的文件类型处理(文件夹或非PHP文件)
+            if (!in_array($fileExt, $this->fileTypes)) {
+                $this->updateInotify($inotify, $wid, $mask, $fileName);
+                continue;
+            }
 
             $isReload = true;
-            // 文件重新监控
-            $wd = inotify_add_watch($inotify, $file, $this->events);
-
-            $watchFiles[$wd] = $file;
         }
-
 
         if (!$isReload) {
             return;
@@ -133,8 +147,26 @@ class Inotify
         sleep(3);
 
         echo "inotify开始自动reloading...\n";
-        $this->httpServer->isRunning();
-        $this->httpServer->reload();
+        $this->server->isRunning();
+        $this->server->reload();
         echo "inotify自动成功\n";
+    }
+
+    /**
+     * 更新监控信息
+     *
+     * @param mixed  $inotify
+     * @param int    $wid
+     * @param int    $mask
+     * @param string $fileName
+     */
+    private function updateInotify($inotify, int $wid, int $mask, string $fileName)
+    {
+        // 创建文件操作，添加到监控里面
+        if ($mask == self::CREATE_DIR_MASK) {
+            $path = $this->watchFiles[$wid] . '/' . $fileName;
+            $wd = inotify_add_watch($inotify, $path, $this->events);
+            $this->watchFiles[$wd] = $path;
+        }
     }
 }

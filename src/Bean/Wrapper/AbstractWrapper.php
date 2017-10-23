@@ -156,10 +156,19 @@ abstract class AbstractWrapper implements IWrapper
     {
         // 循环解析
         foreach ($publicMethods as $method) {
+            /* @var \ReflectionMethod $method*/
             if ($method->isStatic()) {
                 continue;
             }
-            // 解析方法注解
+
+            /* @var \ReflectionClass $declaredClass*/
+            $declaredClass = $method->getDeclaringClass();
+            $declaredName = $declaredClass->getName();
+
+            // 不是当前类方法
+            if($declaredName != $className){
+                continue;
+            }
             $this->parseMethodAnnotations($className, $method, $methodAnnotations);
         }
     }

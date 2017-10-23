@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
+use Swoft\Base\Coroutine;
 use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
+use Swoft\Task\Task;
 use Swoft\Web\Controller;
 
 /**
@@ -63,16 +65,57 @@ class DemoController extends Controller
      */
     public function actionIndex2()
     {
-        $this->outputJson("demo266666");
+        Coroutine::create(function (){
+            App::trace("this is child trace".Coroutine::id());
+            Coroutine::create(function (){
+                App::trace("this is child child trace".Coroutine::id());
+            });
+        });
+
+        $this->outputJson("3333232111111");
     }
 
     /**
      * 没有使用注解，自动解析注入，默认支持get和post
      */
-    public function actionIndex3()
+    public function actionTask()
     {
-        $a = new AAA();
-        $this->outputJson("suc3222");
+        $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
+        $mysql = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
+        $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
+        $rpc = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
+        $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
+
+//        var_dump(Collector::$crontab, ApplicationContext::getContext());
+        $this->outputJson([$rpc, $http, $mysql, $result, $result1]);
+    }
+
+    public function actionIndex6()
+    {
+        throw new Exception('AAAA');
+//        $a = $b;
+        $A = new AAA();
+        $this->outputJson(['data6']);
+    }
+
+    /**
+     * 子协程测试
+     */
+    public function actionCor()
+    {
+        // 创建子协程
+        Coroutine::create(function (){
+            App::error("child cor error msg");
+            App::trace("child cor error msg");
+        });
+
+        // 当前协程id
+        $cid = Coroutine::id();
+
+        // 当前运行上下文ID, 协程环境中，顶层协程ID; 任务中，当前任务taskid; 自定义进程中，当前进程ID(pid)
+        $tid = Coroutine::tid();
+
+        $this->outputJson([$cid, $tid]);
     }
 
     /**

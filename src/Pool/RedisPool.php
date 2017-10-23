@@ -3,6 +3,8 @@
 namespace Swoft\Pool;
 
 use Swoft\App;
+use Swoft\Redis\Cache\RedisConnect;
+use Swoft\Redis\Cache\SyncRedisConnect;
 
 /**
  * redis连接池
@@ -18,21 +20,14 @@ class RedisPool extends ConnectPool
     /**
      * 创建一个连接
      *
-     * @return \Swoole\Coroutine\Redis
+     * @return RedisConnect|SyncRedisConnect
      */
     public function createConnect()
     {
-        $address = $this->getConnectAddress();
-        list($host, $port) = explode(":", $address);
-
-        /* @var \Redis $redis*/
-        $redis = new \Swoole\Coroutine\Redis();
-        $result = $redis->connect($host, $port, $this->timeout);
-        if ($result == false) {
-            App::error("redis连接失败，host=".$host." port=".$port." timeout=".$this->timeout);
-            return null;
+        if (App::isWorkerStatus()) {
+            return new RedisConnect($this);
         }
-        return $redis;
+        return new SyncRedisConnect($this);
     }
 
     public function reConnect($client)

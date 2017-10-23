@@ -48,9 +48,11 @@ class RequestContext
     /**
      * 请求response
      *
+     * @param int $cid 协程ID
+     *
      * @return \Swoft\Web\Response
      */
-    public static function getResponse()
+    public static function getResponse($cid = null)
     {
         return self::getCoroutineContext(self::COROUTINE_RESPONSE);
     }
@@ -72,7 +74,7 @@ class RequestContext
      */
     public static function setRequest(\Swoole\Http\Request $request)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_REQUEST] = new \Swoft\Web\Request($request);
     }
 
@@ -83,7 +85,7 @@ class RequestContext
      */
     public static function setResponse(\Swoole\Http\Response $response)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_RESPONSE] = new \Swoft\Web\Response($response);
     }
 
@@ -94,7 +96,7 @@ class RequestContext
      */
     public static function setContextData(array $contextData = [])
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA] = $contextData;
     }
 
@@ -106,7 +108,7 @@ class RequestContext
      */
     public static function setContextDataByKey(string $key, $val)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key] = $val;
     }
 
@@ -114,18 +116,43 @@ class RequestContext
      * 获取当前请求数据一个KEY的值
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getContextDataByKey(string $key, $default = null)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (isset(self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key])) {
             return self::$coroutineLocal[$coroutineId][self::COROUTINE_DATA][$key];
         }
 
-        App::warning("RequestContext data数据不存在key,key=".$key);
+        App::warning("RequestContext data数据不存在key,key=" . $key);
         return $default;
+    }
+
+    /**
+     * 请求logid
+     *
+     * @return string
+     */
+    public static function getLogid()
+    {
+        $contextData = self::getCoroutineContext(self::COROUTINE_DATA);
+        $logid = $contextData['logid']?? "";
+        return $logid;
+    }
+
+    /**
+     * 请求跨度值
+     *
+     * @return int
+     */
+    public static function getSpanid()
+    {
+        $contextData = self::getCoroutineContext(self::COROUTINE_DATA);
+        $spanid = $contextData['spanid']?? 0;
+        return $spanid;
     }
 
     /**
@@ -133,7 +160,7 @@ class RequestContext
      */
     public static function destory()
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (isset(self::$coroutineLocal[$coroutineId])) {
             unset(self::$coroutineLocal[$coroutineId]);
         }
@@ -142,16 +169,16 @@ class RequestContext
     /**
      * 获取协程上下文
      *
-     * @param string $name  协程ID
+     * @param string $name 协程ID
      *
      * @return mixed|null
      */
     private static function getCoroutineContext(string $name)
     {
-        $coroutineId = self::getcoroutine();
+        $coroutineId = self::getcoroutineId();
         if (!isset(self::$coroutineLocal[$coroutineId])) {
-            App::error("协程上下文不存在，coroutineId=".$coroutineId);
-            throw new \InvalidArgumentException("协程上下文不存在，coroutineId=".$coroutineId);
+            //            App::error("协程上下文不存在，coroutineId=" . $coroutineId);
+            return null;
         }
 
         $coroutineContext = self::$coroutineLocal[$coroutineId];
@@ -166,9 +193,8 @@ class RequestContext
      *
      * @return int
      */
-    private static function getcoroutine()
+    private static function getcoroutineId()
     {
-        $coroutineId = \Swoole\Coroutine::getuid();
-        return $coroutineId;
+        return Coroutine::tid();
     }
 }

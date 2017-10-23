@@ -1,9 +1,9 @@
 <?php
 
-namespace Swoft\Cache;
+namespace Swoft\Redis\Cache;
 
 use Swoft\App;
-use Swoft\Base\ApplicationContext;
+use Swoft\Cache\CacheResult;
 use Swoft\Exception\RedisException;
 
 /**
@@ -40,7 +40,7 @@ class RedisClient
     /**
      * 目前支持redis操作方法的集合,若需新方法支持，添加到里面即可。
      */
-    const redis_operations = [
+    const REDIS_OPERATIONS = [
             // keys
             'del', 'exists', 'expire', 'ttl',
 
@@ -70,7 +70,7 @@ class RedisClient
         $profileKey = self::getRedisProfile($method);
         $connectPool = App::getBean(self::SERVICE_NAME);
 
-        /* @var $client \Swoole\Coroutine\Redis */
+        /* @var $client RedisConnect */
         $client = $connectPool->getConnect();
         App::profileStart($profileKey);
         $result = $client->$method(...$params);
@@ -86,19 +86,19 @@ class RedisClient
      * @param string $method 方法名称
      * @param array  $params 参数
      *
-     * @return RedisResult
+     * @return CacheResult
      */
     public static function deferCall(string $method, array $params)
     {
         $profileKey = self::getRedisProfile($method);
         $connectPool = App::getBean(self::SERVICE_NAME);
 
-        /* @var $client \Swoole\Coroutine\Redis */
+        /* @var $client RedisConnect */
         $client = $connectPool->getConnect();
         $client->setDefer();
         $result = $client->$method(...$params);
 
-        return new RedisResult($connectPool, $client, $profileKey, $result);
+        return new CacheResult($connectPool, $client, $profileKey, $result);
     }
 
     /**
@@ -112,7 +112,7 @@ class RedisClient
      */
     public static function __callStatic($method, $arguments)
     {
-        if (!in_array($method, self::redis_operations)) {
+        if (!in_array($method, self::REDIS_OPERATIONS)) {
             App::error("目前不支持redis该方法调用,method".$method." args=".json_encode($arguments));
             throw new RedisException("目前不支持redis该方法调用,method".$method." args=".json_encode($arguments));
         }

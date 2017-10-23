@@ -15,12 +15,24 @@ use Swoft\App;
  */
 class CircuitBreaker
 {
+    /**
+     * 关闭状态
+     */
     const CLOSE = "close";
 
+    /**
+     * 开启状态
+     */
     const OPEN = "open";
 
+    /**
+     * 半开起状态
+     */
     const HALF_OPEN_STATE = "halfOpenState";
 
+    /**
+     * 未初始化
+     */
     const UNINIT = "uninit";
 
     /**

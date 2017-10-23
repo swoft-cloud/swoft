@@ -2,224 +2,262 @@
 
 namespace Swoft\Console;
 
-use Swoft\Console\Style\LiteStyle;
-use Swoft\Web\HttpServer;
+use Swoft\App;
+use Swoft\Console\Input\Input;
+use Swoft\Console\Output\Output;
+use Swoft\Console\Style\Style;
+use Swoft\Helper\PhpHelper;
+use Swoft\Web\ErrorHandler;
 
 /**
- * 启动命令行
+ * 命令行
  *
- * @uses      Console
- * @version   2017年08月14日
+ * @uses      Application
+ * @version   2017年10月06日
  * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
+ * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Console
+class Console implements IConsole
 {
     /**
-     * @var string 启动脚本文件
+     * 默认命令组
      */
-    private $scriptFile = '';
+    const DEFAULT_CMD = 'server';
 
     /**
-     * @var string 当前命令，如start/stop...
+     * 命令分隔符
      */
-    private $command = '';
+    const DELIMITER = ':';
 
     /**
-     * @var bool 是否只reload task任务进程
+     * 命令后缀
      */
-    private $reloadTask = false;
+    const CONTROLLER_SUFFIX = 'Controller';
 
     /**
-     * @var array tcp启动参数
+     * 默认命令
      */
-    private $tcpStatus = [];
+    const DEFAULT_CMDS
+        = [
+            'start',
+            'reload',
+            'stop',
+            'restart'
+        ];
 
     /**
-     * @var array http启动参数
-     */
-    private $httpStatus = [];
-
-    /**
-     * @var LiteStyle 颜色辅助
-     */
-    private $liteStyle = null;
-
-
-    /**
-     * httpServer服务器
+     * 参数输入
      *
-     * @var HttpServer
+     * @var Input
      */
-    private $httpServer;
+    private $input;
 
+    /**
+     * 参数输出
+     *
+     * @var Output
+     */
+    private $output;
+
+    /**
+     * 命令扫描目录
+     *
+     * @var array
+     */
+    private $scanCmds = [];
+
+    /**
+     * 错误处理器
+     *
+     * @var ErrorHandler
+     */
+    private $errorHandler;
 
     /**
      * 初始化
      */
     public function __construct()
     {
-        // 参数解析
-        $argv = $_SERVER['argv'];
-        if (count($argv) >= 2) {
-            list($this->scriptFile, $this->command) = $argv;
-        }
-        $daemonize = in_array('-d', $argv) ? 1 : 0;
-        $this->reloadTask = in_array('-t', $argv);
+        // 初始化样式
+        Style::init();
 
-        // 初始化数据
-        $this->liteStyle = new LiteStyle();
-        $this->httpServer = new HttpServer();
-        $this->httpServer->setDaemonize($daemonize);
-        $this->httpServer->setScriptFile($this->scriptFile);
-        $this->tcpStatus = $this->httpServer->getTcpStatus();
-        $this->httpStatus = $this->httpServer->getHttpStatus();
+        // 初始化组件
+        $this->registerNamespace();
+        $this->input = new Input();
+        $this->output = new Output();
+        $this->errorHandler = new ErrorHandler();
+        $this->errorHandler->register();
     }
 
     /**
-     * 运行console
+     * 运行命令行
      */
     public function run()
     {
-        if (empty($this->command) || !method_exists($this, $this->command)) {
-            $this->help();
-        } else {
-            $this->{$this->command}();
+        // 默认命令解析
+        $cmd = $this->input->getCommand();
+        if (in_array($cmd, self::DEFAULT_CMDS)) {
+            $cmd = sprintf("%s:%s", self::DEFAULT_CMD, $cmd);
         }
+
+        // 没有任何命令输入
+        if (empty($cmd)) {
+            $this->baseCommand();
+            return;
+        }
+
+        // 运行命令
+        $this->dispather($cmd);
     }
 
     /**
-     * start命令
+     * 引导命令界面
      */
-    public function start()
+    private function baseCommand()
     {
-        // 是否正在运行
-        if ($this->httpServer->isRunning()) {
-            $serverStatus = $this->httpServer->getServerStatus();
-            echo $this->liteStyle->color("The server have been running!(PID: {$serverStatus['masterPid']})", LiteStyle::BG_RED) . "\n";
-            exit(0);
+        // 版本命令解析
+        if ($this->input->hasOpt('v') || $this->input->hasOpt('version')) {
+            $this->showVersion();
+            return;
         }
 
-        // http启动参数，颜色处理
-        $httpHost = $this->liteStyle->color($this->httpStatus['host'], LiteStyle::FG_GREEN);
-        $httpPort = $this->liteStyle->color($this->httpStatus['port'], LiteStyle::FG_GREEN);
-        $httpModel = $this->liteStyle->color($this->httpStatus['model'], LiteStyle::FG_GREEN);
-        $httpType = $this->liteStyle->color($this->httpStatus['type'], LiteStyle::FG_GREEN);
+        // 显示命令列表
+        $this->showCommandList();
+    }
 
-        // tcp启动参数，颜色处理
-        $tcpEnable = $this->liteStyle->color($this->tcpStatus['enable'], LiteStyle::FG_GREEN);
-        $tcpHost = $this->liteStyle->color($this->tcpStatus['host'], LiteStyle::FG_GREEN);
-        $tcpPort = $this->liteStyle->color($this->tcpStatus['port'], LiteStyle::FG_GREEN);
-        $tcpType = $this->liteStyle->color($this->tcpStatus['type'], LiteStyle::FG_GREEN);
+    /**
+     * 显示命令列表
+     */
+    private function showCommandList()
+    {
+        // 命令目录扫描
+        $commands = [];
+        foreach ($this->scanCmds as $namespace => $dir) {
+            $iterator = new \RecursiveDirectoryIterator($dir);
+            $files = new \RecursiveIteratorIterator($iterator);
 
-        // 信息面板
-        $lines = [
-            '                    Information Panel                     ',
-            '**********************************************************',
-            '* http | Host: ' . $httpHost . ', port: ' . $httpPort . ', Model: ' . $httpModel . ', type: ' . $httpType,
-            '* tcp  | Enable: ' . $tcpEnable . ', host: ' . $tcpHost . ', port: ' . $tcpPort . ', type: ' . $tcpType,
-            '**********************************************************',
+            $scanCommands = $this->parserCmdAndDesc($namespace, $files);
+            $commands = array_merge($commands, $scanCommands);
+        }
+
+        // 组拼命令结构
+        $commandList = [];
+        $script = $this->input->getFullScript();
+        $commandList['Usage:'] = ["php $script"];
+        $commandList['Commands:'] = $commands;
+        $commandList['Options:'] = [
+            '-v,--version' => 'show version',
+            '-h,--help'    => 'show help'
         ];
 
-        $line = implode("\n", $lines);
-        echo $line . "\n";
+        // 显示Logo
+        $this->output->writeLogo();
 
-        $this->httpServer->start();
+        // 显示命令组列表
+        $this->output->writeList($commandList, 'comment', 'info');
     }
 
     /**
-     * restart命令
+     * 解析命令和命令描述
+     *
+     * @param string         $namespace 命名空间
+     * @param \SplFileInfo[] $files     文件集合
+     *
+     * @return array
      */
-    public function restart()
+    private function parserCmdAndDesc($namespace, $files)
     {
-        // 是否已启动
-        if ($this->httpServer->isRunning()) {
-            $this->stop();
+        $commands = [];
+        foreach ($files as $file) {
+
+            // 排除非PHP文件
+            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            if ($ext != 'php') {
+                continue;
+            }
+
+            // 命令类名
+            $fileName = $file->getFilename();
+            list($class) = explode('.', $fileName);
+            $className = $namespace . '\\' . $class;
+
+            // 反射获取命令描述
+            $rc = new \ReflectionClass($className);
+            $docComment = $rc->getDocComment();
+            $docAry = DocumentParser::tagList($docComment);
+            $desc = $docAry['description'];
+
+            // 解析出命令
+            $cmdName = str_replace(self::CONTROLLER_SUFFIX, '', $class);
+            $cmd = strtolower($cmdName);
+
+            $commands[$cmd] = $desc;
         }
 
-        // 重启默认是守护进程
-        $this->httpServer->setDaemonize(1);
-        $this->start();
+        return $commands;
     }
 
     /**
-     * reload命令
+     * 显示版本信息
      */
-    public function reload()
+    private function showVersion()
     {
-        // 是否已启动
-        if (!$this->httpServer->isRunning()) {
-            echo $this->liteStyle->color('The server is not running! cannot reload', LiteStyle::BG_RED) . "\n";
-            exit(0);
-        }
+        // 当前版本信息
+        $swoftVersion = App::version();
+        $phpVersio = phpversion();
+        $swooleVersion = swoole_version();
 
-        echo "Server {$this->scriptFile} is reloading \n";
-
-        // 重载
-        $this->httpServer->reload($this->reloadTask);
-
-        echo $this->liteStyle->color("Server {$this->scriptFile} reload success ", LiteStyle::FG_GREEN) . "\n";
+        // 显示面板
+        $this->output->writeLogo();
+        $this->output->writeln("swoft: <info>$swoftVersion</info>, php: <info>$phpVersio</info>, swoole: <info>$swooleVersion</info>", true);
+        $this->output->writeln("");
     }
 
     /**
-     * stop命令
+     * 运行命令
+     *
+     * @param string $cmd
      */
-    public function stop()
+    private function dispather(string $cmd)
     {
-        // 是否已启动
-        if (!$this->httpServer->isRunning()) {
-            echo $this->liteStyle->color('The server is not running! cannot stop', LiteStyle::BG_RED) . "\n";
-            exit(0);
+        // 默认命令处理
+        if (strpos($cmd, self::DELIMITER) === false) {
+            $cmd = $cmd . self::DELIMITER . "index";
         }
 
-        $serverStatus = $this->httpServer->getServerStatus();
-        $pidFile = $serverStatus['pfile'];
+        // 类和命令
+        list($controllerName, $command) = explode(self::DELIMITER, $cmd);
 
-        @unlink($pidFile);
-        echo("Swoft {$this->scriptFile} is stopping ... \n");
+        // 命令匹配
+        $isMatch = false;
+        $namespaces = array_keys($this->scanCmds);
+        foreach ($namespaces as $namespace) {
+            $controllerClass = $namespace . "\\" . ucfirst($controllerName) . self::CONTROLLER_SUFFIX;
 
-        $result = $this->httpServer->stop();
+            // 类不存在
+            if (!class_exists($controllerClass)) {
+                continue;
+            }
 
-        // 停止失败
-        if (!$result) {
-            echo('Swoft ' . $this->scriptFile . " stop fail \n");
-            exit();
+            // 选择第一个匹配的类
+            $isMatch = true;
+            $cmdController = new $controllerClass($this->input, $this->output);
+            PhpHelper::call([$cmdController, 'run'], [$command]);
+            break;
         }
 
-        echo $this->liteStyle->color("Swoft {$this->scriptFile} stop success", LiteStyle::FG_GREEN) . " \n";
+        // 未匹配到命令
+        if ($isMatch == false) {
+            $this->output->writeln('<error>命令不存在</error>', true, true);
+        }
     }
 
     /**
-     * help命令
+     * 扫描命名空间注入
      */
-    public function help()
+    private function registerNamespace()
     {
-        // commands命令颜色处理
-        $command = $this->liteStyle->color('Commands:', LiteStyle::FG_LIGHT_YELLOW);
-        $start = $this->liteStyle->color("start", LiteStyle::FG_LIGHT_GREEN);
-        $restart = $this->liteStyle->color("restart", LiteStyle::FG_LIGHT_GREEN);
-        $reload = $this->liteStyle->color("reload", LiteStyle::FG_LIGHT_GREEN);
-        $stop = $this->liteStyle->color("stop", LiteStyle::FG_LIGHT_GREEN);
-        $help = $this->liteStyle->color("help", LiteStyle::FG_LIGHT_GREEN);
-
-        // Options命令颜色处理
-        $options = $this->liteStyle->color('Options:', LiteStyle::FG_LIGHT_YELLOW);
-        $optD = $this->liteStyle->color('-d', LiteStyle::FG_LIGHT_GREEN);
-
-        // 信息面板
-        $lines = [
-            $command,
-            '  ' . $start . '    Start the swoole application server',
-            '  ' . $restart . '  Restart the swoole application server',
-            '  ' . $reload . '   Reload the swoole application server',
-            '  ' . $stop . '     Stop the swoole application server',
-            '  ' . $help . '     Show help of Swoft Console',
-            $options,
-            '  ' . $optD . '       Start with daemonize',
-        ];
-
-        $line = implode("\n", $lines);
-        echo $line . "\n";
+        $this->scanCmds['Swoft\Console\Command'] = dirname(__FILE__) . "/Command";
     }
 }

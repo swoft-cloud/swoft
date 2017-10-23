@@ -1,4 +1,5 @@
 <?php
+
 return [
     'config'       => [
         'properties' => require_once __DIR__ . '/' . APP_ENV . '/properties.php',
@@ -6,6 +7,7 @@ return [
     'application'  => [
         'id'          => SYSTEM_NAME,
         'name'        => SYSTEM_NAME,
+        'errorAction' => '/error/index',
         'useProvider' => false,
     ],
     'router'       => [
@@ -14,11 +16,10 @@ return [
         'tmpCacheNumber'      => 1000,
         'matchAll'            => '',
     ],
-    'errorHandler' => [
-        'class'       => \Swoft\Web\ErrorHandler::class,
-        'errorAction' => '/error/index',
+    'renderer' => [
+        'class' => \Swoft\Web\ViewRenderer::class,
+        'viewsPath' => dirname(__DIR__) . '/resources/views',
     ],
-
     'commonParamsFilter' => [
         'class'      => \App\beans\Filters\CommonParamsFilter::class,
         'uriPattern' => '/*',
@@ -133,5 +134,5 @@ return [
             '${noticeHandler}',
             '${applicationHandler}'
         ]
-    ],
+    ]
 ];

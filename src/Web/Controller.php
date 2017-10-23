@@ -19,16 +19,6 @@ use Swoft\Helper\ResponseHelper;
  */
 class Controller extends \Swoft\Base\Controller
 {
-    /**
-     * 重定向
-     *
-     * @param string $uri
-     * @param array  $params
-     */
-    public function redirect(string $uri, array $params = [])
-    {
-//        $this->run($uri, $params);
-    }
 
     /**
      * 数据模板显示
@@ -38,10 +28,6 @@ class Controller extends \Swoft\Base\Controller
      */
     public function render(string $templateId, array $data = [])
     {
-//        $viewsPath = App::$App->getViewsPath();
-//
-//        $this->checkTemplateFile($viewsPath, $templateId);
-//        $content = $this->renderContent($viewsPath, $templateId, $Data);
         RequestContext::getResponse()->setResponseContent(json_encode($data));
     }
 
@@ -60,20 +46,6 @@ class Controller extends \Swoft\Base\Controller
         $response = RequestContext::getResponse();
         $response->setFormat(Response::FORMAT_JSON);
         $response->setResponseContent($json);
-    }
-
-    /**
-     * 输出文件内容
-     *
-     * @param string $viewsPath     模板路径
-     * @param string $templateId    模板ID
-     * @param array  $data          数据
-     *
-     * @return string   返回渲染数据
-     */
-    private function renderContent(string $viewsPath, string $templateId, array $data)
-    {
-        return $data;
     }
 
     /**

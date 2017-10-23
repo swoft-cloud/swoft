@@ -2,7 +2,6 @@
 
 namespace Swoft\Base;
 
-use Swoft\App;
 use Swoft\Bean\Annotation\Bean;
 
 /**

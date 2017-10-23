@@ -18,7 +18,7 @@ class Response
      *
      * @var \Swoole\Http\Response
      */
-    protected $response = null;
+    protected $response;
 
     /**
      * 初始化响应请求
@@ -35,5 +35,57 @@ class Response
      */
     public function send()
     {
+    }
+
+    /**
+     * 重定向
+     *
+     * @param string   $url
+     * @param null|int $status
+     *
+     * @return mixed
+     */
+    public function redirect($url, $status = null)
+    {
+        $this->response->header('Location', (string)$url);
+
+        if (null === $status) {
+            $status = 302;
+        }
+
+        if (null !== $status) {
+            $this->response->status((int)$status);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Json 响应
+     *
+     * @param  mixed $data            The data
+     * @param  int   $status          The HTTP status code.
+     * @param  int   $encodingOptions Json encoding options
+     *
+     * @throws \RuntimeException
+     * @return static
+     */
+    public function json($data, $status = null, $encodingOptions = 0)
+    {
+        $this->response->write($json = json_encode($data, $encodingOptions));
+
+        // Ensure that the json encoding passed successfully
+        if ($json === false) {
+            throw new \RuntimeException(json_last_error_msg(), json_last_error());
+        }
+
+        $this->response->header('Content-Type', 'application/json;charset=utf-8');
+
+        if (null === $status) {
+            $this->response->status((int)$status);
+        }
+
+        return $this;
     }
 }

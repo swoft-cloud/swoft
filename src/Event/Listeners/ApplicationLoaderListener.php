@@ -11,6 +11,7 @@ use Swoft\Event\IApplicationListener;
 use Swoft\Web\Router;
 
 /**
+ * 应用加载事件
  *
  * @Listener(Event::APPLICATION_LOADER)
  * @uses      ApplicationLoaderListener
@@ -27,7 +28,9 @@ class ApplicationLoaderListener implements IApplicationListener
         /* @var Router $router */
         $router = App::getBean('router');
         $requestMapping = Collector::$requestMapping;
+        $serviceMapping = Collector::$serviceMapping;
         $router->registerRoutes($requestMapping);
+        $router->registerServices($serviceMapping);
 
         App::setProperties();
     }

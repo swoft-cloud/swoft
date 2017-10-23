@@ -34,8 +34,8 @@ class Listener
             $this->event = $values['value'];
         }
 
-        if (isset($values['Event'])) {
-            $this->event = $values['Event'];
+        if (isset($values['event'])) {
+            $this->event = $values['event'];
         }
     }
 

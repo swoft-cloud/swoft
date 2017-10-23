@@ -84,7 +84,7 @@ class BeanFactory implements BeanFactoryInterface
         return [
             'config'             => ['class' => Config::class],
             'application'        => ['class' => Application::class],
-            'errorHandler'       => ['class' => ErrorHandler::class],
+//            'errorHandler'       => ['class' => ErrorHandler::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
             'Filter'             => [
                 'class'            => FilterChain::class,

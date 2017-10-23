@@ -15,7 +15,7 @@ use Swoft\Service\ServiceProvider;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-abstract class ConnectPool implements Pool
+abstract class ConnectPool implements IPool
 {
     /**
      * @var string 服务清楚
@@ -123,7 +123,7 @@ abstract class ConnectPool implements Pool
      *
      * @return string 如:"127.0.0.1:88"
      */
-    protected function getConnectAddress()
+    public function getConnectAddress()
     {
         $serviceList = $this->getServiceList();
         return $this->balancer->select($serviceList);
@@ -151,6 +151,14 @@ abstract class ConnectPool implements Pool
             throw new \InvalidArgumentException($this->serviceName."服务，没有配置uri");
         }
         return $this->uri;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeout(): int
+    {
+        return $this->timeout;
     }
 
     abstract public function createConnect();

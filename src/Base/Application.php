@@ -17,7 +17,6 @@ use Swoft\Web\Router;
  */
 abstract class Application
 {
-
     /**
      * @var string 应用ID
      */
@@ -29,14 +28,16 @@ abstract class Application
     protected $name;
 
     /**
+     * 错误action，统一错误处理
+     *
+     * @var string
+     */
+    protected $errorAction;
+
+    /**
      * @var bool 是否使用第三方(consul/etcd/zk)注册服务
      */
     protected $useProvider = false;
-
-    /**
-     * @var string 内部服务命令空间
-     */
-    protected $serviceNameSpace = "App\\Controllers\\Services";
 
     public $count = 0;
 
@@ -46,9 +47,6 @@ abstract class Application
     public function init()
     {
         App::$app = $this;
-
-        // 注册全局错误错误
-        $this->registerErrorHandler();
     }
 
     /**
@@ -122,25 +120,9 @@ abstract class Application
         $func = $data['func']?? '';
         $params = $data['params']?? [];
 
-        list($servicePrefix, $method) = explode('::', $func);
-
-        $namespace = $this->serviceNameSpace;
-        $class = $servicePrefix . 'Service';
-        $className = $namespace . "\\" . $class;
-        if (!class_exists($className)) {
-            App::error('内部服务调用的class不存在,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的class不存在,class=' . $className);
-        }
-
-        if ($className instanceof InnerService) {
-            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的class不是InnerService子类,class=' . $className);
-        }
-
-        if (empty($method)) {
-            App::error('内部服务调用的class不是InnerService子类,class=' . $className);
-            throw new \InvalidArgumentException('内部服务调用的method为空,method=' . $method);
-        }
+        /* @var Router $router */
+        $router = App::getBean('router');
+        list($className, $method) = $router->serviceMatch($func);
 
         /* @var $service InnerService */
         $service = App::getBean($className);
@@ -150,13 +132,12 @@ abstract class Application
     }
 
     /**
-     * 注册全局错误解析
+     * 获取errorAction
+     *
+     * @return string
      */
-    public function registerErrorHandler()
+    public function getErrorAction(): string
     {
-        ini_set('display_errors', false);
-
-        $errorHandler = App::getErrorHandler();
-        $errorHandler->register();
+        return $this->errorAction;
     }
 }

@@ -283,7 +283,7 @@ class OrmController extends Controller
     {
         //        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
         //        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
-        $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 416)
+        $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 429)
             ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
         //        $result = $query->getResult();
         $defer = $query->getDefer();
@@ -356,23 +356,23 @@ class OrmController extends Controller
     public function actionSql()
     {
         $params = [
-            ['uid', 419],
-            ['uid2', 420],
-            ['uid3', 421, Types::INT],
+            ['uid', 433],
+            ['uid2', 434],
+            ['uid3', 431, Types::INT],
         ];
         $em = EntityManager::create();
-        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (:uid, :uid1, :uid3) ORDER BY u.id DESC LIMIT 2";
-        $query = $em->createQuery($querySql);
-        //                $query->setParameter('uid', 419);
-        //                $query->setParameter('uid2', 420);
-        //                $query->setParameter('uid3', 421);
-        $query->setParameters($params);
+//        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (:uid, :uid1, :uid3) ORDER BY u.id DESC LIMIT 2";
+//        $query = $em->createQuery($querySql);
+//                        $query->setParameter('uid', 433);
+//                        $query->setParameter('uid2', 434);
+//                        $query->setParameter('uid3', 431);
+//        $query->setParameters($params);
 
-        //        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?1, ?2, ?3) ORDER BY u.id DESC LIMIT 2";
-        //        $query = $em->createQuery($querySql);
-        //        $query->setParameter(1, 419);
-        //        $query->setParameter(2, 420);
-        //        $query->setParameter(3, 421);
+                $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2";
+                $query = $em->createQuery($querySql);
+                $query->setParameter(1, 433);
+                $query->setParameter(2, 434);
+                $query->setParameter(3, 431);
 
         $result = $query->getResult();
         $sql = $query->getSql();

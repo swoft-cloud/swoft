@@ -6,16 +6,15 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
-use Swoft\Bean\BeanFactory;
-use Swoft\Bean\Collector;
+use Swoft\Crontab\Crontab;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
+use Swoft\Server\IServer;
 use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
 use Swoft\Web\ErrorHandler;
-use Swoft\Web\HttpServer;
 
 /**
  * 应用简写类
@@ -37,9 +36,9 @@ class App
     public static $app;
 
     /**
-     * http服务器对象
+     * 服务器对象
      *
-     * @var HttpServer
+     * @var IServer
      */
     public static $server;
 
@@ -51,6 +50,11 @@ class App
     public static $properties;
 
     /**
+     * crontab
+     */
+    public static $crontab;
+
+    /**
      * 别名库
      *
      * @var array
@@ -59,9 +63,52 @@ class App
         '@Swoft' => __DIR__
     ];
 
+    /**
+     * 获取mysqlBean对象
+     */
     public static function getMysqlPool()
     {
         return self::getBean('mysql');
+    }
+
+    /**
+     * 设置crontab对象
+     *
+     * @return Crontab
+     */
+    public static function setCrontab() : Crontab
+    {
+        if ((!self::$crontab instanceof Crontab)) {
+            self::$crontab = Crontab::getInstance();
+            self::$crontab->init();
+
+            self::$crontab->setTaskConfig(require_once BASE_PATH . '/config/crontab.php');
+
+            self::$crontab->initLoad();
+
+        }
+
+        return self::getCrontab();
+    }
+
+    /**
+     * 获取crontab
+     *
+     * @return Crontab | null
+     */
+    public static function getCrontab()
+    {
+        return self::$crontab;
+    }
+
+    /**
+     * swoft版本
+     *
+     * @return string
+     */
+    public static function version()
+    {
+        return '0.';
     }
 
     /**
@@ -116,16 +163,6 @@ class App
     public static function getApplication()
     {
         return ApplicationContext::getBean('application');
-    }
-
-    /**
-     * 全局错误处理器
-     *
-     * @return ErrorHandler
-     */
-    public static function getErrorHandler()
-    {
-        return ApplicationContext::getBean('errorHandler');
     }
 
     /**
@@ -377,16 +414,6 @@ class App
     public static function profileEnd($name)
     {
         self::getLogger()->profileEnd($name);
-    }
-
-    /**
-     * 当前协程ID
-     *
-     * @return int
-     */
-    public static function getCoroutineId()
-    {
-        return \Swoole\Coroutine::getuid();
     }
 
     /**
