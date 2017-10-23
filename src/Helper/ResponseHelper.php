@@ -25,10 +25,9 @@ class ResponseHelper
     public static function formatData($data = "", $message = "", $status = 200)
     {
         return [
-            'Data'   => $data,
+            'data'   => $data,
             'status' => $status,
             'msg'    => $message,
-            'time'   => microtime(true)
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace Swoft\Web;
 
 use Swoft\App;
 use Swoft\Base\ApplicationContext;
+use Swoft\Base\Coroutine;
+use Swoft\Base\RequestContext;
 
 /**
  * 错误处理
@@ -82,8 +84,9 @@ class ErrorHandler
         App::error($exception);
 
         // 当前worker进程
+        $cid = Coroutine::id();
         if (App::isWorkerStatus()) {
-            $reponse = App::getResponse();
+            $reponse = RequestContext::getResponse($cid);
             $reponse->setException($exception);
 
             $errorAction = App::$app->getErrorAction();

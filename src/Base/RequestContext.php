@@ -48,9 +48,11 @@ class RequestContext
     /**
      * 请求response
      *
+     * @param int $cid 协程ID
+     *
      * @return \Swoft\Web\Response
      */
-    public static function getResponse()
+    public static function getResponse($cid = null)
     {
         return self::getCoroutineContext(self::COROUTINE_RESPONSE);
     }
@@ -175,6 +177,7 @@ class RequestContext
     {
         $coroutineId = self::getcoroutineId();
         if (!isset(self::$coroutineLocal[$coroutineId])) {
+            //            App::error("协程上下文不存在，coroutineId=" . $coroutineId);
             return null;
         }
 

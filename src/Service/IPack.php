@@ -15,6 +15,6 @@ interface IPack
 {
     public function pack($data);
     public function unpack($data);
-    public function formatData($func, $params);
-    public function checkData($data);
+    public function formatData(string $func, array $params);
+    public function checkData(array $data);
 }
