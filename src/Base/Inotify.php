@@ -28,13 +28,6 @@ class Inotify
     private $watchDir;
 
     /**
-     * 监听文件变化事件
-     *
-     * @var int
-     */
-    private $events = IN_MODIFY | IN_CREATE | IN_IGNORED | IN_DELETE;
-
-    /**
      * 监听文件后缀类型，默认PHP
      *
      * @var array
@@ -48,8 +41,16 @@ class Inotify
      */
     private $server;
 
+    /**
+     * 监听的文件
+     *
+     * @var array
+     */
     private $watchFiles = [];
 
+    /**
+     * 初始化方法
+     */
     public function init()
     {
         $this->watchDir = App::getAlias('@app');
@@ -74,7 +75,7 @@ class Inotify
 
             // 只监听目录
             if (!isset($tempFiles[$path])) {
-                $wd = inotify_add_watch($inotify, $path, $this->events);
+                $wd = inotify_add_watch($inotify, $path, IN_MODIFY | IN_CREATE | IN_IGNORED | IN_DELETE);
                 $tempFiles[$path] = $wd;
                 $this->watchFiles[$wd] = $path;
             }
@@ -165,7 +166,7 @@ class Inotify
         // 创建文件操作，添加到监控里面
         if ($mask == self::CREATE_DIR_MASK) {
             $path = $this->watchFiles[$wid] . '/' . $fileName;
-            $wd = inotify_add_watch($inotify, $path, $this->events);
+            $wd = inotify_add_watch($inotify, $path, IN_MODIFY | IN_CREATE | IN_IGNORED | IN_DELETE);
             $this->watchFiles[$wd] = $path;
         }
     }
