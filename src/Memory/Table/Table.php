@@ -13,7 +13,7 @@ use Swoole\Table as swTable;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Table extends ITable
+class Table implements ITable
 {
     /**
      * @var swTable $table 内存表实例
