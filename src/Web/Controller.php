@@ -19,16 +19,16 @@ use Swoft\Helper\ResponseHelper;
  */
 class Controller extends \Swoft\Base\Controller
 {
+    use ViewRendererTrait;
 
     /**
-     * 数据模板显示
-     *
-     * @param string $templateId
-     * @param array  $data
+     * alias of the `outputJson()`
+     * @see Controller::outputJson()
+     * {@inheritdoc}
      */
-    public function render(string $templateId, array $data = [])
+    public function renderJson($data = '', $message = '', $status = 200)
     {
-        RequestContext::getResponse()->setResponseContent(json_encode($data));
+        $this->outputJson($data, $message, $status);
     }
 
     /**
@@ -38,7 +38,7 @@ class Controller extends \Swoft\Base\Controller
      * @param string $message   文案
      * @param int    $status    状态，200成功，非200失败
      */
-    public function outputJson($data = "", $message = '', $status = 200)
+    public function outputJson($data = '', $message = '', $status = 200)
     {
         $data = ResponseHelper::formatData($data, $message, $status);
         $json = json_encode($data);
@@ -63,5 +63,23 @@ class Controller extends \Swoft\Base\Controller
             App::error($file."模板文件不存在");
             throw new \InvalidArgumentException($file."模板文件不存在");
         }
+    }
+
+    /**
+     * getRenderer
+     * @return ViewRenderer
+     */
+    public function getRenderer()
+    {
+        return App::getBean('renderer');
+    }
+
+    /**
+     * @param string $view
+     * @return string
+     */
+    protected function resolveView(string $view)
+    {
+        return App::getAlias($view);
     }
 }

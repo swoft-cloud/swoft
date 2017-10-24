@@ -8,10 +8,17 @@
 
 namespace Swoft\Web;
 
+use Swoft\Helper\FileHelper;
+
 /**
- * Class ViewRenderer
- *  Render PHP view scripts into a PSR-7 Response object
+ * Class ViewRenderer - Render PHP view scripts
  * @package Swoft\Web
+ *
+ * @uses      ViewRenderer
+ * @version   2017年08月14日
+ * @author    inhere <in.798@qq.com>
+ * @copyright Copyright 2010-2016 Swoft software
+ * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class ViewRenderer
 {
@@ -21,19 +28,17 @@ class ViewRenderer
      */
     protected $viewsPath;
 
-    /**
-     * 默认布局文件
-     * @var string
-     */
+    /** @var null|string 默认布局文件 */
     protected $layout;
 
-    /**
-     * @var array
-     */
+    /** @var array Attributes for the view */
     protected $attributes;
 
-    /** @var string  */
+    /** @var string Default view suffix. */
     protected $suffix = 'php';
+
+    /** @var array Allowed suffix list. It use auto add suffix. */
+    protected $suffixes = ['php','tpl','html'];
 
     /**
      * in layout file '...<body>{_CONTENT_}</body>...'
@@ -60,12 +65,18 @@ class ViewRenderer
      * throws RuntimeException if view file does not exist
      * @param string $view
      * @param array $data extract data to view, cannot contain view as a key
-     * @param string|null $layout override default layout file
+     * @param string|null|false $layout override default layout file
      * @return string
+     * @throws \Throwable
      */
     public function render($view, array $data = [], $layout = null)
     {
         $output = $this->fetch($view, $data);
+
+        // False - will disable use layout file
+        if ($layout === false) {
+            return $output;
+        }
 
         return $this->renderContent($output, $data, $layout);
     }
@@ -74,6 +85,7 @@ class ViewRenderer
      * @param $view
      * @param array $data
      * @return string
+     * @throws \Throwable
      */
     public function renderPartial($view, array $data = [])
     {
@@ -85,6 +97,7 @@ class ViewRenderer
      * @param array $data
      * @param string|null $layout override default layout file
      * @return string
+     * @throws \Throwable
      */
     public function renderBody($content, array $data = [], $layout = null)
     {
@@ -96,6 +109,7 @@ class ViewRenderer
      * @param array $data
      * @param string|null $layout override default layout file
      * @return string
+     * @throws \Throwable
      */
     public function renderContent($content, array $data = [], $layout = null)
     {
@@ -107,6 +121,81 @@ class ViewRenderer
         }
 
         return $content;
+    }
+
+    /**
+     * @param $view
+     * @param array $data
+     * @param bool $outputIt
+     * @return string|null
+     * @throws \Throwable
+     */
+    public function include($view, array $data = [], $outputIt = true)
+    {
+        if ($outputIt) {
+            echo $this->fetch($view, $data);
+            return null;
+        }
+
+        return $this->fetch($view, $data);
+    }
+
+    /**
+     * Renders a view and returns the result as a string
+     * throws RuntimeException if $viewsPath . $view does not exist
+     * @param string $view
+     * @param array $data
+     * @return mixed
+     * @throws \Throwable
+     */
+    public function fetch($view, array $data = [])
+    {
+        $file = $this->getViewFile($view);
+
+        if (!is_file($file)) {
+            throw new \RuntimeException("cannot render '$view' because the view file does not exist. File: $file");
+        }
+
+        /*
+        foreach ($data as $k=>$val) {
+            if (in_array($k, array_keys($this->attributes))) {
+                throw new \InvalidArgumentException("Duplicate key found in data and renderer attributes. " . $k);
+            }
+        }
+        */
+        $data = array_merge($this->attributes, $data);
+
+        try {
+            ob_start();
+            $this->protectedIncludeScope($file, $data);
+            $output = ob_get_clean();
+        } catch (\Throwable $e) { // PHP 7+
+            ob_end_clean();
+            throw $e;
+        }
+
+        return $output;
+    }
+
+    /**
+     * @param $view
+     * @return string
+     */
+    public function getViewFile($view)
+    {
+        $view = $this->getRealView($view);
+
+        return FileHelper::isAbsPath($view) ? $view : $this->viewsPath . $view;
+    }
+
+    /**
+     * @param string $file
+     * @param array $data
+     */
+    protected function protectedIncludeScope($file, array $data)
+    {
+        extract($data, EXTR_OVERWRITE);
+        include $file;
     }
 
     /**
@@ -145,7 +234,7 @@ class ViewRenderer
     public function getAttribute($key)
     {
         if (!isset($this->attributes[$key])) {
-            return false;
+            return null;
         }
 
         return $this->attributes[$key];
@@ -190,62 +279,6 @@ class ViewRenderer
     }
 
     /**
-     * Renders a view and returns the result as a string
-     * cannot contain view as a key
-     * throws RuntimeException if $viewsPath . $view does not exist
-     * @param $view
-     * @param array $data
-     * @return mixed
-     * @throws \Exception
-     * @throws \Throwable
-     */
-    public function fetch($view, array $data = [])
-    {
-        if (isset($data['view'])) {
-            throw new \InvalidArgumentException('Duplicate view key found');
-        }
-
-        $file = $this->viewsPath . $view;
-
-        if (!is_file($file)) {
-            throw new \RuntimeException("View cannot render '$view' because the view does not exist");
-        }
-
-        /*
-        foreach ($data as $k=>$val) {
-            if (in_array($k, array_keys($this->attributes))) {
-                throw new \InvalidArgumentException("Duplicate key found in data and renderer attributes. " . $k);
-            }
-        }
-        */
-        $data = array_merge($this->attributes, $data);
-
-        try {
-            ob_start();
-            $this->protectedIncludeScope($file, $data);
-            $output = ob_get_clean();
-        } catch (\Throwable $e) { // PHP 7+
-            ob_end_clean();
-            throw $e;
-        } catch (\Exception $e) { // PHP < 7
-            ob_end_clean();
-            throw $e;
-        }
-
-        return $output;
-    }
-
-    /**
-     * @param string $view
-     * @param array $data
-     */
-    protected function protectedIncludeScope($view, array $data)
-    {
-        extract($data, EXTR_OVERWRITE);
-        include $view;
-    }
-
-    /**
      * @return string
      */
     public function getPlaceholder(): string
@@ -267,9 +300,14 @@ class ViewRenderer
      */
     protected function getRealView($view)
     {
-        $ext = ".{$this->suffix}";
+        $sfx = FileHelper::getSuffix($view, true);
+        $ext = $this->suffix;
 
-        return substr($view, - strlen($ext)) === $ext ? $view : $view . $ext;
+        if ($sfx === $ext || in_array($sfx, $this->suffixes, true)) {
+            return $view;
+        }
+
+        return $view . '.' . $ext;
     }
 
     /**

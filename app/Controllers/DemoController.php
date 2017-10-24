@@ -129,4 +129,52 @@ class DemoController extends Controller
         $data[] = App::t("msg.body", ["stelin", 666], 'en');
         $this->outputJson($data);
     }
+
+    /**
+     * 视图渲染demo - 没有使用布局文件
+     * @RequestMapping()
+     */
+    public function actionView()
+    {
+        $data = [
+            'name' => 'Swoft',
+            'repo' => 'https://github.com/swoft-cloud/swoft',
+            'doc' => 'https://doc.swoft.org/',
+            'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
+            'method' => __METHOD__,
+        ];
+
+        // 可以
+        // $this->render('demo/view.php', $data);
+        // 也可以 - 会自动添加默认的后缀(是可配置的)
+        $this->render('demo/view', $data);
+    }
+
+    /**
+     * 视图渲染demo - 使用布局文件
+     * @RequestMapping()
+     */
+    public function actionLayout()
+    {
+        $layout = 'layouts/default.php';
+        $data = [
+            'name' => 'Swoft',
+            'repo' => 'https://github.com/swoft-cloud/swoft',
+            'doc' => 'https://doc.swoft.org/',
+            'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
+            'method' => __METHOD__,
+            'layoutFile' => $this->getRenderer()->getViewFile($layout)
+        ];
+
+        /*
+         * 使用布局文件， 方式有两种：
+         *
+         * 1. 在配置中 配置默认的布局文件，那这里即使不设置 layout， 也会使用默认的
+         *
+         * 2. 如这里一样，手动设置一个布局文件。它的优先级更高（即使有默认的布局文件，也会使用当前传入的替代。）
+         *
+         */
+        $this->render('demo/content', $data, $layout);
+    }
+
 }

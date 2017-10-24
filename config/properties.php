@@ -11,7 +11,7 @@ return [
         'App\Process',
     ],
     'I18n' =>[
-        'sourceLanguage' => '@root/messages/',
+        'sourceLanguage' => '@root/resources/messages/',
     ],
     'env' => 'Base',
     'user.stelin.steln' => 'fafafa',
