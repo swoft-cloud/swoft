@@ -54,7 +54,7 @@ class RequestContext
      */
     public static function getResponse($cid = null)
     {
-        return self::getCoroutineContext(self::COROUTINE_RESPONSE);
+        return self::getCoroutineContext(self::COROUTINE_RESPONSE, $cid);
     }
 
     /**
@@ -169,15 +169,15 @@ class RequestContext
     /**
      * 获取协程上下文
      *
-     * @param string $name 协程ID
+     * @param string   $name 协程KEY
+     * @param int|null $cid  协程ID
      *
      * @return mixed|null
      */
-    private static function getCoroutineContext(string $name)
+    private static function getCoroutineContext(string $name, $cid = null)
     {
-        $coroutineId = self::getcoroutineId();
+        $coroutineId = ($cid === null ? self::getcoroutineId() : $cid);
         if (!isset(self::$coroutineLocal[$coroutineId])) {
-            //            App::error("协程上下文不存在，coroutineId=" . $coroutineId);
             return null;
         }
 
