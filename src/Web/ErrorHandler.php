@@ -26,7 +26,7 @@ class ErrorHandler
         ini_set('display_errors', false);
         set_exception_handler([$this, 'handlerException']);
         set_error_handler([$this, 'handlerError']);
-        register_shutdown_function([$this, 'handlerFataError']);
+        register_shutdown_function([$this, 'handlerFatalError']);
     }
 
     /**
@@ -56,7 +56,7 @@ class ErrorHandler
     /**
      * 处理致命错误
      */
-    public function handlerFataError()
+    public function handlerFatalError()
     {
         $error = error_get_last();
         if (!empty($error)) {

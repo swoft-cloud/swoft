@@ -418,7 +418,7 @@ class Router implements RouterInterface
      * @param array  $tokens
      * @param array  $conf
      *
-     * @return string
+     * @return array
      * @throws \LogicException
      */
     public static function parseRoute($route, array $tokens, array $conf)

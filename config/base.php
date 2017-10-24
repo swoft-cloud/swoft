@@ -18,7 +18,7 @@ return [
     ],
     'renderer' => [
         'class' => \Swoft\Web\ViewRenderer::class,
-        'viewsPath' => dirname(__DIR__) . '/resources/views',
+        'viewsPath' => dirname(__DIR__) . '/resources/views/',
     ],
     'commonParamsFilter' => [
         'class'      => \App\beans\Filters\CommonParamsFilter::class,
