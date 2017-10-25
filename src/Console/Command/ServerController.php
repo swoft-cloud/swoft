@@ -34,7 +34,11 @@ class ServerController extends ConsoleCommand
     public function __construct(Input $input, Output $output)
     {
         parent::__construct($input, $output);
+
+        // http server初始化
+        $script = $input->getScript();
         $this->httpServer = new HttpServer();
+        $this->httpServer->setScriptFile($script);
     }
 
     /**
