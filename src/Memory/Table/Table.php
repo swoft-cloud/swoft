@@ -38,11 +38,12 @@ class Table implements ITable
      */
     private $columns = [];
 
-    public function __construct(swTable $table = null, string $name='', int $size = 0, array $columns = [])
+    public function __construct(string $name = '', int $size = 0, array $columns = [])
     {
-        $this->table = $table;
-        $this->size = $size;
-        $this->columns = $columns;
+        $this->setName($name);
+        $this->setTable(new swTable($size));
+        $this->setSize($size);
+        $this->setColumns($columns);
     }
 
     /**
@@ -128,11 +129,6 @@ class Table implements ITable
     {
         $this->columns = $columns;
 
-        foreach ($this->columns as $filed => $fieldValue) {
-            $args = array_merge([$field], $fieldvalue);
-            $this->column(...$args);
-        }
-
         return $this;
     }
 
@@ -181,6 +177,11 @@ class Table implements ITable
      */
     public function create()
     {
+        foreach ($this->columns as $field => $fieldValue) {
+            $args = array_merge([$field], $fieldValue);
+            $this->column(...$args);
+        }
+
         return $this->table->create();
     }
 
@@ -260,9 +261,25 @@ class Table implements ITable
      */
     public function __call(string $method, array $args = [])
     {
-        if (method_exists($this->table, $method)) {
+        if (method_exists($this, $method)) {
             return $this->$method(...$args);
         }
         throw new \RuntimeException('Call a not exists method.'); 
+    }
+
+    /**
+     * __get
+     *
+     * @param string $name 属性名
+     */
+    public function __get(string $name)
+    {
+        $method = 'get' . ucfirst($name);
+        if (!method_exists($this, $method)) {
+        
+        throw new \RuntimeException('Call undefind property::'. $name); 
+        }
+
+        return $this->$method();
     }
 }

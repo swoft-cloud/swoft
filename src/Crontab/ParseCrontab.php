@@ -14,7 +14,7 @@ namespace Swoft\Crontab;
 */
 class ParseCrontab
 {
-    public $error;
+    public static $error;
 
     /**
      *  解析crontab的定时格式，linux只支持到分钟/，这个类支持到秒

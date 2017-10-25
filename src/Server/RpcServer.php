@@ -8,6 +8,7 @@ use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Task\Task;
 use Swoole\Server;
+use Swoft\Crontab\Crontab;
 
 /**
  * RPC服务器
@@ -198,6 +199,9 @@ class RpcServer extends AbstractServer
      */
     protected function beforeStart()
     {
+        // 添加共享内存表
+        $this->addShareMemory();
+
         // 添加用户自定义进程
         $this->addUserProcesses();
     }
@@ -214,6 +218,24 @@ class RpcServer extends AbstractServer
             }
             $this->server->addProcess($userProcess);
         }
+    }
+
+    /**
+     * 添加共享内存表
+     */
+    private function addShareMemory()
+    {
+        // 初始化定时任务共享内存表
+        $this->initCrontabMemoryTable();
+    }
+
+    /**
+     * 初始化crontab共享内存表
+     */
+    private function initCrontabMemoryTable()
+    {
+        $crontabObject = Crontab::getInstance();
+        $crontabObject->init();
     }
 
     /**

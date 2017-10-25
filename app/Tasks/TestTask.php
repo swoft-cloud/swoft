@@ -137,11 +137,11 @@ class TestTask
     /**
      * crontab定时任务，目前开发中...
      *
-     * @Scheduled(cron="0 0/1 8-20 * * ?")
+     * @Scheduled(cron="* * * * * *")
      */
     public function cronTask()
     {
-        echo "this cron task  \n";
+        echo time() . " this cron task  \n";
         return 'cron';
     }
 }

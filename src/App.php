@@ -15,6 +15,7 @@ use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
 use Swoft\Web\ErrorHandler;
+use Swoft\Bean\Collector;
 
 /**
  * 应用简写类
@@ -76,19 +77,23 @@ class App
      *
      * @return Crontab
      */
-    public static function setCrontab() : Crontab
+    private static function setCrontab()
     {
         if ((!self::$crontab instanceof Crontab)) {
             self::$crontab = Crontab::getInstance();
             self::$crontab->init();
 
-            self::$crontab->setTaskConfig(require_once BASE_PATH . '/config/crontab.php');
+            $tasks = Collector::$crontab;
+
+            if (!empty($tasks)) {
+                $tasks = array_column($tasks, 'crons');
+            }
+
+            self::$crontab->setTasks($tasks);
 
             self::$crontab->initLoad();
-
         }
 
-        return self::getCrontab();
     }
 
     /**
@@ -98,6 +103,8 @@ class App
      */
     public static function getCrontab()
     {
+        self::setCrontab();
+
         return self::$crontab;
     }
 
