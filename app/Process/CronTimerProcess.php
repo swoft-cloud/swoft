@@ -29,14 +29,10 @@ class CronTimerProcess extends AbstractProcess
         $server = $this->server->getServer();
         //$server = App::$server->getServer();
 
-        // 分整点载入
         $server->after(((60 - date('s')) * 1000), function () use ($server, $crontabObject) {
-        //$server->after(0.2 * 1000, function () use ($server, $crontabObject) {
-            var_dump('begin');
         // 每分钟检查一次,把下一分钟需要执行的任务列出来
         $crontabObject->checkTask();
         $server->tick(60 * 1000, function () use ($crontabObject) {
-            var_dump('60s');
             $crontabObject->checkTask();
         });
       });

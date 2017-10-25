@@ -23,14 +23,18 @@ class CronExecProcess extends AbstractProcess
     public function run(Process $process)
     {
         $process->name($this->server->getPname() . " my process ");
-        $crontab = App::getCrontab();
+        // Crontab对象
+        $crontabObject = App::getCrontab();
+        // Swoole/HttpServer
         $server = $this->server->getServer();
-        $server->tick(0.5 * 1000, function () use ($crontab) {
-            $tasks = $crontab->getExecTasks();
+
+        $server->tick(0.5 * 1000, function () use ($crontabObject) {
+            $tasks = $crontabObject->getExecTasks();
             if (!empty($tasks)) {
                     foreach ($tasks as $task) {
+                        // 投递任务
                         $result = Task::run('test', 'cronTask', []);
-                        $crontab->finishTask($task['key']);
+                        $crontabObject->finishTask($task['key']);
                     }
             }
         });
