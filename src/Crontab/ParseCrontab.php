@@ -8,13 +8,13 @@ namespace Swoft\Crontab;
  *
  * @uses      ParseCrontab
  * @version   2017年09月15日 
- * @author    Caiwh <471113744@qq.com>
+ * @author    caiwh <471113744@qq.com>
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
 */
 class ParseCrontab
 {
-    public $error;
+    public static $error;
 
     /**
      *  解析crontab的定时格式，linux只支持到分钟/，这个类支持到秒

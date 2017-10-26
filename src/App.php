@@ -50,9 +50,9 @@ class App
     public static $properties;
 
     /**
-     * crontab
+     * 是否初始化了crontab
      */
-    public static $crontab;
+    public static $isInitCron = false;
 
     /**
      * 别名库
@@ -69,36 +69,6 @@ class App
     public static function getMysqlPool()
     {
         return self::getBean('mysql');
-    }
-
-    /**
-     * 设置crontab对象
-     *
-     * @return Crontab
-     */
-    public static function setCrontab() : Crontab
-    {
-        if ((!self::$crontab instanceof Crontab)) {
-            self::$crontab = Crontab::getInstance();
-            self::$crontab->init();
-
-            self::$crontab->setTaskConfig(require_once BASE_PATH . '/config/crontab.php');
-
-            self::$crontab->initLoad();
-
-        }
-
-        return self::getCrontab();
-    }
-
-    /**
-     * 获取crontab
-     *
-     * @return Crontab | null
-     */
-    public static function getCrontab()
-    {
-        return self::$crontab;
     }
 
     /**
