@@ -3,6 +3,8 @@
 namespace Swoft\Process;
 
 use Swoft\Server\AbstractServer;
+use Swoft\Server\PipeMessage;
+use Swoft\Task\Task;
 
 /**
  * 抽象进程
@@ -37,7 +39,7 @@ abstract class AbstractProcess implements IProcess
     protected $server;
 
     /**
-     * 初始化
+     *
      *
      * @param AbstractServer $server
      */
@@ -74,5 +76,27 @@ abstract class AbstractProcess implements IProcess
     public function isReady()
     {
         return true;
+    }
+
+    /**
+     * 投递异步任务
+     *
+     * @param string $taskName   任务名称
+     * @param string $methodName 方法
+     * @param array  $params     参数
+     * @param int    $timeout    超时时间
+     */
+    public function task(string $taskName, string $methodName, array $params = [], $timeout = 3)
+    {
+        $data = [
+            'name'    => $taskName,
+            'method'  => $methodName,
+            'params'  => $params,
+            'timeout' => $timeout,
+            'type'    => Task::TYPE_ASYNC
+        ];
+
+        $message = PipeMessage::pack(PipeMessage::TYPE_TASK, $data);
+        $this->server->getServer()->sendMessage($message, 0);
     }
 }

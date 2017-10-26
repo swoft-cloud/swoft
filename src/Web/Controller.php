@@ -41,7 +41,7 @@ class Controller extends \Swoft\Base\Controller
     public function outputJson($data = '', $message = '', $status = 200)
     {
         $data = ResponseHelper::formatData($data, $message, $status);
-        $json = json_encode($data);
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         $response = RequestContext::getResponse();
         $response->setFormat(Response::FORMAT_JSON);

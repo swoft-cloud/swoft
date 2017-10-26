@@ -196,7 +196,7 @@ class Task
     }
 
     /**
-     * 初始化任务ID
+     * 初始化REN
      *
      * @param string $id
      */

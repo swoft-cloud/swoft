@@ -41,6 +41,7 @@ class RpcServer extends AbstractServer
         $this->server->on('finish', [$this, 'onFinish']);
         $this->server->on('connect', [$this, 'onConnect']);
         $this->server->on('receive', [$this, 'onReceive']);
+        $this->server->on('pipeMessage', [$this, 'onPipeMessage']);
         $this->server->on('close', [$this, 'onClose']);
 
         // before start
@@ -105,6 +106,22 @@ class RpcServer extends AbstractServer
     {
         App::getApplication()->doReceive($server, $fd, $fromId, $data);
     }
+
+    /**
+     * 管道消息处理
+     *
+     * @param Server $server
+     * @param int    $fromWorkerId
+     * @param string $message
+     */
+    public function onPipeMessage(Server $server, int $fromWorkerId, string $message)
+    {
+        list($type, $data) = PipeMessage::unpack($message);
+        if ($type == PipeMessage::TYPE_TASK) {
+            $this->onPipeMessageTask($data);
+        }
+    }
+
 
     /**
      * 连接成功后回调函数
@@ -195,6 +212,14 @@ class RpcServer extends AbstractServer
     }
 
     /**
+     * @param string $scriptFile
+     */
+    public function setScriptFile(string $scriptFile)
+    {
+        $this->scriptFile = $scriptFile;
+    }
+
+    /**
      * swoole server start之前运行
      */
     protected function beforeStart()
@@ -204,6 +229,24 @@ class RpcServer extends AbstractServer
 
         // 添加用户自定义进程
         $this->addUserProcesses();
+    }
+
+    /**
+     * 任务类型的管道消息
+     *
+     * @param array $data 数据
+     */
+    private function onPipeMessageTask(array $data)
+    {
+        // 任务信息
+        $type = $data['type'];
+        $taskName = $data['name'];
+        $params = $data['params'];
+        $timeout = $data['timeout'];
+        $methodName = $data['method'];
+
+        // 投递任务
+        Task::deliver($taskName, $methodName, $params, $type, $timeout);
     }
 
     /**

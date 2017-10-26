@@ -30,6 +30,8 @@ class MyProcess extends AbstractProcess
 
         $i = 1;
         while (true) {
+
+            $this->task('test', 'testRpc', [], 5);
             echo "this my process \n";
             App::trace("my process count=" . $i);
             sleep(10);
