@@ -15,7 +15,6 @@ use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
 use Swoft\Web\ErrorHandler;
-use Swoft\Bean\Collector;
 
 /**
  * 应用简写类
@@ -51,9 +50,9 @@ class App
     public static $properties;
 
     /**
-     * crontab
+     * 是否初始化了crontab
      */
-    public static $crontab;
+    public static $isInitCron = false;
 
     /**
      * 别名库
@@ -70,42 +69,6 @@ class App
     public static function getMysqlPool()
     {
         return self::getBean('mysql');
-    }
-
-    /**
-     * 设置crontab对象
-     *
-     * @return Crontab
-     */
-    private static function setCrontab()
-    {
-        if ((!self::$crontab instanceof Crontab)) {
-            self::$crontab = Crontab::getInstance();
-            self::$crontab->init();
-
-            $tasks = Collector::$crontab;
-
-            if (!empty($tasks)) {
-                $tasks = array_column($tasks, 'crons');
-            }
-
-            self::$crontab->setTasks($tasks);
-
-            self::$crontab->initLoad();
-        }
-
-    }
-
-    /**
-     * 获取crontab
-     *
-     * @return Crontab | null
-     */
-    public static function getCrontab()
-    {
-        self::setCrontab();
-
-        return self::$crontab;
     }
 
     /**
