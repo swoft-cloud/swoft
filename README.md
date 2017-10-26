@@ -20,17 +20,11 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池Mysql、Redis、RPC
 - 数据库ORM
+- 协程、异步任务投递
+- 自定义用户进程
+- rpc、redis、http、mysql协程和同步客户端无缝切换
 - inotify自动reload
 - 强大的日志系统
-
-**Future**
-
-- 连接池等待队列
-- restful风格
-- crontab定时任务
-- 服务监控
-- 日志统计分析
-- 统一配置中心
 
 # 更新记录
 
@@ -49,9 +43,16 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
     </a>
 </p>
 
+# 开发成员
+
+[stelin](https://github.com/stelin)
+[inhere](https://github.com/inhere)
+[ccinn](https://github.com/whiteCcinn)
+[esion](https://github.com/esion1)
+
 # 快速入门
 ## 文档
-[**中文文档**](https://doc.swoft.org) [**备用文档地址**](https://swoft-cloud.github.io/swoft-doc/)
+[**中文文档1**](https://doc.swoft.org) [**中文文档2**](https://swoft-cloud.github.io/swoft-doc/)
 
 QQ交流群:548173319
 
