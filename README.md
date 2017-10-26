@@ -46,7 +46,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 
 # 开发成员
 
-- [stelin](https://github.com/stelin)
+- [stelin](https://github.com/stelin)(phpcrazy@126.com)
 - [inhere](https://github.com/inhere)
 - [ccinn](https://github.com/whiteCcinn)
 - [esion](https://github.com/esion1)
