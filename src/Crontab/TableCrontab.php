@@ -3,7 +3,7 @@
 namespace Swoft\Crontab;
 
 use Swoft\Crontab\ParseCrontab;
-use Swoft\Memory\Table\Table;
+use Swoft\Memory\Table;
 use Swoft\Bean\Collector;
 use Swoft\Bean\Annotation\Bean;
 use Swoft\App;
