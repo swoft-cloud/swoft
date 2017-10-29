@@ -29,7 +29,6 @@ class CronTimerProcess extends AbstractProcess
         $server = $this->server->getServer();
 
         $server->after(((60 - date('s')) * 1000), function () use ($server, $cron) {
-            var_dump('begin');
             // 每分钟检查一次,把下一分钟需要执行的任务列出来
             $cron->checkTask();
             $server->tick(60 * 1000, function () use ($cron) {
