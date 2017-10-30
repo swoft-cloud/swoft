@@ -2,11 +2,9 @@
 
 namespace Swoft\Crontab;
 
-use Swoft\Crontab\ParseCrontab;
-use Swoft\Memory\Table;
-use Swoft\Bean\Collector;
 use Swoft\Bean\Annotation\Bean;
-use Swoft\App;
+use Swoft\Bean\Collector;
+use Swoft\Memory\Table;
 
 /**
  *
@@ -142,7 +140,7 @@ class Crontab
     /**
      * 获取原始数据表
      *
-     * @return \Swoole\Table | null
+     * @return Table | null
      */
     public function getOriginTable()
     {
@@ -152,7 +150,7 @@ class Crontab
     /**
      * 运行的数据表
      *
-     * @return \Swoole\Table | null
+     * @return Table | null
      */
     public function getRunTimeTable()
     {

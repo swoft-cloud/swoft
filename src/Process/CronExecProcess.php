@@ -3,9 +3,8 @@
 namespace Swoft\Process;
 
 use Swoft\App;
-use Swoft\Process\AbstractProcess;
+use Swoft\Crontab\Crontab;
 use Swoole\Process;
-use Swoft\Task\Task;
 
 /**
  * Crontab执行进程
@@ -23,8 +22,9 @@ class CronExecProcess extends AbstractProcess
     public function run(Process $process)
     {
         $process->name($this->server->getPname() . " my process ");
-        // Crontab对象
+        /* @var Crontab $cron */
         $cron = App::getBean('crontab');
+
         // Swoole/HttpServer
         $server = $this->server->getServer();
 
