@@ -14,6 +14,15 @@ namespace Swoft\Helper;
 class PhpHelper
 {
     /**
+     * is Cli
+     * @return  boolean
+     */
+    public static function isCli(): bool
+    {
+        return PHP_SAPI === 'cli';
+    }
+
+    /**
      * 调用
      *
      * @param mixed $cb   callback函数，多种格式
