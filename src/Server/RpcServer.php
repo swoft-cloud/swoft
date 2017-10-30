@@ -194,6 +194,14 @@ class RpcServer extends AbstractServer
     }
 
     /**
+     * @param string $scriptFile
+     */
+    public function setScriptFile(string $scriptFile)
+    {
+        $this->scriptFile = $scriptFile;
+    }
+
+    /**
      * swoole server start之前运行
      */
     protected function beforeStart()

@@ -38,7 +38,11 @@ class ServerController extends ConsoleCommand
 
         self::checkRuntimeEnv();
 
+        // http server初始化
+        $script = $input->getScript();
+
         $this->httpServer = new HttpServer();
+        $this->httpServer->setScriptFile($script);
     }
 
     /**
