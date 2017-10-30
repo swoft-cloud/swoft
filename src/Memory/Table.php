@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoft\Memory\Table;
+namespace Swoft\Memory;
 
 use Swoole\Table as swTable;
 
