@@ -97,7 +97,7 @@ class Console implements IConsole
     {
         // 默认命令解析
         $cmd = $this->input->getCommand();
-        if (in_array($cmd, self::DEFAULT_CMDS)) {
+        if (in_array($cmd, self::DEFAULT_CMDS, true)) {
             $cmd = sprintf("%s:%s", self::DEFAULT_CMD, $cmd);
         }
 

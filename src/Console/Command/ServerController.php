@@ -5,6 +5,7 @@ namespace Swoft\Console\Command;
 use Swoft\Console\ConsoleCommand;
 use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
+use Swoft\Helper\PhpHelper;
 use Swoft\Server\HttpServer;
 
 /**
@@ -34,7 +35,32 @@ class ServerController extends ConsoleCommand
     public function __construct(Input $input, Output $output)
     {
         parent::__construct($input, $output);
+
+        self::checkRuntimeEnv();
+
         $this->httpServer = new HttpServer();
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    public static function checkRuntimeEnv()
+    {
+        if (!PhpHelper::isCli()) {
+            throw new \RuntimeException('Server must run in the CLI mode.');
+        }
+
+        if (!version_compare(PHP_VERSION, '7.0')) {
+            throw new \RuntimeException('Run the server requires php version >= 7.0');
+        }
+
+        if (!extension_loaded('swoole')) {
+            throw new \RuntimeException("Run the server, extension 'swoole 2.x' is required!");
+        }
+
+        if (!class_exists('Swoole\Coroutine')) {
+            throw new \RuntimeException("The swoole is must enable coroutine by build param '--enable-coroutine'!");
+        }
     }
 
     /**
