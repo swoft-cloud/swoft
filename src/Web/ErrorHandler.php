@@ -87,8 +87,7 @@ class ErrorHandler
         // 当前worker进程的顶级协程ID
         $cid = Coroutine::tid();
 
-        if (App::isWorkerStatus()) {
-            $response = RequestContext::getResponse($cid);
+        if ($response = RequestContext::getResponse($cid)) {
             $response->setException($exception);
 
             $errorAction = App::$app->getErrorAction();
