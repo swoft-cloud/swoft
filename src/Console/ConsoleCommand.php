@@ -103,7 +103,7 @@ class ConsoleCommand
         // help参数处理
         $isHelp = $this->input->hasOpt('h') || $this->input->hasOpt('help');
         if ($isHelp && $command != 'index') {
-            $this->showCommandHelp($this, $commandMethod);
+            $this->showCommandHelp(static::class, $commandMethod);
             return;
         }
 
