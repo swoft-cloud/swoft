@@ -108,7 +108,11 @@ class Console implements IConsole
         }
 
         // 运行命令
-        $this->dispather($cmd);
+        try {
+            $this->dispather($cmd);
+        } catch (\Throwable $e) {
+            $this->output->writeln(sprintf('<error>%s</error>', $e->getMessage()), true, true);
+        }
     }
 
     /**
