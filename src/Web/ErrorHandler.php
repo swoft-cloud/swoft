@@ -76,18 +76,20 @@ class ErrorHandler
     {
         // 当前命令行
         $context = ApplicationContext::getContext();
-        if ($context == ApplicationContext::CONSOLE) {
+
+        if ($context === ApplicationContext::CONSOLE) {
             throw $exception;
         }
 
         // 记录错误日志
         App::error($exception);
 
-        // 当前worker进程
-        $cid = Coroutine::id();
+        // 当前worker进程的顶级协程ID
+        $cid = Coroutine::tid();
+
         if (App::isWorkerStatus()) {
-            $reponse = RequestContext::getResponse($cid);
-            $reponse->setException($exception);
+            $response = RequestContext::getResponse($cid);
+            $response->setException($exception);
 
             $errorAction = App::$app->getErrorAction();
             App::$app->runController($errorAction);
