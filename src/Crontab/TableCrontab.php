@@ -2,11 +2,7 @@
 
 namespace Swoft\Crontab;
 
-use Swoft\Crontab\ParseCrontab;
 use Swoft\Memory\Table;
-use Swoft\Bean\Collector;
-use Swoft\Bean\Annotation\Bean;
-use Swoft\App;
 
 /**
  *
@@ -26,7 +22,7 @@ class TableCrontab
     const TABLE_SIZE = 1024;
 
     /**
-     * @var $this $instance 实例对象
+     * @var TableCrontab $instance 实例对象
      */
     private static $instance = null;
 
@@ -83,38 +79,6 @@ class TableCrontab
     }
 
     /**
-     * 初始化任务表
-     */
-    private function initTables()
-    {
-       return $this->createOriginTable() && $this->createRunTimeTable();
-    }
-
-    /**
-     * 创建originTable
-     *
-     * @return bool
-     */
-    private function createOriginTable() : bool
-    {
-        $this->setOriginTable(new Table('origin', self::TABLE_SIZE, $this->originStruct));
-
-        return $this->getOriginTable()->create();
-    }
-
-    /**
-     * 创建runTimeTable
-     *
-     * @return bool
-     */
-    private function createRunTimeTable() : bool
-    {
-        $this->setRunTimeTable(new Table('runTime', self::TABLE_SIZE, $this->runTimeStruct));
-
-        return $this->getRunTimeTable()->create();
-    }
-
-    /**
      * 设置内存任务表实例
      *
      * @param Table $table 内存表
@@ -144,9 +108,43 @@ class TableCrontab
 
     /**
      * 获取执行任务表实例
+     *
+     * @return Table
      */
     public function getRunTimeTable()
     {
         return $this->runTimeTable;
+    }
+
+    /**
+     * 初始化任务表
+     */
+    private function initTables()
+    {
+        return $this->createOriginTable() && $this->createRunTimeTable();
+    }
+
+    /**
+     * 创建originTable
+     *
+     * @return bool
+     */
+    private function createOriginTable() : bool
+    {
+        $this->setOriginTable(new Table('origin', self::TABLE_SIZE, $this->originStruct));
+
+        return $this->getOriginTable()->create();
+    }
+
+    /**
+     * 创建runTimeTable
+     *
+     * @return bool
+     */
+    private function createRunTimeTable() : bool
+    {
+        $this->setRunTimeTable(new Table('runTime', self::TABLE_SIZE, $this->runTimeStruct));
+
+        return $this->getRunTimeTable()->create();
     }
 }

@@ -3,6 +3,7 @@
 namespace Swoft\Process;
 
 use Swoft\App;
+use Swoft\Crontab\Crontab;
 use Swoft\Process\AbstractProcess;
 use Swoole\Process;
 
@@ -23,7 +24,7 @@ class CronTimerProcess extends AbstractProcess
     public function run(Process $process)
     {
         $process->name($this->server->getPname() . " my process ");
-        // Crontab对象
+        /* @var Crontab $cron */
         $cron = App::getBean('crontab');
         // Swoole/HttpServer
         $server = $this->server->getServer();
