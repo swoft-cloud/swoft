@@ -6,6 +6,7 @@ use Swoft\App;
 use Swoft\Base\ApplicationContext;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
+use Swoft\Process\Process;
 use Swoft\Task\Task;
 use Swoole\Server;
 use Swoft\Crontab\TableCrontab;
@@ -208,7 +209,7 @@ class RpcServer extends AbstractServer
      */
     public function onFinish(Server $server, int $taskId, $data)
     {
-        var_dump($data, '----------((((((9999999999');
+//        var_dump($data, '----------((((((9999999999');
     }
 
     /**
@@ -276,7 +277,7 @@ class RpcServer extends AbstractServer
     private function addUserProcesses()
     {
         foreach ($this->processSetting as $name => $processClassName) {
-            $userProcess = \Swoft\Process\Process::create($this, $name, $processClassName);
+            $userProcess = Process::create($this, $name, $processClassName);
             if ($userProcess === null) {
                 continue;
             }

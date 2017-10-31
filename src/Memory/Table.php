@@ -51,9 +51,9 @@ class Table implements ITable
      *
      * @param swTable $table 内存表实例
      *
-     * @return $this
+     * @return Table
      */
-    public function setTable(swTable $table) : Table
+    public function setTable(swTable $table): Table
     {
         $this->table = $table;
 
@@ -63,7 +63,7 @@ class Table implements ITable
     /**
      * 获取内存表实例
      *
-     * @return $mixed
+     * @return \Swoole\Table
      */
     public function getTable()
     {
@@ -75,9 +75,9 @@ class Table implements ITable
      *
      * @param string $name 内存表名
      *
-     * @return $this
+     * @return Table
      */
-    public function setName(string $name) : Table
+    public function setName(string $name): Table
     {
         $this->name = $name;
 
@@ -87,7 +87,7 @@ class Table implements ITable
     /**
      * 返回内存表名
      *
-     * @return $mixed
+     * @return string
      */
     public function getName()
     {
@@ -99,9 +99,9 @@ class Table implements ITable
      *
      * @param int $size 内存表大小
      *
-     * @return $this 
+     * @return Table
      */
-    public function setSize(int $size) : Table
+    public function setSize(int $size): Table
     {
         $this->size = $size;
 
@@ -121,11 +121,11 @@ class Table implements ITable
     /**
      * 设置内存表字段结构
      *
-     * @param array $column 字段数组
+     * @param array $columns 字段数组
      *
-     * @return $this;
+     * @return Table;
      */
-    public function setColumns(array $columns) : Table
+    public function setColumns(array $columns): Table
     {
         $this->columns = $columns;
 
@@ -146,8 +146,8 @@ class Table implements ITable
      * 内存表增加一列
      *
      * @param string $name 列名
-     * @param string $type 类型
-     * @param string $size 最大长度，单位为字节
+     * @param int    $type 类型
+     * @param int    $size 最大长度，单位为字节
      */
     public function column(string $name, int $type, int $size = 0)
     {
@@ -158,18 +158,18 @@ class Table implements ITable
                 }
                 break;
             case self::TYPE_STRING:
-                    if ($size < 0) {
-                        throw new \RuntimeException('Size not be allow::' . $size);
-                    }
+                if ($size < 0) {
+                    throw new \RuntimeException('Size not be allow::' . $size);
+                }
                 break;
             case self::TYPE_FLOAT:
-                    $size = 8;
+                $size = 8;
                 break;
             default:
                 throw new \RuntimeException('Undefind Column-Type::' . $type);
         }
 
-        return $this->table->column($name, $type, $size);
+        $this->table->column($name, $type, $size);
     }
 
     /**
@@ -190,6 +190,8 @@ class Table implements ITable
      *
      * @param string $key   索引键
      * @param array  $array 数据
+     *
+     * @return bool
      */
     public function set(string $key, array $array)
     {
@@ -202,6 +204,8 @@ class Table implements ITable
      * @param string    $key    索引键
      * @param string    $column 列名
      * @param int|float $incrby 增量。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
+     *
+     * @return bool
      */
     public function incr(string $key, string $column, $incrby = 1)
     {
@@ -214,6 +218,8 @@ class Table implements ITable
      * @param string    $key    索引键
      * @param string    $column 列名
      * @param int|float $incrby 增量。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
+     *
+     * @return bool|int 返回false执行失败，成功返回整数结果值
      */
     public function decr(string $key, string $column, $incrby = 1)
     {
@@ -222,9 +228,11 @@ class Table implements ITable
 
     /**
      * 获取一行数据
-     * 
+     *
      * @param string $key   索引键
-     * @param string $field 列名 
+     * @param string $field 列名
+     *
+     * @return array
      */
     public function get(string $key, $field = null)
     {
@@ -245,6 +253,8 @@ class Table implements ITable
      * 删除数据
      *
      * @param string $key 索引键
+     *
+     * @return bool
      */
     public function del(string $key)
     {
@@ -255,7 +265,7 @@ class Table implements ITable
      * invoke
      *
      * @param string $method 方法名字
-     * @param array  参数
+     * @param        array   参数
      *
      * @return mixed
      */
@@ -264,7 +274,7 @@ class Table implements ITable
         if (method_exists($this, $method)) {
             return $this->$method(...$args);
         }
-        throw new \RuntimeException('Call a not exists method.'); 
+        throw new \RuntimeException('Call a not exists method.');
     }
 
     /**
@@ -276,8 +286,8 @@ class Table implements ITable
     {
         $method = 'get' . ucfirst($name);
         if (!method_exists($this, $method)) {
-        
-        throw new \RuntimeException('Call undefind property::'. $name); 
+
+            throw new \RuntimeException('Call undefind property::' . $name);
         }
 
         return $this->$method();

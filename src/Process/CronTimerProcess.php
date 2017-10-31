@@ -21,7 +21,7 @@ class CronTimerProcess extends AbstractProcess
      */
     public function run(Process $process)
     {
-        $process->name($this->server->getPname() . " my process ");
+        $process->name($this->server->getPname() . " crontimer process ");
         $cron = App::getBean('crontab');
 
         // Swoole/HttpServer
