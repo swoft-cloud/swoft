@@ -73,7 +73,7 @@ abstract class AbstractProcess implements IProcess
      *
      * @return bool
      */
-    public function isReady()
+    public function isReady(): bool
     {
         return true;
     }

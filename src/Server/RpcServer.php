@@ -225,7 +225,7 @@ class RpcServer extends AbstractServer
     protected function beforeStart()
     {
         // 添加共享内存表
-         $this->addShareMemory();
+        $this->addShareMemory();
         // 添加用户自定义进程
         $this->addUserProcesses();
     }
@@ -236,7 +236,9 @@ class RpcServer extends AbstractServer
     private function addShareMemory()
     {
         // 初始化定时任务共享内存表
-        $this->initCrontabMemoryTable();
+        if (isset($this->serverSetting['cronable']) && (int)$this->serverSetting['cronable'] === 1) {
+            $this->initCrontabMemoryTable();
+        }
     }
 
     /**
@@ -244,7 +246,10 @@ class RpcServer extends AbstractServer
      */
     private function initCrontabMemoryTable()
     {
-        TableCrontab::init();
+        $taskCount = isset($this->crontabSetting['task_count']) && $this->crontabSetting['task_count'] > 0 ? $this->crontabSetting['task_count'] : null;
+        $taskQueue = isset($this->crontabSetting['task_queue']) && $this->crontabSetting['task_queue'] > 0 ? $this->crontabSetting['task_queue'] : null;
+
+        TableCrontab::init($taskCount, $taskQueue);
     }
 
     /**

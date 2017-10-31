@@ -24,8 +24,8 @@ class CronTimerProcess extends AbstractProcess
     public function run(Process $process)
     {
         $process->name($this->server->getPname() . " my process ");
-        /* @var Crontab $cron */
         $cron = App::getBean('crontab');
+
         // Swoole/HttpServer
         $server = $this->server->getServer();
 
@@ -36,5 +36,21 @@ class CronTimerProcess extends AbstractProcess
                 $cron->checkTask();
             });
         });
+    }
+
+    /**
+     * 进程启动准备工作
+     *
+     * @return bool
+     */
+    public function isReady(): bool
+    {
+        $serverSetting = $this->server->getServerSetting();
+        $cronable = (int)$serverSetting['cronable'];
+        if ($cronable !== 1) {
+            return false;
+        }
+
+        return true;
     }
 }

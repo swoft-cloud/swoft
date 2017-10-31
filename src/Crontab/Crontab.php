@@ -5,6 +5,7 @@ namespace Swoft\Crontab;
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Collector;
 use Swoft\Memory\Table;
+use Swoft\App;
 
 /**
  *
@@ -49,6 +50,12 @@ class Crontab
      */
     public function init()
     {
+        $serverSetting = App::$server->getServerSetting();
+        $cronable = (int)$serverSetting['cronable'];
+        if ($cronable !== 1) {
+            return false;
+        }
+
         $this->initTasks();
         $this->initLoad();
     }
@@ -81,6 +88,7 @@ class Crontab
 
         foreach ($tasks as $tasksIndex => $taskItem) {
            foreach ($taskItem as $taskIndex => $task) {
+                $this->checkTaskCount();
                 $time = time();
                 $key = $this->getKey($task['cron'], $task['task'], $task['method']);
                 // 防止重复写入任务
@@ -94,6 +102,26 @@ class Crontab
                 }
            }
         }
+    }
+
+    /**
+     * 检测crontab任务数量
+     *
+     * @return bool
+     */
+    private function checkTaskCount(): bool
+    {
+        if (!isset($i)) {
+            static $i = 0;
+        }
+
+        $i++;
+
+        if ($i > TableCrontab::$taskCount) {
+            throw new \InvalidArgumentException('The crontab task::' . $i . ' exceeds the threshold::' . TableCrontab::$taskCount);
+        }
+
+        return true;
     }
 
     /**
@@ -181,27 +209,68 @@ class Crontab
         $originTableTasks = $this->getOriginTable()->table;
         if (count($originTableTasks) > 0) {
             $time = time();
+            $this->checkTaskQueue(true);
             foreach ($originTableTasks as $id => $task) {
                 $parseResult = ParseCrontab::parse($task['rule'], $time);
                 if ($parseResult === false) {
                     throw new \InvalidArgumentException(ParseResult::$error);
                 } elseif (!empty($parseResult)) {
-                    $min = date('YmdHi'); 
-                    $sec = strtotime(date('Y-m-d H:i'));
-                    $runTimeTableTasks = $this->getRunTimeTable()->table;
-                    foreach ($parseResult as $time) {
-                        $key = $this->getKey($task['rule'], $task['taskClass'], $task['taskMethod'], $min, $time + $sec);
-                        $runTimeTableTasks->set($key, [
-                            'taskClass'  => $task['taskClass'],
-                            'taskMethod' => $task['taskMethod'],
-                            'minte'      => $min,
-                            'sec'        => $time + $sec,
-                            'runStatus'  => self::NORMAL
-                        ]); 
-                    }
+                    $this->initRunTimeTableData($task, $parseResult);
                 } 
             }
         }
+    }
+
+    /**
+     * 初始化runTimeTable数据
+     *
+     * @param array $task        任务
+     * @param array $parseResult 解析crontab命令规则结果
+     */
+    private function initRunTimeTableData(array $task, array $parseResult)
+    {
+        $runTimeTableTasks = $this->getRunTimeTable()->table;
+
+        $min = date('YmdHi'); 
+        $sec = strtotime(date('Y-m-d H:i'));
+
+        foreach ($parseResult as $time) {
+            $this->checkTaskQueue(false);
+            $key = $this->getKey($task['rule'], $task['taskClass'], $task['taskMethod'], $min, $time + $sec);
+            $runTimeTableTasks->set($key, [
+                'taskClass'  => $task['taskClass'],
+                'taskMethod' => $task['taskMethod'],
+                'minte'      => $min,
+                'sec'        => $time + $sec,
+                'runStatus'  => self::NORMAL
+            ]); 
+        }
+    }
+
+    /**
+     * 检测crontab队列数量
+     *
+     * @param  是否重新开始检测
+     *
+     * @return bool
+     */
+    private function checkTaskQueue(bool $reStart): bool
+    {
+        if (!isset($i)) {
+            static $i = 0;
+        }
+
+        if ($reStart) {
+            $i = 0;
+        }
+
+        $i++;
+
+        if ($i > TableCrontab::$taskQueue) {
+            throw new \InvalidArgumentException('The crontab task-queue::' . $i . ' exceeds the threshold::' . TableCrontab::$taskQueue);
+        }
+
+        return true;
     }
 
     /**
@@ -209,7 +278,7 @@ class Crontab
      *
      * @return array
      */
-    public function getExecTasks() : Array
+    public function getExecTasks() : array
     {
         $data = [];
         if (count($this->getRunTimeTable()->table) <= 0) {
@@ -242,8 +311,6 @@ class Crontab
      * 开始任务
      *
      * @param int $key 主键
-     *
-     * @return boolean
      */
     public function startTask($key)
     {
@@ -254,8 +321,6 @@ class Crontab
      * 完成任务
      *
      * @param int $key 主键
-     *
-     * @return boolean
      */
     public function finishTask($key)
     {
