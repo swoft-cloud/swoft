@@ -3,7 +3,6 @@
 namespace Swoft\Process;
 
 use Swoft\App;
-use Swoft\Crontab\Crontab;
 use Swoole\Process;
 
 /**
