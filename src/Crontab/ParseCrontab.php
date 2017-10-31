@@ -14,6 +14,9 @@ namespace Swoft\Crontab;
 */
 class ParseCrontab
 {
+    /**
+     * @var string 错误信息
+     */
     public static $error;
 
     /**
@@ -87,12 +90,13 @@ class ParseCrontab
     /**
      * 解析单个配置的含义
      *
-     * @param $s
-     * @param $min
-     * @param $max
+     * @param string $s 时间
+     * @param int $min  最小值
+     * @param int $max  最大值
+     *
      * @return array
      */
-    private static function parseCronNumber($s, $min, $max)
+    private static function parseCronNumber($s, $min, $max): array
     {
         $result = array();
         $v1 = explode(",", $s);

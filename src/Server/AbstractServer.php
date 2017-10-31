@@ -46,6 +46,13 @@ abstract class AbstractServer implements IServer
     protected $processSetting = [];
 
     /**
+     * 用户自定义任务定时器配置
+     *
+     * @var array
+     */
+    protected $crontabSetting = [];
+
+    /**
      * swoole启动参数
      *
      * @var array
@@ -125,6 +132,7 @@ abstract class AbstractServer implements IServer
         $this->httpSetting = $settings['http'];
         $this->serverSetting = $settings['server'];
         $this->processSetting = $settings['process'];
+        $this->crontabSetting = $settings['crontab'];
         $this->setting = $settings['setting'];
     }
 

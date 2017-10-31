@@ -27,6 +27,16 @@ class TableCrontab
     private static $instance = null;
 
     /**
+     * @var int $taskCount 最大任务数
+     */
+    public static $taskCount = 1024;
+
+    /**
+     * @var int $taskQueue 最大队列数
+     */
+    public static $taskQueue = 1024;
+
+    /**
      * @var \Swoft\Memory\Table $originTable 内存任务表
      */
     private $originTable;
@@ -59,9 +69,14 @@ class TableCrontab
 
     /**
      * 创建配置表
+     *
+     * @param int $taskCount 最大任务数
+     * @param int $taskQueue 最大队列数
      */
-    public static function init()
+    public static function init(int $taskCount = null, int $taskQueue = null)
     {
+        self::$taskCount = $taskCount == null ? self::$taskCount : $taskCount;
+        self::$taskQueue = $taskQueue == null ? self::$taskQueue : $taskQueue;
         self::getInstance();
         self::$instance->initTables();
     }

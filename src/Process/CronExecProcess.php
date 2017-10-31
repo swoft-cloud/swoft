@@ -3,7 +3,6 @@
 namespace Swoft\Process;
 
 use Swoft\App;
-use Swoft\Crontab\Crontab;
 use Swoole\Process;
 
 /**
@@ -22,7 +21,6 @@ class CronExecProcess extends AbstractProcess
     public function run(Process $process)
     {
         $process->name($this->server->getPname() . " my process ");
-        /* @var Crontab $cron */
         $cron = App::getBean('crontab');
 
         // Swoole/HttpServer
@@ -38,5 +36,21 @@ class CronExecProcess extends AbstractProcess
                 }
             }
         });
+    }
+
+    /**
+     * 进程启动准备工作
+     *
+     * @return bool
+     */
+    public function isReady(): bool
+    {
+        $serverSetting = $this->server->getServerSetting();
+        $cronable = (int)$serverSetting['cronable'];
+        if ($cronable !== 1) {
+            return false;
+        }
+
+        return true;
     }
 }
