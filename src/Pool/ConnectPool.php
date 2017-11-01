@@ -18,7 +18,7 @@ use Swoft\Service\ServiceProvider;
 abstract class ConnectPool implements IPool
 {
     /**
-     * @var string 服务清楚
+     * @var string 服务名称
      */
     protected $serviceName = "";
 
@@ -76,7 +76,7 @@ abstract class ConnectPool implements IPool
     /**
      * @var ServiceProvider 第三服务发现，useProvider=true有效
      */
-    protected $serviceprovider = null;
+    protected $serviceProvider = null;
 
     /**
      * 连接池中取一个连接
@@ -143,7 +143,7 @@ abstract class ConnectPool implements IPool
     protected function getServiceList()
     {
         if ($this->useProvider) {
-            return $this->serviceprovider->getServiceList($this->serviceName);
+            return $this->serviceProvider->getServiceList($this->serviceName);
         }
 
         if (empty($this->uri)) {
