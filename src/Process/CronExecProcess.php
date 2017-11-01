@@ -7,6 +7,7 @@ use Swoole\Process;
 
 /**
  * Crontab执行进程
+ *
  * @uses      CronExecProcess
  * @version   2017年10月22日
  * @author    caiwh <471113744@qq.com>
@@ -20,7 +21,7 @@ class CronExecProcess extends AbstractProcess
      */
     public function run(Process $process)
     {
-        $process->name($this->server->getPname() . " my process ");
+        $process->name($this->server->getPname() . " cronexec process ");
         $cron = App::getBean('crontab');
 
         // Swoole/HttpServer

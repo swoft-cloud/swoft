@@ -5,7 +5,6 @@ namespace Swoft\Crontab;
 use Swoft\Memory\Table;
 
 /**
- *
  * crontab内存表结构
  *
  * @uses      TableCrontab
@@ -13,7 +12,7 @@ use Swoft\Memory\Table;
  * @author    caiwh <471113744@qq.com>
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
-*/
+ */
 class TableCrontab
 {
     /**
@@ -49,23 +48,25 @@ class TableCrontab
     /**
      * @var array $originStruct 任务表结构
      */
-    private $originStruct = [
-        'rule'       => [\Swoole\Table::TYPE_STRING, 100],
-        'taskClass'  => [\Swoole\Table::TYPE_STRING, 255],
-        'taskMethod' => [\Swoole\Table::TYPE_STRING, 255],
-        'add_time'   => [\Swoole\Table::TYPE_STRING, 11]
-    ];
+    private $originStruct
+        = [
+            'rule'       => [\Swoole\Table::TYPE_STRING, 100],
+            'taskClass'  => [\Swoole\Table::TYPE_STRING, 255],
+            'taskMethod' => [\Swoole\Table::TYPE_STRING, 255],
+            'add_time'   => [\Swoole\Table::TYPE_STRING, 11]
+        ];
 
     /**
      * @var array $runTimeStruct 运行表结构
      */
-    private $runTimeStruct = [
-        'taskClass'  => [\Swoole\Table::TYPE_STRING, 255],
-        'taskMethod' => [\Swoole\Table::TYPE_STRING, 255],
-        'minte'      => [\Swoole\Table::TYPE_STRING, 20],
-        'sec'        => [\Swoole\Table::TYPE_STRING, 20],
-        'runStatus'  => [\Swoole\TABLE::TYPE_INT, 4]
-    ];
+    private $runTimeStruct
+        = [
+            'taskClass'  => [\Swoole\Table::TYPE_STRING, 255],
+            'taskMethod' => [\Swoole\Table::TYPE_STRING, 255],
+            'minte'      => [\Swoole\Table::TYPE_STRING, 20],
+            'sec'        => [\Swoole\Table::TYPE_STRING, 20],
+            'runStatus'  => [\Swoole\TABLE::TYPE_INT, 4]
+        ];
 
     /**
      * 创建配置表
@@ -144,7 +145,7 @@ class TableCrontab
      *
      * @return bool
      */
-    private function createOriginTable() : bool
+    private function createOriginTable(): bool
     {
         $this->setOriginTable(new Table('origin', self::TABLE_SIZE, $this->originStruct));
 
@@ -156,7 +157,7 @@ class TableCrontab
      *
      * @return bool
      */
-    private function createRunTimeTable() : bool
+    private function createRunTimeTable(): bool
     {
         $this->setRunTimeTable(new Table('runTime', self::TABLE_SIZE, $this->runTimeStruct));
 

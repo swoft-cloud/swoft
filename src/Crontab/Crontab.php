@@ -2,12 +2,12 @@
 
 namespace Swoft\Crontab;
 
+use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Collector;
 use Swoft\Memory\Table;
 use Swoft\App;
 
 /**
- *
  * crontab定时任务
  * @Bean("crontab")
  *
@@ -16,7 +16,7 @@ use Swoft\App;
  * @author    caiwh <471113744@qq.com>
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
-*/
+ */
 class Crontab
 {
     /**
@@ -83,26 +83,25 @@ class Crontab
     {
         $tasks = $this->getTasks();
 
-        if (count($tasks) <= 0)
-        {
+        if (count($tasks) <= 0) {
             return false;
         }
 
         foreach ($tasks as $tasksIndex => $taskItem) {
-           foreach ($taskItem as $taskIndex => $task) {
+            foreach ($taskItem as $taskIndex => $task) {
                 $this->checkTaskCount();
                 $time = time();
                 $key = $this->getKey($task['cron'], $task['task'], $task['method']);
                 // 防止重复写入任务
                 if (!$this->getOriginTable()->exist($key)) {
                     $this->getOriginTable()->set($key, [
-                        'rule'    => $task['cron'],
-                        'taskClass' => $task['task'],
+                        'rule'       => $task['cron'],
+                        'taskClass'  => $task['task'],
                         'taskMethod' => $task['method'],
-                        'add_time'=> $time
+                        'add_time'   => $time
                     ]);
                 }
-           }
+            }
         }
 
         return true;
@@ -120,7 +119,6 @@ class Crontab
         }
 
         $i++;
-
         if ($i > TableCrontab::$taskCount) {
             throw new \InvalidArgumentException('The crontab task::' . $i . ' exceeds the threshold::' . TableCrontab::$taskCount);
         }
@@ -172,7 +170,7 @@ class Crontab
     {
         return $this->task;
     }
- 
+
     /**
      * 获取原始数据表
      *
@@ -206,7 +204,7 @@ class Crontab
      */
     private function getKey(string $rule, string $taskClass, string $taskMethod, $min = '', $sec = ''): string
     {
-        return md5($rule . $taskClass . $taskMethod . $min . $sec); 
+        return md5($rule . $taskClass . $taskMethod . $min . $sec);
     }
 
     /**
@@ -224,7 +222,7 @@ class Crontab
                     throw new \InvalidArgumentException(ParseCrontab::$error);
                 } elseif (!empty($parseResult) && is_array($parseResult)) {
                     $this->initRunTimeTableData($task, $parseResult);
-                } 
+                }
             }
         }
     }
@@ -241,7 +239,7 @@ class Crontab
     {
         $runTimeTableTasks = $this->getRunTimeTable()->table;
 
-        $min = date('YmdHi'); 
+        $min = date('YmdHi');
         $sec = strtotime(date('Y-m-d H:i'));
 
         foreach ($parseResult as $time) {
@@ -253,7 +251,7 @@ class Crontab
                 'minte'      => $min,
                 'sec'        => $time + $sec,
                 'runStatus'  => self::NORMAL
-            ]); 
+            ]);
         }
 
         return true;
@@ -290,12 +288,12 @@ class Crontab
      *
      * @return array
      */
-    public function getExecTasks() : array
+    public function getExecTasks(): array
     {
         $data = [];
         $runTimeTableTasks = $this->getRunTimeTable()->table;
         if (count($runTimeTableTasks) <= 0) {
-          return $data;
+            return $data;
         }
 
         $min = date('YmdHi');
@@ -309,11 +307,10 @@ class Crontab
                         'taskMethod' => $value['taskMethod'],
                     ];
                 }
-            } 
+            }
         }
 
-        foreach($data as $item)
-        {
+        foreach ($data as $item) {
             $this->startTask($item['key']);
         }
 
@@ -324,19 +321,23 @@ class Crontab
      * 开始任务
      *
      * @param int $key 主键
+     *
+     * @return bool
      */
     public function startTask($key)
     {
-       return $this->getRunTimeTable()->set($key, ['runStatus' => self::START]); 
+        return $this->getRunTimeTable()->set($key, ['runStatus' => self::START]);
     }
 
     /**
      * 完成任务
      *
      * @param int $key 主键
+     *
+     * @return bool
      */
     public function finishTask($key)
     {
-       return $this->getRunTimeTable()->set($key, ['runStatus' => self::FINISH]); 
+        return $this->getRunTimeTable()->set($key, ['runStatus' => self::FINISH]);
     }
 }

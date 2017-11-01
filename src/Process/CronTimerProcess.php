@@ -8,6 +8,7 @@ use Swoole\Process;
 /**
  *
  * Crontab检测进程
+ *
  * @uses      CronTimerProcess
  * @version   2017年10月18日
  * @author    caiwh <471113744@qq.com>
@@ -21,7 +22,7 @@ class CronTimerProcess extends AbstractProcess
      */
     public function run(Process $process)
     {
-        $process->name($this->server->getPname() . " my process ");
+        $process->name($this->server->getPname() . " crontimer process ");
         $cron = App::getBean('crontab');
 
         // Swoole/HttpServer
