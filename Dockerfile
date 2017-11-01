@@ -14,8 +14,8 @@ RUN apt-get update \
         zip \
     && apt-get clean
 
-ADD ./composer.phar /usr/local/bin/composer
-RUN chmod 755 /usr/local/bin/composer \
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer \
     && composer self-update --clean-backups
 
 RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz \
