@@ -6,8 +6,10 @@ use Swoft\App;
 use Swoft\Base\ApplicationContext;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
+use Swoft\Process\Process;
 use Swoft\Task\Task;
 use Swoole\Server;
+use Swoft\Crontab\TableCrontab;
 
 /**
  * RPC服务器
@@ -40,6 +42,7 @@ class RpcServer extends AbstractServer
         $this->server->on('finish', [$this, 'onFinish']);
         $this->server->on('connect', [$this, 'onConnect']);
         $this->server->on('receive', [$this, 'onReceive']);
+        $this->server->on('pipeMessage', [$this, 'onPipeMessage']);
         $this->server->on('close', [$this, 'onClose']);
 
         // before start
@@ -104,6 +107,22 @@ class RpcServer extends AbstractServer
     {
         App::getApplication()->doReceive($server, $fd, $fromId, $data);
     }
+
+    /**
+     * 管道消息处理
+     *
+     * @param Server $server
+     * @param int    $fromWorkerId
+     * @param string $message
+     */
+    public function onPipeMessage(Server $server, int $fromWorkerId, string $message)
+    {
+        list($type, $data) = PipeMessage::unpack($message);
+        if ($type == PipeMessage::TYPE_TASK) {
+            $this->onPipeMessageTask($data);
+        }
+    }
+
 
     /**
      * 连接成功后回调函数
@@ -190,7 +209,7 @@ class RpcServer extends AbstractServer
      */
     public function onFinish(Server $server, int $taskId, $data)
     {
-        var_dump($data, '----------((((((9999999999');
+//        var_dump($data, '----------((((((9999999999');
     }
 
     /**
@@ -206,8 +225,50 @@ class RpcServer extends AbstractServer
      */
     protected function beforeStart()
     {
+        // 添加共享内存表
+        $this->addShareMemory();
         // 添加用户自定义进程
         $this->addUserProcesses();
+    }
+
+    /**
+     * 添加共享内存表
+     */
+    private function addShareMemory()
+    {
+        // 初始化定时任务共享内存表
+        if (isset($this->serverSetting['cronable']) && (int)$this->serverSetting['cronable'] === 1) {
+            $this->initCrontabMemoryTable();
+        }
+    }
+
+    /**
+     * 初始化crontab共享内存表
+     */
+    private function initCrontabMemoryTable()
+    {
+        $taskCount = isset($this->crontabSetting['task_count']) && $this->crontabSetting['task_count'] > 0 ? $this->crontabSetting['task_count'] : null;
+        $taskQueue = isset($this->crontabSetting['task_queue']) && $this->crontabSetting['task_queue'] > 0 ? $this->crontabSetting['task_queue'] : null;
+
+        TableCrontab::init($taskCount, $taskQueue);
+    }
+
+    /**
+     * 任务类型的管道消息
+     *
+     * @param array $data 数据
+     */
+    private function onPipeMessageTask(array $data)
+    {
+        // 任务信息
+        $type = $data['type'];
+        $taskName = $data['name'];
+        $params = $data['params'];
+        $timeout = $data['timeout'];
+        $methodName = $data['method'];
+
+        // 投递任务
+        Task::deliver($taskName, $methodName, $params, $type, $timeout);
     }
 
     /**
@@ -216,7 +277,7 @@ class RpcServer extends AbstractServer
     private function addUserProcesses()
     {
         foreach ($this->processSetting as $name => $processClassName) {
-            $userProcess = \Swoft\Process\Process::create($this, $name, $processClassName);
+            $userProcess = Process::create($this, $name, $processClassName);
             if ($userProcess === null) {
                 continue;
             }

@@ -38,6 +38,7 @@ class HttpServer extends RpcServer
         $this->server->on('managerstart', [$this, 'onManagerStart']);
         $this->server->on('request', [$this, 'onRequest']);
         $this->server->on('task', [$this, 'onTask']);
+        $this->server->on('pipeMessage', [$this, 'onPipeMessage']);
         $this->server->on('finish', [$this, 'onFinish']);
 
         // 启动RPC服务
