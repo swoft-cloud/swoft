@@ -50,6 +50,7 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
 - [inhere](https://github.com/inhere) (in.798@qq.com)
 - [ccinn](https://github.com/whiteCcinn) (471113744@qq.com)
 - [esion](https://github.com/esion1) (esionwong@126.com)
+- [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 # 快速入门
 ## 文档
@@ -69,11 +70,15 @@ QQ交流群:548173319
 ### 手动安装
 
 * clone项目
-* composer install安装依赖
+* 安装依赖 `composer install`
 
 ### composer安装
 
-* composer.phar create-project stelin/swoft swoft dev-master(未开代理，会有点慢)
+* `composer.phar create-project stelin/swoft swoft dev-master` (未开代理，会有点慢)
+
+### Docker安装
+
+* `docker run -p 80:80 swoft/swoft`
 
 ## 配置
 
@@ -87,10 +92,10 @@ QQ交流群:548173319
 **常用命令**
 
 ```php
-//启动服务,是否是守护进程，根据swoft.ini配置
+// 启动服务,是否是守护进程，根据swoft.ini配置
 php swoft.php start
 
-//守护进程启动，覆盖swoft.ini守护进程配置
+// 守护进程启动，覆盖swoft.ini守护进程配置
 php swoft.php start -d
 
 // 重启
