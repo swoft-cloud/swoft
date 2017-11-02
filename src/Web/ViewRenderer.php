@@ -8,12 +8,14 @@
 
 namespace Swoft\Web;
 
+use Swoft\App;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Helper\FileHelper;
 
 /**
  * Class ViewRenderer - Render PHP view scripts
- * @package Swoft\Web
  *
+ * @package Swoft\Web
  * @uses      ViewRenderer
  * @version   2017年08月14日
  * @author    inhere <in.798@qq.com>
@@ -22,10 +24,7 @@ use Swoft\Helper\FileHelper;
  */
 class ViewRenderer
 {
-    /**
-     * 视图存放基础路径
-     * @var string
-     */
+    /** @var string 视图存放基础路径 */
     protected $viewsPath;
 
     /** @var null|string 默认布局文件 */
@@ -38,16 +37,18 @@ class ViewRenderer
     protected $suffix = 'php';
 
     /** @var array Allowed suffix list. It use auto add suffix. */
-    protected $suffixes = ['php','tpl','html'];
+    protected $suffixes = ['php', 'tpl', 'html'];
 
     /**
      * in layout file '...<body>{_CONTENT_}</body>...'
+     *
      * @var string
      */
     protected $placeholder = '{_CONTENT_}';
 
     /**
      * constructor.
+     *
      * @param string $viewsPath
      * @param string $layout
      * @param array $attributes
@@ -63,6 +64,7 @@ class ViewRenderer
     /**
      * Render a view, if layout file is setting, will use it.
      * throws RuntimeException if view file does not exist
+     *
      * @param string $view
      * @param array $data extract data to view, cannot contain view as a key
      * @param string|null|false $layout override default layout file
@@ -114,7 +116,7 @@ class ViewRenderer
     public function renderContent($content, array $data = [], $layout = null)
     {
         // render layout
-        if ($layout = $layout ?: $this->layout) {
+        if ($layout = $layout ? : $this->layout) {
             $mark = $this->placeholder;
             $main = $this->fetch($layout, $data);
             $content = preg_replace("/$mark/", $content, $main, 1);
@@ -143,6 +145,7 @@ class ViewRenderer
     /**
      * Renders a view and returns the result as a string
      * throws RuntimeException if $viewsPath . $view does not exist
+     *
      * @param string $view
      * @param array $data
      * @return mixed
@@ -152,7 +155,7 @@ class ViewRenderer
     {
         $file = $this->getViewFile($view);
 
-        if (!is_file($file)) {
+        if (! is_file($file)) {
             throw new \RuntimeException("cannot render '$view' because the view file does not exist. File: $file");
         }
 
@@ -185,7 +188,7 @@ class ViewRenderer
     {
         $view = $this->getRealView($view);
 
-        return FileHelper::isAbsPath($view) ? $view : $this->viewsPath . $view;
+        return FileHelper::isAbsPath($view) ? $view : $this->getViewsPath() . $view;
     }
 
     /**
@@ -200,6 +203,7 @@ class ViewRenderer
 
     /**
      * Get the attributes for the renderer
+     *
      * @return array
      */
     public function getAttributes()
@@ -209,6 +213,7 @@ class ViewRenderer
 
     /**
      * Set the attributes for the renderer
+     *
      * @param array $attributes
      */
     public function setAttributes(array $attributes)
@@ -218,6 +223,7 @@ class ViewRenderer
 
     /**
      * Add an attribute
+     *
      * @param $key
      * @param $value
      */
@@ -228,12 +234,13 @@ class ViewRenderer
 
     /**
      * Retrieve an attribute
+     *
      * @param $key
      * @return mixed
      */
     public function getAttribute($key)
     {
-        if (!isset($this->attributes[$key])) {
+        if (! isset($this->attributes[$key])) {
             return null;
         }
 
@@ -242,15 +249,17 @@ class ViewRenderer
 
     /**
      * Get the view path
+     *
      * @return string
      */
     public function getViewsPath()
     {
-        return $this->viewsPath;
+        return App::getAlias($this->viewsPath);
     }
 
     /**
      * Set the view path
+     *
      * @param string $viewsPath
      */
     public function setViewsPath($viewsPath)
@@ -262,6 +271,7 @@ class ViewRenderer
 
     /**
      * Get the layout file
+     *
      * @return string
      */
     public function getLayout()
@@ -271,6 +281,7 @@ class ViewRenderer
 
     /**
      * Set the layout file
+     *
      * @param string $layout
      */
     public function setLayout($layout)

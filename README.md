@@ -64,7 +64,7 @@ QQ交流群:548173319
 ### 手动安装
 
 * Clone 项目
-* 安装依赖 `composer install`
+* 安装依赖 `composer install
 
 ### Composer 安装
 
@@ -87,10 +87,10 @@ QQ交流群:548173319
 **常用命令**
 
 ```php
-// 启动服务，根据 `.env` 配置决定是否是守护进程
+// 启动服务，根据 .env 配置决定是否是守护进程
 php bin/swoft start
 
-// 守护进程启动，覆盖 `.env` 守护进程(DAEMONIZE)的配置
+// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
 php bin/swoft start -d
 
 // 重启
@@ -187,7 +187,6 @@ $router->group('/user', function ($router) {
 // 通过@符号连接控制器类和方法名可以指定执行方法
 $router->get('/', app\controllers\Home::class);
 $router->get('/index', 'app\controllers\Home@index');
-$router->get('/about', 'app\controllers\Home@about');
 
 // 访问 '/home/test' 将会执行 'app\controllers\Home::test()'
 $router->any('/home/{any}', app\controllers\Home::class);

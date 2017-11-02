@@ -15,5 +15,6 @@ App::setAlias('@app', '@root/app');
 App::setAlias('@res', '@root/resources');
 App::setAlias('@runtime', '@root/runtime/' . APP_NAME);
 App::setAlias('@configs', '@root/config');
+App::setAlias('@resources', '@root/resources');
 App::setAlias('@beans', '@configs/beans');
 App::setAlias('@properties', '@configs/properties');

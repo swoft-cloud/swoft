@@ -15,6 +15,6 @@ return [
     ],
     'renderer' => [
         'class' => \Swoft\Web\ViewRenderer::class,
-        'viewsPath' => dirname(__DIR__) . '/resources/views/',
+        'viewsPath' => "@resources/views/",
     ],
 ];
