@@ -4,7 +4,6 @@ namespace Swoft\Process;
 
 use Swoft\App;
 use Swoft\Base\Inotify;
-use Swoft\Server\AbstractServer;
 use Swoole\Process;
 
 /**
@@ -18,12 +17,20 @@ use Swoole\Process;
  */
 class ReloadProcess extends AbstractProcess
 {
+
+    /**
+     * inout
+     *
+     * @var bool
+     */
+    protected $inout = true;
+
     /**
      * 运行进程逻辑
      *
-     * @param Process        $process
+     * @param Process $process
      */
-    public function run( Process $process)
+    public function run(Process $process)
     {
         $pname = $this->server->getPname();
         $processName = "$pname reload process";
@@ -40,12 +47,17 @@ class ReloadProcess extends AbstractProcess
      *
      * @return bool
      */
-    public function isReady()
+    public function isReady(): bool
     {
-        if (!AUTO_RELOAD || !extension_loaded('inotify')) {
-            echo "自动reload未开启，请检查配置(AUTO_RELOAD)和inotify扩展是否安装正确! \n";
+        if (! AUTO_RELOAD) {
+            echo '自动reload未开启，请检查配置(AUTO_RELOAD)' . PHP_EOL;
+            return false;
+        }
+        if (! extension_loaded('inotify')) {
+            echo "自动reload未开启，缺少inotify扩展" . PHP_EOL;
             return false;
         }
         return true;
     }
+
 }

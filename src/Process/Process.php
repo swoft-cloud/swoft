@@ -3,9 +3,12 @@
 namespace Swoft\Process;
 
 use Swoft\App;
+use Swoft\Base\InitApplicationContext;
+use Swoft\Bean\BeanFactory;
 use Swoft\Event\Event;
 use Swoft\Helper\PhpHelper;
 use Swoft\Server\AbstractServer;
+use Swoole\Process as SwooleProcess;
 
 /**
  * 自定义进程
@@ -36,10 +39,9 @@ class Process
      * 获取某个进程
      *
      * @param string $name
-     *
      * @return \Swoole\Process
      */
-    public static function getProcess(string $name): \Swoole\Process
+    public static function getProcess(string $name): SwooleProcess
     {
         if (isset(self::$processes[$name])) {
             return self::$processes[$name];
@@ -51,22 +53,25 @@ class Process
     /**
      * 创建一个进程
      *
-     * @param AbstractServer $server           serverd对象
-     * @param string         $processName      进程名称
-     * @param string         $processClassName 进程className
-     *
+     * @param AbstractServer $server serverd对象
+     * @param string $processName 进程名称
+     * @param string $processClassName 进程className
      * @return null|\Swoole\Process
      */
-    public static function create(AbstractServer $server, string $processName, string $processClassName): ?\Swoole\Process
+    public static function create(
+        AbstractServer $server,
+        string $processName,
+        string $processClassName
+    ): ?SwooleProcess
     {
         // 不存在
-        if (!class_exists($processClassName)) {
+        if (! class_exists($processClassName)) {
             throw new \InvalidArgumentException('自定义进程不存在，className=' . $processClassName);
         }
 
         /* @var AbstractProcess $processClass */
         $processClass = new $processClassName($server);
-        if (!is_subclass_of($processClass, AbstractProcess::class)) {
+        if (! is_subclass_of($processClass, AbstractProcess::class)) {
             throw new \InvalidArgumentException('自定义进程类，不是AbstractProcess子类，className=' . $processClassName);
         }
 
@@ -81,8 +86,12 @@ class Process
         $iout = $processClass->isInout();
 
         // 创建进程
-        $process = new \Swoole\Process(function (\Swoole\Process $process) use ($processClass, $processName) {
-            require_once BASE_PATH . '/config/reload.php';
+        $process = new SwooleProcess(function (SwooleProcess $process) use ($processClass, $processName) {
+            // reload
+            BeanFactory::reload();
+            $initApplicationContext = new InitApplicationContext();
+            $initApplicationContext->init();
+
             App::trigger(Event::BEFORE_PROCESS, null, $processName, $process, null);
             PhpHelper::call([$processClass, 'run'], [$process]);
             App::trigger(Event::AFTER_PROCESS);

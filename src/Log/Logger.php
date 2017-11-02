@@ -25,7 +25,7 @@ class Logger extends \Monolog\Logger
     /**
      * @var string 日志系统名称
      */
-    protected $name = SYSTEM_NAME;
+    protected $name = APP_NAME;
 
     /**
      * @var int 刷新日志条数

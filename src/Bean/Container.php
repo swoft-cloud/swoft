@@ -52,12 +52,11 @@ class Container
      * 获取一个bean
      *
      * @param string $name 名称
-     *
      * @return mixed
      */
     public function get(string $name)
     {
-        if (!is_string($name)) {
+        if (! is_string($name)) {
             throw new \InvalidArgumentException("the name of bean 只能是字符串， name=" . json_encode($name));
         }
 
@@ -67,7 +66,7 @@ class Container
         }
 
         // 未定义
-        if (!isset($this->definitions[$name])) {
+        if (! isset($this->definitions[$name])) {
             throw new \InvalidArgumentException("the name of bean 不存在， name=" . $name);
         }
 
@@ -85,7 +84,6 @@ class Container
      * 是否存在某个bean
      *
      * @param string $beanName 名称
-     *
      * @return bool
      */
     public function hasBean(string $beanName): bool
@@ -101,7 +99,7 @@ class Container
     public function addDefinitions(array $definitions)
     {
         // properties.php配置数据
-        if (!isset($definitions['config']['properties'])) {
+        if (! isset($definitions['config']['properties'])) {
             throw new \InvalidArgumentException("config bean properties没有配置");
         }
 
@@ -118,8 +116,9 @@ class Container
     public function autoloadAnnotations()
     {
         $properties = $this->properties;
-        if (!isset($properties['beanScan'])) {
-            throw new \InvalidArgumentException("自动扫描注释，命令空间未配置the beanScan of properties!");
+
+        if (! isset($properties['beanScan'])) {
+            throw new \InvalidArgumentException("缺少扫描命名空间范围，config/properties/app.php未配置beanScan");
         }
         $beanScan = $properties['beanScan'];
         $resource = new AnnotationResource($properties);
@@ -135,7 +134,7 @@ class Container
     public function initBeans()
     {
         $autoInitBeans = $this->properties['autoInitBean'] ?? false;
-        if (!$autoInitBeans) {
+        if (! $autoInitBeans) {
             return;
         }
 
@@ -158,9 +157,8 @@ class Container
     /**
      * 创建bean
      *
-     * @param string           $name             名称
+     * @param string $name 名称
      * @param ObjectDefinition $objectDefinition bean定义
-     *
      * @return object
      */
     private function set(string $name, ObjectDefinition $objectDefinition)
@@ -204,7 +202,6 @@ class Container
      * 获取构造函数参数
      *
      * @param MethodInjection $constructorInject
-     *
      * @return array
      */
     private function injectConstructor(MethodInjection $constructorInject)
@@ -228,12 +225,10 @@ class Container
     }
 
     /**
-     *
      *  初始化Bean实例
      *
      * @param \ReflectionClass $reflectionClass
-     * @param array            $constructorParameters
-     *
+     * @param array $constructorParameters
      * @return object
      */
     private function newBeanInstance(\ReflectionClass $reflectionClass, array $constructorParameters)
@@ -247,9 +242,9 @@ class Container
     /**
      * 注入属性
      *
-     * @param  mixed                $object
+     * @param  mixed $object
      * @param \ReflectionProperty[] $properties $properties
-     * @param  mixed                $propertyInjects
+     * @param  mixed $propertyInjects
      */
     private function injectProperties($object, array $properties, $propertyInjects)
     {
@@ -259,12 +254,12 @@ class Container
             }
 
             $propertyName = $property->getName();
-            if (!isset($propertyInjects[$propertyName])) {
+            if (! isset($propertyInjects[$propertyName])) {
                 continue;
             }
 
             // 设置可用
-            if (!$property->isPublic()) {
+            if (! $property->isPublic()) {
                 $property->setAccessible(true);
             }
 
@@ -290,7 +285,6 @@ class Container
      * 数组属性值注入
      *
      * @param array $injectProperty
-     *
      * @return array
      */
     private function injectArrayArgs(array $injectProperty)

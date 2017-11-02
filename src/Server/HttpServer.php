@@ -19,7 +19,7 @@ use Swoole\Http\Server;
 class HttpServer extends RpcServer
 {
     /**
-     * @var Swoole\Server\Port tcp监听器
+     * @var \Swoole\Server\Port tcp监听器
      */
     protected $listen;
 

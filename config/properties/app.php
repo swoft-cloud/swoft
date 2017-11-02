@@ -10,12 +10,12 @@ return [
         'App\Services',
         'App\Process',
     ],
-    'I18n' =>[
+    'I18n' => [
         'sourceLanguage' => '@root/resources/messages/',
     ],
     'env' => 'Base',
     'user.stelin.steln' => 'fafafa',
-    'Service' =>[
+    'Service' => [
         'user' => [
             'timeout' => 3000
         ]

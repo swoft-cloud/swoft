@@ -3,12 +3,13 @@
 namespace Swoft\Bean;
 
 use Monolog\Formatter\LineFormatter;
+use Swoft\App;
 use Swoft\Base\Config;
 use Swoft\Filter\FilterChain;
 use Swoft\Helper\ArrayHelper;
+use Swoft\Helper\DirHelper;
 use Swoft\Pool\Balancer\RoundRobinBalancer;
 use Swoft\Web\Application;
-use Swoft\Web\ErrorHandler;
 
 /**
  * bean工厂
@@ -46,7 +47,6 @@ class BeanFactory implements BeanFactoryInterface
      * 获取Bean
      *
      * @param string $name Bean名称
-     *
      * @return mixed
      */
     public static function getBean(string $name)
@@ -58,8 +58,7 @@ class BeanFactory implements BeanFactoryInterface
      * 创建一个bean
      *
      * @param string $beanName
-     * @param array  $definition
-     *
+     * @param array $definition
      * @return mixed
      */
     public static function createBean(string $beanName, array $definition)
@@ -71,7 +70,6 @@ class BeanFactory implements BeanFactoryInterface
      * bean是否存在
      *
      * @param string $name bean名称
-     *
      * @return bool
      */
     public static function hasBean(string $name)
@@ -82,17 +80,23 @@ class BeanFactory implements BeanFactoryInterface
     private static function coreBeans()
     {
         return [
-            'config'             => ['class' => Config::class],
-            'application'        => ['class' => Application::class],
-//            'errorHandler'       => ['class' => ErrorHandler::class],
+            'config' => [
+                'class' => Config::class,
+                'properties' => value(function () {
+                    $config = new Config();
+                    $config->load('@properties', []);
+                    return $config->toArray();
+                })
+            ],
+            'application' => ['class' => Application::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'Filter'             => [
-                'class'            => FilterChain::class,
+            'Filter' => [
+                'class' => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'
             ],
-            "lineFormate"        => [
-                'class'      => LineFormatter::class,
-                "format"     => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %messages%',
+            "lineFormate" => [
+                'class' => LineFormatter::class,
+                "format" => '%datetime% [%level_name%] [%channel%] [logid:%logid%] [spanid:%spanid%] %messages%',
                 'dateFormat' => 'Y/m/d H:i:s'
             ],
         ];
@@ -102,12 +106,22 @@ class BeanFactory implements BeanFactoryInterface
      * 合并参数及初始化
      *
      * @param array $definitions
-     *
      * @return array
      */
     private static function merge(array $definitions)
     {
         $definitions = ArrayHelper::merge(self::coreBeans(), $definitions);
         return $definitions;
+    }
+
+    /**
+     * Reload bean definitions
+     */
+    public static function reload()
+    {
+        $config = new Config();
+        $config->load(App::getAlias('@beans'), [], DirHelper::SCAN_BFS, Config::STRUCTURE_MERGE);
+        $definitions = $config->toArray();
+        new self($definitions);
     }
 }
