@@ -6,8 +6,6 @@ use \Swoft\App;
 ! defined('DS') && define('DS', DIRECTORY_SEPARATOR);
 // 系统名称
 ! defined('APP_NAME') && define('APP_NAME', 'swoft');
-// auto reload
-! defined('AUTO_RELOAD') && define('AUTO_RELOAD', true);
 // 基础根目录
 ! defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
 

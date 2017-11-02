@@ -5,6 +5,7 @@ return [
         'pname' => env('PNAME', 'php-swoft'),
         'tcpable' => env('TCPABLE', true),
         'cronable' => env('CRONABLE', false),
+        'autoReload' => env('AUTO_RELOAD', true),
     ],
     'tcp' => [
         'host' => env('TCP_HOST', '0.0.0.0'),

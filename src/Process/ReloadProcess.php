@@ -49,7 +49,7 @@ class ReloadProcess extends AbstractProcess
      */
     public function isReady(): bool
     {
-        if (! AUTO_RELOAD) {
+        if (! App::getAppProperties()->get('server.server.autoReload', false)) {
             echo '自动reload未开启，请检查配置(AUTO_RELOAD)' . PHP_EOL;
             return false;
         }
