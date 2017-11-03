@@ -47,7 +47,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 
 # 快速入门
 ## 文档
-[**中文文档1**](https://book.swoft.org)
+[**中文文档1**](http://doc.swoft.org)
 [**中文文档2**](https://swoft-cloud.github.io/swoft-doc/)
 
 QQ交流群:548173319
