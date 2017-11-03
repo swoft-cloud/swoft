@@ -2,12 +2,7 @@
 
 namespace Swoft\Server;
 
-use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidPathException;
 use Swoft\App;
-use Swoft\Helper\DirHelper;
-use Swoft\Helper\StringHelper;
-use Swoft\Server\Booting\Bootable;
 use Swoole\Lock;
 use Swoole\Server;
 
@@ -102,6 +97,7 @@ abstract class AbstractServer implements IServer
     {
         // 初始化App
         App::$server = $this;
+
         // 加载启动项
         $this->bootstrap();
     }

@@ -6,7 +6,6 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
-use Swoft\Crontab\Crontab;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
@@ -14,7 +13,6 @@ use Swoft\Server\IServer;
 use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
-use Swoft\Web\ErrorHandler;
 
 /**
  * 应用简写类

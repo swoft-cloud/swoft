@@ -33,7 +33,7 @@ class BeanFactory implements BeanFactoryInterface
      *
      * @param array $definitions
      */
-    public function __construct(array $definitions)
+    private function __construct(array $definitions)
     {
         $definitions = self::merge($definitions);
 
@@ -90,7 +90,7 @@ class BeanFactory implements BeanFactoryInterface
             ],
             'application' => ['class' => Application::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'Filter' => [
+            'filter' => [
                 'class' => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'
             ],

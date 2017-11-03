@@ -19,7 +19,7 @@ class DirHelper
     public static function glob($path, $pattern = null, $strategy = self::SCAN_DFS)
     {
         if (! is_dir($path) || ! $pattern) {
-            throw new InvalidArgumentException('invalid $path or $pattern for DirHelper::glob');
+            throw new \InvalidArgumentException('invalid $path or $pattern for DirHelper::glob');
         }
 
         $files = self::scan($path, $strategy);
@@ -36,7 +36,7 @@ class DirHelper
     public static function scan($path, $strategy = self::SCAN_CURRENT_DIR, $excludeDir = true)
     {
         if (! is_dir($path)) {
-            throw new InvalidArgumentException('invalid $path for DirHelper::scan');
+            throw new \InvalidArgumentException('invalid $path for DirHelper::scan');
         }
 
         switch ($strategy) {
@@ -50,7 +50,7 @@ class DirHelper
                 $files = self::scanDfs($path, $excludeDir);
                 break;
             default:
-                throw new InvalidArgumentException('invalid $strategy for DirHelper::glob');
+                throw new \InvalidArgumentException('invalid $strategy for DirHelper::glob');
         }
 
         return $files;

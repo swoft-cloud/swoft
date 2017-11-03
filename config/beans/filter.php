@@ -8,7 +8,7 @@ return [
         'class' => \App\beans\Filters\LoginFilter::class,
         'uriPattern' => '/index/login,/index/login2',
     ],
-    'Filter' => [
+    'filter' => [
         'filters' => [
             '${commonParamsFilter}',
             '${loginFilter}',

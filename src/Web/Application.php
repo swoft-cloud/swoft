@@ -128,7 +128,7 @@ class Application extends \Swoft\Base\Application
         $response = App::getResponse();
 
         /* @var FilterChain $filter */
-        $filter = App::getBean('Filter');
+        $filter = App::getBean('filter');
 
         App::profileStart("Filter");
         $result = $filter->doFilter($request, $response, $filter);
