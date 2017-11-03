@@ -23,8 +23,6 @@
     ]
   },
   "autoload-dev": {
-    "classmap": [
-    ],
     "psr-4": {
       "Swoft\\Test\\": "test/"
     }
