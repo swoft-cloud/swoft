@@ -22,6 +22,11 @@
       "src/Helper/Functions.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Swoft\\Test\\": "test/"
+    }
+  },
   "repositories": {
     "packagist": {
       "type": "composer",
@@ -29,6 +34,7 @@
     }
   },
   "require-dev": {
-    "eaglewu/swoole-ide-helper": "dev-master"
+    "eaglewu/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^5.7"
   }
 }
