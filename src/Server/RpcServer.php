@@ -4,6 +4,8 @@ namespace Swoft\Server;
 
 use Swoft\App;
 use Swoft\Base\ApplicationContext;
+use Swoft\Base\InitApplicationContext;
+use Swoft\Bean\BeanFactory;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
 use Swoft\Process\Process;
@@ -302,6 +304,8 @@ class RpcServer extends AbstractServer
      */
     protected function reloadBean()
     {
-        require_once BASE_PATH . '/config/reload.php';
+        BeanFactory::reload();
+        $initApplicationContext = new InitApplicationContext();
+        $initApplicationContext->init();
     }
 }

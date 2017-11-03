@@ -6,24 +6,24 @@
 
 
 # 简介
-swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务器。框架全协程实现，性能优于传统的php-fpm模式。
+Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
 
-- 基于swoole易扩展
-- 内置http协程服务器
-- MVC分层设计
+- 基于 Swoole 扩展
+- 内置 HTTP 协程服务器
+- MVC 分层设计
 - 高性能路由
 - 全局容器注入
-- 高性能RPC
+- 高性能 RPC
 - 别名机制
 - 事件机制
 - 国际化(i18n)
 - 服务治理熔断、降级、负载、注册与发现
-- 连接池Mysql、Redis、RPC
-- 数据库ORM
+- 连接池 Mysql、Redis、RPC
+- 数据库 ORM
 - 协程、异步任务投递
 - 自定义用户进程
-- rpc、redis、http、mysql协程和同步客户端无缝切换
-- inotify自动reload
+- RPC、Redis、HTTP、Mysql 协程和同步客户端无缝切换
+- Inotify 自动 Reload
 - 强大的日志系统
 
 # 更新记录
@@ -45,101 +45,63 @@ swoft是基于swoole协程2.x的高性能PHP微服务框架，内置http服务�
     </a>
 </p>
 
-# 开发成员
-
-- [stelin](https://github.com/stelin) (phpcrazy@126.com)
-- [inhere](https://github.com/inhere) (in.798@qq.com)
-- [ccinn](https://github.com/whiteCcinn) (471113744@qq.com)
-- [esion](https://github.com/esion1) (esionwong@126.com)
-- [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
-
 # 快速入门
 ## 文档
-[**中文文档1**](https://book.swoft.org) [**中文文档2**](https://swoft-cloud.github.io/swoft-doc/)
+[**中文文档1**](https://book.swoft.org)
+[**中文文档2**](https://swoft-cloud.github.io/swoft-doc/)
 
 QQ交流群:548173319
 
 ## 环境要求
-1. hiredis
-2. composer
-2. PHP7.X
-3. inotify(可选)
-4. Swoole2.x且开启协程和异步redis
+1. PHP 7.X
+2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
+3. [Hiredis](https://github.com/redis/hiredis/releases)
+4. [Composer](https://getcomposer.org/)
+5. [Inotify](http://pecl.php.net/package/inotify) (可选)
 
 ## 安装
 
 ### 手动安装
 
-* clone项目
-* 安装依赖 `composer install`
+* Clone 项目
+* 安装依赖 `composer install
 
-### composer安装
+### Composer 安装
 
-* `composer.phar create-project stelin/swoft swoft dev-master` (未开代理，会有点慢)
+* `composer create-project stelin/swoft swoft dev-master` (未开代理，会有点慢)
 
-### Docker安装
+### Docker 安装
 
-* `docker run -p 80:80 swoft/swoft`
+* Linux: `docker run -p 80:80 swoft/swoft`
+* Windows: `winpty docker run -p 80:80 swoft/swoft`
 
 ## 配置
 
-* 配置base.php
-* 设置启动参数swoft.ini
+* 复制项目根目录的 `.env.example` 并命名为 `.env`
+* 更改 `.env` 的服务配置，具体参数说明请参考文档
 
 ## 启动
 
-启动服务支持HTTP和TCP同时启动，swoft.ini中配置。
+启动服务支持 HTTP 和 TCP 同时启动，在 `.env` 中配置。
 
 **常用命令**
 
 ```php
-// 启动服务,是否是守护进程，根据swoft.ini配置
-php swoft.php start
+// 启动服务，根据 .env 配置决定是否是守护进程
+php bin/swoft start
 
-// 守护进程启动，覆盖swoft.ini守护进程配置
-php swoft.php start -d
+// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+php bin/swoft start -d
 
 // 重启
-php swoft.php restart
+php bin/swoft restart
 
 // 重新加载
-php swoft.php reload
+php bin/swoft reload
 
 // 关闭服务
-php swoft.php stop
+php bin/swoft stop
 
-```
-
-**Swoft.ini参数**
-
-```shell
-[swoft]
-;;;;;;;;;;;;;;;;;;;
-; About swoft.ini   ;
-;;;;;;;;;;;;;;;;;;;
-
-[server]
-pfile = '/tmp/swoft.pid';
-pname = "php-swf";
-
-[tcp]
-enable = 1;
-host = "0.0.0.0"
-port = 8099
-type = SWOOLE_SOCK_TCP
-
-[http]
-host = "0.0.0.0"
-port = 80
-model = SWOOLE_PROCESS
-type = SWOOLE_SOCK_TCP
-
-[setting]
-worker_num = 4
-max_request = 10000
-daemonize = 0;
-dispatch_mode = 2
-log_file = SWOOLE_LOG_PATH
 ```
 
 ## 路由器
@@ -148,14 +110,12 @@ log_file = SWOOLE_LOG_PATH
 
 ```php
 return [
-    // ...
     'router'      => [
-        'class'  => \swoft\web\Router::class,
+        'class'  => \Swoft\Web\Router::class,
         'ignoreLastSep'  => false, // 是否忽略最后一个斜杠，设置false后，/user/index和/user/index/是两个不同的路由
         'tmpCacheNumber' => 1000,// 缓存路由数，最近一1000条
         'matchAll'       => '', // 匹配所有，所有请求都会匹配到这个uri或闭包
     ],
-    // ...
 ];
 ```
 ### 路由注册实例
@@ -227,7 +187,6 @@ $router->group('/user', function ($router) {
 // 通过@符号连接控制器类和方法名可以指定执行方法
 $router->get('/', app\controllers\Home::class);
 $router->get('/index', 'app\controllers\Home@index');
-$router->get('/about', 'app\controllers\Home@about');
 
 // 访问 '/home/test' 将会执行 'app\controllers\Home::test()'
 $router->any('/home/{any}', app\controllers\Home::class);
@@ -249,21 +208,21 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
 
 
 ## 控制器
-一个继承\swoft\web\Controller的类既是控制器，控制器有两种注解自动注册和手动注册两种方式。建议使用注解自动注册，方便简洁，维护简单。多次注册相同的路由前者会被后者覆盖。
+一个继承 \Swoft\Web\Controller 的类既是控制器，控制器有两种注解自动注册和手动注册两种方式。建议使用注解自动注册，方便简洁，维护简单。多次注册相同的路由前者会被后者覆盖。
 
 ### 注解自动注册
-注解自动注册常用到三个注解@AutoController、@Inject、@RequestMapping.
+注解自动注册常用到三个注解@AutoController()、@Inject()、@RequestMapping().
 
-> @AutoController    
-> 已经使用@AutoController，不能再使用@Bean注解。    
-> @AutoController注解不需要指定bean名称，统一类为bean名称    
+> @AutoController()    
+> 已经使用@AutoController()，不能再使用@Bean()注解。    
+> @AutoController()注解不需要指定bean名称，统一类为bean名称    
 > @AutoController()默认自动解析controller前缀，并且使用驼峰格式。    
 > @AutoController(prefix="/demo2")或@AutoController("/demo2")功能一样，两种使用方式。    
 >     
-> @Inject    
+> @Inject()    
 > 使用和之前的一样    
 >     
-> @RequestMapping    
+> @RequestMapping()    
 > @RequestMapping(route="/index2")或@RequestMapping("/index2")功能一样两种方式使用，这种默认是支持get和post方式@RequestMapping(route="/index2", method=RequestMethod::GET)注册支持的方法    
 > 不使用@RequestMapping或RequestMapping()功能一样，都是默认解析action方法，以驼峰格式，注册路由。    
 
@@ -272,12 +231,6 @@ $router->any('/home[/{name}]', app\controllers\Home::class);
  * 控制器demo
  *
  * @AutoController(prefix="/demo2")
- *
- * @uses      DemoController
- * @version   2017年08月22日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class DemoController extends Controller
 {
@@ -336,21 +289,15 @@ class DemoController extends Controller
 ```
 
 ### 手动注册
-手动注册常用@Bean、@Inject注解，手动注册还要多一步就是在routes.php里面注册自己的路由规则。
+手动注册常用@Bean()、@Inject()注解，手动注册还要多一步就是在 routes.php 里面注册自己的路由规则。
 
-> 手动注册@Bean()只能这样缺省方式。并且不能使用@AutoController注解
+> 手动注册 @Bean() 只能这样缺省方式。并且不能使用 @AutoController() 注解
 
 ```php
 /**
  * 控制器demo
  *
  * @Bean()
- *
- * @uses      DemoController
- * @version   2017年08月22日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class DemoController extends Controller
 {
@@ -380,8 +327,6 @@ class DemoController extends Controller
         // 获取name参数默认值defaultName
         $name = $this->request('name', 'defaultName');
         //json方式显示数据
-
-
         $this->outputJson("suc");
     }
 
@@ -391,11 +336,11 @@ class DemoController extends Controller
     public function actionIndex2()
     {
         // 重定向一个URI
-        //        $this->redirect("/login/index");
-        $this->outputJson("suc2");
+        $this->redirect("/login/index");
     }
 
     /**
+     * uri=/index3
      */
     public function actionIndex3()
     {
@@ -406,34 +351,28 @@ class DemoController extends Controller
 routes.php手动注册路由：
 
 ```php
-// ...
-
 $router->map(['get', 'post'], '/demo2/index', 'app\controllers\DemoController@index');
 $router->get('/index2', 'app\controllers\DemoController@index2');
 $router->get('/demo2/index3', 'app\controllers\DemoController@index3');
 ```
 
-
 ## 连接池
-连接池使用简单，只需在base.php里面配置对应服务连接池即可。
+连接池使用简单，只需在 config/beans 内配置对应服务连接池即可。
 
 ```php
 return [
-
-    // ...
-
     // RCP打包、解包
     "packer"          => [
         'class' => JsonPacker::class
     ],
-    // 服务发现bean, 目前系统支持consul,只行实现
+    // 服务发现 Bean, 目前系统支持 Consul
     'consulProvider'       => [
         'class' => \swoft\service\ConsulProvider::class
     ],
 
-    // user服务连接池
+    // User 服务连接池
     "userPool"            => [
-        "class"           => \swoft\pool\ServicePool::class,
+        "class"           => \Swoft\Pool\ServicePool::class,
         "uri"             => '127.0.0.1:8099,127.0.0.1:8099', // useProvider为false时，从这里识别配置
         "maxIdel"         => 6,// 最大空闲连接数
         "maxActive"       => 10,// 最大活跃连接数
@@ -446,17 +385,14 @@ return [
     ],
     // user服务熔断器
     "userBreaker" => [
-        'class'           => \swoft\circuit\CircuitBreaker::class,
+        'class'           => \Swoft\Circuit\CircuitBreaker::class,
         'delaySwithTimer' => 8000
     ],
-
-    // ...
-
 ];
 ```
 
 ## 缓存
-缓存目前只支持redis,redis使用有两种方式直接调用和延迟收包调用。
+缓存目前只支持 Redis, Redis 使用有两种方式直接调用和延迟收包调用。
 
 ```php
 // 直接调用
@@ -472,9 +408,9 @@ $result = $ret->getResult();
 $result2 = $ret2->getResult();
 
 $data = [
-'redis' => $name,
-'defer' => $result,
-'defer2' => $result2,
+    'redis' => $name,
+    'defer' => $result,
+    'defer2' => $result2,
 ];
 ```
 
@@ -497,7 +433,7 @@ $deferRet2 = $users2;
 ```
 
 ## HttpClient
-系统提供HttpClient来实现HTTP调用，目前有两种方式，直接调用和延迟收包调用，延迟收包，一般用于并发调用。
+系统提供 HttpClient 来实现 HTTP 调用，目前有两种方式，直接调用和延迟收包调用，延迟收包，一般用于并发调用。
 
 ```php
 // 直接调用
@@ -540,6 +476,13 @@ App::profileEnd("tag");
 App::counting("cache", 1, 10);
 ```
 
+# 开发成员
+
+- [stelin](https://github.com/stelin) (phpcrazy@126.com)
+- [inhere](https://github.com/inhere) (in.798@qq.com)
+- [ccinn](https://github.com/whiteCcinn) (471113744@qq.com)
+- [esion](https://github.com/esion1) (esionwong@126.com)
+- [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 
 

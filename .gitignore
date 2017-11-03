@@ -9,3 +9,4 @@ vendor/
 temp/
 *.lock
 .phpintel/
+.env

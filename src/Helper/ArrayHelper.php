@@ -142,17 +142,17 @@ class ArrayHelper
      *
      * ```php
      * // working with array
-     * $username = \yii\Helper\ArrayHelper::getValue($_POST, 'username');
+     * $username = \Swoft\Helper\ArrayHelper::getValue($_POST, 'username');
      * // working with object
-     * $username = \yii\Helper\ArrayHelper::getValue($user, 'username');
+     * $username = \Swoft\Helper\ArrayHelper::getValue($user, 'username');
      * // working with anonymous function
-     * $fullName = \yii\Helper\ArrayHelper::getValue($user, function ($user, $defaultValue) {
+     * $fullName = \Swoft\Helper\ArrayHelper::getValue($user, function ($user, $defaultValue) {
      *     return $user->firstName . ' ' . $user->lastName;
      * });
      * // using dot format to retrieve the property of embedded object
-     * $street = \yii\Helper\ArrayHelper::getValue($users, 'address.street');
+     * $street = \Swoft\Helper\ArrayHelper::getValue($users, 'address.street');
      * // using an array of keys to retrieve the value
-     * $value = \yii\Helper\ArrayHelper::getValue($versions, ['1.0', 'date']);
+     * $value = \Swoft\Helper\ArrayHelper::getValue($versions, ['1.0', 'date']);
      * ```
      *
      * @param array|object          $array   array or object to extract value from
@@ -209,7 +209,7 @@ class ArrayHelper
      * ```php
      * // $array = ['type' => 'A', 'options' => [1, 2]];
      * // working with array
-     * $type = \yii\Helper\ArrayHelper::remove($array, 'type');
+     * $type = \Swoft\Helper\ArrayHelper::remove($array, 'type');
      * // $array content
      * // $array = ['options' => [1, 2]];
      * ```
@@ -781,13 +781,13 @@ class ArrayHelper
      *     'E' => 1,
      * ];
      *
-     * $result = \yii\Helper\ArrayHelper::Filter($array, ['A']);
+     * $result = \Swoft\Helper\ArrayHelper::Filter($array, ['A']);
      * // $result will be:
      * // [
      * //     'A' => [1, 2],
      * // ]
      *
-     * $result = \yii\Helper\ArrayHelper::Filter($array, ['A', 'B.C']);
+     * $result = \Swoft\Helper\ArrayHelper::Filter($array, ['A', 'B.C']);
      * // $result will be:
      * // [
      * //     'A' => [1, 2],
@@ -795,7 +795,7 @@ class ArrayHelper
      * // ]
      * ```
      *
-     * $result = \yii\Helper\ArrayHelper::Filter($array, ['B', '!B.C']);
+     * $result = \Swoft\Helper\ArrayHelper::Filter($array, ['B', '!B.C']);
      * // $result will be:
      * // [
      * //     'B' => ['D' => 2],
@@ -913,5 +913,124 @@ class ArrayHelper
             $value = (float)$value;
         }
         return $value;
+    }
+
+    /**
+     * Determine whether the given value is array accessible.
+     *
+     * @param  mixed $value
+     * @return bool
+     */
+    public static function accessible($value)
+    {
+        return is_array($value) || $value instanceof \ArrayAccess;
+    }
+
+    /**
+     * Determine if the given key exists in the provided array.
+     *
+     * @param  \ArrayAccess|array $array
+     * @param  string|int $key
+     * @return bool
+     */
+    public static function exists($array, $key)
+    {
+        if (is_array($array)) {
+            return array_key_exists($key, $array);
+        }
+
+        return $array->offsetExists($key);
+    }
+
+    /**
+     * Get an item from an array using "dot" notation.
+     *
+     * @param  \ArrayAccess|array $array
+     * @param  string $key
+     * @param  mixed $default
+     * @return mixed
+     */
+    public static function get($array, $key, $default = null)
+    {
+        if (is_null($key)) {
+            return $array;
+        }
+
+        if (isset($array[$key])) {
+            return $array[$key];
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if (static::accessible($array) && static::exists($array, $segment)) {
+                $array = $array[$segment];
+            } else {
+                return value($default);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * Check if an item exists in an array using "dot" notation.
+     *
+     * @param  \ArrayAccess|array $array
+     * @param  string $key
+     * @return bool
+     */
+    public static function has($array, $key)
+    {
+        if (empty($array) || is_null($key)) {
+            return false;
+        }
+
+        if (array_key_exists($key, $array)) {
+            return true;
+        }
+
+        foreach (explode('.', $key) as $segment) {
+            if ((is_array($array) && array_key_exists($segment, $array)) || ($array instanceof \ArrayAccess && $array->offsetExists($segment))) {
+                $array = $array[$segment];
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Set an array item to a given value using "dot" notation.
+     * If no key is given to the method, the entire array will be replaced.
+     *
+     * @param  array $array
+     * @param  string $key
+     * @param  mixed $value
+     * @return array
+     */
+    public static function set(&$array, $key, $value)
+    {
+        if (is_null($key)) {
+            return $array = $value;
+        }
+
+        $keys = explode('.', $key);
+
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+
+            // If the key doesn't exist at this depth, we will just create an empty array
+            // to hold the next value, allowing us to create the arrays to hold final
+            // values at the correct depth. Then we'll keep digging into the array.
+            if (! isset($array[$key]) || ! is_array($array[$key])) {
+                $array[$key] = [];
+            }
+
+            $array = &$array[$key];
+        }
+
+        $array[array_shift($keys)] = $value;
+
+        return $array;
     }
 }
