@@ -283,10 +283,11 @@ abstract class AbstractServer implements IServer
     /**
      * Tasker进程回调
      *
-     * @param Server $server server
-     * @param int $taskId taskId
-     * @param int $workerId workerId
-     * @param mixed $data data
+     * @param Server $server   server
+     * @param int    $taskId   taskId
+     * @param int    $workerId workerId
+     * @param mixed  $data     data
+     *
      * @return mixed
      */
     public function onTask(Server $server, int $taskId, int $workerId, $data)

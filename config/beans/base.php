@@ -2,19 +2,19 @@
 
 return [
     'application' => [
-        'id' => APP_NAME,
-        'name' => APP_NAME,
+        'id'          => APP_NAME,
+        'name'        => APP_NAME,
         'errorAction' => '/error/index',
         'useProvider' => false,
     ],
-    'router' => [
-        'class' => \Swoft\Web\Router::class,
-        'ignoreLastSep' => false,
+    'router'      => [
+        'class'          => \Swoft\Web\Router::class,
+        'ignoreLastSep'  => false,
         'tmpCacheNumber' => 1000,
-        'matchAll' => '',
+        'matchAll'       => '',
     ],
-    'renderer' => [
-        'class' => \Swoft\Web\ViewRenderer::class,
+    'renderer'    => [
+        'class'     => \Swoft\Web\ViewRenderer::class,
         'viewsPath' => "@resources/views/",
     ],
 ];

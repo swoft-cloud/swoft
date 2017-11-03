@@ -3,11 +3,11 @@
 use \Swoft\App;
 
 // Constants
-! defined('DS') && define('DS', DIRECTORY_SEPARATOR);
+!defined('DS') && define('DS', DIRECTORY_SEPARATOR);
 // 系统名称
-! defined('APP_NAME') && define('APP_NAME', 'swoft');
+!defined('APP_NAME') && define('APP_NAME', 'swoft');
 // 基础根目录
-! defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
+!defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
 
 // Alias
 App::setAlias('@root', BASE_PATH);
