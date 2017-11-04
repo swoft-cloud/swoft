@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Models\Logic\UserLogic;
 use Swoft\App;
 use Swoft\Console\ConsoleController;
+use Swoft\Log\Log;
 
 /**
  * the group of test command
@@ -40,6 +41,7 @@ class TestController extends ConsoleController
         $name = $this->input->getArg('arg', 'swoft');
 
         App::trace("this is command log");
+        Log::info("this is comamnd info log");
         /* @var UserLogic $logic*/
         $logic = App::getBean(UserLogic::class);
         $data = $logic->getUserInfo(['uid1']);
