@@ -23,7 +23,12 @@ class Console implements IConsole
     /**
      * 默认命令组
      */
-    const DEFAULT_CMD = 'server';
+    const DEFAULT_CMD_GROUP = 'server';
+
+    /**
+     * 默认命令
+     */
+    const DEFAULT_CMD = "index";
 
     /**
      * 命令分隔符
@@ -75,6 +80,13 @@ class Console implements IConsole
     private $errorHandler;
 
     /**
+     * 每个命令唯一ID
+     *
+     * @var int
+     */
+    private static $id;
+
+    /**
      * 初始化
      */
     public function __construct()
@@ -82,7 +94,8 @@ class Console implements IConsole
         // 初始化样式
         Style::init();
 
-        // 初始化组件
+        // 初始化
+        self::$id = time();
         $this->registerNamespace();
         $this->input = new Input();
         $this->output = new Output();
@@ -98,7 +111,7 @@ class Console implements IConsole
         // 默认命令解析
         $cmd = $this->input->getCommand();
         if (in_array($cmd, self::DEFAULT_CMDS, true)) {
-            $cmd = sprintf("%s:%s", self::DEFAULT_CMD, $cmd);
+            $cmd = sprintf("%s:%s", self::DEFAULT_CMD_GROUP, $cmd);
         }
 
         // 没有任何命令输入
@@ -227,7 +240,7 @@ class Console implements IConsole
     {
         // 默认命令处理
         if (strpos($cmd, self::DELIMITER) === false) {
-            $cmd = $cmd . self::DELIMITER . "index";
+            $cmd = $cmd . self::DELIMITER . self::DEFAULT_CMD;
         }
 
         // 类和命令
@@ -258,10 +271,35 @@ class Console implements IConsole
     }
 
     /**
+     * 添加命令扫描路径
+     *
+     * @param string $namespace 命令空间
+     * @param string $path      路径
+     */
+    public function addScanNs(string $namespace, string $path)
+    {
+        if (!is_dir($path)) {
+            throw new \InvalidArgumentException("$path 路径不存在");
+        }
+        $this->scanCmds[$namespace] = $path;
+    }
+
+    /**
+     * 返回命名ID
+     *
+     * @return int
+     */
+    public static function id()
+    {
+        return self::$id;
+    }
+
+    /**
      * 扫描命名空间注入
      */
     private function registerNamespace()
     {
         $this->scanCmds['Swoft\Console\Command'] = dirname(__FILE__) . "/Command";
+        $this->scanCmds[COMMAND_NS] = App::getAlias("@commands");
     }
 }

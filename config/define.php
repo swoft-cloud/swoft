@@ -8,13 +8,19 @@ use \Swoft\App;
 !defined('APP_NAME') && define('APP_NAME', 'swoft');
 // 基础根目录
 !defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
+// cli命名空间
+!defined('COMMAND_NS') && define('COMMAND_NS', "App\Commands");
 
-// Alias
-App::setAlias('@root', BASE_PATH);
-App::setAlias('@app', '@root/app');
-App::setAlias('@res', '@root/resources');
-App::setAlias('@runtime', '@root/runtime/' . APP_NAME);
-App::setAlias('@configs', '@root/config');
-App::setAlias('@resources', '@root/resources');
-App::setAlias('@beans', '@configs/beans');
-App::setAlias('@properties', '@configs/properties');
+// 注册别名
+$aliases = [
+    '@root'       => BASE_PATH,
+    '@app'        => '@root/app',
+    '@res'        => '@root/resources',
+    '@runtime'    => '@root/runtime/' . APP_NAME,
+    '@configs'    => '@root/config',
+    '@resources'  => '@root/resources',
+    '@beans'      => '@configs/beans',
+    '@properties' => '@configs/properties',
+    '@commands'   => '@app/Commands'
+];
+App::setAliases($aliases);

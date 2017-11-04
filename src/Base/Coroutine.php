@@ -2,6 +2,7 @@
 
 namespace Swoft\Base;
 
+use Swoft\Console\Console;
 use Swoft\Helper\PhpHelper;
 use Swoft\Process\Process;
 use Swoft\Task\Task;
@@ -45,6 +46,9 @@ class Coroutine
         }
         if ($context == ApplicationContext::TASK) {
             return Task::getId();
+        }
+        if($context == ApplicationContext::CONSOLE){
+            return Console::id();
         }
 
         return Process::getId();

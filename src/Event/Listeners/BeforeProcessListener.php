@@ -3,6 +3,7 @@
 namespace Swoft\Event\Listeners;
 
 use Swoft\App;
+use Swoft\Base\ApplicationContext;
 use Swoft\Base\RequestContext;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Event\IApplicationListener;
@@ -34,8 +35,10 @@ class BeforeProcessListener implements IApplicationListener
             return;
         }
 
+        // 初始化
         $spanid = 0;
         $logid = uniqid();
+        ApplicationContext::setContext(ApplicationContext::PROCESS);
 
         /* @var Process $process */
         $process = $params[1];
