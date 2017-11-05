@@ -61,7 +61,7 @@ class RpcServer extends AbstractServer
     {
         file_put_contents($this->serverSetting['pfile'], $server->master_pid);
         file_put_contents($this->serverSetting['pfile'], ',' . $server->manager_pid, FILE_APPEND);
-        swoole_set_process_name($this->serverSetting['pname'] . " master process (" . $this->scriptFile . ")");
+        $this->setProcessName($this->serverSetting['pname'] . " master process (" . $this->scriptFile . ")");
     }
 
     /**
@@ -71,7 +71,7 @@ class RpcServer extends AbstractServer
      */
     public function onManagerStart(Server $server)
     {
-        swoole_set_process_name($this->serverSetting['pname'] . " manager process");
+        $this->setProcessName($this->serverSetting['pname'] . " manager process");
     }
 
     /**
@@ -86,10 +86,10 @@ class RpcServer extends AbstractServer
         $setting = $server->setting;
         if ($workerId >= $setting['worker_num']) {
             ApplicationContext::setContext(ApplicationContext::TASK);
-            swoole_set_process_name($this->serverSetting['pname'] . " task process");
+            $this->setProcessName($this->serverSetting['pname'] . " task process");
         } else {
             ApplicationContext::setContext(ApplicationContext::WORKER);
-            swoole_set_process_name($this->serverSetting['pname'] . " worker process");
+            $this->setProcessName($this->serverSetting['pname'] . " worker process");
         }
 
         // reload重新加载文件
