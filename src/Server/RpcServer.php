@@ -8,6 +8,7 @@ use Swoft\Base\InitApplicationContext;
 use Swoft\Bean\BeanFactory;
 use Swoft\Event\Event;
 use Swoft\Event\Events\BeforeTaskEvent;
+use Swoft\Helper\ProcessHelper;
 use Swoft\Process\Process;
 use Swoft\Task\Task;
 use Swoole\Server;
@@ -61,7 +62,7 @@ class RpcServer extends AbstractServer
     {
         file_put_contents($this->serverSetting['pfile'], $server->master_pid);
         file_put_contents($this->serverSetting['pfile'], ',' . $server->manager_pid, FILE_APPEND);
-        $this->setProcessName($this->serverSetting['pname'] . " master process (" . $this->scriptFile . ")");
+        ProcessHelper::setProcessTitle($this->serverSetting['pname'] . " master process (" . $this->scriptFile . ")");
     }
 
     /**
@@ -71,7 +72,7 @@ class RpcServer extends AbstractServer
      */
     public function onManagerStart(Server $server)
     {
-        $this->setProcessName($this->serverSetting['pname'] . " manager process");
+        ProcessHelper::setProcessTitle($this->serverSetting['pname'] . " manager process");
     }
 
     /**
@@ -89,12 +90,12 @@ class RpcServer extends AbstractServer
         $setting = $server->setting;
         if ($workerId >= $setting['worker_num']) {
             ApplicationContext::setContext(ApplicationContext::TASK);
-            $this->setProcessName($this->serverSetting['pname'] . " task process");
+            ProcessHelper::setProcessTitle($this->serverSetting['pname'] . " task process");
             return;
         }
 
         ApplicationContext::setContext(ApplicationContext::WORKER);
-        $this->setProcessName($this->serverSetting['pname'] . " worker process");
+        ProcessHelper::setProcessTitle($this->serverSetting['pname'] . " worker process");
     }
 
     /**

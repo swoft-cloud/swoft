@@ -15,11 +15,22 @@ class PhpHelper
 {
     /**
      * is Cli
+     *
      * @return  boolean
      */
     public static function isCli(): bool
     {
         return PHP_SAPI === 'cli';
+    }
+
+    /**
+     * 是否是mac环境
+     *
+     * @return bool
+     */
+    public static function isMac()
+    {
+        return stripos(PHP_OS, 'Darwin') !== false;
     }
 
     /**
