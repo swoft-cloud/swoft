@@ -12,14 +12,31 @@ namespace Swoft\Helper;
 class DirHelper
 {
 
+    /**
+     * 仅扫描当前层级文件夹
+     */
     const SCAN_CURRENT_DIR = 'current';
+    /**
+     * 广度优先搜索
+     */
     const SCAN_BFS = 'bfs';
+    /**
+     * 深度优先搜索
+     */
     const SCAN_DFS = 'dfs';
 
-    public static function glob($path, $pattern = null, $strategy = self::SCAN_DFS)
+    /**
+     * 根据规则扫描文件路径
+     *
+     * @param string $path 扫描路径
+     * @param null $pattern 扫描匹配规则
+     * @param string $strategy 扫描算法
+     * @return array
+     */
+    public static function glob(string $path, $pattern = null, $strategy = self::SCAN_DFS): array
     {
         if (! is_dir($path) || ! $pattern) {
-            throw new \InvalidArgumentException('invalid $path or $pattern for DirHelper::glob');
+            throw new \InvalidArgumentException('Invalid $path or $pattern for DirHelper::glob');
         }
 
         $files = self::scan($path, $strategy);
@@ -33,10 +50,18 @@ class DirHelper
         return $result;
     }
 
-    public static function scan($path, $strategy = self::SCAN_CURRENT_DIR, $excludeDir = true)
+    /**
+     * 扫描路径的所有文件
+     *
+     * @param string $path 扫描路径
+     * @param string $strategy 扫描算法
+     * @param bool $excludeDir 是否忽略文件夹
+     * @return array
+     */
+    public static function scan(string $path, $strategy = self::SCAN_CURRENT_DIR, $excludeDir = true): array
     {
         if (! is_dir($path)) {
-            throw new \InvalidArgumentException('invalid $path for DirHelper::scan');
+            throw new \InvalidArgumentException('Invalid $path for DirHelper::scan');
         }
 
         switch ($strategy) {
@@ -50,13 +75,19 @@ class DirHelper
                 $files = self::scanDfs($path, $excludeDir);
                 break;
             default:
-                throw new \InvalidArgumentException('invalid $strategy for DirHelper::glob');
+                throw new \InvalidArgumentException('Invalid $strategy for DirHelper::glob');
         }
 
         return $files;
     }
 
-    public static function formatPath($path)
+    /**
+     * 格式化路径，给结尾始终带上 '/'
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function formatPath(string $path): string
     {
         if ('/' == substr($path, -1)) {
             return $path;
@@ -65,7 +96,14 @@ class DirHelper
         return $path . '/';
     }
 
-    public static function matchPattern($pattern, $file)
+    /**
+     * $fileName 是否匹配 $pattern 规则
+     *
+     * @param string $pattern
+     * @param string $fileName
+     * @return bool
+     */
+    public static function matchPattern(string $pattern, string $fileName): bool
     {
         $replaceMap = [
             '*' => '.*',
@@ -77,14 +115,21 @@ class DirHelper
         $pattern = str_replace(array_keys($replaceMap), array_values($replaceMap), $pattern);
         $pattern = '/' . $pattern . '/i';
 
-        if (preg_match($pattern, $file)) {
+        if (preg_match($pattern, $fileName)) {
             return true;
         }
 
         return false;
     }
 
-    public static function basename($pathes, $suffix = '')
+    /**
+     * 获取路径中的文件名
+     *
+     * @param array $pathes
+     * @param string $suffix If the filename ends in suffix this will also be cut off
+     * @return array
+     */
+    public static function basename(array $pathes, $suffix = ''): array
     {
         if (! $pathes) {
             return [];
@@ -98,7 +143,14 @@ class DirHelper
         return $ret;
     }
 
-    private static function scanCurrentDir($path, $excludeDir = true)
+    /**
+     * 扫描当前层级文件夹
+     *
+     * @param string $path 路径
+     * @param bool $ignoreDir 是否忽略文件夹
+     * @return array
+     */
+    private static function scanCurrentDir(string $path, bool $ignoreDir = true): array
     {
         $path = self::formatPath($path);
         $dh = opendir($path);
@@ -112,7 +164,7 @@ class DirHelper
                 continue;
             }
             $fileType = filetype($path . $file);
-            if ('dir' == $fileType && false === $excludeDir) {
+            if ('dir' == $fileType && false === $ignoreDir) {
                 $files[] = $path . $file . '/';
             }
             if ('file' == $fileType) {
@@ -123,7 +175,14 @@ class DirHelper
         return $files;
     }
 
-    private static function scanBfs($path, $excludeDir = true)
+    /**
+     * 以广度优先搜索扫描路径
+     *
+     * @param string $path 路径
+     * @param bool $ignoreDir 是否忽略文件夹
+     * @return array
+     */
+    private static function scanBfs(string $path, bool $ignoreDir = true): array
     {
         $files = [];
         $queue = new \SplQueue();
@@ -137,7 +196,7 @@ class DirHelper
                 foreach ($subFiles as $subFile) {
                     $queue->enqueue($subFile);
                 }
-                if (false === $excludeDir && $file != $path) {
+                if (false === $ignoreDir && $file != $path) {
                     $files[] = $file;
                 }
             }
@@ -148,7 +207,14 @@ class DirHelper
         return $files;
     }
 
-    private static function scanDfs($path, $excludeDir = true)
+    /**
+     * 以深度优先搜索扫描路径
+     *
+     * @param string $path 路径
+     * @param bool $excludeDir 是否忽略文件夹
+     * @return array
+     */
+    private static function scanDfs(string $path, bool $excludeDir = true): array
     {
         $files = [];
         $subFiles = self::scanCurrentDir($path, false);

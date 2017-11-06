@@ -193,10 +193,12 @@ class Config implements \ArrayAccess, \Iterator
     }
 
     /**
-     * @param string $dir
-     * @param array  $excludeFiles
-     * @param string $strategy
-     * @param string $structure
+     * Load all files to container from $dir according by strategy
+     *
+     * @param string $dir the directory path that you want to scan
+     * @param array $excludeFiles method will skip it if the file full path match in $exculdeFiles
+     * @param string $strategy Scan strategy, DirHelper::SCAN_CURRENT_DIR Only Scan the current directory; DirHelper::SCAN_BFS Breadth First Search; DirHelper::SCAN_DFS Depth First Search
+     * @param string $structure self::STRUCTURE_MERGE merge all files result to an array, e.g. [ content1, content2 ]; self::STRUCTURE_SEPARATE merge all files result to an assoc array, use the file name as key, e.g. [ fileName1 => content1, fileName2 => content2 ]
      *
      * @return \Swoft\Base\Config
      */
@@ -217,7 +219,7 @@ class Config implements \ArrayAccess, \Iterator
         $dir = DirHelper::formatPath($dir);
         $files = DirHelper::glob($dir, '*.php', $strategy);
         foreach ($files as $file) {
-            if (!is_file($file) || !is_readable($file) || ArrayHelper::isIn($file, $excludeFiles)) {
+            if (! is_readable($file) || ArrayHelper::isIn($file, $excludeFiles)) {
                 continue;
             }
             $loadedConfig = require $file;
