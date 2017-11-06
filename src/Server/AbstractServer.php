@@ -22,42 +22,47 @@ abstract class AbstractServer implements IServer
      *
      * @var array
      */
-    protected $tcpSetting = [];
+    public $tcpSetting = [];
 
     /**
      *  http配置信息
      *
      * @var array
      */
-    protected $httpSetting = [];
+    public $httpSetting = [];
 
     /**
      * server配置信息
      *
      * @var array
      */
-    protected $serverSetting = [];
+    public $serverSetting = [];
 
     /**
      * 自定义进程配置
      *
      * @var array
      */
-    protected $processSetting = [];
+    public $processSetting = [];
 
     /**
      * 用户自定义任务定时器配置
      *
      * @var array
      */
-    protected $crontabSetting = [];
+    public $crontabSetting = [];
+
+    /**
+     * @var array
+     */
+    public $bootstrapItems = [];
 
     /**
      * swoole启动参数
      *
      * @var array
      */
-    protected $setting = [];
+    public $setting = [];
 
     /**
      * server服务器
@@ -93,47 +98,35 @@ abstract class AbstractServer implements IServer
         // 初始化App
         App::$server = $this;
 
-        // 初始化worker锁
-        $this->workerLock = new Lock(SWOOLE_RWLOCK);
-
-        // 加载swoft.ini
-        $this->loadSwoftIni();
+        // 加载启动项
+        $this->bootstrap();
     }
 
     /**
-     * 加载swoft.ini配置
+     * 加载启动项
+     *
+     * @return $this
      */
-    protected function loadSwoftIni()
+    protected function bootstrap()
     {
-        $settingsPath = App::getAlias('@settings');
-        $settings = parse_ini_file($settingsPath, true);
-        if (!isset($settings['tcp'])) {
-            throw new \InvalidArgumentException("未配置tcp启动参数，settings=" . json_encode($settings));
+        $defaultItems = [
+            Booting\InitMbFunsEncoding::class,
+            Booting\LoadEnv::class,
+            Booting\LoadInitConfiguration::class,
+            Booting\InitWorkerLock::class,
+            Booting\InitSwoftConfig::class,
+        ];
+        $bootstrapItems = $this->bootstrapItems;
+        $bootstrapItems = array_merge($defaultItems, $bootstrapItems);
+        foreach ($bootstrapItems as $bootstrapItem) {
+            if (class_exists($bootstrapItem)) {
+                $itemInstance = new $bootstrapItem();
+                if ($itemInstance instanceof Booting\Bootable) {
+                    $itemInstance->bootstrap();
+                }
+            }
         }
-
-        if (!isset($settings['http'])) {
-            throw new \InvalidArgumentException("未配置http启动参数，settings=" . json_encode($settings));
-        }
-
-        if (!isset($settings['server'])) {
-            throw new \InvalidArgumentException("未配置server启动参数，settings=" . json_encode($settings));
-        }
-
-        if (!isset($settings['setting'])) {
-            throw new \InvalidArgumentException("未配置setting启动参数，settings=" . json_encode($settings));
-        }
-
-        if (isset($settings['setting']['log_file'])) {
-            $logPath = $settings['setting']['log_file'];
-            $settings['setting']['log_file'] = App::getAlias($logPath);
-        }
-
-        $this->tcpSetting = $settings['tcp'];
-        $this->httpSetting = $settings['http'];
-        $this->serverSetting = $settings['server'];
-        $this->processSetting = $settings['process'];
-        $this->crontabSetting = $settings['crontab'];
-        $this->setting = $settings['setting'];
+        return $this;
     }
 
     /**
@@ -238,6 +231,36 @@ abstract class AbstractServer implements IServer
     }
 
     /**
+     * @return Lock
+     */
+    public function getWorkerLock(): Lock
+    {
+        return $this->workerLock;
+    }
+
+    /**
+     * @param Lock $workerLock
+     */
+    public function setWorkerLock(Lock $workerLock)
+    {
+        $this->workerLock = $workerLock;
+    }
+
+    /**
+     * 设置进程名称
+     *
+     * @param string $name 名称
+     */
+    public function setProcessName(string $name)
+    {
+        if (function_exists('cli_set_process_title') && PHP_OS == 'Darwin') {
+            @cli_set_process_title($name);
+        } else {
+            @swoole_set_process_name($name);
+        }
+    }
+
+    /**
      * listen tcp配置
      *
      * @return array
@@ -255,7 +278,6 @@ abstract class AbstractServer implements IServer
 
     /**
      * 设置守护进程启动
-     *
      */
     public function setDaemonize()
     {
@@ -281,7 +303,6 @@ abstract class AbstractServer implements IServer
      * @param mixed  $data     data
      *
      * @return mixed
-     *
      */
     public function onTask(Server $server, int $taskId, int $workerId, $data)
     {

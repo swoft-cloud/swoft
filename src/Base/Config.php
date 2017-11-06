@@ -2,6 +2,11 @@
 
 namespace Swoft\Base;
 
+use Swoft\App;
+use Swoft\Helper\ArrayHelper;
+use Swoft\Helper\DirHelper;
+use Swoft\Helper\StringHelper;
+
 /**
  * 全局配置管理器
  *
@@ -13,6 +18,10 @@ namespace Swoft\Base;
  */
 class Config implements \ArrayAccess, \Iterator
 {
+    const STRUCTURE_MERGE = 'structure_merge';
+
+    const STRUCTURE_SEPARATE = 'structure_separate';
+
     /**
      * @var array 所有配置参数
      */
@@ -135,10 +144,7 @@ class Config implements \ArrayAccess, \Iterator
      */
     public function get($name, $defalut = null)
     {
-        if (isset($this->properties[$name])) {
-            return $this->properties[$name];
-        }
-        return $defalut;
+        return ArrayHelper::get($this->properties, $name, $defalut);
     }
 
     /**
@@ -149,7 +155,7 @@ class Config implements \ArrayAccess, \Iterator
      */
     public function set($name, $value)
     {
-        $this->properties[$name] = $value;
+        ArrayHelper::set($this->properties, $name, $value);
     }
 
     /**
@@ -177,4 +183,62 @@ class Config implements \ArrayAccess, \Iterator
         }
         return null;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->properties;
+    }
+
+    /**
+     * @param string $dir
+     * @param array  $excludeFiles
+     * @param string $strategy
+     * @param string $structure
+     *
+     * @return \Swoft\Base\Config
+     */
+    public function load(
+        string $dir,
+        array $excludeFiles = [],
+        string $strategy = DirHelper::SCAN_BFS,
+        string $structure = self::STRUCTURE_MERGE
+    ): self {
+        $mapping = [];
+        if (StringHelper::contains($dir, ['@'])) {
+            $dir = App::getAlias($dir);
+        }
+        if (!is_dir($dir)) {
+            throw new \InvalidArgumentException('Invalid dir parameter');
+        }
+
+        $dir = DirHelper::formatPath($dir);
+        $files = DirHelper::glob($dir, '*.php', $strategy);
+        foreach ($files as $file) {
+            if (!is_file($file) || !is_readable($file) || ArrayHelper::isIn($file, $excludeFiles)) {
+                continue;
+            }
+            $loadedConfig = require $file;
+            if (!is_array($loadedConfig)) {
+                throw new \InvalidArgumentException("Syntax error find in config file: " . $file);
+            }
+            $fileName = DirHelper::basename([$file]);
+            $key = current(explode('.', current($fileName)));
+            switch ($structure) {
+                case self::STRUCTURE_SEPARATE:
+                    $configMap = [$key => $loadedConfig];
+                    break;
+                case self::STRUCTURE_MERGE:
+                default:
+                    $configMap = $loadedConfig;
+                    break;
+            }
+            $mapping = ArrayHelper::merge($mapping, $configMap);
+        }
+        $this->properties = $mapping;
+        return $this;
+    }
+
 }

@@ -3,12 +3,13 @@
 namespace Swoft\Bean;
 
 use Monolog\Formatter\LineFormatter;
+use Swoft\App;
 use Swoft\Base\Config;
 use Swoft\Filter\FilterChain;
 use Swoft\Helper\ArrayHelper;
+use Swoft\Helper\DirHelper;
 use Swoft\Pool\Balancer\RoundRobinBalancer;
 use Swoft\Web\Application;
-use Swoft\Web\ErrorHandler;
 
 /**
  * bean工厂
@@ -32,7 +33,7 @@ class BeanFactory implements BeanFactoryInterface
      *
      * @param array $definitions
      */
-    public function __construct(array $definitions)
+    private function __construct(array $definitions)
     {
         $definitions = self::merge($definitions);
 
@@ -82,11 +83,17 @@ class BeanFactory implements BeanFactoryInterface
     private static function coreBeans()
     {
         return [
-            'config'             => ['class' => Config::class],
+            'config'             => [
+                'class'      => Config::class,
+                'properties' => value(function () {
+                    $config = new Config();
+                    $config->load('@properties', []);
+                    return $config->toArray();
+                })
+            ],
             'application'        => ['class' => Application::class],
-//            'errorHandler'       => ['class' => ErrorHandler::class],
             'roundRobinBalancer' => ['class' => RoundRobinBalancer::class],
-            'Filter'             => [
+            'filter'             => [
                 'class'            => FilterChain::class,
                 'filterUriPattern' => '${uriPattern}'
             ],
@@ -109,5 +116,16 @@ class BeanFactory implements BeanFactoryInterface
     {
         $definitions = ArrayHelper::merge(self::coreBeans(), $definitions);
         return $definitions;
+    }
+
+    /**
+     * Reload bean definitions
+     */
+    public static function reload()
+    {
+        $config = new Config();
+        $config->load(App::getAlias('@beans'), [], DirHelper::SCAN_BFS, Config::STRUCTURE_MERGE);
+        $definitions = $config->toArray();
+        new self($definitions);
     }
 }

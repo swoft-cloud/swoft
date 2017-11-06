@@ -1,8 +1,8 @@
 <?php
 return [
-    "version" => '1.0',
-    'autoInitBean' => true,
-    'beanScan' => [
+    "version"           => '1.0',
+    'autoInitBean'      => true,
+    'beanScan'          => [
         'App\Controllers',
         'App\Models',
         'App\Beans',
@@ -10,12 +10,12 @@ return [
         'App\Services',
         'App\Process',
     ],
-    'I18n' =>[
+    'I18n'              => [
         'sourceLanguage' => '@root/resources/messages/',
     ],
-    'env' => 'Base',
+    'env'               => 'Base',
     'user.stelin.steln' => 'fafafa',
-    'Service' =>[
+    'Service'           => [
         'user' => [
             'timeout' => 3000
         ]

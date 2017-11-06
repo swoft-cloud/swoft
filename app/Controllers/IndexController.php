@@ -39,7 +39,7 @@ class IndexController extends Controller
     {
         $data = $this->logic->getUser();
 
-        $data['properties'] = App::$properties;
+        $data = array_merge($data, (array)App::$properties);
 
         App::profileStart("logger");
         App::profileStart("logger1");

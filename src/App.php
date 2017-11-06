@@ -6,7 +6,6 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Base\Config;
 use Swoft\Base\RequestContext;
 use Swoft\Base\Timer;
-use Swoft\Crontab\Crontab;
 use Swoft\Event\ApplicationEvent;
 use Swoft\Log\Logger;
 use Swoft\Pool\RedisPool;
@@ -14,7 +13,6 @@ use Swoft\Server\IServer;
 use Swoft\Service\ConsulProvider;
 use Swoft\Service\IPack;
 use Swoft\Web\Application;
-use Swoft\Web\ErrorHandler;
 
 /**
  * 应用简写类
@@ -48,6 +46,13 @@ class App
      * @var Config
      */
     public static $properties;
+
+    /**
+     * Swoft系统配置对象
+     *
+     * @var Config
+     */
+    public static $appProperties;
 
     /**
      * 是否初始化了crontab
@@ -102,24 +107,9 @@ class App
     }
 
     /**
-     * 初始化配置对象
-     *
-     * @param Config $properties 容器中config对象
-     */
-    public static function setProperties($properties = null)
-    {
-        if ($properties == null) {
-            $properties = self::getProperties();
-        }
-
-        self::$properties = $properties;
-    }
-
-    /**
      * 查询一个bean
      *
      * @param string $name 名称
-     *
      * @return mixed
      */
     public static function getBean(string $name)
@@ -138,11 +128,41 @@ class App
     /**
      * 获取config bean
      *
-     * @return mixed
+     * @return Config
      */
     public static function getProperties()
     {
         return ApplicationContext::getBean('config');
+    }
+
+    /**
+     * 初始化配置对象
+     *
+     * @param Config $properties 容器中config对象
+     */
+    public static function setProperties($properties = null)
+    {
+        if ($properties == null) {
+            $properties = self::getProperties();
+        }
+
+        self::$properties = $properties;
+    }
+
+    /**
+     * @return Config
+     */
+    public static function getAppProperties(): Config
+    {
+        return self::$appProperties;
+    }
+
+    /**
+     * @param Config $appProperties
+     */
+    public static function setAppProperties(Config $appProperties)
+    {
+        self::$appProperties = $appProperties;
     }
 
     /**
@@ -198,29 +218,20 @@ class App
     /**
      * 发布事件
      *
-     * @param string           $name    事件名称
-     * @param ApplicationEvent $event   事件对象
-     *
-     */
-
-
-    /**
-     * 发布事件
-     *
-     * @param string                $name   发布的事件名称
-     * @param ApplicationEvent|null $event  发布的时间对象
-     * @param array                 $params 附加数据信息
+     * @param string $name 发布的事件名称
+     * @param ApplicationEvent|null $event 发布的时间对象
+     * @param array $params 附加数据信息
      */
     public static function trigger(string $name, ApplicationEvent $event = null, ...$params)
     {
         ApplicationContext::publishEvent($name, $event, ...$params);
     }
 
-        /**
+    /**
      * 语言翻译
      *
      * @param string $category 翻译文件类别，比如xxx.xx/xx
-     * @param array  $params   参数
+     * @param array $params 参数
      * @param string $language 当前语言环境
      */
     public static function t(string $category, array $params, string $language = 'en')
@@ -232,7 +243,7 @@ class App
      * 注册别名
      *
      * @param string $alias 别名
-     * @param string $path  路径
+     * @param string $path 路径
      */
     public static function setAlias(string $alias, string $path = null)
     {
@@ -260,7 +271,7 @@ class App
         }
 
         list($root) = explode('/', $path);
-        if (!isset(self::$aliases[$root])) {
+        if (! isset(self::$aliases[$root])) {
             throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
         }
 
@@ -289,13 +300,13 @@ class App
         }
 
         list($root) = explode('/', $alias);
-        if (!isset(self::$aliases[$root])) {
+        if (! isset(self::$aliases[$root])) {
             throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
         }
 
         $rootPath = self::$aliases[$root];
         $aliasPath = str_replace($root, "", $alias);
-        $path = $rootPath. $aliasPath;
+        $path = $rootPath . $aliasPath;
 
         return $path;
     }
@@ -359,7 +370,7 @@ class App
      * 标记日志
      *
      * @param string $key 统计key
-     * @param mixed  $val 统计值
+     * @param mixed $val 统计值
      */
     public static function pushlog($key, $val)
     {
@@ -405,9 +416,9 @@ class App
     /**
      * 命中率计算
      *
-     * @param string $name  名称
-     * @param int    $hit   命中
-     * @param int    $total 总共
+     * @param string $name 名称
+     * @param int $hit 命中
+     * @param int $total 总共
      */
     public static function counting(string $name, int $hit, $total = null)
     {

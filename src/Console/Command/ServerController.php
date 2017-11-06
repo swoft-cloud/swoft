@@ -95,6 +95,9 @@ class ServerController extends ConsoleCommand
         $httpStatus = $this->httpServer->getHttpSetting();
         $tcpStatus = $this->httpServer->getTcpSetting();
 
+        // setting
+        $workerNum = $this->httpServer->setting['worker_num'];
+
         // http启动参数
         $httpHost = $httpStatus['host'];
         $httpPort = $httpStatus['port'];
@@ -110,11 +113,11 @@ class ServerController extends ConsoleCommand
 
         // 信息面板
         $lines = [
-            '                    Information Panel                     ',
-            '**********************************************************',
-            "* http | Host: <note>$httpHost</note>, port: <note>$httpPort</note>, Model: <note>$httpModel</note>, type: <note>$httpType</note>",
-            "* tcp  | Enable: <note>$tcpEnable</note>, host: <note>$tcpHost</note>, port: <note>$tcpPort</note>, type: <note>$tcpType</note>",
-            '**********************************************************',
+            '                         Information Panel                     ',
+            '******************************************************************',
+            "* http | Host: <note>$httpHost</note>, port: <note>$httpPort</note>, Model: <note>$httpModel</note>, type: <note>$httpType</note>, Worker: <note>$workerNum</note>",
+            "* tcp  | Enable: <note>$tcpEnable</note>, host: <note>$tcpHost</note>, port: <note>$tcpPort</note>, type: <note>$tcpType</note>, Worker: <note>$workerNum</note>",
+            '******************************************************************',
         ];
 
         // 启动服务器
@@ -204,7 +207,7 @@ class ServerController extends ConsoleCommand
     }
 
     /**
-     * 设置启动选项，覆盖swoft.ini配置选项
+     * 设置启动选项，覆盖 config/server.php 配置选项
      */
     private function setStartArgs()
     {
