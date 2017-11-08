@@ -1,0 +1,10 @@
+
+    /**
+     * {{function}}
+     *
+     * @return {{returnType}}
+     */
+    public function {{function}}(): {{returnType}}
+    {
+        return $this->{{attribute}};
+    }

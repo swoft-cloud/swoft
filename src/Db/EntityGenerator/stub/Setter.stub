@@ -1,0 +1,14 @@
+
+    /**
+     * {{function}}
+     *
+     * @param {{type}} $value
+     *
+     * @return $this
+     */
+    public function {{function}}({{type}} $value): self
+    {
+        $this->{{attribute}} = $value;
+
+        return $this;
+    }

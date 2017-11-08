@@ -87,9 +87,13 @@ class SyncMysqlConnect extends AbstractDbConnect
         $this->bindParams($params);
         $this->formatSqlByParams($params);
         $result = $this->stmt->execute();
-        App::info($this->sql);
+        if (App::isWorkerStatus()) {
+            App::info($this->sql);
+        }
         if ($result !== true) {
-            App::error("数据库执行错误，sql=" . $this->stmt->debugDumpParams());
+            if (App::isWorkerStatus()) {
+                App::error("数据库执行错误，sql=" . $this->stmt->debugDumpParams());
+            }
             return $result;
         }
 

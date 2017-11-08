@@ -42,7 +42,6 @@ class User extends Model
      */
     private $name;
 
-
     /**
      * 年龄
      *
@@ -59,7 +58,6 @@ class User extends Model
      * @var int
      */
     private $sex = 0;
-
 
     /**
      * 描述

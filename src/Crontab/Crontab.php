@@ -46,6 +46,9 @@ class Crontab
      */
     public function init(): bool
     {
+        if (empty(App::$server)) {
+            return false;
+        }
         $serverSetting = App::$server->getServerSetting();
         $cronable = (int)$serverSetting['cronable'];
         if ($cronable !== 1) {
