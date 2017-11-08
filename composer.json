@@ -20,11 +20,10 @@
 
     }
   },
-  "repositories": {
-    "packagist": {
-      "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
-    }
+  "scripts": {
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ]
   },
   "require-dev": {
     "eaglewu/swoole-ide-helper": "dev-master",
