@@ -1,5 +1,5 @@
 {
-  "name": "stelin/swoft",
+  "name": "swoft/swoft",
   "type": "project",
   "keywords": ["php", "swoole", "swoft"],
   "description": "microservice framework base on swoole",
