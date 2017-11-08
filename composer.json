@@ -1,30 +1,23 @@
 {
   "name": "stelin/swoft",
-  "type": "library",
+  "type": "project",
   "keywords": ["php", "swoole", "swoft"],
   "description": "microservice framework base on swoole",
   "license": "apache2.0",
   "require": {
-    "phpseclib/phpseclib": "2.0.0",
-    "doctrine/annotations": "^1.4",
-    "php-di/phpdoc-reader": "^2.0",
-    "monolog/monolog": "^1.23",
-    "vlucas/phpdotenv": "^2.4"
+    "swoft/framework": "dev-master"
   },
   "autoload": {
     "classmap": [
+
     ],
     "psr-4": {
-      "App\\": "app/",
-      "Swoft\\":"src/"
-    },
-    "files": [
-      "src/Helper/Functions.php"
-    ]
+      "App\\": "app/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
-      "Swoft\\Test\\": "test/"
+
     }
   },
   "repositories": {
