@@ -2,6 +2,7 @@
 
 namespace Swoft\Crontab;
 
+use Swoft\Base\ApplicationContext;
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Collector;
 use Swoft\Memory\Table;
@@ -46,7 +47,9 @@ class Crontab
      */
     public function init(): bool
     {
-        if (empty(App::$server)) {
+         // 非cli命令行
+        $context = ApplicationContext::getContext();
+        if($context == ApplicationContext::CONSOLE){
             return false;
         }
         $serverSetting = App::$server->getServerSetting();
@@ -54,10 +57,8 @@ class Crontab
         if ($cronable !== 1) {
             return false;
         }
-
         $this->initTasks();
         $this->initLoad();
-
         return true;
     }
 

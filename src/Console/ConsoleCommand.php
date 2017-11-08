@@ -102,7 +102,7 @@ class ConsoleCommand
 
         // help参数处理
         $isHelp = $this->input->hasOpt('h') || $this->input->hasOpt('help');
-        if ($isHelp && $command != 'index') {
+        if ($isHelp && $command != Console::DEFAULT_CMD) {
             $this->showCommandHelp(static::class, $commandMethod);
             return;
         }
@@ -111,8 +111,15 @@ class ConsoleCommand
         if (!method_exists($this, $commandMethod)) {
             $this->output->writeln('<error>命令不存在</error>', true, true);
         }
+
+        // 前置逻辑
+        $this->beforeRun($command);
+
         // 执行命令
         PhpHelper::call([$this, $commandMethod]);
+
+        // 后置逻辑
+        $this->afterRun($command);
     }
 
     /**
@@ -163,6 +170,25 @@ class ConsoleCommand
     }
 
     /**
+     * 命令执行前逻辑
+     *
+     * @param string $command 当前执行命令
+     */
+    protected function beforeRun(string $command)
+    {
+
+    }
+
+    /**
+     * 后置执行逻辑
+     *
+     * @param string $command
+     */
+    protected function afterRun(string $command){
+
+    }
+
+    /**
      * 解析命令key和描述
      *
      * @param string $document 注解文档
@@ -174,7 +200,9 @@ class ConsoleCommand
         $keyAndDesc = [];
         $items = explode("\n", $document);
         foreach ($items as $item) {
-            list($key, $desc) = explode(' ', $item);
+            $pos = strpos($item, ' ');
+            $key = substr($item, 0, $pos);
+            $desc = substr($item, $pos + 1);
             $keyAndDesc[$key] = $desc;
         }
         return $keyAndDesc;

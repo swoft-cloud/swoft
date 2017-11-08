@@ -64,9 +64,10 @@ class App
      *
      * @var array
      */
-    private static $aliases = [
-        '@Swoft' => __DIR__
-    ];
+    private static $aliases
+        = [
+            '@Swoft' => __DIR__
+        ];
 
     /**
      * 获取mysqlBean对象
@@ -83,7 +84,7 @@ class App
      */
     public static function version()
     {
-        return '0.';
+        return '0.1.1';
     }
 
     /**
@@ -110,6 +111,7 @@ class App
      * 查询一个bean
      *
      * @param string $name 名称
+     *
      * @return mixed
      */
     public static function getBean(string $name)
@@ -218,9 +220,9 @@ class App
     /**
      * 发布事件
      *
-     * @param string $name 发布的事件名称
-     * @param ApplicationEvent|null $event 发布的时间对象
-     * @param array $params 附加数据信息
+     * @param string                $name   发布的事件名称
+     * @param ApplicationEvent|null $event  发布的时间对象
+     * @param array                 $params 附加数据信息
      */
     public static function trigger(string $name, ApplicationEvent $event = null, ...$params)
     {
@@ -231,7 +233,7 @@ class App
      * 语言翻译
      *
      * @param string $category 翻译文件类别，比如xxx.xx/xx
-     * @param array $params 参数
+     * @param array  $params   参数
      * @param string $language 当前语言环境
      */
     public static function t(string $category, array $params, string $language = 'en')
@@ -240,10 +242,28 @@ class App
     }
 
     /**
+     * 注册多个别名
+     *
+     * @param array $aliases 别名数组
+     * <pre>
+     * [
+     *   '@root' => BASE_PATH
+     *   ......
+     * ]
+     * </pre>
+     */
+    public static function setAliases(array $aliases)
+    {
+        foreach ($aliases as $name => $path) {
+            self::setAlias($name, $path);
+        }
+    }
+
+    /**
      * 注册别名
      *
      * @param string $alias 别名
-     * @param string $path 路径
+     * @param string $path  路径
      */
     public static function setAlias(string $alias, string $path = null)
     {
@@ -271,7 +291,7 @@ class App
         }
 
         list($root) = explode('/', $path);
-        if (! isset(self::$aliases[$root])) {
+        if (!isset(self::$aliases[$root])) {
             throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
         }
 
@@ -285,6 +305,7 @@ class App
      * 获取别名路径
      *
      * @param string $alias
+     *
      * @return string
      */
     public static function getAlias(string $alias)
@@ -300,7 +321,7 @@ class App
         }
 
         list($root) = explode('/', $alias);
-        if (! isset(self::$aliases[$root])) {
+        if (!isset(self::$aliases[$root])) {
             throw new \InvalidArgumentException("设置的根别名不存在，alias=" . $root);
         }
 
@@ -370,7 +391,7 @@ class App
      * 标记日志
      *
      * @param string $key 统计key
-     * @param mixed $val 统计值
+     * @param mixed  $val 统计值
      */
     public static function pushlog($key, $val)
     {
@@ -416,9 +437,9 @@ class App
     /**
      * 命中率计算
      *
-     * @param string $name 名称
-     * @param int $hit 命中
-     * @param int $total 总共
+     * @param string $name  名称
+     * @param int    $hit   命中
+     * @param int    $total 总共
      */
     public static function counting(string $name, int $hit, $total = null)
     {

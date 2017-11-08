@@ -247,20 +247,6 @@ abstract class AbstractServer implements IServer
     }
 
     /**
-     * 设置进程名称
-     *
-     * @param string $name 名称
-     */
-    public function setProcessName(string $name)
-    {
-        if (function_exists('cli_set_process_title') && PHP_OS == 'Darwin') {
-            @cli_set_process_title($name);
-        } else {
-            @swoole_set_process_name($name);
-        }
-    }
-
-    /**
      * listen tcp配置
      *
      * @return array
