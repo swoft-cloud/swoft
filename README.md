@@ -69,7 +69,7 @@ QQ交流群:548173319
 
 ### Composer 安装
 
-* `composer create-project stelin/swoft swoft dev-master` (未开代理，会有点慢)
+* `composer create-project swoft/swoft swoft` (未开代理，会有点慢)
 
 ### Docker 安装
 
