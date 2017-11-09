@@ -2,7 +2,6 @@
     <a href="https://github.com/stelin/swoft" target="_blank">
         <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
     </a>
- https://img.shields.io/readthedocs/pip.svg?maxAge=2592000
 </p>
 
 [![Latest Version](https://img.shields.io/badge/dev-0.1.2-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
