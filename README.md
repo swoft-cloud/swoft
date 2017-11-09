@@ -64,7 +64,7 @@ QQ交流群:548173319
 
 # 配置
 复制项目根目录的 `.env.example` 并命名为 `.env`
-```py
+```
 # Server
 PFILE=/tmp/swoft.pid
 PNAME=php-swoft
