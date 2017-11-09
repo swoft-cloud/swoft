@@ -2,8 +2,12 @@
     <a href="https://github.com/stelin/swoft" target="_blank">
         <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
     </a>
+ https://img.shields.io/readthedocs/pip.svg?maxAge=2592000
 </p>
 
+[![Latest Version](https://poser.pugx.org/yiisoft/yii2/v/stable.png)](https://packagist.org/packages/yiisoft/yii2)
+[![Swoft Doc](https://img.shields.io/readthedocs/pip.svg?maxAge=2592000)](https://packagist.org/packages/yiisoft/yii2)
+[![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
 Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
