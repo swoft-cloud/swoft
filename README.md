@@ -93,6 +93,7 @@ DAEMONIZE=0
 DISPATCH_MODE=2
 LOG_FILE=@runtime/swoole.log
 TASK_WORKER_NUM=1
+```
 
 ## 启动
 
