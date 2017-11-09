@@ -7,7 +7,7 @@
 [![Latest Version](https://img.shields.io/badge/dev-0.1.2-yellow.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.9-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
-[![Swoft Doc](https://img.shields.io/readthedocs/pip.svg?maxAge=2592000)](http://doc.swoft.org/)
+[![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](http://doc.swoft.org/)
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
