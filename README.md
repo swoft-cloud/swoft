@@ -28,7 +28,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 - 数据库 ORM
 - 协程、异步任务投递
 - 自定义用户进程
-- RPC、Redis、HTTP、Mysql 协程和同步客户端无缝切换
+- RPC、Redis、HTTP、Mysql 协程和同步阻塞客户端无缝切换
 - Inotify 自动 Reload
 - 强大的日志系统
 
