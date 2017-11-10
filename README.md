@@ -153,19 +153,19 @@ php bin/swoft stop
 
 ```php
 // 启动服务，根据 .env 配置决定是否是守护进程
-php bin/swoft start
+php bin/swoft rpc:start
 
 // 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
-php bin/swoft start -d
+php bin/swoft rpc:start -d
 
 // 重启
-php bin/swoft restart
+php bin/swoft rpc:restart
 
 // 重新加载
-php bin/swoft reload
+php bin/swoft rpc:reload
 
 // 关闭服务
-php bin/swoft stop
+php bin/swoft rpc:stop
 
 ```
 
