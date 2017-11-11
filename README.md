@@ -176,7 +176,7 @@ php bin/swoft stop
 - [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 # 协议
-Swoft的开源协议为apache 2.0，详情参见[LICENSE](LICENSE)。
+Swoft的开源协议为Apache-2.0，详情参见[LICENSE](LICENSE)。
 
 
 
