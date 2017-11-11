@@ -46,7 +46,7 @@ class OrmController extends Controller
         $count->setFans(mt_rand(1, 1000));
         $count->setFollows(mt_rand(1, 1000));
 
-        $this->outputJson($count->save());
+        return $count->save();
     }
 
     /**
@@ -66,7 +66,7 @@ class OrmController extends Controller
         $result = $defer->getResult();
         $em->close();
 
-        $this->outputJson([$result]);
+        return [$result];
     }
 
     /**
@@ -81,7 +81,7 @@ class OrmController extends Controller
         //        $result = $user->delete();
         $defer = $user->delete(true);
 
-        $this->outputJson($defer->getResult());
+        return $defer->getResult();
     }
 
     /**
@@ -97,7 +97,7 @@ class OrmController extends Controller
         $result = $em->delete($user, true);
         $em->close();
 
-        $this->outputJson([$result->getResult()]);
+        return [$result->getResult()];
     }
 
     /**
@@ -109,7 +109,7 @@ class OrmController extends Controller
         //        $result = $em->deleteById(Count::class, 396);
         $result = $em->deleteById(Count::class, 406, true);
         $em->close();
-        $this->outputJson([$result->getResult()]);
+        return [$result->getResult()];
     }
 
     /**
@@ -121,7 +121,7 @@ class OrmController extends Controller
         //        $result = $em->deleteByIds(Count::class, [409, 410]);
         $result = $em->deleteByIds(Count::class, [411, 412], true);
         $em->close();
-        $this->outputJson([$result->getResult()]);
+        return [$result->getResult()];
     }
 
     /**
@@ -132,7 +132,7 @@ class OrmController extends Controller
         //        $result = User::deleteById(284);
         $result = User::deleteById(287, true);
 
-        $this->outputJson($result->getResult());
+        return $result->getResult();
     }
 
     /**
@@ -143,7 +143,7 @@ class OrmController extends Controller
         //        $result = User::deleteByIds([291, 292]);
         $result = User::deleteByIds([288, 289], true);
 
-        $this->outputJson($result->getResult());
+        return $result->getResult();
     }
 
     /**
@@ -162,7 +162,7 @@ class OrmController extends Controller
         //        $result = $user->update(true);
         //        $result = $result->getResult();
 
-        $this->outputJson([$result]);
+        return [$result];
     }
 
     /**
@@ -185,7 +185,7 @@ class OrmController extends Controller
         $result = $defer->getResult(User::class);
         $ql = $query->getSql();
         var_dump($result);
-        $this->outputJson([$ql, $result]);
+        return [$ql, $result];
     }
 
     /**
@@ -204,7 +204,7 @@ class OrmController extends Controller
         $sql = $query->getSql();
         $em->close();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 
     /**
@@ -224,7 +224,7 @@ class OrmController extends Controller
         /* @var User $deferResult */
         $deferResult = $query->getDefer()->getResult(User::class);
 
-        $this->outputJson([$result, $userObject->getName(), $deferResult->getName()]);
+        return [$result, $userObject->getName(), $deferResult->getName()];
     }
 
     /**
@@ -240,7 +240,7 @@ class OrmController extends Controller
         $sql = $query->getSql();
         $em->close();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 
     /**
@@ -257,7 +257,7 @@ class OrmController extends Controller
 
         $result = $query->getResult();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 
     /**
@@ -273,7 +273,7 @@ class OrmController extends Controller
         $sql = $query->getSql();
         $em->close();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 
     /**
@@ -288,7 +288,7 @@ class OrmController extends Controller
         //        $result = $query->getResult();
         $defer = $query->getDefer();
         $result = $defer->getResult();
-        $this->outputJson([$result, $query->getSql()]);
+        return [$result, $query->getSql()];
     }
 
     /**
@@ -319,7 +319,7 @@ class OrmController extends Controller
         }
         $em->close();
 
-        $this->outputJson([$uid, $result]);
+        return [$uid, $result];
     }
 
     public function actionQuery()
@@ -333,7 +333,7 @@ class OrmController extends Controller
         $sql = $query->getSql();
         $em->close();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 
     /**
@@ -349,7 +349,7 @@ class OrmController extends Controller
 
         $result1 = $query1->getResult();
         $result2 = $query2->getResult();
-        $this->outputJson([$result1, $result2]);
+        return [$result1, $result2];
     }
 
 
@@ -378,6 +378,6 @@ class OrmController extends Controller
         $sql = $query->getSql();
         $em->close();
 
-        $this->outputJson([$result, $sql]);
+        return [$result, $sql];
     }
 }

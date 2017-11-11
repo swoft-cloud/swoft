@@ -35,7 +35,8 @@ return [
         'max_request'     => env('MAX_REQUEST', 10000),
         'daemonize'       => env('DAEMONIZE', 0),
         'dispatch_mode'   => env('DISPATCH_MODE', 2),
-        'log_file'        => env('LOG_FILE', '@runtime/swoole.log'),
+        'log_file'        => env('LOG_FILE', '@runtime/logs/swoole.log'),
         'task_worker_num' => env('TASK_WORKER_NUM', 1),
+        'upload_tmp_dir'  => env('UPLOAD_TMP_DIR', '@runtime/uploadfiles'),
     ],
 ];
