@@ -71,4 +71,13 @@ class IndexController extends Controller
         throw new BadRequestException();
     }
 
+    /**
+     * @RequestMapping()
+     * @return \Swoft\Base\Response
+     */
+    public function actionRedirect()
+    {
+        return $this->response()->redirect('/');
+    }
+
 }
