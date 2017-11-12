@@ -5,7 +5,7 @@
   "description": "microservice framework base on swoole",
   "license": "apache2.0",
   "require": {
-    "swoft/framework": "dev-feature"
+    "swoft/framework": "dev-master"
   },
   "autoload": {
     "classmap": [
@@ -26,5 +26,7 @@
     ]
   },
   "require-dev": {
+    "eaglewu/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^5.7"
   }
 }
