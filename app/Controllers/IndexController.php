@@ -2,255 +2,129 @@
 
 namespace App\Controllers;
 
-use App\Models\Logic\IndexLogic;
 use Swoft\Bean\Annotation\AutoController;
-use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Http\HttpClient;
-use Swoft\Redis\Cache\RedisClient;
-use Swoft\Service\Service;
-use Swoft\App;
+use Swoft\Bean\Annotation\View;
+use Swoft\Contract\Arrayable;
+use Swoft\Exception\Http\BadRequestException;
 use Swoft\Web\Controller;
 
 /**
- * demo使用案例
- *
+ * Class IndexController
  * @AutoController()
  *
- * @uses      IndexController
- * @version   2017年04月25日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ * @package App\Controllers
  */
 class IndexController extends Controller
 {
-    /**
-     *
-     * @Inject()
-     * @var IndexLogic
-     */
-    private $logic;
 
     /**
      * @RequestMapping()
+     * @View(template="index/index")
      */
     public function actionIndex()
     {
-        $data = $this->logic->getUser();
-
-        $data = array_merge($data, (array)App::$properties);
-
-        App::profileStart("logger");
-        App::profileStart("logger1");
-
-        App::info("my info Log");
-        App::info("my2 info Log");
-
-        App::error("my error Log");
-        App::warning("my warning Log");
-
-        App::pushlog("pushlogKey", "pushlogVal");
-        App::pushlog("pushlogKey2", "pushlogVal2");
-
-        App::profileEnd("logger");
-        App::profileEnd("logger1");
-
-        App::counting("redis.get", 1, 10);
-        App::counting("redis.get", 1, 10);
-        App::counting("redis.set", 1, 10);
-
-        App::getTimer()->addAfterTimer('afterTimer', 5000, [$this, 'testA']);
-
-        $this->outputJson($data, 'suc');
-    }
-
-    public function testA()
-    {
-        App::trace("this trace timer");
-        App::info("this trace info");
-        App::debug("this trace debug");
-        echo "after time do.................................\n";
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionRedis()
-    {
-        RedisClient::set('name', 'redis client stelin', 180);
-        $name = RedisClient::get('name');
-        RedisClient::get($name);
-
-        $ret = RedisClient::deferCall('get', ['name']);
-        $result = $ret->getResult();
-        $data = [
-            'redis' => $name,
-            'defer' => $result
+        $name = 'Swoft';
+        $notes = [
+            'New Generation of PHP Framework',
+            'Hign Performance, Coroutine and Full Stack'
         ];
-        $this->outputJson($data);
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionLogin()
-    {
-
-        $this->outputJson(array('login suc'), 'suc');
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionHtml()
-    {
-        $data = [
-            'name' => 'stelin'
+        $links = [
+            [
+                'name' => 'Home',
+                'link' => 'http://www.swoft.org',
+            ],
+            [
+                'name' => 'Documentation',
+                'link' => 'http://doc.swoft.org',
+            ],
+            [
+                'name' => 'Case',
+                'link' => 'http://swoft.org/case',
+            ],
+            [
+                'name' => 'Issue',
+                'link' => 'https://github.com/swoft-cloud/swoft/issues',
+            ],
+            [
+                'name' => 'GitHub',
+                'link' => 'https://github.com/swoft-cloud/swoft',
+            ],
         ];
+        // 返回一个 array 或 Arrayable 对象，Response 将根据 Request Header 的 Accept 来返回数据，目前支持 View, Json, Raw
+        return compact('name', 'notes', 'links');
+    }
 
-        App::profileStart("logger");
+    /**
+     * @RequestMapping()
+     * @View(template="index/index")
+     * @return \Swoft\Contract\Arrayable|__anonymous@836
+     */
+    public function actionArrayable()
+    {
+        return (new class implements Arrayable
+        {
+            /**
+             * @return array
+             */
+            public function toArray(): array
+            {
+                return [
+                    'name' => 'Swoft',
+                    'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
+                    'links' => [
+                        [
+                            'name' => 'Home',
+                            'link' => 'http://www.swoft.org',
+                        ],
+                        [
+                            'name' => 'Documentation',
+                            'link' => 'http://doc.swoft.org',
+                        ],
+                        [
+                            'name' => 'Case',
+                            'link' => 'http://swoft.org/case',
+                        ],
+                        [
+                            'name' => 'Issue',
+                            'link' => 'https://github.com/swoft-cloud/swoft/issues',
+                        ],
+                        [
+                            'name' => 'GitHub',
+                            'link' => 'https://github.com/swoft-cloud/swoft',
+                        ],
+                    ]
+                ];
+            }
 
-        App::info("my info Log");
-        App::info("my2 info Log");
+        });
+    }
 
-        App::error("my error Log");
-        App::warning("my warning Log");
-
-        App::pushlog("status", 200);
-
-        App::profileEnd("logger");
-
-        App::counting("redis.get", 1, 10);
-
-        App::trace("trace Log");
-
-        $this->render('/main/layout.html', $data);
+    /**
+     * @RequestMapping()
+     * @return string
+     */
+    public function actionRaw()
+    {
+        $name = 'Swoft';
+        return $name;
     }
 
     /**
      * @RequestMapping()
      */
-    public function actionLog()
+    public function actionException()
     {
-        // 标记开始
-        App::profileStart("tag");
-
-        // 直接输出异常
-        App::error(new \Exception("error Exception"));
-        App::error("this errro Log");
-        App::info("this errro Log");
-
-        // 数组出
-        App::error(['name' => 'boy']);
-        App::debug("this errro Log");
-
-        // 标记结束
-        App::profileEnd("tag");
-
-        // 统计缓存命中率
-        App::counting("Cache", 1, 10);
-
-        $this->outputJson([], 'suc');
+        throw new BadRequestException();
     }
 
     /**
      * @RequestMapping()
+     * @return \Swoft\Base\Response
      */
-    public function actionRpc()
+    public function actionRedirect()
     {
-        $result = Service::call("user", 'User::getUserInfo', [2,6,8]);
-
-        $res = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
-        $res2 = Service::deferCall("user", 'User::getUserInfo', [3,6,9]);
-        $users = $res->getResult();
-        $users2 = $res2->getResult();
-
-        $data['count'] = App::$app->count;
-        $data['ret'] = $result;
-        $data['deferRet'] = $users;
-        $data['deferRet2'] = $users2;
-        $this->outputJson($data);
+        return $this->response()->redirect('/');
     }
 
-    /**
-     * @RequestMapping()
-     */
-    public function actionHttp()
-    {
-        $requestData = [
-            'name' => 'boy',
-            'desc' => 'php'
-        ];
-
-        $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
-        $result2 = HttpClient::call("http://www.baidu.com/", HttpClient::GET, $requestData);
-        $data['result'] = $result;
-        $data['result2'] = $result2;
-
-        $ret = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
-        $ret2 = HttpClient::deferCall("http://127.0.0.1/index/post", HttpClient::POST, $requestData);
-        $data['deferResult'] = $ret->getResult();
-        $data['deferResult2'] = $ret2->getResult();
-
-        $this->outputJson($data);
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionPost()
-    {
-        $this->outputJson([
-            'post' => $this->post(),
-            'get' => $this->get()
-        ], 'suc');
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionDemo()
-    {
-        // 获取所有GET参数
-        $get = $this->get();
-        // 获取name参数默认值defaultName
-        $name = $this->get('name', 'defaultName');
-        // 获取所有POST参数
-        $post = $this->post();
-        // 获取name参数默认值defaultName
-        $name = $this->post('name', 'defaultName');
-        // 获取所有参，包括GET或POST
-        $request = $this->request();
-        // 获取name参数默认值defaultName
-        $name = $this->request('name', 'defaultName');
-        //json方式显示数据
-        //$this->outputJson("Data", 'suc');
-
-        // 重定向一个URI
-        $this->redirect("/index/login");
-    }
-
-    /**
-     * @RequestMapping()
-     */
-    public function actionConfig()
-    {
-        $data = [];
-
-        // 数组使用
-        $version = App::$properties['version'];
-        $data['version'] = $version;
-
-        // 对象使用
-        $service = App::$properties->get('Service');
-        $data['Service'] = $service;
-
-        //迭代器使用
-        foreach (App::$properties as $key => $val) {
-            $data['ary'][$key] = $val;
-        }
-
-        $this->outputJson($data, 'suc');
-    }
 }
