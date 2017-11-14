@@ -3,7 +3,7 @@ return [
     "noticeHandler"      => [
         "class"     => \Swoft\Log\FileHandler::class,
         "logFile"   => "@runtime/logs/notice.log",
-        'formatter' => '${lineFormate}',
+        'formatter' => '${lineFormatter}',
         "levels"    => [
             \Swoft\Log\Logger::NOTICE,
             \Swoft\Log\Logger::INFO,
@@ -14,7 +14,7 @@ return [
     "applicationHandler" => [
         "class"     => \Swoft\Log\FileHandler::class,
         "logFile"   => "@runtime/logs/error.log",
-        'formatter' => '${lineFormate}',
+        'formatter' => '${lineFormatter}',
         "levels"    => [
             \Swoft\Log\Logger::ERROR,
             \Swoft\Log\Logger::WARNING
