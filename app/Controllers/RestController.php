@@ -97,7 +97,7 @@ class RestController extends Controller
      * 更新一个用户信息
      * 地址:/user/6
      *
-     * @RequestMapping(route="{uid}", method={RequestMethod::PATCH})
+     * @RequestMapping(route="{uid}", method={RequestMethod::UPDATE, RequestMethod::PATCH})
      */
     public function actionUpdateUser(int $uid)
     {
