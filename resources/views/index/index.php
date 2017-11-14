@@ -79,18 +79,16 @@
             <?= $name ?>
         </div>
 
-        <? foreach ($notes as $note): ?>
+        <?php foreach ($notes as $note): ?>
             <div class="notes m-b-sm">
                 <?= $note ?>
             </div>
-        <? endforeach; ?>
+        <?php endforeach; ?>
 
         <div class="links">
-            <a href="http://www.swoft.org">Home</a>
-            <a href="http://doc.swoft.org">Documentation</a>
-            <a href="http://swoft.org/case">Case</a>
-            <a href="https://github.com/swoft-cloud/swoft/issues">Issue</a>
-            <a href="https://github.com/swoft-cloud/swoft">GitHub</a>
+            <?php foreach ($links as $link): ?>
+                <a href="<?= $link['link'] ?>"><?= $link['name'] ?></a>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
