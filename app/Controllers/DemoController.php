@@ -11,7 +11,9 @@ use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
+use Swoft\Web\Application;
 use Swoft\Web\Controller;
+use Swoft\Web\Router;
 
 /**
  * 控制器demo
@@ -25,6 +27,26 @@ use Swoft\Web\Controller;
  */
 class DemoController extends Controller
 {
+
+    /**
+     * 别名注入
+     *
+     * @Inject("router")
+     *
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * 别名注入
+     *
+     * @Inject("application")
+     *
+     * @var Application
+     */
+    private $application;
+
+
     /**
      * 注入逻辑层
      * @Inject()
@@ -120,6 +142,7 @@ class DemoController extends Controller
         $data[] = App::t("title", [], 'en');
         $data[] = App::t("msg.body", ["stelin", 999], 'en');
         $data[] = App::t("msg.body", ["stelin", 666], 'en');
+
         return $data;
     }
 

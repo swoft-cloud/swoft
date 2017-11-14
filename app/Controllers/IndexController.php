@@ -21,6 +21,7 @@ class IndexController extends Controller
     /**
      * @RequestMapping()
      * @View(template="index/index")
+     * @return array
      */
     public function actionIndex()
     {
