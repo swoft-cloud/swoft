@@ -44,7 +44,7 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
      * @param $accept
      * @param $swooleRequest
      */
-    private function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest): void
+    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest): void
     {
         $swooleRequest->fd = 1;
         $swooleRequest->header = [

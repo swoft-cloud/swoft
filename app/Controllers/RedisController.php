@@ -1,9 +1,4 @@
 <?php
-/**
- * User: 黄朝晖
- * Date: 2017-11-13
- * Time: 21:04
- */
 
 namespace App\Controllers;
 
