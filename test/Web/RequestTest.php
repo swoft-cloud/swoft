@@ -3,6 +3,7 @@
 namespace Swoft\Test\Web;
 
 
+use Swoft\Redis\Cache\RedisClient;
 use Swoft\Testing\Web\Response;
 
 /**
@@ -15,6 +16,9 @@ use Swoft\Testing\Web\Response;
 class RequestTest extends AbstractTestCase
 {
 
+    /**
+     * @covers \App\Controllers\IndexController
+     */
     public function testHomePage()
     {
         $expectedResult = [
@@ -46,7 +50,9 @@ class RequestTest extends AbstractTestCase
                 ],
             ]
         ];
-        $jsonAssert = function (Response $response) use ($expectedResult) {
+        $jsonAssert = function ($response) use ($expectedResult) {
+            $this->assertInstanceOf(Response::class, $response);
+            /** @var Response $response */
             $response->assertSuccessful()
                      ->assertHeader('Content-Type', 'application/json')
                      ->assertSee('Swoft')
@@ -75,12 +81,18 @@ class RequestTest extends AbstractTestCase
                  ->assertSee($expectedResult['notes'][1]);
     }
 
+    /**
+     * @covers \App\Controllers\IndexController
+     */
     public function testExceptionPage()
     {
         $response = $this->request('GET', '/index/exception', [], parent::ACCEPT_JSON);
         $response->assertStatus(400)->assertJson(['message' => 'Bad Request']);
     }
 
+    /**
+     * @covers \App\Controllers\IndexController
+     */
     public function testRawPage()
     {
         $expected = 'Swoft';
@@ -91,6 +103,10 @@ class RequestTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson(['data' => $expected]);
     }
 
+    /**
+     * @requires extension redis
+     * @covers \App\Controllers\RedisController
+     */
     public function testRedis()
     {
         $expected = [

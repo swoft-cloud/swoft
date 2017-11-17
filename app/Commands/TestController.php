@@ -20,7 +20,6 @@ class TestController extends ConsoleController
 {
     /**
      * this demo command
-     * how to use command
      *
      * @usage
      * server:{command} [arguments] [options]

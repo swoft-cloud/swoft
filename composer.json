@@ -23,10 +23,17 @@
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ]
+    ],
+    "test": "./vendor/bin/phpunit -c phpunit.xml"
   },
   "require-dev": {
     "eaglewu/swoole-ide-helper": "dev-master",
     "phpunit/phpunit": "^5.7"
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url":  "https://github.com/swoft-cloud/framework"
+    }
+  ]
 }
