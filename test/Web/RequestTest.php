@@ -3,7 +3,6 @@
 namespace Swoft\Test\Web;
 
 
-use Swoft\Redis\Cache\RedisClient;
 use Swoft\Testing\Web\Response;
 
 /**

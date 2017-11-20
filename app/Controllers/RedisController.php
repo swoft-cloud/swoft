@@ -4,8 +4,9 @@ namespace App\Controllers;
 
 
 use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Redis\Cache\RedisClient;
+use Swoft\Cache\Redis\RedisClient;
 use Swoft\Web\Controller;
 
 
@@ -19,7 +20,6 @@ use Swoft\Web\Controller;
  */
 class RedisController extends Controller
 {
-
     /**
      * @RequestMapping()
      * @return bool|string
@@ -28,6 +28,7 @@ class RedisController extends Controller
     {
         $setResult = RedisClient::set('test', 123321);
         $getResult = RedisClient::get('test');
+
         return [
             'setResult' => $setResult,
             'getResult' => $getResult
