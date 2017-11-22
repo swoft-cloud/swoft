@@ -57,7 +57,7 @@ QQ交流群:548173319
 ## 手动安装
 
 * Clone 项目
-* 安装依赖 `composer install
+* 安装依赖 `composer install`
 
 ## Composer 安装
 
@@ -104,7 +104,7 @@ TASK_WORKER_NUM=1
 ## 启动
 
 **帮助命令**
-```py
+```
 [root@swoft bin]# php swoft -h
  ____                __ _
 / ___|_      _____  / _| |_
