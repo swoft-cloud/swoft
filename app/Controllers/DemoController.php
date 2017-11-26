@@ -12,7 +12,6 @@ use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Application;
-use Swoft\Web\Controller;
 use Swoft\Web\Router;
 
 /**
@@ -25,7 +24,7 @@ use Swoft\Web\Router;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class DemoController extends Controller
+class DemoController
 {
 
     /**

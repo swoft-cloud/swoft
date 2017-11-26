@@ -7,7 +7,6 @@ use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
 use Swoft\Exception\Http\BadRequestException;
-use Swoft\Web\Controller;
 
 /**
  * Class IndexController
@@ -15,11 +14,12 @@ use Swoft\Web\Controller;
  *
  * @package App\Controllers
  */
-class IndexController extends Controller
+class IndexController
 {
 
     /**
      * @RequestMapping()
+     *
      * @View(template="index/index")
      * @return array
      */
