@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use Swoft\Bean\Annotation\Ary;
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\EnumFloat;
 use Swoft\Bean\Annotation\EnumInteger;
 use Swoft\Bean\Annotation\EnumNumber;
@@ -14,12 +14,11 @@ use Swoft\Bean\Annotation\Number;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\Strings;
-use Swoft\Web\Controller;
 
 /**
  * restful和参数验证测试demo
  *
- * @AutoController(prefix="/users")
+ * @Controller(prefix="/users")
  *
  * @uses      RestController
  * @version   2017年11月13日
@@ -27,7 +26,7 @@ use Swoft\Web\Controller;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class RestController extends Controller
+class RestController
 {
     /**
      * 查询列表接口

@@ -4,23 +4,22 @@ namespace App\Controllers;
 
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Db\EntityManager;
 use Swoft\Db\QueryBuilder;
 use Swoft\Db\Types;
-use Swoft\Web\Controller;
 
 /**
  * orm使用demo
  *
- * @AutoController()
+ * @Controller()
  * @uses      OrmController
  * @version   2017年09月14日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class OrmController extends Controller
+class OrmController
 {
     /**
      * AR save操作

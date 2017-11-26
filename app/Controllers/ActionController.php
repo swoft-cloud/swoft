@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Web\Request;
 use Swoft\Web\Response;
@@ -10,7 +10,7 @@ use Swoft\Web\Response;
 /**
  * action demo
  *
- * @AutoController(prefix="/action")
+ * @Controller(prefix="/action")
  * @uses      TestController
  * @version   2017年11月26日
  * @author    stelin <phpcrazy@126.com>

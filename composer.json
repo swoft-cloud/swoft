@@ -1,39 +1,45 @@
 {
-  "name": "swoft/swoft",
-  "type": "project",
-  "keywords": ["php", "swoole", "swoft"],
-  "description": "microservice framework base on swoole",
-  "license": "apache2.0",
-  "require": {
-    "swoft/framework": "dev-feature"
-  },
-  "autoload": {
-    "classmap": [
-
+    "name": "swoft/swoft",
+    "type": "project",
+    "keywords": [
+        "php",
+        "swoole",
+        "swoft"
     ],
-    "psr-4": {
-      "App\\": "app/"
+    "description": "microservice framework base on swoole",
+    "license": "apache2.0",
+    "require": {
+        "swoft/framework": "dev-feature"
+    },
+    "autoload": {
+        "classmap": [],
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Swoft\\Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "test": "./vendor/bin/phpunit -c phpunit.xml"
+    },
+    "require-dev": {
+        "eaglewu/swoole-ide-helper": "dev-master",
+        "phpunit/phpunit": "^5.7"
+    },
+    "repositories": {
+        "0": {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/framework"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Swoft\\Test\\": "test/"
-    }
-  },
-  "scripts": {
-    "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-    ],
-    "test": "./vendor/bin/phpunit -c phpunit.xml"
-  },
-  "require-dev": {
-    "eaglewu/swoole-ide-helper": "dev-master",
-    "phpunit/phpunit": "^5.7"
-  },
-  "repositories": [
-    {
-      "type": "git",
-      "url":  "https://github.com/swoft-cloud/framework"
-    }
-  ]
 }

@@ -5,18 +5,19 @@ namespace App\Controllers;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
 use Swoft\Base\Coroutine;
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Application;
+use Swoft\Web\Request;
 use Swoft\Web\Router;
 
 /**
  * 控制器demo
- * @AutoController(prefix="/demo2")
+ * @Controller(prefix="/demo2")
  *
  * @uses      DemoController
  * @version   2017年08月22日
@@ -56,22 +57,27 @@ class DemoController
 
     /**
      * 定义一个route,支持get和post方式，处理uri=/demo2/index
+     *
      * @RequestMapping(route="index", method={RequestMethod::GET, RequestMethod::POST})
+     *
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionIndex()
+    public function actionIndex(Request $request)
     {
         // 获取所有GET参数
-        $get = $this->request()->query();
+        $get = $request->query();
         // 获取name参数默认值defaultName
-        $getName = $this->request()->query('name', 'defaultName');
+        $getName = $request->query('name', 'defaultName');
         // 获取所有POST参数
-        $post = $this->request()->post();
+        $post = $request->post();
         // 获取name参数默认值defaultName
-        $postName = $this->request()->post('name', 'defaultName');
+        $postName = $request->post('name', 'defaultName');
         // 获取所有参，包括GET或POST
-        $inputs = $this->request()->input();
+        $inputs = $request->input();
         // 获取name参数默认值defaultName
-        $inputName = $this->request()->input('name', 'defaultName');
+        $inputName = $request->input('name', 'defaultName');
 
         return compact('get', 'getName', 'post', 'postName', 'inputs', 'inputName');
     }
@@ -88,6 +94,7 @@ class DemoController
                 App::trace("this is child child trace" . Coroutine::id());
             });
         });
+
         return 'success';
     }
 
@@ -96,11 +103,12 @@ class DemoController
      */
     public function actionTask()
     {
-        $result = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
-        $mysql = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
-        $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
-        $rpc = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
+        $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
+        $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
+        $http    = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
+        $rpc     = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
+
         return [$rpc, $http, $mysql, $result, $result1];
     }
 
@@ -109,6 +117,7 @@ class DemoController
         throw new Exception('AAAA');
         //        $a = $b;
         $A = new AAA();
+
         return ['data6'];
     }
 
@@ -153,12 +162,13 @@ class DemoController
     public function actionView()
     {
         $data = [
-            'name' => 'Swoft',
-            'repo' => 'https://github.com/swoft-cloud/swoft',
-            'doc' => 'https://doc.swoft.org/',
-            'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
+            'name'   => 'Swoft',
+            'repo'   => 'https://github.com/swoft-cloud/swoft',
+            'doc'    => 'https://doc.swoft.org/',
+            'doc1'   => 'https://swoft-cloud.github.io/swoft-doc/',
             'method' => __METHOD__,
         ];
+
         return $data;
     }
 
@@ -170,14 +180,15 @@ class DemoController
     public function actionLayout()
     {
         $layout = 'layouts/default.php';
-        $data = [
-            'name' => 'Swoft',
-            'repo' => 'https://github.com/swoft-cloud/swoft',
-            'doc' => 'https://doc.swoft.org/',
-            'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
-            'method' => __METHOD__,
-            'layoutFile' => $layout
+        $data   = [
+            'name'       => 'Swoft',
+            'repo'       => 'https://github.com/swoft-cloud/swoft',
+            'doc'        => 'https://doc.swoft.org/',
+            'doc1'       => 'https://swoft-cloud.github.io/swoft-doc/',
+            'method'     => __METHOD__,
+            'layoutFile' => $layout,
         ];
+
         return $data;
     }
 

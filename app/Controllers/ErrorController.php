@@ -3,15 +3,12 @@
 namespace App\Controllers;
 
 use Swoft\App;
-use Swoft\Base\RequestContext;
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\View;
-use Swoft\Web\Controller;
 
 /**
  * 错误控制器
- * @AutoController()
+ * @Controller()
  *
  * @uses      ErrorController
  * @version   2017年08月08日
@@ -19,7 +16,7 @@ use Swoft\Web\Controller;
  * @copyright Copyright 2010-2016 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class ErrorController extends Controller
+class ErrorController
 {
     /**
      * 错误action
