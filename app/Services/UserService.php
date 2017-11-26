@@ -6,7 +6,6 @@ use App\Models\Logic\UserLogic;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Mapping;
 use Swoft\Bean\Annotation\Service;
-use Swoft\Web\InnerService;
 
 /**
  * 用户service
@@ -18,7 +17,7 @@ use Swoft\Web\InnerService;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class UserService extends InnerService
+class UserService
 {
     /**
      * 逻辑层

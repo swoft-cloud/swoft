@@ -31,7 +31,7 @@ class DemoController
     /**
      * 别名注入
      *
-     * @Inject("router")
+     * @Inject("httpRouter")
      *
      * @var Router
      */

@@ -7,8 +7,8 @@ return [
         'errorAction' => '/error/index',
         'useProvider' => false,
     ],
-    'router'      => [
-        'class'          => \Swoft\Web\Router::class,
+    'httpRouter'      => [
+        'class'          => \Swoft\Router\Http\HandlerMapping::class,
         'ignoreLastSep'  => false,
         'tmpCacheNumber' => 1000,
         'matchAll'       => '',
