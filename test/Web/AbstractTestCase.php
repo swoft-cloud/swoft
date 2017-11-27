@@ -34,7 +34,7 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
         $swooleResponse = new TestSwooleResponse();
         $swooleRequest = new TestSwooleRequest();
         $this->buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest);
-        return App::getApplication()->doRequest($swooleRequest, $swooleResponse);
+        return App::getDispatcherServer()->doDispatcher($swooleRequest, $swooleResponse);;
     }
 
     /**
