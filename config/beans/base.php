@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'dispatcherServer' => [
+        'class' => \Swoft\Web\DispatcherServer::class
+    ],
     'application' => [
         'id'          => APP_NAME,
         'name'        => APP_NAME,

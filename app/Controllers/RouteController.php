@@ -3,14 +3,22 @@
 namespace App\Controllers;
 
 use Swoft\Bean\Annotation\Controller;
+use Swoft\Bean\Annotation\Middleware;
+use Swoft\Bean\Annotation\Middlewares;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Web\Request;
 use Swoft\Web\Response;
+use App\Middlewares\GroupTestMiddleware;
+use App\Middlewares\ActionTestMiddleware;
+use App\Middlewares\SubMiddleware;
 
 /**
  * action demo
  *
  * @Controller(prefix="/route")
+ *
+ * @Middleware(SubMiddleware::class)
+ *
  * @uses      TestController
  * @version   2017年11月26日
  * @author    stelin <phpcrazy@126.com>
@@ -66,5 +74,87 @@ class RouteController
         return [get_class($request), $bid];
     }
 
+    /**
+     * @RequestMapping(route="hasMoreArgs")
+     *
+     * @param \Swoft\Web\Request $request
+     * @param int                $bid
+     *
+     * @return array
+     */
+    public function actionHasMoreArgs(Request $request, int $bid)
+    {
+        return [get_class($request), $bid];
+    }
+
+    /**
+     * optional parameter
+     *
+     * @RequestMapping(route="opntion[/{name}]")
+     *
+     * @param string $name
+     * @return array
+     */
+    public function actionOptionalParameter(string $name)
+    {
+        return[$name];
+    }
+
+    /**
+     * optional parameter
+     *
+     * @RequestMapping(route="anyName/{name}")
+     *
+     * @param string $name
+     * @return array
+     */
+    public function funcAnyName(string $name)
+    {
+        return [$name];
+    }
+
+    /**
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
+     */
+    public function actionNotAnnotation(Request $request)
+    {
+        return [get_class($request)];
+    }
+
+    /**
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
+     */
+    public function onlyFunc(Request $request)
+    {
+        return [get_class($request)];
+    }
+
+    /**
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
+     */
+    public function BehindAction(Request $request)
+    {
+        return [get_class($request)];
+    }
+
+    /**
+     * @RequestMapping(route="middlewares")
+     *
+     * @Middlewares({
+     *     @Middleware(GroupTestMiddleware::class),
+     *     @Middleware(ActionTestMiddleware::class)
+     * })
+     * @Middleware(SubMiddleware::class)
+     */
+    public function actionMiddleware()
+    {
+        return ['middleware'];
+    }
 
 }

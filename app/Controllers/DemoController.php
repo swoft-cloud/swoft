@@ -13,7 +13,6 @@ use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Application;
 use Swoft\Web\Request;
-use Swoft\Web\Router;
 
 /**
  * 控制器demo
@@ -33,7 +32,7 @@ class DemoController
      *
      * @Inject("httpRouter")
      *
-     * @var Router
+     * @var \Swoft\Router\Http\HandlerMapping
      */
     private $router;
 

@@ -65,4 +65,72 @@ class RouteTest extends AbstractTestCase
         $response = $this->request('GET', '/route/hasAnyArgs/123', [], parent::ACCEPT_JSON);
         $response->assertExactJson(["Swoft\\Testing\\Web\\Request", 123]);
     }
+
+    /**
+     * @covers \App\Controllers\RouteController@actionOptionalParameter
+     */
+    public function testOptionnalParameter()
+    {
+        $response = $this->request('GET', '/route/opntion/arg1', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["arg1"]);
+
+        $response = $this->request('GET', '/route/opntion', [], parent::ACCEPT_JSON);
+        $response->assertExactJson([""]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@actionHasMoreArgs
+     */
+    public function testHasMoreArgs()
+    {
+        $response = $this->request('GET', '/route/hasMoreArgs', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["Swoft\\Testing\\Web\\Request", 0]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@actionNotAnnotation
+     */
+    public function testNotAnnotation()
+    {
+        $response = $this->request('GET', '/route/notAnnotation', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@onlyFunc
+     */
+    public function testOnlyFunc()
+    {
+        $response = $this->request('GET', '/route/onlyFunc', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@BehindAction
+     */
+    public function testBehindAction()
+    {
+        $response = $this->request('GET', '/route/behind', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@funcAnyName
+     */
+    public function testFuncAnyName()
+    {
+        $response = $this->request('GET', '/route/anyName/stelin', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["stelin"]);
+    }
+
+    /**
+     * @covers \App\Controllers\RouteController@funcAnyName
+     */
+    public function testActionMiddleware()
+    {
+        $response = $this->request('GET', '/route/middlewares', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(["middleware"]);
+//        $response->assertHeader('Middleware-Group-Test', 'success');
+    }
+
 }
