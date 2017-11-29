@@ -122,15 +122,4 @@ class RouteTest extends AbstractTestCase
         $response = $this->request('GET', '/route/anyName/stelin', [], parent::ACCEPT_JSON);
         $response->assertExactJson(["stelin"]);
     }
-
-    /**
-     * @covers \App\Controllers\RouteController@funcAnyName
-     */
-    public function testActionMiddleware()
-    {
-        $response = $this->request('GET', '/route/middlewares', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["middleware"]);
-//        $response->assertHeader('Middleware-Group-Test', 'success');
-    }
-
 }
