@@ -9,7 +9,7 @@
     "description": "microservice framework base on swoole",
     "license": "apache2.0",
     "require": {
-        "swoft/framework": "dev-feature"
+        "swoft/framework": "dev-master"
     },
     "autoload": {
         "classmap": [],
