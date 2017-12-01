@@ -41,11 +41,13 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 </p>
 
 # 文档
+
 [**中文文档**](http://doc.swoft.org)
 
 QQ交流群:548173319
 
 # 环境要求
+
 1. PHP 7.X
 2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
@@ -69,7 +71,9 @@ QQ交流群:548173319
 * Windows: `winpty docker run -p 80:80 swoft/swoft`
 
 # 配置
+
 复制项目根目录的 `.env.example` 并命名为 `.env`
+
 ```
 # Server
 PFILE=/tmp/swoft.pid
@@ -104,6 +108,7 @@ TASK_WORKER_NUM=1
 ## 启动
 
 **帮助命令**
+
 ```
 [root@swoft bin]# php swoft -h
  ____                __ _
@@ -149,6 +154,7 @@ php bin/swoft stop
 
 
 **RPC启动**
+
 > 启动独立的RPC服务器
 
 ```php
@@ -182,6 +188,7 @@ php bin/swoft rpc:stop
 - [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 # 协议
+
 Swoft的开源协议为apache 2.0，详情参见[LICENSE](LICENSE)。
 
 
