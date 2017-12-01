@@ -49,7 +49,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@actionHasNotArgs
+     * @covers \App\Controllers\RouteController::actionHasNotArgs
      */
     public function testHasNotArg()
     {
