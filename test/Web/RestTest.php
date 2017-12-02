@@ -19,7 +19,7 @@ class RestTest extends AbstractTestCase
     public function testList()
     {
         $data     = ["list"];
-        $response = $this->request('GET', '/users', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/user', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
 
@@ -29,7 +29,19 @@ class RestTest extends AbstractTestCase
     public function testCreate()
     {
         $data     = ["create","stelin"];
-        $response = $this->request('POST', '/users', ['name' => 'stelin'], parent::ACCEPT_JSON);
+        $response = $this->request('POST', '/user', ['name' => 'stelin'], parent::ACCEPT_JSON);
+        $response->assertExactJson($data);
+
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
+        $content = '{"name":"stelin","age":18,"desc":"swoft framework"}';
+        $data     = [
+            'name' => 'stelin',
+            'age' => 18,
+            'desc' => 'swoft framework',
+        ];
+        $response = $this->request('PUT', '/user', [], parent::ACCEPT_JSON, $headers, $content);
         $response->assertExactJson($data);
     }
 
@@ -39,7 +51,7 @@ class RestTest extends AbstractTestCase
     public function testGetUser()
     {
         $data     = ["getUser",123];
-        $response = $this->request('GET', '/users/123', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/user/123', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
 
@@ -49,17 +61,41 @@ class RestTest extends AbstractTestCase
     public function testGetBookFromUser()
     {
         $data     = ["bookFromUser",123,"456"];
-        $response = $this->request('GET', '/users/123/book/456', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/user/123/book/456', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
 
-//    /**
-//     * @covers \App\Controllers\RestController@actionDeleteUser
-//     */
-//    public function testDeleteUser()
-//    {
-//        $data     = ["bookFromUser",123,"456"];
-//        $response = $this->request('DELETE', '/users/uid', [], parent::ACCEPT_JSON);
-//        $response->assertExactJson($data);
-//    }
+    /**
+     * @covers \App\Controllers\RestController@actionDeleteUser
+     */
+    public function testDeleteUser()
+    {
+        $data     = ["delete",123];
+        $response = $this->request('DELETE', '/user/123', [], parent::ACCEPT_JSON);
+        $response->assertExactJson($data);
+    }
+
+    /**
+     * @covers \App\Controllers\RestController@actionUpdateUser
+     */
+    public function testUpdateUser()
+    {
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
+        $content = '{"name":"stelin","age":18,"desc":"swoft framework"}';
+        $data     = [
+            'name' => 'stelin',
+            'age' => 18,
+            'desc' => 'swoft framework',
+            'update' => 'update',
+            'uid' => 123
+        ];
+
+        $response = $this->request('PUT', '/user/123', [], parent::ACCEPT_JSON, $headers, $content);
+        $response->assertExactJson($data);
+
+        $response = $this->request('PATCH', '/user/123', [], parent::ACCEPT_JSON, $headers, $content);
+        $response->assertExactJson($data);
+    }
 }

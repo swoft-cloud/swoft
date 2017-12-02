@@ -4,6 +4,7 @@ namespace Swoft\Test\Web;
 
 
 use Swoft\App;
+use Swoft\Helper\ArrayHelper;
 use Swoft\Testing\SwooleRequest as TestSwooleRequest;
 use Swoft\Testing\SwooleResponse as TestSwooleResponse;
 
@@ -26,28 +27,32 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
      * @param        $uri
      * @param array  $parameters
      * @param string $accept
+     * @param array  $headers
+     * @param string $rawContent
+     *
      * @return bool|\Swoft\Testing\Web\Response
      */
-    public function request($method, $uri, $parameters = [], $accept = self::ACCEPT_JSON)
+    public function request($method, $uri, $parameters = [], $accept = self::ACCEPT_JSON, $headers = [], $rawContent = '')
     {
         $method = strtoupper($method);
         $swooleResponse = new TestSwooleResponse();
         $swooleRequest = new TestSwooleRequest();
-        $this->buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest);
+        $swooleRequest->setRawContent($rawContent);
+        $this->buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers);
         return App::getDispatcherServer()->doDispatcher($swooleRequest, $swooleResponse);;
     }
 
     /**
-     * @param $method
-     * @param $uri
-     * @param $parameters
-     * @param $accept
-     * @param $swooleRequest
+     * @param       $method
+     * @param       $uri
+     * @param       $parameters
+     * @param       $accept
+     * @param       $swooleRequest
+     * @param array $headers
      */
-    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest): void
+    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers = []): void
     {
-        $swooleRequest->fd = 1;
-        $swooleRequest->header = [
+        $defaultHeaders = [
             'host' => '127.0.0.1',
             "connection" => "keep-alive",
             "cache-control" => "max-age=0",
@@ -58,6 +63,9 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
             "accept-encoding" => "gzip, deflate, br",
             "accept-language" => "zh-CN,zh;q=0.8,en;q=0.6,it-IT;q=0.4,it;q=0.2",
         ];
+
+        $swooleRequest->fd = 1;
+        $swooleRequest->header = ArrayHelper::merge($headers, $defaultHeaders);
         $swooleRequest->server = [
             "request_method" => $method,
             "request_uri" => $uri,
