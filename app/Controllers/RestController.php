@@ -117,9 +117,9 @@ class RestController
      * 更新一个用户信息
      * 地址:/user/6
      *
-     * @RequestMapping(route="{uid}", method={RequestMethod::UPDATE})
+     * @RequestMapping(route="{uid}", method={RequestMethod::PUT, RequestMethod::PATCH})
      *
-     * @param int $uid
+     * * @param int $uid
      *
      * @return array
      */
