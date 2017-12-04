@@ -35,4 +35,13 @@ class DemoControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertSee('Swoft')->assertSee('使用布局文件');
     }
 
+    /**
+     * @test
+     */
+    public function actionI18n()
+    {
+       $response = $this->request('GET', '/demo2/i18n', [], parent::ACCEPT_VIEW);
+       $response->assertSuccessful()->assertSee('title');
+    }
+
 }
