@@ -50,7 +50,7 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
      * @param       $swooleRequest
      * @param array $headers
      */
-    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers = []): void
+    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers = [])
     {
         $defaultHeaders = [
             'host' => '127.0.0.1',
