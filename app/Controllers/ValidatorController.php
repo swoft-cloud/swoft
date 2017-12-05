@@ -13,6 +13,7 @@ use Swoft\Bean\Annotation\Number;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\Strings;
 use Swoft\Bean\Annotation\ValidatorFrom;
+use Swoft\Web\Request;
 
 /**
  * validator
@@ -27,55 +28,21 @@ use Swoft\Bean\Annotation\ValidatorFrom;
 class ValidatorController
 {
     /**
-     * @RequestMapping("index/{id}")
+     * @RequestMapping("string/{name}")
      *
-     * @Strings(name="string", min=1, min=6, default="str")
-     * @Floats(name="float", min=1.1, max=1.6, default="1.3")
-     * @Integer(name="integer", min=-1, max=6, default="3")
-     * @Number(name="number", min=3, max=9, default="5")
-     * @EnumString(name="enumString", values={"a", "b"}, default="b")
-     * @EnumFloat(name="enumFloat", values={1.1, 1.2}, default="1.1")
-     * @EnumInteger(name="enumInteger", values={-1,3,-9}, default="9")
-     * @EnumNumber(name="enumNumber", values={1,2,4,6}, default="8")
+     * @Strings(from=ValidatorFrom::GET, name="name", min=3, max=10, default="boy")
+     * @Strings(from=ValidatorFrom::POST, name="name", min=3, max=10, default="girl")
+     * @Strings(from=ValidatorFrom::PATH, name="name", min=3, max=10)
      *
-     * @Integer(from=ValidatorFrom::PATH, name="id",min=10, max=120)
-     * @param int $id
+     * @param string $name
+     * @param Request $request
+     *
      * @return array
      */
-    public function index(int $id)
+    public function string(Request $request, string $name)
     {
-        return ['all'];
-    }
-
-    /**
-     * @RequestMapping("path")
-     */
-    public function validatePath()
-    {
-
-    }
-
-    /**
-     * @RequestMapping("path")
-     */
-    public function validateGet()
-    {
-
-    }
-
-    /**
-     * @RequestMapping("path")
-     */
-    public function validatePost()
-    {
-
-    }
-
-    /**
-     *
-     */
-    public function hasNotAnnotation()
-    {
-
+        $getName = $request->query('name');
+        $postName = $request->post('name');
+        return [$getName, $postName, $name];
     }
 }

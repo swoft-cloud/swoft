@@ -52,6 +52,11 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
      */
     protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers = [])
     {
+        $urlAry = parse_url($uri);
+        $urlParams = [];
+        if(isset($urlAry['query'])){
+            parse_str($urlAry['query'], $urlParams);
+        }
         $defaultHeaders = [
             'host' => '127.0.0.1',
             "connection" => "keep-alive",
@@ -79,10 +84,16 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
             "server_protocol" => "HTTP/1.1",
             "server_software" => "swoole-http-server",
         ];
+
         if ($method == 'GET') {
             $swooleRequest->get = $parameters;
         } elseif ($method == 'POST') {
             $swooleRequest->post = $parameters;
+        }
+
+        if (!empty($urlParams)) {
+            $get = empty($swooleRequest->get) ? [] : $swooleRequest->get;
+            $swooleRequest->get = array_merge($urlParams, $get);
         }
     }
 
