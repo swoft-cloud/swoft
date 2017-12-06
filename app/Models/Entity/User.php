@@ -54,7 +54,6 @@ class User extends Model
      * 性别
      *
      * @Column(name="sex", type="int")
-     * @Enum(value={1,0})
      * @var int
      */
     private $sex = 0;
