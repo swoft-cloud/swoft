@@ -12,17 +12,20 @@
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
-Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
+基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
 
 - 基于 Swoole 扩展
 - 内置 HTTP 协程服务器
 - MVC 分层设计
 - 高性能路由
 - 全局容器注入
+- 灵活的中间件
 - 高性能 RPC
 - 别名机制
 - 事件机制
 - 国际化(i18n)
+- 参数验证器
+- RESTful支持
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池 Mysql、Redis、RPC
 - 数据库 ORM
