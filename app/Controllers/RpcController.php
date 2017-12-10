@@ -27,4 +27,13 @@ class RpcController
         $result = Service::call("user", 'User::getUserInfo', [2, 6, 8]);
         return ['call', $result];
     }
+
+    /**
+     * @RequestMapping("validate")
+     */
+    public function validate()
+    {
+        $result = Service::call("user", 'User::getUser', [1,2,'boy', '1.3']);
+        return ['validator', $result];
+    }
 }
