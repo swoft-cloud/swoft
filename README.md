@@ -65,8 +65,7 @@ QQ交流群:548173319
 
 ## Docker 安装
 
-* Linux: `docker run -p 80:80 swoft/swoft`
-* Windows: `winpty docker run -p 80:80 swoft/swoft`
+* `docker run -p 80:80 swoft/swoft`
 
 # 配置
 复制项目根目录的 `.env.example` 并命名为 `.env`
