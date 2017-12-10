@@ -36,4 +36,25 @@ class RpcController
         $result = Service::call("user", 'User::getUser', [1,2,'boy', '1.3']);
         return ['validator', $result];
     }
+
+
+    /**
+     * @RequestMapping("pm")
+     */
+    public function parentMiddleware()
+    {
+        $result = Service::call("user", 'Md::pm');
+
+        return ['validator', $result];
+    }
+
+    /**
+     * @RequestMapping("fm")
+     */
+    public function funcMiddleware()
+    {
+        $result = Service::call("user", 'Md::fm');
+
+        return ['validator', $result];
+    }
 }
