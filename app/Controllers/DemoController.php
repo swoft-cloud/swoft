@@ -9,12 +9,12 @@ use Swoft\Bean\Annotation\AutoController;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\RequestMethod;
+use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Controller;
 
 /**
  * 控制器demo
- *
  * @AutoController(prefix="/demo2")
  *
  * @uses      DemoController
@@ -27,52 +27,47 @@ class DemoController extends Controller
 {
     /**
      * 注入逻辑层
-     *
      * @Inject()
+     *
      * @var IndexLogic
      */
     private $logic;
 
     /**
      * 定义一个route,支持get和post方式，处理uri=/demo2/index
-     *
      * @RequestMapping(route="index", method={RequestMethod::GET, RequestMethod::POST})
      */
     public function actionIndex()
     {
         // 获取所有GET参数
-        $get = $this->get();
+        $get = $this->request()->query();
         // 获取name参数默认值defaultName
-        $name = $this->get('name', 'defaultName');
+        $getName = $this->request()->query('name', 'defaultName');
         // 获取所有POST参数
-        $post = $this->post();
+        $post = $this->request()->post();
         // 获取name参数默认值defaultName
-        $name = $this->post('name', 'defaultName');
+        $postName = $this->request()->post('name', 'defaultName');
         // 获取所有参，包括GET或POST
-        $request = $this->request();
+        $inputs = $this->request()->input();
         // 获取name参数默认值defaultName
-        $name = $this->request('name', 'defaultName');
-        //json方式显示数据
+        $inputName = $this->request()->input('name', 'defaultName');
 
-
-        $this->outputJson("suc");
+        return compact('get', 'getName', 'post', 'postName', 'inputs', 'inputName');
     }
 
     /**
      * 定义一个route,支持get,以"/"开头的定义，直接是根路径，处理uri=/index2
-     *
      * @RequestMapping(route="/index2", method=RequestMethod::GET)
      */
     public function actionIndex2()
     {
-        Coroutine::create(function (){
-            App::trace("this is child trace".Coroutine::id());
-            Coroutine::create(function (){
-                App::trace("this is child child trace".Coroutine::id());
+        Coroutine::create(function () {
+            App::trace("this is child trace" . Coroutine::id());
+            Coroutine::create(function () {
+                App::trace("this is child child trace" . Coroutine::id());
             });
         });
-
-        $this->outputJson("3333232111111");
+        return 'success';
     }
 
     /**
@@ -85,17 +80,15 @@ class DemoController extends Controller
         $http = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
         $rpc = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
-
-//        var_dump(Collector::$crontab, ApplicationContext::getContext());
-        $this->outputJson([$rpc, $http, $mysql, $result, $result1]);
+        return [$rpc, $http, $mysql, $result, $result1];
     }
 
     public function actionIndex6()
     {
         throw new Exception('AAAA');
-//        $a = $b;
+        //        $a = $b;
         $A = new AAA();
-        $this->outputJson(['data6']);
+        return ['data6'];
     }
 
     /**
@@ -104,7 +97,7 @@ class DemoController extends Controller
     public function actionCor()
     {
         // 创建子协程
-        Coroutine::create(function (){
+        Coroutine::create(function () {
             App::error("child cor error msg");
             App::trace("child cor error msg");
         });
@@ -115,7 +108,7 @@ class DemoController extends Controller
         // 当前运行上下文ID, 协程环境中，顶层协程ID; 任务中，当前任务taskid; 自定义进程中，当前进程ID(pid)
         $tid = Coroutine::tid();
 
-        $this->outputJson([$cid, $tid]);
+        return [$cid, $tid];
     }
 
     /**
@@ -127,12 +120,13 @@ class DemoController extends Controller
         $data[] = App::t("title", [], 'en');
         $data[] = App::t("msg.body", ["stelin", 999], 'en');
         $data[] = App::t("msg.body", ["stelin", 666], 'en');
-        $this->outputJson($data);
+        return $data;
     }
 
     /**
      * 视图渲染demo - 没有使用布局文件
      * @RequestMapping()
+     * @View(template="demo/view")
      */
     public function actionView()
     {
@@ -143,16 +137,13 @@ class DemoController extends Controller
             'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
             'method' => __METHOD__,
         ];
-
-        // 可以
-        // $this->render('demo/view.php', $data);
-        // 也可以 - 会自动添加默认的后缀(是可配置的)
-        $this->render('demo/view', $data);
+        return $data;
     }
 
     /**
      * 视图渲染demo - 使用布局文件
      * @RequestMapping()
+     * @View(template="demo/content", layout="layouts/default.php")
      */
     public function actionLayout()
     {
@@ -163,18 +154,9 @@ class DemoController extends Controller
             'doc' => 'https://doc.swoft.org/',
             'doc1' => 'https://swoft-cloud.github.io/swoft-doc/',
             'method' => __METHOD__,
-            'layoutFile' => $this->getRenderer()->getViewFile($layout)
+            'layoutFile' => $layout
         ];
-
-        /*
-         * 使用布局文件， 方式有两种：
-         *
-         * 1. 在配置中 配置默认的布局文件，那这里即使不设置 layout， 也会使用默认的
-         *
-         * 2. 如这里一样，手动设置一个布局文件。它的优先级更高（即使有默认的布局文件，也会使用当前传入的替代。）
-         *
-         */
-        $this->render('demo/content', $data, $layout);
+        return $data;
     }
 
 }

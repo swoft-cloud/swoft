@@ -4,6 +4,12 @@
     </a>
 </p>
 
+[![Latest Version](https://camo.githubusercontent.com/4e24aee529ac200ee919e43527297e321f807f77/68747470733a2f2f706f7365722e707567782e6f72672f78636c333732312f646f72612d7270632f762f756e737461626c65)](https://packagist.org/packages/swoft/swoft)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.9-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
+[![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
 Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
@@ -22,7 +28,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 - 数据库 ORM
 - 协程、异步任务投递
 - 自定义用户进程
-- RPC、Redis、HTTP、Mysql 协程和同步客户端无缝切换
+- RPC、Redis、HTTP、Mysql 协程和同步阻塞客户端无缝切换
 - Inotify 自动 Reload
 - 强大的日志系统
 
@@ -35,7 +41,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 </p>
 
 # 文档
-[**中文文档**](http://doc.swoft.org)
+[**中文文档**](https://doc.swoft.org)
 
 QQ交流群:548173319
 
@@ -44,14 +50,14 @@ QQ交流群:548173319
 2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
-5. [Inotify](http://pecl.php.net/package/inotify) (可选)
+5. [Inotify](https://pecl.php.net/package/inotify) (可选)
 
 # 安装
 
 ## 手动安装
 
 * Clone 项目
-* 安装依赖 `composer install
+* 安装依赖 `composer install`
 
 ## Composer 安装
 
@@ -98,7 +104,7 @@ TASK_WORKER_NUM=1
 ## 启动
 
 **帮助命令**
-```py
+```
 [root@swoft bin]# php swoft -h
  ____                __ _
 / ___|_      _____  / _| |_
@@ -147,19 +153,19 @@ php bin/swoft stop
 
 ```php
 // 启动服务，根据 .env 配置决定是否是守护进程
-php bin/swoft start
+php bin/swoft rpc:start
 
 // 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
-php bin/swoft start -d
+php bin/swoft rpc:start -d
 
 // 重启
-php bin/swoft restart
+php bin/swoft rpc:restart
 
 // 重新加载
-php bin/swoft reload
+php bin/swoft rpc:reload
 
 // 关闭服务
-php bin/swoft stop
+php bin/swoft rpc:stop
 
 ```
 
