@@ -21,6 +21,9 @@ return [
     ],
     'renderer'    => [
         'class'     => \Swoft\Web\ViewRenderer::class,
-        'viewsPath' => "@resources/views/",
+        'viewsPath' => '@resources/views/',
+    ],
+    'eventManager'    => [
+        'class'     => \Swoft\Event\EventManager::class,
     ],
 ];
