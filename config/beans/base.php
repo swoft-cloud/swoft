@@ -16,6 +16,9 @@ return [
         'tmpCacheNumber' => 1000,
         'matchAll'       => '',
     ],
+    'requestParser' =>[
+        'class' => \Swoft\Web\RequestParser::class
+    ],
     'renderer'    => [
         'class'     => \Swoft\Web\ViewRenderer::class,
         'viewsPath' => '@resources/views/',

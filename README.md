@@ -8,21 +8,24 @@
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.9-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
-[![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](http://doc.swoft.org/)
+[![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
-Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
+基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
 
 - 基于 Swoole 扩展
 - 内置 HTTP 协程服务器
 - MVC 分层设计
 - 高性能路由
 - 全局容器注入
+- 灵活的中间件
 - 高性能 RPC
 - 别名机制
 - 事件机制
 - 国际化(i18n)
+- 参数验证器
+- RESTful支持
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池 Mysql、Redis、RPC
 - 数据库 ORM
@@ -41,8 +44,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 </p>
 
 # 文档
-
-[**中文文档**](http://doc.swoft.org)
+[**中文文档**](https://doc.swoft.org)
 
 QQ交流群:548173319
 
@@ -52,7 +54,7 @@ QQ交流群:548173319
 2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
-5. [Inotify](http://pecl.php.net/package/inotify) (可选)
+5. [Inotify](https://pecl.php.net/package/inotify) (可选)
 
 # 安装
 
@@ -188,8 +190,7 @@ php bin/swoft rpc:stop
 - [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 # 协议
-
-Swoft的开源协议为apache 2.0，详情参见[LICENSE](LICENSE)。
+Swoft的开源协议为Apache-2.0，详情参见[LICENSE](LICENSE)。
 
 
 
