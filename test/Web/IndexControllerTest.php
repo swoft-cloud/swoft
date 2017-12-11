@@ -50,6 +50,7 @@ class IndexControllerTest extends AbstractTestCase
                 ],
             ]
         ];
+
         $jsonAssert = function ($response) use ($expectedResult) {
             $this->assertInstanceOf(Response::class, $response);
             /** @var Response $response */

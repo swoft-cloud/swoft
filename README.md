@@ -12,17 +12,20 @@
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
-Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
+基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，框架全协程实现，性能大大优于传统的 PHP-FPM 模式。
 
 - 基于 Swoole 扩展
 - 内置 HTTP 协程服务器
 - MVC 分层设计
 - 高性能路由
 - 全局容器注入
+- 灵活的中间件
 - 高性能 RPC
 - 别名机制
 - 事件机制
 - 国际化(i18n)
+- 参数验证器
+- RESTful支持
 - 服务治理熔断、降级、负载、注册与发现
 - 连接池 Mysql、Redis、RPC
 - 数据库 ORM
@@ -46,6 +49,7 @@ Swoft 是基于 Swoole 2.x 的高性能 PHP 微服务框架，内置 HTTP 服务
 QQ交流群:548173319
 
 # 环境要求
+
 1. PHP 7.X
 2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
@@ -68,7 +72,9 @@ QQ交流群:548173319
 * `docker run -p 80:80 swoft/swoft`
 
 # 配置
+
 复制项目根目录的 `.env.example` 并命名为 `.env`
+
 ```
 # Server
 PFILE=/tmp/swoft.pid
@@ -103,6 +109,7 @@ TASK_WORKER_NUM=1
 ## 启动
 
 **帮助命令**
+
 ```
 [root@swoft bin]# php swoft -h
  ____                __ _
@@ -148,6 +155,7 @@ php bin/swoft stop
 
 
 **RPC启动**
+
 > 启动独立的RPC服务器
 
 ```php
@@ -181,7 +189,7 @@ php bin/swoft rpc:stop
 - [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
 
 # 协议
-Swoft的开源协议为apache 2.0，详情参见[LICENSE](LICENSE)。
+Swoft的开源协议为Apache-2.0，详情参见[LICENSE](LICENSE)。
 
 
 

@@ -10,9 +10,9 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
+use Swoft\Cache\Redis\RedisClient;
 use Swoft\Db\EntityManager;
 use Swoft\Http\HttpClient;
-use Swoft\Redis\Cache\RedisClient;
 use Swoft\Service\Service;
 
 /**
@@ -36,7 +36,7 @@ class TestTask
     private $logic;
 
     /**
-     * 任务中,使用redis自动切换成同步redis
+     * 任务中,使用redis自动切换成同步阻塞redis
      *
      * @param mixed $p1
      * @param mixed $p2

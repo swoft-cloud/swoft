@@ -5,7 +5,7 @@ return [
     'beanScan'          => [
         'App\Controllers',
         'App\Models',
-        'App\Beans',
+        'App\Middlewares',
         'App\Tasks',
         'App\Services',
         'App\Process',
