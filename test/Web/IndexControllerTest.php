@@ -68,10 +68,12 @@ class IndexControllerTest extends AbstractTestCase
         };
         // Json model
         $response = $this->request('GET', '/', [], parent::ACCEPT_JSON);
+        $response->assertHeader('Content-Type', parent::ACCEPT_JSON);
         $jsonAssert($response);
 
         // Raw model
         $response = $this->request('GET', '/', [], parent::ACCEPT_RAW);
+        $response->assertHeader('Content-Type', parent::ACCEPT_JSON);
         $jsonAssert($response);
 
         // View model
@@ -79,7 +81,8 @@ class IndexControllerTest extends AbstractTestCase
         $response->assertSuccessful()
             ->assertSee($expectedResult['name'])
             ->assertSee($expectedResult['notes'][0])
-            ->assertSee($expectedResult['notes'][1]);
+            ->assertSee($expectedResult['notes'][1])
+            ->assertHeader('Content-Type', parent::ACCEPT_VIEW);
     }
 
     /**
