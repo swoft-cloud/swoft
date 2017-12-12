@@ -22,7 +22,7 @@ class ErrorController
      * 错误action
      * @RequestMapping()
      */
-    public function actionIndex()
+    public function index()
     {
         $response = App::getResponse();
         $exception = $response->getException();

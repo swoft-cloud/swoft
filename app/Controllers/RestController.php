@@ -27,7 +27,7 @@ class RestController
      *
      * @RequestMapping(route="/user", method={RequestMethod::GET})
      */
-    public function actionList()
+    public function list()
     {
         return ['list'];
     }
@@ -43,7 +43,7 @@ class RestController
      *
      * @return array
      */
-    public function actionCreate(Request $request)
+    public function create(Request $request)
     {
         $name = $request->input('name');
 
@@ -63,7 +63,7 @@ class RestController
      *
      * @return array
      */
-    public function actionGetUser(int $uid)
+    public function getUser(int $uid)
     {
         return ['getUser', $uid];
     }
@@ -79,7 +79,7 @@ class RestController
      *
      * @return array
      */
-    public function actionGetBookFromUser(int $userId, string $bookId)
+    public function getBookFromUser(int $userId, string $bookId)
     {
         return ['bookFromUser', $userId, $bookId];
     }
@@ -94,7 +94,7 @@ class RestController
      *
      * @return array
      */
-    public function actionDeleteUser(int $uid)
+    public function deleteUser(int $uid)
     {
         return ['delete', $uid];
     }
@@ -109,7 +109,7 @@ class RestController
      * @param Request $request
      * @return array
      */
-    public function actionUpdateUser(Request $request, int $uid)
+    public function updateUser(Request $request, int $uid)
     {
         $body = $request->getBodyParams();
         $body['update'] = 'update';

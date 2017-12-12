@@ -14,7 +14,7 @@ namespace Swoft\Test\Web;
 class RestTest extends AbstractTestCase
 {
     /**
-     * @covers \App\Controllers\RestController@actionList
+     * @covers \App\Controllers\RestController@list
      */
     public function testList()
     {
@@ -24,7 +24,7 @@ class RestTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RestController@actionCreate
+     * @covers \App\Controllers\RestController@create
      */
     public function testCreate()
     {
@@ -46,7 +46,7 @@ class RestTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RestController@actionGetUser
+     * @covers \App\Controllers\RestController@getUser
      */
     public function testGetUser()
     {
@@ -56,7 +56,7 @@ class RestTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RestController@actionGetBookFromUser
+     * @covers \App\Controllers\RestController@getBookFromUser
      */
     public function testGetBookFromUser()
     {
@@ -66,7 +66,7 @@ class RestTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RestController@actionDeleteUser
+     * @covers \App\Controllers\RestController@deleteUser
      */
     public function testDeleteUser()
     {
@@ -76,7 +76,7 @@ class RestTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RestController@actionUpdateUser
+     * @covers \App\Controllers\RestController@updateUser
      */
     public function testUpdateUser()
     {

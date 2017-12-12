@@ -20,7 +20,7 @@ class RedisControllerTest extends AbstractTestCase
      * @requires extension redis
      * @covers \App\Controllers\RedisController
      */
-    public function actionTest()
+    public function testTest()
     {
         $expected = [
             'setResult' => true,

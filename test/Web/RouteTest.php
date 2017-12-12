@@ -14,7 +14,7 @@ namespace Swoft\Test\Web;
 class RouteTest extends AbstractTestCase
 {
     /**
-     * @covers \App\Controllers\RouteController@actionFuncArgs
+     * @covers \App\Controllers\RouteController@funcArgs
      */
     public function testFuncArgs()
     {
@@ -49,7 +49,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController::actionHasNotArgs
+     * @covers \App\Controllers\RouteController::hasNotArgs
      */
     public function testHasNotArg()
     {
@@ -58,7 +58,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@actionHasAnyArgs
+     * @covers \App\Controllers\RouteController@hasAnyArgs
      */
     public function testHasAnyArgs()
     {
@@ -67,7 +67,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@actionOptionalParameter
+     * @covers \App\Controllers\RouteController@optionalParameter
      */
     public function testOptionnalParameter()
     {
@@ -79,7 +79,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@actionHasMoreArgs
+     * @covers \App\Controllers\RouteController@hasMoreArgs
      */
     public function testHasMoreArgs()
     {
@@ -88,7 +88,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@actionNotAnnotation
+     * @covers \App\Controllers\RouteController@notAnnotation
      */
     public function testNotAnnotation()
     {
@@ -106,7 +106,7 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers \App\Controllers\RouteController@BehindAction
+     * @covers \App\Controllers\RouteController@behind
      */
     public function testBehindAction()
     {

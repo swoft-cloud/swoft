@@ -24,7 +24,7 @@ class IndexController
      * @View(template="index/index")
      * @return array
      */
-    public function actionIndex()
+    public function index()
     {
         $name = 'Swoft';
         $notes = [
@@ -62,7 +62,7 @@ class IndexController
      * @View(template="index/index")
      * @return \Swoft\Contract\Arrayable|__anonymous@836
      */
-    public function actionArrayable()
+    public function arrayable()
     {
         return (new class implements Arrayable
         {
@@ -106,7 +106,7 @@ class IndexController
      * @RequestMapping()
      * @return string
      */
-    public function actionRaw()
+    public function raw()
     {
         $name = 'Swoft';
         return $name;
@@ -115,7 +115,7 @@ class IndexController
     /**
      * @RequestMapping()
      */
-    public function actionException()
+    public function exception()
     {
         throw new BadRequestException();
     }
@@ -127,7 +127,7 @@ class IndexController
      *
      * @return \Swoft\Base\Response
      */
-    public function actionRedirect(Response $response)
+    public function redirect(Response $response)
     {
         return $response->redirect('/');
     }
