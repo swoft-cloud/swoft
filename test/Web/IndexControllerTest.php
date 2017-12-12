@@ -82,7 +82,7 @@ class IndexControllerTest extends AbstractTestCase
             ->assertSee($expectedResult['name'])
             ->assertSee($expectedResult['notes'][0])
             ->assertSee($expectedResult['notes'][1])
-            ->assertHeader('Content-Type', parent::ACCEPT_VIEW);
+            ->assertHeader('Content-Type', 'text/html');
     }
 
     /**
