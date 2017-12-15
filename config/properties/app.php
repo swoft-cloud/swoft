@@ -19,5 +19,8 @@ return [
         'user' => [
             'timeout' => 3000
         ]
-    ]
+    ],
+    'database' => require dirname(__FILE__).DS."db.php",
+    'cache'    => require dirname(__FILE__).DS."cache.php",
+    'service'  => require dirname(__FILE__).DS."service.php",
 ];

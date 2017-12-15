@@ -3,7 +3,6 @@
 namespace App\Breaker;
 
 use Swoft\Bean\Annotation\Breaker;
-use Swoft\Bean\Annotation\Value;
 use Swoft\Circuit\CircuitBreaker;
 
 /**
@@ -19,30 +18,26 @@ use Swoft\Circuit\CircuitBreaker;
 class UserBreaker extends CircuitBreaker
 {
     /**
-     * 连续失败次数，如果到达，状态切换为open
+     * The number of successive failures
+     * If the arrival, the state switch to open
      *
      * @var int
      */
     protected $swithToFailCount = 6;
 
     /**
-     * 连续成功次数，如果到达，状态切换为close
-     * @Value("${a.b.c}")
-     * @Value(env="a.b.c")
+     * The number of successive successes
+     * If the arrival, the state switch to close
+     *
      * @var int
      */
     protected $swithToSuccessCount = 6;
 
     /**
-     * 单位毫秒
+     * Switch close to open delay time
+     * The unit is milliseconds
      *
      * @var int
      */
     protected $delaySwithTimer = 5000;
-
-
-    public function fallback($fallback = null)
-    {
-
-    }
 }
