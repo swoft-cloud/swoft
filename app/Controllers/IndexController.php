@@ -2,25 +2,27 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
 use Swoft\Exception\Http\BadRequestException;
-use Swoft\Web\Controller;
+use Swoft\Web\Response;
 
 /**
  * Class IndexController
- * @AutoController()
+ * @Controller()
  *
  * @package App\Controllers
  */
-class IndexController extends Controller
+class IndexController
 {
 
     /**
      * @RequestMapping()
+     *
      * @View(template="index/index")
+     * @return array
      */
     public function actionIndex()
     {
@@ -120,11 +122,14 @@ class IndexController extends Controller
 
     /**
      * @RequestMapping()
+     *
+     * @param \Swoft\Web\Response $response
+     *
      * @return \Swoft\Base\Response
      */
-    public function actionRedirect()
+    public function actionRedirect(Response $response)
     {
-        return $this->response()->redirect('/');
+        return $response->redirect('/');
     }
 
 }

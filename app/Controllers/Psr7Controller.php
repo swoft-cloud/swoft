@@ -3,99 +3,126 @@
 namespace App\Controllers;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Swoft\Bean\Annotation\AutoController;
+use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Web\Controller;
+use Swoft\Web\Request;
 
 /**
- * @AutoController(prefix="/psr7")
+ * @Controller(prefix="/psr7")
  * @uses      Psr7Controller
  * @version   2017-11-05
  * @author    huangzhhui <huangzhwork@gmail.com>
  * @copyright Copyright 2010-2017 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Psr7Controller extends Controller
+class Psr7Controller
 {
 
     /**
      * @RequestMapping()
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionGet()
+    public function actionGet(Request $request)
     {
-        $param1 = $this->request()->query('param1');
-        $param2 = $this->request()->query('param2', 'defaultValue');
+        $param1 = $request->query('param1');
+        $param2 = $request->query('param2', 'defaultValue');
         return compact('param1', 'param2');
     }
 
     /**
      * @RequestMapping()
+     *
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionPost()
+    public function actionPost(Request $request)
     {
-        $param1 = $this->request()->post('param1');
-        $param2 = $this->request()->post('param2');
+        $param1 = $request->post('param1');
+        $param2 = $request->post('param2');
         return compact('param1', 'param2');
     }
 
     /**
      * @RequestMapping()
+     *
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionInput()
+    public function actionInput(Request $request)
     {
-        $param1 = $this->request()->input('param1');
-        $inputs = $this->request()->input();
+        $param1 = $request->input('param1');
+        $inputs = $request->input();
         return compact('param1', 'inputs');
     }
 
     /**
      * @RequestMapping()
      */
-    public function actionRaw()
+
+    /**
+     * @RequestMapping()
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
+     */
+    public function actionRaw(Request $request)
     {
-        $param1 = $this->request()->raw();
+        $param1 = $request->raw();
         return compact('param1');
     }
 
     /**
      * @RequestMapping()
-     * @return \Swoft\Web\Response
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionCookies()
+    public function actionCookies(Request $request)
     {
-        $cookie1 = $this->request()->cookie();
+        $cookie1 = $request->cookie();
         return compact('cookie1');
     }
 
     /**
      * @RequestMapping()
-     * @return \Swoft\Web\Response
+     *
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionHeader()
+    public function actionHeader(Request $request)
     {
-        $header1 = $this->request()->header();
-        $host = $this->request()->header('host');
+        $header1 = $request->header();
+        $host = $request->header('host');
         return compact('header1', 'host');
     }
 
     /**
      * @RequestMapping()
-     * @return \Swoft\Web\Response
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionJson()
+    public function actionJson(Request $request)
     {
-        $json = $this->request()->json();
-        $jsonParam = $this->request()->json('jsonParam');
+        $json = $request->json();
+        $jsonParam = $request->json('jsonParam');
         return compact('json', 'jsonParam');
     }
 
     /**
      * @RequestMapping()
-     * @return \Swoft\Web\Response
+     * @param \Swoft\Web\Request $request
+     *
+     * @return array
      */
-    public function actionFiles()
+    public function actionFiles(Request $request)
     {
-        $files = $this->request()->file();
+        $files = $request->file();
         foreach ($files as $file) {
             if ($file instanceof UploadedFileInterface) {
                 try {

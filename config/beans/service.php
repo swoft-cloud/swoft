@@ -1,14 +1,24 @@
 <?php
 return [
-    'consulProvider' => [
-        'class'   => \Swoft\Service\ConsulProvider::class,
-        'address' => '127.0.0.1:80'
+    'dispatcherService' => [
+        'class' => \Swoft\Service\DispatcherService::class,
     ],
-    "userPool"       => [
+    'serviceRouter'     => [
+        'class' => \Swoft\Router\Service\HandlerMapping::class,
+    ],
+    'servicePacker'     => [
+        'class' => \Swoft\Service\ServicePacker::class,
+        'type'  => 'json',
+    ],
+    'consulProvider'    => [
+        'class'   => \Swoft\Service\ConsulProvider::class,
+        'address' => '127.0.0.1:80',
+    ],
+    "userPool"          => [
         "class"           => \Swoft\Pool\ServicePool::class,
         "uri"             => [
             '127.0.0.1:8099',
-            '127.0.0.1:8099'
+            '127.0.0.1:8099',
         ],
         "maxIdel"         => 6,
         "maxActive"       => 10,
@@ -16,9 +26,9 @@ return [
         "balancer"        => '${randomBalancer}',
         "serviceName"     => 'user',
         "useProvider"     => false,
-        'serviceprovider' => '${consulProvider}'
+        'serviceprovider' => '${consulProvider}',
     ],
-    "userBreaker"    => [
+    "userBreaker"       => [
         'class'               => \Swoft\Circuit\CircuitBreaker::class,
         'swithToSuccessCount' => 6, // 请求成功次数上限(状态切换)
         'swithToFailCount'    => 6, // 请求失败次数上限(状态切换)
