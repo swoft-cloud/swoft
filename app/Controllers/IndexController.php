@@ -20,7 +20,6 @@ class IndexController
 
     /**
      * @RequestMapping()
-     *
      * @View(template="index/index")
      * @return array
      */
@@ -104,6 +103,42 @@ class IndexController
 
     /**
      * @RequestMapping()
+     * @param \Swoft\Web\Response $response
+     * @return Response
+     */
+    public function absolutePath(Response $response)
+    {
+        $template = '@res/views/index/index.php';
+        return $response->view([
+            'name' => 'Swoft',
+            'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
+            'links' => [
+                [
+                    'name' => 'Home',
+                    'link' => 'http://www.swoft.org',
+                ],
+                [
+                    'name' => 'Documentation',
+                    'link' => 'http://doc.swoft.org',
+                ],
+                [
+                    'name' => 'Case',
+                    'link' => 'http://swoft.org/case',
+                ],
+                [
+                    'name' => 'Issue',
+                    'link' => 'https://github.com/swoft-cloud/swoft/issues',
+                ],
+                [
+                    'name' => 'GitHub',
+                    'link' => 'https://github.com/swoft-cloud/swoft',
+                ],
+            ]
+        ], $template);
+    }
+
+    /**
+     * @RequestMapping()
      * @return string
      */
     public function raw()
@@ -122,9 +157,7 @@ class IndexController
 
     /**
      * @RequestMapping()
-     *
      * @param \Swoft\Web\Response $response
-     *
      * @return \Swoft\Base\Response
      */
     public function redirect(Response $response)
