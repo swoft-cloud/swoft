@@ -83,6 +83,14 @@ class IndexControllerTest extends AbstractTestCase
             ->assertSee($expectedResult['notes'][0])
             ->assertSee($expectedResult['notes'][1])
             ->assertHeader('Content-Type', 'text/html');
+
+        // absolutePath
+        $response = $this->request('GET', '/index/absolutePath', [], parent::ACCEPT_VIEW);
+        $response->assertSuccessful()
+            ->assertSee($expectedResult['name'])
+            ->assertSee($expectedResult['notes'][0])
+            ->assertSee($expectedResult['notes'][1])
+            ->assertHeader('Content-Type', 'text/html');
     }
 
     /**
