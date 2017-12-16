@@ -10,6 +10,10 @@ return [
         'errorAction' => '/error/index',
         'useProvider' => false,
     ],
+    'balancerSelector' => [
+        'balancers' =>[
+        ]
+    ],
     'httpRouter'      => [
         'class'          => \Swoft\Router\Http\HandlerMapping::class,
         'ignoreLastSep'  => false,
