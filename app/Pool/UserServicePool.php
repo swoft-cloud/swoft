@@ -5,6 +5,7 @@ namespace App\Pool;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Pool;
 use Swoft\Pool\ServicePool;
+use App\Pool\Config\UserPoolConfig;
 
 /**
  * the pool of user service
@@ -22,7 +23,7 @@ class UserServicePool extends ServicePool
     /**
      * @Inject()
      *
-     * @var \App\Pool\UserPoolConfig
+     * @var UserPoolConfig
      */
     private $poolConfig;
 }

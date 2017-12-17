@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Pool;
+namespace App\Pool\Config;
+
+use Swoft\Bean\Annotation\Bean;
+use Swoft\Bean\Annotation\Value;
 
 /**
+ * the config of service user
  *
- *
+ * @Bean()
  * @uses      UserPoolConfig
  * @version   2017年12月16日
  * @author    stelin <phpcrazy@126.com>
@@ -14,9 +18,17 @@ namespace App\Pool;
 class UserPoolConfig
 {
     /**
+     * the name of pool
+     *
+     * @Value(name="${config.service.user.name}", env="${SERVICE_USER_NAME}")
+     * @var string
+     */
+    protected $name = "";
+
+    /**
      * the maximum number of idle connections
      *
-     * @Value(name="${{prefix.name}.maxIdel}", env="${{prefix.env}_MAX_IDEL}")
+     * @Value(name="${config.service.user.maxIdel}", env="${SERVICE_USER_MAX_IDEL}")
      * @var int
      */
     protected $maxIdel = 6;
@@ -24,7 +36,7 @@ class UserPoolConfig
     /**
      * the maximum number of active connections
      *
-     * @Value(name="${{prefix.name}.maxActive}", env="${{prefix.env}_MAX_ACTIVE}")
+     * @Value(name="${config.service.user.maxActive}", env="${SERVICE_USER_MAX_ACTIVE}")
      * @var int
      */
     protected $maxActive = 50;
@@ -32,7 +44,7 @@ class UserPoolConfig
     /**
      * the maximum number of wait connections
      *
-     * @Value(name="${{prefix.name}.maxWait}", env="${{prefix.env}_MAX_WAIT}")
+     * @Value(name="${config.service.user.maxWait}", env="${SERVICE_USER_MAX_WAIT}")
      * @var int
      */
     protected $maxWait = 100;
@@ -40,7 +52,7 @@ class UserPoolConfig
     /**
      * the time of connect timeout
      *
-     * @Value(name="${{prefix.name}.timeout}", env="${{prefix.env}_TIMEOUT}")
+     * @Value(name="${config.service.user.timeout}", env="${SERVICE_USER_TIMEOUT}")
      * @var int
      */
     protected $timeout = 200;
@@ -55,7 +67,7 @@ class UserPoolConfig
      * ]
      * </pre>
      *
-     * @Value(name="${{prefix.name}.uri}", env="${{prefix.env}_URI}")
+     * @Value(name="${config.service.user.uri}", env="${SERVICE_USER_URI}")
      * @var array
      */
     protected $uri = [];
@@ -63,7 +75,7 @@ class UserPoolConfig
     /**
      * whether to user provider(consul/etcd/zookeeper)
      *
-     * @Value(name="${{prefix.name}.useProvider}", env="${{prefix.env}_USE_PROVIDER}")
+     * @Value(name="${config.service.user.useProvider}", env="${SERVICE_USER_USE_PROVIDER}")
      * @var bool
      */
     protected $useProvider = false;
@@ -71,19 +83,16 @@ class UserPoolConfig
     /**
      * the default balancer is random balancer
      *
-     * @Value(name="${{prefix.name}.balancer}", env="${{prefix.env}_BALANCER}")
+     * @Value(name="${config.service.user.balancer}", env="${SERVICE_USER_BALANCER}")
      * @var string
      */
-    protected $balancer = BalancerManager::TYPE_RANDOM;
+    protected $balancer = BalancerSelector::TYPE_RANDOM;
 
     /**
      * the default provider is consul provider
      *
-     * @Value(name="${{prefix.name}.provider}", env="${{prefix.env}_PROVIDER}")
+     * @Value(name="${config.service.user.provider}", env="${SERVICE_USER_PROVIDER}")
      * @var string
      */
-    protected $serviceProvider = null;
-
-
-
+    protected $provider = ProviderSelector::TYPE_CONSUL;
 }
