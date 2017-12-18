@@ -25,16 +25,16 @@ class UserBreaker extends CircuitBreaker
      * @Value(name="${config.breaker.user.failCount}", env="${USER_BREAKER_FAIL_COUNT}")
      * @var int
      */
-    protected $swithToFailCount = 6;
+    protected $swithToFailCount = 3;
 
     /**
      * The number of successive successes
      * If the arrival, the state switch to close
      *
-     * @Value(name="${config.breaker.user.SuccessCount}", env="${USER_BREAKER_SUCCESS_COUNT}")
+     * @Value(name="${config.breaker.user.successCount}", env="${USER_BREAKER_SUCCESS_COUNT}")
      * @var int
      */
-    protected $swithToSuccessCount = 6;
+    protected $swithToSuccessCount = 3;
 
     /**
      * Switch close to open delay time

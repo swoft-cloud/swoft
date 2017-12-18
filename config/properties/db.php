@@ -1,7 +1,7 @@
 <?php
 return [
     'master' => [
-        'name' => 'redis',
+        'name' => 'master',
         "uri"         => [
             '127.0.0.1:6379',
             '127.0.0.1:6379',
@@ -16,7 +16,7 @@ return [
     ],
 
     'slave' => [
-        'name' => 'redis',
+        'name' => 'slave',
         "uri"         => [
             '127.0.0.1:6379',
             '127.0.0.1:6379',

@@ -25,5 +25,5 @@ class UserServicePool extends ServicePool
      *
      * @var UserPoolConfig
      */
-    private $poolConfig;
+    protected $poolConfig;
 }
