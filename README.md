@@ -36,14 +36,6 @@
 - Inotify 自动 Reload
 - 强大的日志系统
 
-# 系统架构
-
-<p align="center">
-    <a href="https://github.com/stelin/swoft" target="_blank">
-        <img src="https://github.com/swoft-cloud/swoft-doc/blob/master/assets/images/architecture.png" alt="swoft" />
-    </a>
-</p>
-
 # 文档
 [**中文文档**](https://doc.swoft.org)
 
