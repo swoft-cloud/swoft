@@ -45,7 +45,7 @@ class OrmController
         $count->setFans(mt_rand(1, 1000));
         $count->setFollows(mt_rand(1, 1000));
 
-        return $count->save();
+        return [$count->save()];
     }
 
     /**
@@ -211,13 +211,13 @@ class OrmController
      */
     public function arFindId()
     {
-        $query = User::findById(236);
+        $query = User::findById(425);
         $result = $query->getResult();
 
         /* @var User $userObject */
         $userObject = $query->getResult(User::class);
 
-        $query = User::findById(238);
+        $query = User::findById(426);
         //        $deferResult = $query->getDefer()->getResult();
 
         /* @var User $deferResult */
