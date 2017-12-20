@@ -24,7 +24,7 @@ class OrmController
     /**
      * AR save操作
      */
-    public function actionArSave()
+    public function arSave()
     {
         //        $user = new User();
         //        //        $user->setId(120);
@@ -45,13 +45,13 @@ class OrmController
         $count->setFans(mt_rand(1, 1000));
         $count->setFollows(mt_rand(1, 1000));
 
-        return $count->save();
+        return [$count->save()];
     }
 
     /**
      * EM查找
      */
-    public function actionSave()
+    public function save()
     {
         $user = new User();
         $user->setName("stelin");
@@ -71,7 +71,7 @@ class OrmController
     /**
      * 实体内容删除
      */
-    public function actionArDelete()
+    public function arDelete()
     {
         $user = new User();
         //        $user->setId(286);
@@ -86,7 +86,7 @@ class OrmController
     /**
      * Em 删除
      */
-    public function actionDelete()
+    public function delete()
     {
         $user = new User();
         $user->setId(418);
@@ -102,7 +102,7 @@ class OrmController
     /**
      * EM deleteId
      */
-    public function actionDeleteId()
+    public function deleteId()
     {
         $em = EntityManager::create();
         //        $result = $em->deleteById(Count::class, 396);
@@ -114,7 +114,7 @@ class OrmController
     /**
      * EM DeleteIds
      */
-    public function actionDeleteIds()
+    public function deleteIds()
     {
         $em = EntityManager::create();
         //        $result = $em->deleteByIds(Count::class, [409, 410]);
@@ -126,7 +126,7 @@ class OrmController
     /**
      * 删除ID测试
      */
-    public function actionArDeleteId()
+    public function arDeleteId()
     {
         //        $result = User::deleteById(284);
         $result = User::deleteById(287, true);
@@ -137,7 +137,7 @@ class OrmController
     /**
      * 删除IDs测试
      */
-    public function actionArDeleteIds()
+    public function arDeleteIds()
     {
         //        $result = User::deleteByIds([291, 292]);
         $result = User::deleteByIds([288, 289], true);
@@ -148,7 +148,7 @@ class OrmController
     /**
      * 更新操作
      */
-    public function actionArUpdate()
+    public function arUpdate()
     {
         $query = User::findById(285);
 
@@ -167,7 +167,7 @@ class OrmController
     /**
      * 实体查找
      */
-    public function actionArFind()
+    public function arFind()
     {
         $user = new User();
         $user->setSex(1);
@@ -190,7 +190,7 @@ class OrmController
     /**
      * EM find
      */
-    public function actionFind()
+    public function find()
     {
         $user = new User();
         $user->setSex(1);
@@ -209,15 +209,15 @@ class OrmController
     /**
      * Ar ID查找
      */
-    public function actionArFindId()
+    public function arFindId()
     {
-        $query = User::findById(236);
+        $query = User::findById(425);
         $result = $query->getResult();
 
         /* @var User $userObject */
         $userObject = $query->getResult(User::class);
 
-        $query = User::findById(238);
+        $query = User::findById(426);
         //        $deferResult = $query->getDefer()->getResult();
 
         /* @var User $deferResult */
@@ -229,7 +229,7 @@ class OrmController
     /**
      * EM find id
      */
-    public function actionFindId()
+    public function findId()
     {
         $em = EntityManager::create();
         $query = $em->findById(User::class, 396);
@@ -245,7 +245,7 @@ class OrmController
     /**
      * Ar IDS查找
      */
-    public function actionArFindIds()
+    public function arFindIds()
     {
         $query = User::findByIds([416, 417]);
 
@@ -262,7 +262,7 @@ class OrmController
     /**
      * EM find ids
      */
-    public function actionFindIds()
+    public function findIds()
     {
         $em = EntityManager::create();
         $query = $em->findByIds(User::class, [396, 403]);
@@ -278,7 +278,7 @@ class OrmController
     /**
      * Ar Query
      */
-    public function actionArQuery()
+    public function arQuery()
     {
         //        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
         //        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
@@ -293,7 +293,7 @@ class OrmController
     /**
      * EM 事务测试
      */
-    public function actionTs()
+    public function ts()
     {
         $user = new User();
         $user->setName("stelin");
@@ -321,7 +321,7 @@ class OrmController
         return [$uid, $result];
     }
 
-    public function actionQuery()
+    public function query()
     {
         $em = EntityManager::create();
         $query = $em->createQuery();
@@ -338,7 +338,7 @@ class OrmController
     /**
      * 并发执行两个语句
      */
-    public function actionArCon()
+    public function arCon()
     {
         $query1 = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 419)
             ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->getDefer();
@@ -352,7 +352,7 @@ class OrmController
     }
 
 
-    public function actionSql()
+    public function sql()
     {
         $params = [
             ['uid', 433],

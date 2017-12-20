@@ -22,7 +22,7 @@ class RedisController
      * @RequestMapping()
      * @return bool|string
      */
-    public function actionTest()
+    public function test()
     {
         $setResult = RedisClient::set('test', 123321);
         $getResult = RedisClient::get('test');

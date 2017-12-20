@@ -63,7 +63,7 @@ class DemoController
      *
      * @return array
      */
-    public function actionIndex(Request $request)
+    public function index(Request $request)
     {
         // 获取所有GET参数
         $get = $request->query();
@@ -85,7 +85,7 @@ class DemoController
      * 定义一个route,支持get,以"/"开头的定义，直接是根路径，处理uri=/index2
      * @RequestMapping(route="/index2", method=RequestMethod::GET)
      */
-    public function actionIndex2()
+    public function index2()
     {
         Coroutine::create(function () {
             App::trace("this is child trace" . Coroutine::id());
@@ -100,7 +100,7 @@ class DemoController
     /**
      * 没有使用注解，自动解析注入，默认支持get和post
      */
-    public function actionTask()
+    public function task()
     {
         $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
         $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
@@ -111,7 +111,7 @@ class DemoController
         return [$rpc, $http, $mysql, $result, $result1];
     }
 
-    public function actionIndex6()
+    public function index6()
     {
         throw new Exception('AAAA');
         //        $a = $b;
@@ -123,7 +123,7 @@ class DemoController
     /**
      * 子协程测试
      */
-    public function actionCor()
+    public function cor()
     {
         // 创建子协程
         Coroutine::create(function () {
@@ -143,7 +143,7 @@ class DemoController
     /**
      * 国际化测试
      */
-    public function actionI18n()
+    public function i18n()
     {
         $data[] = App::t("title", [], 'zh');
         $data[] = App::t("title", [], 'en');
@@ -158,7 +158,7 @@ class DemoController
      * @RequestMapping()
      * @View(template="demo/view")
      */
-    public function actionView()
+    public function view()
     {
         $data = [
             'name'   => 'Swoft',
@@ -176,7 +176,7 @@ class DemoController
      * @RequestMapping()
      * @View(template="demo/content", layout="layouts/default.php")
      */
-    public function actionLayout()
+    public function layout()
     {
         $layout = 'layouts/default.php';
         $data   = [

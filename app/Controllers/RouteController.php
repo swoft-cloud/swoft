@@ -40,7 +40,7 @@ class RouteController
      *
      * @return array
      */
-    public function actionFuncArgs(bool $bool, Request $request, int $bid, string $name, int $uid, Response $response)
+    public function funcArgs(bool $bool, Request $request, int $bid, string $name, int $uid, Response $response)
     {
         return [$bid, $uid, $bool, $name, get_class($request), get_class($response)];
     }
@@ -50,7 +50,7 @@ class RouteController
      *
      * @return string
      */
-    public function actionHasNotArgs()
+    public function hasNotArgs()
     {
         return 'hasNotArg';
     }
@@ -62,7 +62,7 @@ class RouteController
      *
      * @return string
      */
-    public function actionHasAnyArgs(Request $request, int $bid)
+    public function hasAnyArgs(Request $request, int $bid)
     {
         return [get_class($request), $bid];
     }
@@ -75,7 +75,7 @@ class RouteController
      *
      * @return array
      */
-    public function actionHasMoreArgs(Request $request, int $bid)
+    public function hasMoreArgs(Request $request, int $bid)
     {
         return [get_class($request), $bid];
     }
@@ -88,7 +88,7 @@ class RouteController
      * @param string $name
      * @return array
      */
-    public function actionOptionalParameter(string $name)
+    public function optionalParameter(string $name)
     {
         return[$name];
     }
@@ -111,7 +111,7 @@ class RouteController
      *
      * @return array
      */
-    public function actionNotAnnotation(Request $request)
+    public function notAnnotation(Request $request)
     {
         return [get_class($request)];
     }
@@ -131,7 +131,7 @@ class RouteController
      *
      * @return array
      */
-    public function BehindAction(Request $request)
+    public function behind(Request $request)
     {
         return [get_class($request)];
     }

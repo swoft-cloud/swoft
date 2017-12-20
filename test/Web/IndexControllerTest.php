@@ -19,7 +19,7 @@ class IndexControllerTest extends AbstractTestCase
      * @test
      * @covers \App\Controllers\IndexController
      */
-    public function actionIndex()
+    public function testIndex()
     {
         $expectedResult = [
             'name' => 'Swoft',
@@ -97,7 +97,7 @@ class IndexControllerTest extends AbstractTestCase
      * @test
      * @covers \App\Controllers\IndexController
      */
-    public function actionException()
+    public function testException()
     {
         $response = $this->request('GET', '/index/exception', [], parent::ACCEPT_JSON);
         $response->assertStatus(400)->assertJson(['message' => 'Bad Request']);
@@ -107,7 +107,7 @@ class IndexControllerTest extends AbstractTestCase
      * @test
      * @covers \App\Controllers\IndexController
      */
-    public function actionRaw()
+    public function testRaw()
     {
         $expected = 'Swoft';
         $response = $this->request('GET', '/index/raw', [], parent::ACCEPT_RAW);
