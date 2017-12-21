@@ -13,7 +13,7 @@
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
-基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，常驻内存，不依赖传统的 PHP-FPM，没有复杂的异步回调、没有繁琐的yield, 有类似 Go 语言的协程、灵活的注解等等。
+基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，常驻内存，不依赖传统的 PHP-FPM，没有复杂的异步回调、没有繁琐的yield, 有类似 Go 语言的协程、灵活的注解、强大的全局容器等等。
 
 - 基于 Swoole 扩展
 - 内置 HTTP 协程服务器
