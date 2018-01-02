@@ -4,8 +4,9 @@ namespace App\Controllers;
 
 
 use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Cache\Redis\RedisClient;
+use Swoft\Bean\Annotation\Inject;
+use Swoft\Cache\CacheInterface;
+use Swoft\Cache\Redis\CacheRedis;
 
 
 /**
@@ -19,18 +20,90 @@ use Swoft\Cache\Redis\RedisClient;
 class RedisController
 {
     /**
-     * @RequestMapping()
-     * @return bool|string
+     * @Inject()
+     * @var CacheInterface
      */
-    public function test()
-    {
-        $setResult = RedisClient::set('test', 123321);
-        $getResult = RedisClient::get('test');
+    private $cache;
 
-        return [
-            'setResult' => $setResult,
-            'getResult' => $getResult
-        ];
+    /**
+     * @Inject()
+     * @var CacheRedis
+     */
+    private $redis;
+
+    public function testCache()
+    {
+        $result = $this->cache->set('name', 'stelin');
+        $name   = $this->cache->get('name');
+
+        return [$result, $name];
     }
 
+    public function testRedis()
+    {
+        $result = $this->redis->set('nameRedis', 'stelin2');
+        $name   = $this->redis->get('nameRedis');
+
+        return [$result, $name];
+    }
+
+    public function testFunc()
+    {
+        $result = cache()->set('nameFunc', 'stelin3');
+        $name   = cache()->get('nameFunc');
+
+        return [$result, $name];
+    }
+
+    public function testDelete()
+    {
+        $result = $this->cache->set('name', 'stelin');
+        $del    = $this->cache->delete('name');
+
+        return [$result, $del];
+    }
+
+    public function clear()
+    {
+        $result = $this->cache->clear();
+
+        return [$result];
+    }
+
+    public function setMultiple()
+    {
+        $result = $this->cache->setMultiple(['name6' => 'stelin6', 'name8' => 'stelin8']);
+        $ary    = $this->cache->getMultiple(['name6', 'name8']);
+
+        return [$result, $ary];
+    }
+
+    public function deleteMultiple()
+    {
+        $result = $this->cache->setMultiple(['name6' => 'stelin6', 'name8' => 'stelin8']);
+        $ary    = $this->cache->deleteMultiple(['name6', 'name8']);
+
+        return [$result, $ary];
+    }
+
+    public function has()
+    {
+        $result = $this->cache->set("name666", 'stelin666');
+        $ret    = $this->cache->has('name666');
+
+        return [$result, $ret];
+    }
+
+    public function testDefer()
+    {
+        $ret1 = $this->redis->deferCall('set', ['name1', 'stelin1']);
+        $ret2 = $this->redis->deferCall('set', ['name2', 'stelin2']);
+
+        $r1 = $ret1->getResult();
+        $r2 = $ret2->getResult();
+
+        $ary = $this->redis->getMultiple(['name1', 'name2']);
+
+        return [$r1, $r2, $ary];
+    }
 }
