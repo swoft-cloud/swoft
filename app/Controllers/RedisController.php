@@ -5,8 +5,8 @@ namespace App\Controllers;
 
 use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Cache\CacheInterface;
 use Swoft\Cache\Redis\CacheRedis;
+use Swoft\Cache\Cache;
 
 
 /**
@@ -20,8 +20,8 @@ use Swoft\Cache\Redis\CacheRedis;
 class RedisController
 {
     /**
-     * @Inject()
-     * @var CacheInterface
+     * @Inject("cache")
+     * @var Cache
      */
     private $cache;
 
@@ -53,6 +53,15 @@ class RedisController
         $name   = cache()->get('nameFunc');
 
         return [$result, $name];
+    }
+
+    public function testFunc2()
+    {
+        $result = cache()->set('nameFunc2', 'stelin3');
+        $name   = cache('nameFunc2');
+        $name2   = cache('nameFunc3', 'value3');
+
+        return [$result, $name, $name2];
     }
 
     public function testDelete()

@@ -45,6 +45,17 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
+    public function testFunc2()
+    {
+        $expected = [
+            true,
+            'stelin3',
+            'value3'
+        ];
+        $response = $this->request('GET', '/redis/testFunc2', [], parent::ACCEPT_JSON);
+        $response->assertSuccessful()->assertJson($expected);
+    }
+
     public function testDelete()
     {
         $expected = [

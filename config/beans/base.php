@@ -41,4 +41,8 @@ return [
     'eventManager'     => [
         'class' => \Swoft\Event\EventManager::class,
     ],
+    'cache' => [
+        'class' => \Swoft\Cache\Cache::class,
+        'type' => 'redis',
+    ]
 ];
