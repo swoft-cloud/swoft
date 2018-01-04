@@ -12,6 +12,7 @@ RUN apt-get update \
         git \
         vim \
         zip \
+        libz-dev \
     && apt-get clean
 
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -29,7 +30,7 @@ RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.
         && ldconfig \
     ) \
     && rm -r hiredis
-RUN wget https://github.com/swoole/swoole-src/archive/v2.0.10-stable.tar.gz -O swoole.tar.gz \
+RUN wget https://github.com/swoole/swoole-src/archive/v2.0.11.tar.gz -O swoole.tar.gz \
     && mkdir -p swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
     && rm swoole.tar.gz \
