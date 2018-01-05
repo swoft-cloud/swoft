@@ -43,6 +43,6 @@ return [
     ],
     'cache' => [
         'class' => \Swoft\Cache\Cache::class,
-        'type' => 'redis',
+        'driver' => 'redis',
     ]
 ];
