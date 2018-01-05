@@ -10,7 +10,6 @@ use Swoft\Base\ApplicationContext;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
-use Swoft\Cache\Redis\RedisClient;
 use Swoft\Db\EntityManager;
 use Swoft\Http\HttpClient;
 use Swoft\Service\Service;
@@ -49,8 +48,7 @@ class TestTask
         $status++;
         echo "this cor task \n";
         App::trace("this is task log");
-        //        RedisClient::set('name', 'stelin boy');
-        $name = RedisClient::get('name');
+        $name = cache()->get('name');
         return 'cor' . " $p1" . " $p2 " . $status . " " . $name;
     }
 
@@ -129,7 +127,7 @@ class TestTask
         static $status = 1;
         $status++;
         echo "this async task \n";
-        $name = RedisClient::get('name');
+        $name = cache()->get('name');
         App::trace("this is task log");
         return 'async-' . $status . '-' . $name;
     }
