@@ -4,10 +4,10 @@
     </a>
 </p>
 
-[![Latest Version](https://camo.githubusercontent.com/4e24aee529ac200ee919e43527297e321f807f77/68747470733a2f2f706f7365722e707567782e6f72672f78636c333732312f646f72612d7270632f762f756e737461626c65)](https://packagist.org/packages/swoft/swoft)
+[![Latest Version](https://img.shields.io/badge/unstable-v0.2.2-yellow.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.9-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.12-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
@@ -33,7 +33,7 @@
 - 协程、异步任务投递
 - 自定义用户进程
 - RPC、Redis、HTTP、Mysql 协程和同步阻塞客户端无缝切换
-- Inotify 自动 Reload
+- 跨平台热更新自动 Reload
 - 强大的日志系统
 
 # 文档
@@ -43,11 +43,10 @@ QQ交流群:548173319
 
 # 环境要求
 
-1. PHP 7.X
+1. PHP 7.x
 2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
-5. [Inotify](https://pecl.php.net/package/inotify) (可选)
 
 # 安装
 
