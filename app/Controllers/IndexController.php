@@ -158,7 +158,7 @@ class IndexController
     /**
      * @RequestMapping()
      * @param \Swoft\Web\Response $response
-     * @return \Swoft\Base\Response
+     * @return \Swoft\Core\Response
      */
     public function redirect(Response $response)
     {

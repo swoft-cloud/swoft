@@ -12,5 +12,5 @@ $server = new \Swoft\Server\HttpServer();
         'inTest' => true
     ],
 ]);
-$initApplicationContext = new \Swoft\Base\InitApplicationContext();
+$initApplicationContext = new \Swoft\Core\InitApplicationContext();
 $initApplicationContext->init();
