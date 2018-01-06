@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Base\Coroutine;
+use Swoft\Core\Coroutine;
 use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\RequestMapping;

@@ -5,7 +5,7 @@ namespace App\Middlewares;
 use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Swoft\Base\RequestHandler;
+use Swoft\Core\RequestHandler;
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Middleware\MiddlewareInterface;
 
