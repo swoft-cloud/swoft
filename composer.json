@@ -10,7 +10,10 @@
     "license": "apache2.0",
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "dev-master"
+        "swoft/framework": "dev-master",
+        "swoft/rpc": "dev-master",
+        "swoft/rpc-server": "dev-master",
+        "swoft/rpc-client": "dev-master"
     },
     "autoload": {
         "classmap": [],
@@ -37,6 +40,18 @@
         "0": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/framework"
+        },
+        "1": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-rpc"
+        },
+        "2": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-rpc-server"
+        },
+        "3": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-rpc-client"
         },
         "packagist": {
             "type": "composer",
