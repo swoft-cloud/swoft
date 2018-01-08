@@ -2,11 +2,10 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Ary;
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\RequestMethod;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMethod;
+use Swoft\Http\Server\Http\Request;
 
 /**
  * restful和参数验证测试demo
@@ -39,7 +38,7 @@ class RestController
      *
      * @RequestMapping(route="/user", method={RequestMethod::POST,RequestMethod::PUT})
      *
-     * @param \Swoft\Web\Request $request
+     * @param Request $request
      *
      * @return array
      */

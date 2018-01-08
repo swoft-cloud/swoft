@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Http\Request;
 
 /**
  * @Controller(prefix="/psr7")

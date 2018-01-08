@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
-use Swoft\Exception\Http\BadRequestException;
-use Swoft\Web\Response;
+use Swoft\Http\Server\Exception\BadRequestException;
+use Swoft\Http\Server\Http\Response;
 
 /**
  * Class IndexController
@@ -103,7 +103,7 @@ class IndexController
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Response $response
+     * @param Response $response
      * @return Response
      */
     public function absolutePath(Response $response)
@@ -157,8 +157,8 @@ class IndexController
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Response $response
-     * @return \Swoft\Core\Response
+     * @param Response $response
+     * @return Response
      */
     public function redirect(Response $response)
     {
