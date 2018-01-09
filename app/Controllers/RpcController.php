@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
-use Swoft\Service\Service;
+use Swoft\Rpc\Client\Service\Service;
 
 /**
  * rpc controller test

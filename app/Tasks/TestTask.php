@@ -12,7 +12,7 @@ use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
 use Swoft\Http\HttpClient;
-use Swoft\Service\Service;
+use Swoft\Rpc\Client\Service\Service;
 
 /**
  * 测试task

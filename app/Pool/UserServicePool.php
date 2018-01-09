@@ -4,8 +4,8 @@ namespace App\Pool;
 
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Pool;
-use Swoft\Pool\ServicePool;
 use App\Pool\Config\UserPoolConfig;
+use Swoft\Rpc\Client\Pool\ServicePool;
 
 /**
  * the pool of user service
