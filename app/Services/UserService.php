@@ -6,9 +6,9 @@ use App\Models\Logic\UserLogic;
 use Swoft\Bean\Annotation\Enum;
 use Swoft\Bean\Annotation\Floats;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Bean\Annotation\Mapping;
+use Swoft\Rpc\Server\Bean\Annotation\Mapping;
 use Swoft\Bean\Annotation\Number;
-use Swoft\Bean\Annotation\Service;
+use Swoft\Rpc\Server\Bean\Annotation\Service;
 use Swoft\Bean\Annotation\Strings;
 
 /**
