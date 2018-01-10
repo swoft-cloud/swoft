@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Enum;
 use Swoft\Bean\Annotation\Floats;
 use Swoft\Bean\Annotation\Integer;
 use Swoft\Bean\Annotation\Number;
-use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\Strings;
 use Swoft\Bean\Annotation\ValidatorFrom;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Http\Request;
 
 /**
  * validator
@@ -51,8 +51,8 @@ class ValidatorController
      * @Number(from=ValidatorFrom::POST, name="id", min=5, max=10, default=8)
      * @Number(from=ValidatorFrom::PATH, name="id", min=5, max=10)
      *
-     * @param \Swoft\Web\Request $request
-     * @param int                $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return array
      */
@@ -71,8 +71,8 @@ class ValidatorController
      * @Integer(from=ValidatorFrom::POST, name="id", min=5, max=10, default=8)
      * @Integer(from=ValidatorFrom::PATH, name="id", min=5, max=10)
      *
-     * @param \Swoft\Web\Request $request
-     * @param int                $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return array
      */
@@ -91,8 +91,8 @@ class ValidatorController
      * @Floats(from=ValidatorFrom::POST, name="id", min=5.1, max=5.9, default=5.6)
      * @Floats(from=ValidatorFrom::PATH, name="id", min=5.1, max=5.9)
      *
-     * @param \Swoft\Web\Request $request
-     * @param float              $id
+     * @param Request $request
+     * @param float   $id
      *
      * @return array
      */

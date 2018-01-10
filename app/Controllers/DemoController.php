@@ -4,15 +4,15 @@ namespace App\Controllers;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Base\Coroutine;
-use Swoft\Bean\Annotation\Controller;
+use Swoft\Core\Coroutine;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\RequestMethod;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Application;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Http\Request;
 
 /**
  * 控制器demo
@@ -32,7 +32,7 @@ class DemoController
      *
      * @Inject("httpRouter")
      *
-     * @var \Swoft\Router\Http\HandlerMapping
+     * @var \Swoft\Http\Server\Router\HandlerMapping
      */
     private $router;
 
@@ -59,7 +59,7 @@ class DemoController
      *
      * @RequestMapping(route="index", method={RequestMethod::GET, RequestMethod::POST})
      *
-     * @param \Swoft\Web\Request $request
+     * @param Request $request
      *
      * @return array
      */

@@ -6,13 +6,13 @@ use App\Models\Entity\Count;
 use App\Models\Entity\User;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Base\ApplicationContext;
+use Swoft\Core\ApplicationContext;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Bean\Annotation\Scheduled;
 use Swoft\Bean\Annotation\Task;
 use Swoft\Db\EntityManager;
 use Swoft\Http\HttpClient;
-use Swoft\Service\Service;
+use Swoft\Rpc\Client\Service\Service;
 
 /**
  * 测试task
