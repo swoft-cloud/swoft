@@ -1,3 +1,6 @@
 <?php
 require_once dirname(__FILE__, 2) . "/vendor/autoload.php";
 require_once dirname(__FILE__, 2) . '/config/define.php';
+
+// init the factory of bean
+\Swoft\Bean\BeanFactory::init();

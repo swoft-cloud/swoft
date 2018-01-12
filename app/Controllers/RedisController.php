@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 
+use Swoft\App;
+use Swoft\Console\Cbean;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Cache\Redis\CacheRedis;
@@ -35,7 +37,7 @@ class RedisController
     {
         $result = $this->cache->set('name', 'stelin');
         $name   = $this->cache->get('name');
-
+        var_dump(App::getBean(Cbean::class));
         return [$result, $name];
     }
 
