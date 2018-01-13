@@ -14,7 +14,8 @@
         "swoft/rpc": "dev-master",
         "swoft/rpc-server": "dev-master",
         "swoft/rpc-client": "dev-master",
-        "swoft/http-server": "dev-master"
+        "swoft/http-server": "dev-master",
+        "swoft/task": "dev-master"
     },
     "autoload": {
         "classmap": [],
@@ -58,6 +59,11 @@
           "type": "git",
           "url": "https://github.com/swoft-cloud/swoft-http-server"
         },
+        "5": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-task"
+        },
+
         "packagist": {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
