@@ -7,7 +7,7 @@ use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
 use Swoft\Http\Server\Exception\BadRequestException;
-use Swoft\Http\Server\Http\Response;
+use Swoft\Http\Message\Server\Response;
 
 /**
  * Class IndexController

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Http\Server\Bean\Annotation\RequestMethod;
-use Swoft\Http\Server\Http\Request;
+use Swoft\Http\Message\Server\Request;
 
 /**
  * restful和参数验证测试demo

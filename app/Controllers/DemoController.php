@@ -5,14 +5,14 @@ namespace App\Controllers;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
 use Swoft\Core\Coroutine;
-use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Http\Server\Bean\Annotation\RequestMethod;
 use Swoft\Bean\Annotation\View;
 use Swoft\Task\Task;
 use Swoft\Web\Application;
-use Swoft\Http\Server\Http\Request;
+use Swoft\Http\Message\Server\Request;
 
 /**
  * 控制器demo
