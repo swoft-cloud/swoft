@@ -3,8 +3,8 @@
 namespace App\Process;
 
 use Swoft\App;
-use Swoft\Process\AbstractProcessInterface;
 use Swoole\Process;
+use Swoft\Bootstrap\Process\AbstractProcessInterface;
 
 /**
  * 自定义进程demo

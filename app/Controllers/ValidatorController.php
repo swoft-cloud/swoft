@@ -10,7 +10,7 @@ use Swoft\Bean\Annotation\Number;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Bean\Annotation\Strings;
 use Swoft\Bean\Annotation\ValidatorFrom;
-use Swoft\Http\Server\Http\Request;
+use Swoft\Http\Message\Server\Request;
 
 /**
  * validator
