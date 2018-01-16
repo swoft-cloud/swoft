@@ -3,6 +3,9 @@
 return [
     'dispatcherServer' => [
         'class' => \Swoft\Http\Server\DispatcherServer::class,
+        'middlewares' => [
+            \Swoft\View\Middleware\ViewMiddleware::class
+        ]
     ],
     'application'      => [
         'id'          => APP_NAME,
@@ -34,8 +37,8 @@ return [
 
         ],
     ],
-    'renderer'         => [
-        'class'     => \Swoft\Web\ViewRenderer::class,
+    'view'         => [
+        'class'     => \Swoft\View\Base\View::class,
         'viewsPath' => '@resources/views/',
     ],
     'eventManager'     => [
