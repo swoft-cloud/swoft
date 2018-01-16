@@ -140,13 +140,11 @@ class IndexController
 
     /**
      * @RequestMapping()
-     * @param Response $response
      * @return Response
      */
-    public function absolutePath(Response $response)
+    public function absolutePath()
     {
-        $template = '@res/views/index/index.php';
-        return $response->view([
+        $data = [
             'name' => 'Swoft',
             'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
             'links' => [
@@ -171,7 +169,9 @@ class IndexController
                     'link' => 'https://github.com/swoft-cloud/swoft',
                 ],
             ]
-        ], $template);
+        ];
+        $template = '@res/views/index/index.php';
+        return view($template, $data);
     }
 
     /**
