@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Swoft\Exception\BadMethodCallException;
 use Swoft\Exception\RuntimeException;
 use Swoft\Exception\ValidatorException;
 use Swoft\Http\Server\Bean\Annotation\Controller;
@@ -44,5 +45,14 @@ class ExceptionController
     public function defaultException()
     {
         throw new ValidatorException("validator exception! ");
+    }
+
+    /**
+     * @RequestMapping()
+     * @throws BadMethodCallException
+     */
+    public function viewException()
+    {
+        throw new BadMethodCallException("view exception! ");
     }
 }
