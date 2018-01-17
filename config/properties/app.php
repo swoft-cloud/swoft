@@ -11,6 +11,7 @@ return [
         'App\Process',
         'App\Breaker',
         'App\Pool',
+        'App\Exception',
     ],
     'I18n'              => [
         'sourceLanguage' => '@root/resources/messages/',
