@@ -21,11 +21,6 @@ return [
         'model' => env('HTTP_MODEL', SWOOLE_PROCESS),
         'type'  => env('HTTP_TYPE', SWOOLE_SOCK_TCP),
     ],
-    'process' => [
-        'reload'    => \Swoft\Process\ReloadProcess::class,
-        'cronTimer' => \Swoft\Process\CronTimerProcess::class,
-        'cronExec'  => \Swoft\Process\CronExecProcess::class,
-    ],
     'crontab' => [
         'task_count' => env('CRONTAB_TASK_COUNT', 1024),
         'task_queue' => env('CRONTAB_TASK_QUEUE', 2048),

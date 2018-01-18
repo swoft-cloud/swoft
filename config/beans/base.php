@@ -2,7 +2,10 @@
 
 return [
     'dispatcherServer' => [
-        'class' => \Swoft\Web\DispatcherServer::class,
+        'class' => \Swoft\Http\Server\DispatcherServer::class,
+        'middlewares' => [
+            \Swoft\View\Middleware\ViewMiddleware::class
+        ]
     ],
     'application'      => [
         'id'          => APP_NAME,
@@ -23,19 +26,19 @@ return [
         ],
     ],
     'httpRouter'       => [
-        'class'          => \Swoft\Router\Http\HandlerMapping::class,
+        'class'          => \Swoft\Http\Server\Router\HandlerMapping::class,
         'ignoreLastSep'  => false,
         'tmpCacheNumber' => 1000,
         'matchAll'       => '',
     ],
     'requestParser'    => [
-        'class'   => \Swoft\Web\RequestParser::class,
+        'class'   => \Swoft\Http\Server\Parser\RequestParser::class,
         'parsers' => [
 
         ],
     ],
-    'renderer'         => [
-        'class'     => \Swoft\Web\ViewRenderer::class,
+    'view'         => [
+        'class'     => \Swoft\View\Base\View::class,
         'viewsPath' => '@resources/views/',
     ],
     'eventManager'     => [
@@ -44,5 +47,8 @@ return [
     'cache' => [
         'class' => \Swoft\Cache\Cache::class,
         'driver' => 'redis',
+        'drivers' => [
+            'redis' => \Swoft\Redis\RedisCache::class
+        ]
     ]
 ];

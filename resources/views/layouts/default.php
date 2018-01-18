@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Swoft\Web\ViewRenderer $this
+ * @var \Swoft\View\Base\View $this
  */
 ?>
 <!doctype html>

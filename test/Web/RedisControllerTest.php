@@ -15,7 +15,11 @@ use Swoft\Test\Web\AbstractTestCase;
 class RedisControllerTest extends AbstractTestCase
 {
 
-    public function testCache()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function cache()
     {
         $expected = [
             true,
@@ -25,7 +29,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testRedis()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function redis()
     {
         $expected = [
             true,
@@ -35,7 +43,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testFunc()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function func()
     {
         $expected = [
             true,
@@ -45,7 +57,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testFunc2()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function func2()
     {
         $expected = [
             true,
@@ -56,7 +72,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testDelete()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function delete()
     {
         $expected = [
             true,
@@ -66,7 +86,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testClear()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function clear()
     {
         $expected = [
             true,
@@ -75,7 +99,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testMultiple()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function multiple()
     {
         $expected = [
             true,
@@ -88,7 +116,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testDeleteMultiple()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function deleteMultiple()
     {
         $expected = [
             true,
@@ -98,7 +130,11 @@ class RedisControllerTest extends AbstractTestCase
         $response->assertSuccessful()->assertJson($expected);
     }
 
-    public function testHas()
+    /**
+     * @test
+     * @requires extension redis
+     */
+    public function has()
     {
         $expected = [
             true,

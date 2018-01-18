@@ -4,10 +4,10 @@ namespace App\Services;
 
 use Swoft\Bean\Annotation\Middleware;
 use Swoft\Bean\Annotation\Middlewares;
-use Swoft\Bean\Annotation\Service;
-use Swoft\Bean\Annotation\Mapping;
 use App\Middlewares\ServiceMiddleware;
 use App\Middlewares\ServiceSubMiddleware;
+use Swoft\Rpc\Server\Bean\Annotation\Service;
+use Swoft\Rpc\Server\Bean\Annotation\Mapping;
 
 /**
  * the middleware of service

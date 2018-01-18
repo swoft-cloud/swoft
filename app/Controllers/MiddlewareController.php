@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Middleware;
 use Swoft\Bean\Annotation\Middlewares;
-use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use App\Middlewares\GroupTestMiddleware;
 use App\Middlewares\ActionTestMiddleware;
 use App\Middlewares\SubMiddleware;
