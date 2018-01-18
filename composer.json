@@ -17,7 +17,10 @@
         "swoft/http-server": "dev-master",
         "swoft/task": "dev-master",
         "swoft/http-message": "dev-master",
-        "swoft/view": "dev-master"
+        "swoft/view": "dev-master",
+        "swoft/db": "dev-master",
+        "swoft/cache": "dev-master",
+        "swoft/redis": "dev-master"
     },
     "autoload": {
         "classmap": [],
@@ -73,7 +76,18 @@
           "type": "git",
           "url": "https://github.com/swoft-cloud/swoft-view"
         },
-
+        "8": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-db"
+        },
+        "9": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-cache"
+        },
+        "10": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-redis"
+        },
         "packagist": {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
