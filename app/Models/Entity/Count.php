@@ -2,10 +2,10 @@
 
 namespace App\Models\Entity;
 
-use Swoft\Bean\Annotation\Column;
-use Swoft\Bean\Annotation\Entity;
-use Swoft\Bean\Annotation\Id;
-use Swoft\Bean\Annotation\Table;
+use Swoft\Db\Bean\Annotation\Column;
+use Swoft\Db\Bean\Annotation\Entity;
+use Swoft\Db\Bean\Annotation\Id;
+use Swoft\Db\Bean\Annotation\Table;
 use Swoft\Db\Model;
 use Swoft\Db\Types;
 

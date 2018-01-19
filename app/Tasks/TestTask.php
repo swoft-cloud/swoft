@@ -6,19 +6,19 @@ use App\Models\Entity\Count;
 use App\Models\Entity\User;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Core\ApplicationContext;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Bean\Annotation\Scheduled;
-use Swoft\Bean\Annotation\Task;
+use Swoft\Core\ApplicationContext;
 use Swoft\Db\EntityManager;
-use Swoft\Http\HttpClient;
-use Swoft\Service\Service;
+use Swoft\Http\Client;
+use Swoft\Rpc\Client\Service\Service;
+use Swoft\Task\Bean\Annotation\Scheduled;
+use Swoft\Task\Bean\Annotation\Task;
 
 /**
  * 测试task
  *
- * @uses      TestTask
  * @Task("test")
+ * @uses      TestTask
  * @version   2017年09月24日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
@@ -96,8 +96,13 @@ class TestTask
             'desc' => 'php'
         ];
 
-        $result = HttpClient::call("http://127.0.0.1/index/post?a=b", HttpClient::GET, $requestData);
-        $result2 = HttpClient::call("http://www.baidu.com/", HttpClient::GET, []);
+        $client = new Client([
+                'base_uri' => 'http://127.0.0.1/index/post?a=b',
+                'timeout'  => 2,
+            ]);
+
+        $result = $client->post('http://127.0.0.1/index/post?a=b')->getResponse();
+        $result2 = $client->get('http://www.baidu.com/');
         $data['result'] = $result;
         $data['result2'] = $result2;
         return $data;

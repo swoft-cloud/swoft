@@ -3,8 +3,8 @@
 namespace App\Process;
 
 use Swoft\App;
-use Swoft\Process\AbstractProcess;
 use Swoole\Process;
+use Swoft\Bootstrap\Process\AbstractProcessInterface;
 
 /**
  * 自定义进程demo
@@ -15,7 +15,7 @@ use Swoole\Process;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class MyProcess extends AbstractProcess
+class MyProcess extends AbstractProcessInterface
 {
     /**
      * 实际进程运行逻辑

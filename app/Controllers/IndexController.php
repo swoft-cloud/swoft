@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\View;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\View\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
-use Swoft\Exception\Http\BadRequestException;
-use Swoft\Web\Response;
+use Swoft\Http\Server\Exception\BadRequestException;
+use Swoft\Http\Message\Server\Response;
 
 /**
  * Class IndexController
@@ -57,6 +57,43 @@ class IndexController
     }
 
     /**
+     * show view by view function
+     */
+    public function templateView()
+    {
+        $name = 'Swoft View';
+        $notes = [
+            'New Generation of PHP Framework',
+            'Hign Performance, Coroutine and Full Stack'
+        ];
+        $links = [
+            [
+                'name' => 'Home',
+                'link' => 'http://www.swoft.org',
+            ],
+            [
+                'name' => 'Documentation',
+                'link' => 'http://doc.swoft.org',
+            ],
+            [
+                'name' => 'Case',
+                'link' => 'http://swoft.org/case',
+            ],
+            [
+                'name' => 'Issue',
+                'link' => 'https://github.com/swoft-cloud/swoft/issues',
+            ],
+            [
+                'name' => 'GitHub',
+                'link' => 'https://github.com/swoft-cloud/swoft',
+            ],
+        ];
+        $data = compact('name', 'notes', 'links');
+
+        return view('index/index', $data);
+    }
+
+    /**
      * @RequestMapping()
      * @View(template="index/index")
      * @return \Swoft\Contract\Arrayable|__anonymous@836
@@ -103,13 +140,11 @@ class IndexController
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Response $response
      * @return Response
      */
-    public function absolutePath(Response $response)
+    public function absolutePath()
     {
-        $template = '@res/views/index/index.php';
-        return $response->view([
+        $data = [
             'name' => 'Swoft',
             'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
             'links' => [
@@ -134,7 +169,9 @@ class IndexController
                     'link' => 'https://github.com/swoft-cloud/swoft',
                 ],
             ]
-        ], $template);
+        ];
+        $template = '@res/views/index/index.php';
+        return view($template, $data);
     }
 
     /**
@@ -157,8 +194,8 @@ class IndexController
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Response $response
-     * @return \Swoft\Core\Response
+     * @param Response $response
+     * @return Response
      */
     public function redirect(Response $response)
     {
