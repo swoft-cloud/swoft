@@ -10,7 +10,7 @@
     "license": "apache2.0",
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "dev-master",
+        "swoft/framework": "dev-component",
         "swoft/rpc": "dev-master",
         "swoft/rpc-server": "dev-master",
         "swoft/rpc-client": "dev-master",
@@ -43,54 +43,54 @@
         "eaglewu/swoole-ide-helper": "dev-master",
         "phpunit/phpunit": "^5.7"
     },
-    "repositories": {
-        "0": {
+    "repositories": [
+        {
             "type": "git",
-            "url": "https://github.com/stelin/framework"
+            "url": "https://github.com/swoft-cloud/framework"
         },
-        "1": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-rpc"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-rpc"
         },
-        "2": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-rpc-server"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-rpc-server"
         },
-        "3": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-rpc-client"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-rpc-client"
         },
-        "4": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-http-server"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-http-server"
         },
-        "5": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-task"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-task"
         },
-        "6": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-http-message"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-http-message"
         },
-        "7": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-view"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-view"
         },
-        "8": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-db"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-db"
         },
-        "9": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-cache"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-cache"
         },
-        "10": {
-          "type": "git",
-          "url": "https://github.com/swoft-cloud/swoft-redis"
+        {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-redis"
         },
-        "packagist": {
+        {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
         }
-    }
+    ]
 }
