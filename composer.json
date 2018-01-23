@@ -20,7 +20,8 @@
         "swoft/view": "dev-master",
         "swoft/db": "dev-master",
         "swoft/cache": "dev-master",
-        "swoft/redis": "dev-master"
+        "swoft/redis": "dev-master",
+        "swoft/console": "dev-master"
     },
     "autoload": {
         "classmap": [],
@@ -43,54 +44,62 @@
         "eaglewu/swoole-ide-helper": "dev-master",
         "phpunit/phpunit": "^5.7"
     },
-    "repositories": [
-        {
+    "repositories": {
+        "0": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/framework"
         },
-        {
+        "1": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-rpc"
         },
-        {
+        "2": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-rpc-server"
         },
-        {
+        "3": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-rpc-client"
         },
-        {
+        "4": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-http-server"
         },
-        {
+        "5": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-task"
         },
-        {
+        "6": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-http-message"
         },
-        {
+        "7": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-view"
         },
-        {
+        "8": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-db"
         },
-        {
+        "9": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-cache"
         },
-        {
+        "10": {
             "type": "git",
             "url": "https://github.com/swoft-cloud/swoft-redis"
         },
-        {
+        "11": {
+            "type": "git",
+            "url": "https://github.com/swoft-cloud/swoft-console"
+        },
+        "12": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        },
+        "packagist": {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
         }
-    ]
+    }
 }

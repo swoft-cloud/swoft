@@ -10,7 +10,7 @@ use Swoft\Rpc\Client\Service\Service;
  * rpc controller test
  *
  * @Controller(prefix="rpc")
- * @uses      RpcController
+ * @uses      RpcCommand
  * @version   2017年11月27日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software

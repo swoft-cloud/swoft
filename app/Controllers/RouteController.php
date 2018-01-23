@@ -12,7 +12,7 @@ use Swoft\Http\Message\Server\Response;
  *
  * @Controller(prefix="/route")
  *
- * @uses      TestController
+ * @uses      TestCommand
  * @version   2017年11月26日
  * @author    stelin <phpcrazy@126.com>
  * @copyright Copyright 2010-2016 swoft software
