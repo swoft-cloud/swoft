@@ -4,7 +4,7 @@
     </a>
 </p>
 
-[![Latest Version](https://img.shields.io/badge/unstable-v0.2.2-yellow.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Latest Version](https://img.shields.io/badge/unstable-v0.2.6-yellow.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.12-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
@@ -19,6 +19,7 @@
 - 内置 HTTP 协程服务器
 - MVC 分层设计
 - 高性能路由
+- 强大的AOP
 - 全局容器注入
 - 灵活的中间件
 - 高性能 RPC
