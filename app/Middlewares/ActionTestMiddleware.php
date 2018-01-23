@@ -2,7 +2,7 @@
 
 namespace App\Middlewares;
 
-use Interop\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Swoft\Bean\Annotation\Bean;
@@ -25,7 +25,7 @@ class ActionTestMiddleware implements MiddlewareInterface
      * response creation to a handler.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Interop\Http\Server\RequestHandlerInterface $handler
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
