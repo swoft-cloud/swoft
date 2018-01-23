@@ -20,7 +20,8 @@
         "swoft/view": "dev-master",
         "swoft/db": "dev-master",
         "swoft/cache": "dev-master",
-        "swoft/redis": "dev-master"
+        "swoft/redis": "dev-master",
+        "swoft/console": "dev-master"
     },
     "autoload": {
         "classmap": [],
@@ -88,6 +89,11 @@
           "type": "git",
           "url": "https://github.com/swoft-cloud/swoft-redis"
         },
+        "11": {
+          "type": "git",
+          "url": "https://github.com/swoft-cloud/swoft-console"
+        },
+
         "packagist": {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
