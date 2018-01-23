@@ -40,7 +40,7 @@ class TestCommand
      * @param Input  $input
      * @param Output $output
      *
-     * @Mapping()
+     * @Mapping("test2")
      */
     public function test(Input $input, Output $output)
     {
