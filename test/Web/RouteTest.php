@@ -31,24 +31,6 @@ class RouteTest extends AbstractTestCase
     }
 
     /**
-     * @covers closure route
-     */
-    public function testClosureFuncArgs()
-    {
-        $data     = [
-            'clouse',
-            456,
-            123,
-            true,
-            "test",
-            "Swoft\\Testing\\Web\\Request",
-            "Swoft\\Testing\\Web\\Response",
-        ];
-        $response = $this->request('GET', '/user/123/book/456/1/test', [], parent::ACCEPT_JSON);
-        $response->assertExactJson($data);
-    }
-
-    /**
      * @covers \App\Controllers\RouteController::hasNotArgs
      */
     public function testHasNotArg()

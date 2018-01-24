@@ -170,7 +170,7 @@ class IndexController
                 ],
             ]
         ];
-        $template = '@res/views/index/index.php';
+        $template = 'index/index';
         return view($template, $data);
     }
 
