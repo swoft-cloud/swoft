@@ -10,6 +10,7 @@ use Swoft\Http\Message\Server\Request;
 use Swoft\Http\Message\Server\Response;
 use Swoft\Exception\BadMethodCallException;
 use Swoft\Exception\ValidatorException;
+use Swoft\Http\Server\Exception\BadRequestException;
 
 /**
  * the handler of global exception
@@ -68,6 +69,21 @@ class SwoftExceptionHandler
      * @return Response
      */
     public function handlerValidatorException(Response $response, \Throwable $throwable)
+    {
+        $exception = $throwable->getMessage();
+
+        return $response->json(["message" => $exception]);
+    }
+
+    /**
+     * @Handler(BadRequestException::class)
+     *
+     * @param Response   $response
+     * @param \Throwable $throwable
+     *
+     * @return Response
+     */
+    public function handlerBadRequestException(Response $response, \Throwable $throwable)
     {
         $exception = $throwable->getMessage();
 

@@ -189,7 +189,7 @@ class IndexController
      */
     public function exception()
     {
-        throw new BadRequestException();
+        throw new BadRequestException("bad request exception");
     }
 
     /**
