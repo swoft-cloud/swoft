@@ -3,7 +3,6 @@
 namespace Swoft\Test\Web;
 
 
-use Swoft\App;
 use Swoft\Helper\ArrayHelper;
 use Swoft\Testing\SwooleRequest as TestSwooleRequest;
 use Swoft\Testing\SwooleResponse as TestSwooleResponse;
@@ -39,7 +38,7 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
         $swooleRequest = new TestSwooleRequest();
         $swooleRequest->setRawContent($rawContent);
         $this->buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers);
-        return App::getDispatcherServer()->doDispatcher($swooleRequest, $swooleResponse);;
+        return dispatcher_server()->doDispatcher($swooleRequest, $swooleResponse);;
     }
 
     /**

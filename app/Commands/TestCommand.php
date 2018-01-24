@@ -13,7 +13,7 @@ use Swoft\Log\Log;
 /**
  * the group of test command
  *
- * @Command(coroutine=false)
+ * @Command()
  * @uses      TestCommand
  * @version   2017年11月03日
  * @author    stelin <phpcrazy@126.com>
