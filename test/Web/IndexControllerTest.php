@@ -100,10 +100,7 @@ class IndexControllerTest extends AbstractTestCase
     public function testException()
     {
         $data = [
-            'msg'  => '',
-            'file' => '/home/worker/data/www/swoft/app/Controllers/IndexController.php',
-            'line' => 192,
-            'code' => 400,
+            'message' => 'bad request exception'
         ];
 
         $response = $this->request('GET', '/index/exception', [], parent::ACCEPT_JSON);
