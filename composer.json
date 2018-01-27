@@ -51,54 +51,6 @@
       "url": "https://github.com/swoft-cloud/framework"
     },
     {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-rpc"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-rpc-server"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-rpc-client"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-http-server"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-task"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-http-message"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-view"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-db"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-cache"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-redis"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-console"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/swoft-testing"
-    },
-    {
       "type": "composer",
       "url": "https://packagist.phpcomposer.com"
     }
