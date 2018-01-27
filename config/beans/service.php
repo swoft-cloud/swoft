@@ -10,7 +10,7 @@ return [
         'class'   => \Swoft\Rpc\Packer\ServicePacker::class,
         'type'    => 'json',
         'packers' => [
-
+            'json' => JsonPacker::class,
         ],
     ],
 ];

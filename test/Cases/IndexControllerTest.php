@@ -1,7 +1,6 @@
 <?php
 
-namespace Swoft\Test\Web;
-
+namespace Swoft\Test\Cases;
 
 use Swoft\Testing\Web\Response;
 
