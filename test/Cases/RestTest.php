@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoft\Test\Web;
+namespace Swoft\Test\Cases;
 
 /**
  * the test of restful

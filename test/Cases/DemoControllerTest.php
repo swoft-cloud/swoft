@@ -1,8 +1,6 @@
 <?php
 
-namespace Web;
-
-use Swoft\Test\Web\AbstractTestCase;
+namespace Swoft\Test\Cases;
 
 
 /**

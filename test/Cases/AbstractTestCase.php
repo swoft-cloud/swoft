@@ -1,22 +1,23 @@
 <?php
 
-namespace Swoft\Test\Web;
+namespace Swoft\Test\Cases;
 
-
+use PHPUnit\Framework\TestCase;
 use Swoft\Helper\ArrayHelper;
 use Swoft\Testing\SwooleRequest as TestSwooleRequest;
 use Swoft\Testing\SwooleResponse as TestSwooleResponse;
+use Swoft\Testing\Web\Request;
+use Swoft\Testing\Web\Response;
 
 /**
  * @uses      AbstractTestCase
- * @version   2017-11-12
+ * @version   2017年11月03日
  * @author    huangzhhui <huangzhwork@gmail.com>
  * @copyright Copyright 2010-2017 Swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
+class AbstractTestCase extends TestCase
 {
-
     const ACCEPT_VIEW = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
     const ACCEPT_JSON = 'application/json';
     const ACCEPT_RAW = 'text/plain';
@@ -36,9 +37,16 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
         $method = strtoupper($method);
         $swooleResponse = new TestSwooleResponse();
         $swooleRequest = new TestSwooleRequest();
-        $swooleRequest->setRawContent($rawContent);
+
         $this->buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers);
-        return dispatcher_server()->doDispatcher($swooleRequest, $swooleResponse);;
+
+        $swooleRequest->setRawContent($rawContent);
+
+        $request = Request::loadFromSwooleRequest($swooleRequest);
+        $response = new Response($swooleResponse);
+
+
+        return dispatcher_server()->doDispatcher($request, $response);;
     }
 
     /**
@@ -49,7 +57,7 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
      * @param       $swooleRequest
      * @param array $headers
      */
-    protected function buildMockRequest($method, $uri, $parameters, $accept, $swooleRequest, $headers = [])
+    protected function buildMockRequest($method, $uri, $parameters, $accept, &$swooleRequest, $headers = [])
     {
         $urlAry = parse_url($uri);
         $urlParams = [];
@@ -95,5 +103,4 @@ abstract class AbstractTestCase extends \Swoft\Test\AbstractTestCase
             $swooleRequest->get = array_merge($urlParams, $get);
         }
     }
-
 }
