@@ -2,7 +2,7 @@
 
 namespace Swoft\Test\Cases;
 
-use Swoft\Testing\Web\Response;
+use Swoft\Http\Message\Testing\Web\Response;
 
 /**
  * @uses      IndexControllerTest

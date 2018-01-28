@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'dispatcherServer' => [
-        'class' => \Swoft\Http\Server\DispatcherServer::class,
+    'ServerDispatcher' => [
+        'class' => \Swoft\Http\Server\ServerDispatcher::class,
         'middlewares' => [
             \Swoft\View\Middleware\ViewMiddleware::class
         ]

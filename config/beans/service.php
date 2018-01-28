@@ -1,7 +1,7 @@
 <?php
 return [
-    'dispatcherService' => [
-        'class' => \Swoft\Rpc\Server\DispatcherService::class,
+    'ServiceDispatcher' => [
+        'class' => \Swoft\Rpc\Server\ServiceDispatcher::class,
     ],
     'serviceRouter'     => [
         'class' => \Swoft\Rpc\Server\Router\HandlerMapping::class,

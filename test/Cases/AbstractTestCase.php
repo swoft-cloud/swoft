@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Swoft\Helper\ArrayHelper;
 use Swoft\Testing\SwooleRequest as TestSwooleRequest;
 use Swoft\Testing\SwooleResponse as TestSwooleResponse;
-use Swoft\Testing\Web\Request;
-use Swoft\Testing\Web\Response;
+use Swoft\Http\Message\Testing\Web\Request;
+use Swoft\Http\Message\Testing\Web\Response;
 
 /**
  * @uses      AbstractTestCase
@@ -30,7 +30,7 @@ class AbstractTestCase extends TestCase
      * @param array  $headers
      * @param string $rawContent
      *
-     * @return bool|\Swoft\Testing\Web\Response
+     * @return bool|\Swoft\Http\Message\Testing\Web\Response
      */
     public function request($method, $uri, $parameters = [], $accept = self::ACCEPT_JSON, $headers = [], $rawContent = '')
     {
