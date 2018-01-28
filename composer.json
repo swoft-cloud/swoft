@@ -21,7 +21,8 @@
     "swoft/db": "dev-master",
     "swoft/cache": "dev-master",
     "swoft/redis": "dev-master",
-    "swoft/console": "dev-master"
+    "swoft/console": "dev-master",
+    "swoft/devtool": "dev-master"
   },
   "autoload": {
     "classmap": [],
@@ -45,6 +46,10 @@
     "phpunit/phpunit": "^5.7"
   },
   "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/swoft-cloud/swoft-devtool"
+    },
     {
       "type": "composer",
       "url": "https://packagist.phpcomposer.com"
