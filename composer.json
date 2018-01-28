@@ -7,7 +7,7 @@
         "swoft"
     ],
     "description": "microservice framework base on swoole",
-    "license": "apache2.0",
+    "license": "Apache-2.0",
     "require": {
         "php": ">=7.0",
         "swoft/framework": "dev-master"
