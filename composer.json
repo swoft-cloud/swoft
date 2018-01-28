@@ -21,8 +21,7 @@
     "swoft/db": "dev-master",
     "swoft/cache": "dev-master",
     "swoft/redis": "dev-master",
-    "swoft/console": "dev-master",
-    "swoft/swoft-testing": "dev-master"
+    "swoft/console": "dev-master"
   },
   "autoload": {
     "classmap": [],
