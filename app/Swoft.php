@@ -1,9 +1,5 @@
 <?php
 
-namespace App;
-
-use Swoft\App;
-
 /**
  * the class of Swoft
  *
@@ -13,7 +9,7 @@ use Swoft\App;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class Swoft extends App
+class Swoft extends \Swoft\App
 {
 
 }
