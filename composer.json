@@ -47,10 +47,6 @@
   },
   "repositories": [
     {
-      "type": "git",
-      "url": "https://github.com/swoft-cloud/framework"
-    },
-    {
       "type": "composer",
       "url": "https://packagist.phpcomposer.com"
     }
