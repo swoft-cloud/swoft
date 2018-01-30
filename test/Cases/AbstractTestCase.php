@@ -3,6 +3,7 @@
 namespace Swoft\Test\Cases;
 
 use PHPUnit\Framework\TestCase;
+use Swoft\App;
 use Swoft\Helper\ArrayHelper;
 use Swoft\Testing\SwooleRequest as TestSwooleRequest;
 use Swoft\Testing\SwooleResponse as TestSwooleResponse;
@@ -45,8 +46,9 @@ class AbstractTestCase extends TestCase
         $request = Request::loadFromSwooleRequest($swooleRequest);
         $response = new Response($swooleResponse);
 
-
-        return dispatcher_server()->doDispatcher($request, $response);;
+        /** @var \Swoft\Http\Server\ServerDispatcher $dispatcher */
+        $dispatcher = App::getBean('ServerDispatcher');
+        return $dispatcher->dispatch($request, $response);;
     }
 
     /**

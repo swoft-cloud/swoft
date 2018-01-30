@@ -13,7 +13,5 @@ require_once dirname(dirname(__FILE__)) . '/config/define.php';
     ],
 ]);
 
-$server = new \Swoft\Http\Server\Http\HttpServer();
-
 $initApplicationContext = new \Swoft\Core\InitApplicationContext();
 $initApplicationContext->init();

@@ -23,8 +23,8 @@ class RouteTest extends AbstractTestCase
             123,
             true,
             "test",
-            "Swoft\\Testing\\Web\\Request",
-            "Swoft\\Testing\\Web\\Response",
+            "Swoft\\Http\\Message\\Testing\\Web\\Request",
+            "Swoft\\Http\\Message\\Testing\\Web\\Response",
         ];
         $response = $this->request('GET', '/route/user/123/book/456/1/test', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
@@ -45,7 +45,7 @@ class RouteTest extends AbstractTestCase
     public function testHasAnyArgs()
     {
         $response = $this->request('GET', '/route/hasAnyArgs/123', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["Swoft\\Testing\\Web\\Request", 123]);
+        $response->assertExactJson(["Swoft\\Http\\Message\\Testing\\Web\\Request", 123]);
     }
 
     /**
@@ -66,7 +66,7 @@ class RouteTest extends AbstractTestCase
     public function testHasMoreArgs()
     {
         $response = $this->request('GET', '/route/hasMoreArgs', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["Swoft\\Testing\\Web\\Request", 0]);
+        $response->assertExactJson(["Swoft\\Http\\Message\\Testing\\Web\\Request", 0]);
     }
 
     /**
@@ -75,7 +75,7 @@ class RouteTest extends AbstractTestCase
     public function testNotAnnotation()
     {
         $response = $this->request('GET', '/route/notAnnotation', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+        $response->assertExactJson(["Swoft\\Http\\Message\\Testing\\Web\\Request"]);
     }
 
     /**
@@ -84,7 +84,7 @@ class RouteTest extends AbstractTestCase
     public function testOnlyFunc()
     {
         $response = $this->request('GET', '/route/onlyFunc', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+        $response->assertExactJson(["Swoft\\Http\\Message\\Testing\\Web\\Request"]);
     }
 
     /**
@@ -93,7 +93,7 @@ class RouteTest extends AbstractTestCase
     public function testBehindAction()
     {
         $response = $this->request('GET', '/route/behind', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["Swoft\\Testing\\Web\\Request"]);
+        $response->assertExactJson(["Swoft\\Http\\Message\\Testing\\Web\\Request"]);
     }
 
     /**
