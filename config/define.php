@@ -8,8 +8,6 @@ use \Swoft\App;
 !defined('APP_NAME') && define('APP_NAME', 'swoft');
 // 基础根目录
 !defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
-// cli命名空间
-!defined('COMMAND_NS') && define('COMMAND_NS', "App\Commands");
 
 // 注册别名
 $aliases = [
@@ -21,6 +19,8 @@ $aliases = [
     '@resources'  => '@root/resources',
     '@beans'      => '@configs/beans',
     '@properties' => '@configs/properties',
-    '@commands'   => '@app/Commands'
+    '@commands'   => '@app/Commands',
+    '@console'    => '@beans/console.php',
 ];
+
 App::setAliases($aliases);

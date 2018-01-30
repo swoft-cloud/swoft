@@ -2,6 +2,9 @@
 return [
     "version"           => '1.0',
     'autoInitBean'      => true,
+    'bootScan' => [
+        'App\Commands'
+    ],
     'beanScan'          => [
         'App\Controllers',
         'App\Models',
