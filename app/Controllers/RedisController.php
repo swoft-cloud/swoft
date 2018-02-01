@@ -36,7 +36,11 @@ class RedisController
         $result = $this->cache->set('name', 'stelin');
         $name   = $this->cache->get('name');
 
-        return [$result, $name];
+        $this->redis->incr("count");
+
+        $this->redis->incrBy("count2", 2);
+
+        return [$result, $name, $this->redis->get('count'), $this->redis->get('count2')];
     }
 
     public function testRedis()
