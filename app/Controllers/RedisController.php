@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Cache\Cache;
-use Swoft\Redis\RedisCache;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 
 
@@ -27,7 +26,7 @@ class RedisController
 
     /**
      * @Inject()
-     * @var RedisCache
+     * @var \Swoft\Redis\Redis
      */
     private $redis;
 
