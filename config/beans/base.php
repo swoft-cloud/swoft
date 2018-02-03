@@ -29,7 +29,7 @@ return [
     'cache' => [
         'driver' => 'redis',
         'drivers' => [
-            'redis' => \Swoft\Redis\RedisCache::class
+            'redis' => \Swoft\Redis\Redis::class
         ]
     ]
 ];

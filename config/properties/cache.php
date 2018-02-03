@@ -14,5 +14,6 @@ return [
         'useProvider' => false,
         'provider'    => 'consul',
         'db'          => 1,
+        'serialize'   => 0,
     ],
 ];
