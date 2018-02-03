@@ -15,6 +15,7 @@
     "swoft/rpc-server": "dev-master",
     "swoft/rpc-client": "dev-master",
     "swoft/http-server": "dev-master",
+    "swoft/http-client": "dev-master",
     "swoft/task": "dev-master",
     "swoft/http-message": "dev-master",
     "swoft/view": "dev-master",
