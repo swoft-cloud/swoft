@@ -13,6 +13,7 @@ RUN apt-get update \
         vim \
         zip \
         libz-dev \
+        libssl-dev \
     && apt-get clean
 
 RUN curl -sS https://getcomposer.org/installer | php \
