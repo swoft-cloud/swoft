@@ -37,7 +37,7 @@ RUN wget https://github.com/swoole/swoole-src/archive/v2.0.12.tar.gz -O swoole.t
     && ( \
         cd swoole \
         && phpize \
-        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine \
+        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine --enable-openssl \
         && make -j$(nproc) \
         && make install \
     ) \
