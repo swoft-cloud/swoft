@@ -12,8 +12,6 @@ use Swoft\Http\Message\Server\Response;
 /**
  * Class IndexController
  * @Controller()
- *
- * @package App\Controllers
  */
 class IndexController
 {

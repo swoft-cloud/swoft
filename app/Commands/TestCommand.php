@@ -70,8 +70,8 @@ class TestCommand
         $opt    = input()->getOpt('o');
         $name   = input()->getArg('arg', 'swoft');
 
-        App::trace("this is command log");
-        Log::info("this is comamnd info log");
+        App::trace('this is command log');
+        Log::info('this is comamnd info log');
         /* @var UserLogic $logic */
         $logic = App::getBean(UserLogic::class);
         $data  = $logic->getUserInfo(['uid1']);

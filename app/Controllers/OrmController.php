@@ -17,9 +17,9 @@ class OrmController
     public function arSave()
     {
         $user = new User();
-        $user->setName("stelin");
+        $user->setName('stelin');
         $user->setSex(1);
-        $user->setDesc("this my desc");
+        $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
         $deferUser = $user->save();
 
@@ -33,9 +33,9 @@ class OrmController
         $countResult = $deferCount->getResult();
 
         $user = new User();
-        $user->setName("stelin2");
+        $user->setName('stelin2');
         $user->setSex(1);
-        $user->setDesc("this my desc2");
+        $user->setDesc('this my desc2');
         $user->setAge(mt_rand(1, 100));
         $directUser = $user->save()->getResult();
 
@@ -54,9 +54,9 @@ class OrmController
     public function save()
     {
         $user = new User();
-        $user->setName("stelin");
+        $user->setName('stelin');
         $user->setSex(1);
-        $user->setDesc("this my desc");
+        $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
 
         $em = EntityManager::create();
@@ -153,7 +153,7 @@ class OrmController
 
         /* @var User $user */
         $user = $query->getResult(User::class);
-        $user->setName("upateNameUser2");
+        $user->setName('upateNameUser2');
         $user->setSex(0);
 
         $result = $user->update();
@@ -274,9 +274,9 @@ class OrmController
     public function ts()
     {
         $user = new User();
-        $user->setName("stelin");
+        $user->setName('stelin');
         $user->setSex(1);
-        $user->setDesc("this my desc");
+        $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
 
         $count = new Count();
@@ -303,8 +303,8 @@ class OrmController
     {
         $em = EntityManager::create();
         $query = $em->createQuery();
-        $result = $query->select("*")->from(User::class, 'u')->leftJoin(Count::class, ['u.id=c.uid'], 'c')->whereIn('u.id', [419, 420, 421])
-            ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
+        $result = $query->select('*')->from(User::class, 'u')->leftJoin(Count::class, ['u.id=c.uid'], 'c')->whereIn('u.id', [419, 420, 421])
+                        ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
         //        $result = $query->getResult();
         $result = $result->getResult();
         $sql = $query->getSql();
@@ -321,8 +321,8 @@ class OrmController
         $query1 = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 419)
             ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
 
-        $query2 = User::query()->select("*")->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 420)
-            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
+        $query2 = User::query()->select('*')->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 420)
+                      ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
 
         $result1 = $query1->getResult();
         $result2 = $query2->getResult();
@@ -345,7 +345,7 @@ class OrmController
 //                        $query->setParameter('uid3', 431);
 //        $query->setParameters($params);
 
-                $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2";
+                $querySql = 'SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2';
                 $query = $em->createQuery($querySql);
                 $query->setParameter(1, 433);
                 $query->setParameter(2, 434);
