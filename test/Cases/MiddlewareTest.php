@@ -19,7 +19,7 @@ class MiddlewareTest extends AbstractTestCase
     public function testControllerAndAction()
     {
         $response = $this->request('GET', '/md/caa', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["middleware"]);
+        $response->assertExactJson(['middleware']);
         $response->assertHeader('Middleware-Group-Test', 'success');
         $response->assertHeader('Sub-Middleware-Test', 'Success');
         $response->assertHeader('Middleware-Action-Test', 'success');
@@ -31,7 +31,7 @@ class MiddlewareTest extends AbstractTestCase
     public function testControllerAndAction2()
     {
         $response = $this->request('GET', '/md/caa2', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["middleware2"]);
+        $response->assertExactJson(['middleware2']);
         $response->assertHeader('Middleware-Group-Test', 'success');
         $response->assertHeader('Sub-Middleware-Test', 'Success');
         $response->assertHeader('Middleware-Action-Test', 'success');
@@ -43,7 +43,7 @@ class MiddlewareTest extends AbstractTestCase
     public function testControlerMiddleware()
     {
         $response = $this->request('GET', '/md/cm', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["middleware3"]);
+        $response->assertExactJson(['middleware3']);
         $response->assertHeader('ControlerTestMiddleware', 'success');
         $response->assertHeader('ControlerSubMiddleware', 'success');
     }
