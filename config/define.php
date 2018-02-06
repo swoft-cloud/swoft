@@ -1,11 +1,11 @@
 <?php
 
 // Constants
-!defined('DS') && define('DS', DIRECTORY_SEPARATOR);
+! defined('DS') && define('DS', DIRECTORY_SEPARATOR);
 // App name
-!defined('APP_NAME') && define('APP_NAME', 'swoft');
+! defined('APP_NAME') && define('APP_NAME', 'swoft');
 // Project base path
-!defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
+! defined('BASE_PATH') && define('BASE_PATH', dirname(__DIR__, 1));
 
 // Register alias
 $aliases = [
@@ -18,7 +18,7 @@ $aliases = [
     '@beans'      => '@configs/beans',
     '@properties' => '@configs/properties',
     '@console'    => '@beans/console.php',
-    '@commands'    => '@app/command',
+    '@commands'   => '@app/command',
 ];
 
 \Swoft\App::setAliases($aliases);
