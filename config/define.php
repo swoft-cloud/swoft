@@ -1,7 +1,5 @@
 <?php
 
-use \Swoft\App;
-
 // Constants
 !defined('DS') && define('DS', DIRECTORY_SEPARATOR);
 // App name
@@ -23,4 +21,4 @@ $aliases = [
     '@commands'    => '@app/command',
 ];
 
-App::setAliases($aliases);
+\Swoft\App::setAliases($aliases);
