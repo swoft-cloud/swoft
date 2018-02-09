@@ -22,7 +22,7 @@ class RouteTest extends AbstractTestCase
             456,
             123,
             true,
-            "test",
+            'test',
             "Swoft\\Http\\Message\\Testing\\Web\\Request",
             "Swoft\\Http\\Message\\Testing\\Web\\Response",
         ];
@@ -54,10 +54,10 @@ class RouteTest extends AbstractTestCase
     public function testOptionnalParameter()
     {
         $response = $this->request('GET', '/route/opntion/arg1', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["arg1"]);
+        $response->assertExactJson(['arg1']);
 
         $response = $this->request('GET', '/route/opntion', [], parent::ACCEPT_JSON);
-        $response->assertExactJson([""]);
+        $response->assertExactJson(['']);
     }
 
     /**
@@ -102,6 +102,6 @@ class RouteTest extends AbstractTestCase
     public function testFuncAnyName()
     {
         $response = $this->request('GET', '/route/anyName/stelin', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(["stelin"]);
+        $response->assertExactJson(['stelin']);
     }
 }

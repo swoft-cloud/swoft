@@ -1,16 +1,10 @@
 <?php
 
 return [
-    'application'      => [
-        'id'          => APP_NAME,
-        'name'        => APP_NAME,
-        'errorAction' => '/error/index',
-        'useProvider' => false,
-    ],
-
     'ServerDispatcher' => [
         'middlewares' => [
-            \Swoft\View\Middleware\ViewMiddleware::class
+            \Swoft\View\Middleware\ViewMiddleware::class,
+            \Swoft\Session\Middleware\SessionMiddleware::class,
         ]
     ],
     'httpRouter'       => [
@@ -23,13 +17,10 @@ return [
 
         ],
     ],
-    'view'         => [
+    'view'             => [
         'viewsPath' => '@resources/views/',
     ],
-    'cache' => [
+    'cache'            => [
         'driver' => 'redis',
-        'drivers' => [
-            'redis' => \Swoft\Redis\Redis::class
-        ]
     ]
 ];

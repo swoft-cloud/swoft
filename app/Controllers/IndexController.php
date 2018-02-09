@@ -12,8 +12,6 @@ use Swoft\Http\Message\Server\Response;
 /**
  * Class IndexController
  * @Controller()
- *
- * @package App\Controllers
  */
 class IndexController
 {
@@ -23,7 +21,7 @@ class IndexController
      * @View(template="index/index")
      * @return array
      */
-    public function index()
+    public function index(): array
     {
         $name = 'Swoft';
         $notes = [
@@ -59,7 +57,7 @@ class IndexController
     /**
      * show view by view function
      */
-    public function templateView()
+    public function templateView(): Response
     {
         $name = 'Swoft View';
         $notes = [
@@ -98,9 +96,9 @@ class IndexController
      * @View(template="index/index")
      * @return \Swoft\Contract\Arrayable|__anonymous@836
      */
-    public function arrayable()
+    public function arrayable(): Arrayable
     {
-        return (new class implements Arrayable
+        return new class implements Arrayable
         {
             /**
              * @return array
@@ -108,7 +106,7 @@ class IndexController
             public function toArray(): array
             {
                 return [
-                    'name' => 'Swoft',
+                    'name'  => 'Swoft',
                     'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
                     'links' => [
                         [
@@ -135,17 +133,17 @@ class IndexController
                 ];
             }
 
-        });
+        };
     }
 
     /**
      * @RequestMapping()
      * @return Response
      */
-    public function absolutePath()
+    public function absolutePath(): Response
     {
         $data = [
-            'name' => 'Swoft',
+            'name'  => 'Swoft',
             'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
             'links' => [
                 [
@@ -186,6 +184,7 @@ class IndexController
 
     /**
      * @RequestMapping()
+     * @throws \Swoft\Http\Server\Exception\BadRequestException
      */
     public function exception()
     {
@@ -197,7 +196,7 @@ class IndexController
      * @param Response $response
      * @return Response
      */
-    public function redirect(Response $response)
+    public function redirect(Response $response): Response
     {
         return $response->redirect('/');
     }

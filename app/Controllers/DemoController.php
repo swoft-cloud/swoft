@@ -17,12 +17,6 @@ use Swoft\Http\Message\Server\Request;
 /**
  * 控制器demo
  * @Controller(prefix="/demo2")
- *
- * @uses      DemoController
- * @version   2017年08月22日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class DemoController
 {
