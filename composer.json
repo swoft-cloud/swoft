@@ -24,8 +24,7 @@
         "swoft/redis": "dev-master",
         "swoft/console": "dev-master",
         "swoft/devtool": "dev-master",
-        "swoft/session": "dev-master",
-        "swoft/i18n": "dev-master"
+        "swoft/session": "dev-master"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
