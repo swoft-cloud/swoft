@@ -139,10 +139,10 @@ class DemoController
      */
     public function i18n()
     {
-        $data[] = App::t("title", [], 'zh');
-        $data[] = App::t("title", [], 'en');
-        $data[] = App::t("msg.body", ["stelin", 999], 'en');
-        $data[] = App::t("msg.body", ["stelin", 666], 'en');
+        $data[] = translate("title", [], 'zh');
+        $data[] = translate("title", [], 'en');
+        $data[] = translate("msg.body", ["stelin", 999], 'en');
+        $data[] = translate("msg.body", ["stelin", 666], 'en');
 
         return $data;
     }

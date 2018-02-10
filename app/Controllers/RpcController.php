@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Lib\DemoInterface;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Rpc\Client\Bean\Annotation\Reference;
-use Swoft\Rpc\Client\Service\Service;
-use App\Lib\DemoInterface;
 
 /**
  * rpc controller test
@@ -30,12 +30,17 @@ class RpcController
      */
     private $demoServiceV2;
 
-
     /**
      * @Reference("user")
      * @var \App\Lib\MdDemoInterface
      */
     private $mdDemoService;
+
+    /**
+     * @Inject()
+     * @var \App\Models\Logic\UserLogic
+     */
+    private $logic;
 
     /**
      * @RequestMapping(route="call")
@@ -49,6 +54,13 @@ class RpcController
         return [
             'version'  => $version,
             'version2' => $version2,
+        ];
+    }
+
+    public function beanCall()
+    {
+        return [
+            $this->logic->rpcCall()
         ];
     }
 
