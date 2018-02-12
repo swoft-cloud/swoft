@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Process;
+namespace App\Boot;
 
 use Swoft\App;
-use Swoft\Core\Coroutine;
 use Swoft\Process\Bean\Annotation\Process;
 use Swoft\Process\Process as SwoftProcess;
+use Swoft\Process\ProcessBuilder;
 use Swoft\Process\ProcessInterface;
+use Swoft\Task\Task;
 
 /**
  * Custom process
  *
- * @Process(name="customProcess", coroutine=true)
+ * @Process(boot=true)
  */
 class MyProcess implements ProcessInterface
 {
@@ -21,7 +22,11 @@ class MyProcess implements ProcessInterface
         $processName = "$pname myProcess process";
         $process->name($processName);
 
-        echo "Custom child process \n";
-        var_dump(Coroutine::id());
+        echo "Custom boot process \n";
+
+        $result  = Task::deliverByProcess('sync', 'deliverCo', ['p', 'p2']);
+        var_dump($result);
+
+        ProcessBuilder::create('customProcess')->start();
     }
 }

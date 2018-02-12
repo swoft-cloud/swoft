@@ -8,12 +8,13 @@ use Swoft\Console\Bean\Annotation\Command;
 use Swoft\Console\Bean\Annotation\Mapping;
 use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
+use Swoft\Core\Coroutine;
 use Swoft\Log\Log;
 
 /**
  * the group of test command
  *
- * @Command()
+ * @Command(coroutine=true)
  * @uses      TestCommand
  * @version   2017年11月03日
  * @author    stelin <phpcrazy@126.com>
@@ -44,7 +45,14 @@ class TestCommand
      */
     public function test(Input $input, Output $output)
     {
-        var_dump('test', $input, $output);
+        App::error('this is eror');
+        App::trace('this is trace');
+        Coroutine::create(function (){
+            App::error('this is eror child');
+            App::trace('this is trace child');
+        });
+
+        var_dump('test', $input, $output, Coroutine::id(),Coroutine::tid());
     }
 
     /**

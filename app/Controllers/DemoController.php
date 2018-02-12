@@ -96,10 +96,10 @@ class DemoController
      */
     public function task()
     {
-        $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
-        $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
-        $http    = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
-        $rpc     = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
+        $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_CO);
+        $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_CO);
+        $http    = Task::deliver('test', 'testHttp', [], Task::TYPE_CO, 20);
+        $rpc     = Task::deliver('test', 'testRpc', [], Task::TYPE_CO, 5);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
 
         return [$rpc, $http, $mysql, $result, $result1];

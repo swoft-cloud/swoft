@@ -3,7 +3,8 @@ return [
     'version'      => '1.0',
     'autoInitBean' => true,
     'bootScan'     => [
-        'App\Commands'
+        'App\Commands',
+        'App\Boot',
     ],
     'beanScan'     => [
         'App\Controllers',
@@ -11,10 +12,11 @@ return [
         'App\Middlewares',
         'App\Tasks',
         'App\Services',
-        'App\Process',
         'App\Breaker',
         'App\Pool',
         'App\Exception',
+        'App\Listener',
+        'App\Process',
     ],
     'I18n'         => [
         'sourceLanguage' => '@root/resources/messages/',

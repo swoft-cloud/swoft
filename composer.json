@@ -25,7 +25,8 @@
         "swoft/console": "dev-master",
         "swoft/devtool": "dev-master",
         "swoft/session": "dev-master",
-        "swoft/i18n": "dev-master"
+        "swoft/i18n": "dev-master",
+        "swoft/process": "dev-master"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
@@ -51,6 +52,10 @@
         "test": "./vendor/bin/phpunit -c phpunit.xml"
     },
     "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-process"
+        },
         {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
