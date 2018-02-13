@@ -29,4 +29,9 @@ class MyProcess implements ProcessInterface
 
         ProcessBuilder::create('customProcess')->start();
     }
+
+    public function check(): bool
+    {
+        return true;
+    }
 }

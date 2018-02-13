@@ -24,4 +24,9 @@ class MyProcess implements ProcessInterface
         echo "Custom child process \n";
         var_dump(Coroutine::id());
     }
+
+    public function check(): bool
+    {
+        return true;
+    }
 }
