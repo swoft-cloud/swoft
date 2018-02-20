@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Swoft\Core\RequestHandler;
 use Swoft\Bean\Annotation\Bean;
-use Swoft\Middleware\MiddlewareInterface;
+use Swoft\Http\Message\Middleware\MiddlewareInterface;
 
 
 /**
