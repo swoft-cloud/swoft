@@ -55,14 +55,6 @@
     },
     "repositories": [
         {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-memory"
-        },
-        {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-sg"
-        },
-        {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
         }
