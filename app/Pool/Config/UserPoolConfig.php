@@ -4,9 +4,9 @@ namespace App\Pool\Config;
 
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Annotation\Value;
-use Swoft\Pool\BalancerSelector;
+use Swoft\Sg\BalancerSelector;
 use Swoft\Pool\PoolProperties;
-use Swoft\Pool\ProviderSelector;
+use Swoft\Sg\ProviderSelector;
 
 /**
  * the config of service user

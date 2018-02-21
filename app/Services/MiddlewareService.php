@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Lib\MdDemoInterface;
 use App\Middlewares\ServiceMiddleware;
 use App\Middlewares\ServiceSubMiddleware;
-use Swoft\Bean\Annotation\Middleware;
-use Swoft\Bean\Annotation\Middlewares;
+use Swoft\Http\Message\Bean\Annotation\Middleware;
+use Swoft\Http\Message\Bean\Annotation\Middlewares;
 use Swoft\Rpc\Server\Bean\Annotation\Service;
 
 /**

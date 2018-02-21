@@ -26,7 +26,9 @@
         "swoft/devtool": "dev-master",
         "swoft/session": "dev-master",
         "swoft/i18n": "dev-master",
-        "swoft/process": "dev-master"
+        "swoft/process": "dev-master",
+        "swoft/memory": "dev-master",
+        "swoft/sg": "dev-master"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
@@ -54,7 +56,11 @@
     "repositories": [
         {
           "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-process"
+          "url": "https://github.com/swoft-cloud/swoft-memory"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-sg"
         },
         {
             "type": "composer",

@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use Swoft\Http\Server\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\Middleware;
-use Swoft\Bean\Annotation\Middlewares;
+use Swoft\Http\Message\Bean\Annotation\Middleware;
+use Swoft\Http\Message\Bean\Annotation\Middlewares;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use App\Middlewares\GroupTestMiddleware;
 use App\Middlewares\ActionTestMiddleware;
