@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Message\Server\Request;
 
 /**
  * @Controller(prefix="/psr7")
@@ -20,7 +20,7 @@ class Psr7Controller
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -34,7 +34,7 @@ class Psr7Controller
     /**
      * @RequestMapping()
      *
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -48,7 +48,7 @@ class Psr7Controller
     /**
      * @RequestMapping()
      *
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -65,7 +65,7 @@ class Psr7Controller
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -77,7 +77,7 @@ class Psr7Controller
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -90,7 +90,7 @@ class Psr7Controller
     /**
      * @RequestMapping()
      *
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -103,7 +103,7 @@ class Psr7Controller
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */
@@ -116,7 +116,7 @@ class Psr7Controller
 
     /**
      * @RequestMapping()
-     * @param \Swoft\Web\Request $request
+     * @param \Swoft\Http\Message\Server\Request $request
      *
      * @return array
      */

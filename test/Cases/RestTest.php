@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoft\Test\Web;
+namespace Swoft\Test\Cases;
 
 /**
  * the test of restful
@@ -18,7 +18,7 @@ class RestTest extends AbstractTestCase
      */
     public function testList()
     {
-        $data     = ["list"];
+        $data     = ['list'];
         $response = $this->request('GET', '/user', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
@@ -28,7 +28,7 @@ class RestTest extends AbstractTestCase
      */
     public function testCreate()
     {
-        $data     = ["create","stelin"];
+        $data     = ['create', 'stelin'];
         $response = $this->request('POST', '/user', ['name' => 'stelin'], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
 
@@ -50,7 +50,7 @@ class RestTest extends AbstractTestCase
      */
     public function testGetUser()
     {
-        $data     = ["getUser",123];
+        $data     = ['getUser',123];
         $response = $this->request('GET', '/user/123', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
@@ -60,7 +60,7 @@ class RestTest extends AbstractTestCase
      */
     public function testGetBookFromUser()
     {
-        $data     = ["bookFromUser",123,"456"];
+        $data     = ['bookFromUser',123, '456'];
         $response = $this->request('GET', '/user/123/book/456', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }
@@ -70,7 +70,7 @@ class RestTest extends AbstractTestCase
      */
     public function testDeleteUser()
     {
-        $data     = ["delete",123];
+        $data     = ['delete',123];
         $response = $this->request('DELETE', '/user/123', [], parent::ACCEPT_JSON);
         $response->assertExactJson($data);
     }

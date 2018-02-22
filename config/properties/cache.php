@@ -2,7 +2,7 @@
 return [
     'redis' => [
         'name'        => 'redis',
-        "uri"         => [
+        'uri'         => [
             '127.0.0.1:6379',
             '127.0.0.1:6379',
         ],
@@ -14,5 +14,6 @@ return [
         'useProvider' => false,
         'provider'    => 'consul',
         'db'          => 1,
+        'serialize'   => 0,
     ],
 ];

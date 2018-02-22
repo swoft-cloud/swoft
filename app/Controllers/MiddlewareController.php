@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\Middleware;
-use Swoft\Bean\Annotation\Middlewares;
-use Swoft\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Message\Bean\Annotation\Middleware;
+use Swoft\Http\Message\Bean\Annotation\Middlewares;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use App\Middlewares\GroupTestMiddleware;
 use App\Middlewares\ActionTestMiddleware;
 use App\Middlewares\SubMiddleware;
@@ -20,12 +20,6 @@ use App\Middlewares\ControlerTestMiddleware;
  * @Middlewares({
  *     @Middleware(ControlerSubMiddleware::class)
  * })
- *
- * @uses      MiddlewareController
- * @version   2017年11月29日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class MiddlewareController
 {

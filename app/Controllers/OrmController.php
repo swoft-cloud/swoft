@@ -4,48 +4,48 @@ namespace App\Controllers;
 
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
-use Swoft\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Db\EntityManager;
 use Swoft\Db\QueryBuilder;
 use Swoft\Db\Types;
 
 /**
- * orm使用demo
- *
  * @Controller()
- * @uses      OrmController
- * @version   2017年09月14日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class OrmController
 {
-    /**
-     * AR save操作
-     */
     public function arSave()
     {
-        //        $user = new User();
-        //        //        $user->setId(120);
-        //        $user->setName("stelin");
-        //        $user->setSex(1);
-        //        $user->setDesc("this my desc");
-        //        $user->setAge(mt_rand(1, 100));
-        //        $result = $user->save();
-        //
-        //        $user->setDesc("this is defer desc");
-        //        $dataResult = $user->save(true);
-        //        $deferResult = $dataResult->getResult();
-        //
-        //        $this->outputJson([$result, $deferResult]);
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+        $deferUser = $user->save();
 
         $count = new Count();
-        $count->setUid(346);
+        $count->setUid(999);
         $count->setFans(mt_rand(1, 1000));
         $count->setFollows(mt_rand(1, 1000));
+        $deferCount = $count->save();
 
-        return [$count->save()];
+        $userResult  = $deferUser->getResult();
+        $countResult = $deferCount->getResult();
+
+        $user = new User();
+        $user->setName('stelin2');
+        $user->setSex(1);
+        $user->setDesc('this my desc2');
+        $user->setAge(mt_rand(1, 100));
+        $directUser = $user->save()->getResult();
+
+        $count = new Count();
+        $count->setUid($directUser);
+        $count->setFans(mt_rand(1, 1000));
+        $count->setFollows(mt_rand(1, 1000));
+        $directCount = $count->save()->getResult();
+
+        return [$userResult, $countResult, $directUser, $directCount];
     }
 
     /**
@@ -54,15 +54,14 @@ class OrmController
     public function save()
     {
         $user = new User();
-        $user->setName("stelin");
+        $user->setName('stelin');
         $user->setSex(1);
-        $user->setDesc("this my desc");
+        $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
 
         $em = EntityManager::create();
         //        $result = $em->save($user);
-        $defer = $em->save($user, true);
-        $result = $defer->getResult();
+        $result = $em->save($user)->getResult();
         $em->close();
 
         return [$result];
@@ -78,7 +77,7 @@ class OrmController
         $user->setAge(126);
 
         //        $result = $user->delete();
-        $defer = $user->delete(true);
+        $defer = $user->delete();
 
         return $defer->getResult();
     }
@@ -93,7 +92,7 @@ class OrmController
 
         $em = EntityManager::create();
         //        $result = $em->delete($user);
-        $result = $em->delete($user, true);
+        $result = $em->delete($user);
         $em->close();
 
         return [$result->getResult()];
@@ -106,7 +105,7 @@ class OrmController
     {
         $em = EntityManager::create();
         //        $result = $em->deleteById(Count::class, 396);
-        $result = $em->deleteById(Count::class, 406, true);
+        $result = $em->deleteById(Count::class, 406);
         $em->close();
         return [$result->getResult()];
     }
@@ -118,7 +117,7 @@ class OrmController
     {
         $em = EntityManager::create();
         //        $result = $em->deleteByIds(Count::class, [409, 410]);
-        $result = $em->deleteByIds(Count::class, [411, 412], true);
+        $result = $em->deleteByIds(Count::class, [411, 412]);
         $em->close();
         return [$result->getResult()];
     }
@@ -129,7 +128,7 @@ class OrmController
     public function arDeleteId()
     {
         //        $result = User::deleteById(284);
-        $result = User::deleteById(287, true);
+        $result = User::deleteById(287);
 
         return $result->getResult();
     }
@@ -140,7 +139,7 @@ class OrmController
     public function arDeleteIds()
     {
         //        $result = User::deleteByIds([291, 292]);
-        $result = User::deleteByIds([288, 289], true);
+        $result = User::deleteByIds([288, 289]);
 
         return $result->getResult();
     }
@@ -154,14 +153,14 @@ class OrmController
 
         /* @var User $user */
         $user = $query->getResult(User::class);
-        $user->setName("upateNameUser2");
+        $user->setName('upateNameUser2');
         $user->setSex(0);
 
         $result = $user->update();
         //        $result = $user->update(true);
         //        $result = $result->getResult();
 
-        return [$result];
+        return [$result->getResult()];
     }
 
     /**
@@ -173,18 +172,9 @@ class OrmController
         $user->setSex(1);
         $user->setAge(93);
         $query = $user->find();
-        //        $result = $query->getResult();
 
-        /* @var User $userResult */
-        //        $userResult = $query->getResult(User::class);
-
-        $defer = $query->getDefer();
-        //        $result = $defer->getResult();
-
-        $result = $defer->getResult(User::class);
-        $ql = $query->getSql();
-        var_dump($result);
-        return [$ql, $result];
+        $result = $query->getResult(User::class);
+        return [$result];
     }
 
     /**
@@ -199,11 +189,10 @@ class OrmController
         //        $result = $query->getResult();
         //        $result = $query->getResult(User::class);
         //        $result = $query->getDefer()->getResult();
-        $result = $query->getDefer()->getResult(User::class);
-        $sql = $query->getSql();
+        $result = $query->getResult(User::class);
         $em->close();
 
-        return [$result, $sql];
+        return [$result];
     }
 
     /**
@@ -211,19 +200,13 @@ class OrmController
      */
     public function arFindId()
     {
-        $query = User::findById(425);
-        $result = $query->getResult();
-
-        /* @var User $userObject */
-        $userObject = $query->getResult(User::class);
+        $result = User::findById(425)->getResult();
 
         $query = User::findById(426);
-        //        $deferResult = $query->getDefer()->getResult();
 
-        /* @var User $deferResult */
-        $deferResult = $query->getDefer()->getResult(User::class);
-
-        return [$result, $userObject->getName(), $deferResult->getName()];
+        /* @var User $user */
+        $user = $query->getResult(User::class);
+        return [$result, $user->getName()];
     }
 
     /**
@@ -235,11 +218,10 @@ class OrmController
         $query = $em->findById(User::class, 396);
         //        $result = $query->getResult();
         //        $result = $query->getResult(User::class);
-        $result = $query->getDefer()->getResult();
-        $sql = $query->getSql();
+        $result = $query->getResult();
         $em->close();
 
-        return [$result, $sql];
+        return [$result];
     }
 
     /**
@@ -249,14 +231,12 @@ class OrmController
     {
         $query = User::findByIds([416, 417]);
 
-        $sql = $query->getSql();
-
         //        $defer = $query->getDefer();
         //        $result = $defer->getResult(User::class);
 
         $result = $query->getResult();
 
-        return [$result, $sql];
+        return [$result];
     }
 
     /**
@@ -269,10 +249,9 @@ class OrmController
         $result = $query->getResult();
         //                $result = $query->getResult(User::class);
         //        $result = $query->getDefer()->getResult(User::class);
-        $sql = $query->getSql();
         $em->close();
 
-        return [$result, $sql];
+        return [$result];
     }
 
     /**
@@ -283,11 +262,10 @@ class OrmController
         //        $query = User::query()->select('*')->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
         //        $query = User::query()->selects(['id', 'sex' => 'sex2'])->andWhere('sex', 1)->orderBy('id',QueryBuilder::ORDER_BY_DESC)->limit(3);
         $query = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 429)
-            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
         //        $result = $query->getResult();
-        $defer = $query->getDefer();
-        $result = $defer->getResult();
-        return [$result, $query->getSql()];
+        $result = $query->getResult();
+        return [$result];
     }
 
     /**
@@ -296,9 +274,9 @@ class OrmController
     public function ts()
     {
         $user = new User();
-        $user->setName("stelin");
+        $user->setName('stelin');
         $user->setSex(1);
-        $user->setDesc("this my desc");
+        $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
 
         $count = new Count();
@@ -307,10 +285,10 @@ class OrmController
 
         $em = EntityManager::create();
         $em->beginTransaction();
-        $uid = $em->save($user);
+        $uid = $em->save($user)->getResult();
         $count->setUid($uid);
 
-        $result = $em->save($count);
+        $result = $em->save($count)->getResult();
         if ($result === false) {
             $em->rollback();
         } else {
@@ -325,10 +303,10 @@ class OrmController
     {
         $em = EntityManager::create();
         $query = $em->createQuery();
-        $query->select("*")->from(User::class, 'u')->leftJoin(Count::class, ['u.id=c.uid'], 'c')->whereIn('u.id', [419, 420, 421])
-            ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2);
+        $result = $query->select('*')->from(User::class, 'u')->leftJoin(Count::class, ['u.id=c.uid'], 'c')->whereIn('u.id', [419, 420, 421])
+                        ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
         //        $result = $query->getResult();
-        $result = $query->getDefer()->getResult();
+        $result = $result->getResult();
         $sql = $query->getSql();
         $em->close();
 
@@ -341,10 +319,10 @@ class OrmController
     public function arCon()
     {
         $query1 = User::query()->selects(['id', 'sex' => 'sex2'])->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 419)
-            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->getDefer();
+            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
 
-        $query2 = User::query()->select("*")->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 420)
-            ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->getDefer();
+        $query2 = User::query()->select('*')->leftJoin(Count::class, 'count.uid=user.id')->andWhere('id', 420)
+                      ->orderBy('user.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
 
         $result1 = $query1->getResult();
         $result2 = $query2->getResult();
@@ -367,13 +345,13 @@ class OrmController
 //                        $query->setParameter('uid3', 431);
 //        $query->setParameters($params);
 
-                $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2";
+                $querySql = 'SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2';
                 $query = $em->createQuery($querySql);
                 $query->setParameter(1, 433);
                 $query->setParameter(2, 434);
                 $query->setParameter(3, 431);
 
-        $result = $query->getResult();
+        $result = $query->execute();
         $sql = $query->getSql();
         $em->close();
 

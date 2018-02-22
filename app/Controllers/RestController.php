@@ -2,22 +2,15 @@
 
 namespace App\Controllers;
 
-use Swoft\Bean\Annotation\Ary;
-use Swoft\Bean\Annotation\Controller;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\RequestMethod;
-use Swoft\Web\Request;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMethod;
+use Swoft\Http\Message\Server\Request;
 
 /**
- * restful和参数验证测试demo
+ * RESTful和参数验证测试demo
  *
  * @Controller(prefix="/user")
- *
- * @uses      RestController
- * @version   2017年11月13日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class RestController
 {
@@ -39,7 +32,7 @@ class RestController
      *
      * @RequestMapping(route="/user", method={RequestMethod::POST,RequestMethod::PUT})
      *
-     * @param \Swoft\Web\Request $request
+     * @param Request $request
      *
      * @return array
      */

@@ -5,24 +5,18 @@ namespace App\Controllers;
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
 use Swoft\Core\Coroutine;
-use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Bean\Annotation\RequestMapping;
-use Swoft\Bean\Annotation\RequestMethod;
-use Swoft\Bean\Annotation\View;
+use Swoft\Http\Server\Bean\Annotation\Controller;
+use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Http\Server\Bean\Annotation\RequestMethod;
+use Swoft\View\Bean\Annotation\View;
 use Swoft\Task\Task;
-use Swoft\Web\Application;
-use Swoft\Web\Request;
+use Swoft\Core\Application;
+use Swoft\Http\Message\Server\Request;
 
 /**
  * 控制器demo
  * @Controller(prefix="/demo2")
- *
- * @uses      DemoController
- * @version   2017年08月22日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class DemoController
 {
@@ -32,7 +26,7 @@ class DemoController
      *
      * @Inject("httpRouter")
      *
-     * @var \Swoft\Router\Http\HandlerMapping
+     * @var \Swoft\Http\Server\Router\HandlerMapping
      */
     private $router;
 
@@ -59,7 +53,7 @@ class DemoController
      *
      * @RequestMapping(route="index", method={RequestMethod::GET, RequestMethod::POST})
      *
-     * @param \Swoft\Web\Request $request
+     * @param Request $request
      *
      * @return array
      */
@@ -102,10 +96,10 @@ class DemoController
      */
     public function task()
     {
-        $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_COR);
-        $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_COR);
-        $http    = Task::deliver('test', 'testHttp', [], Task::TYPE_COR, 20);
-        $rpc     = Task::deliver('test', 'testRpc', [], Task::TYPE_COR, 5);
+        $result  = Task::deliver('test', 'corTask', ['params1', 'params2'], Task::TYPE_CO);
+        $mysql   = Task::deliver('test', 'testMysql', [], Task::TYPE_CO);
+        $http    = Task::deliver('test', 'testHttp', [], Task::TYPE_CO, 20);
+        $rpc     = Task::deliver('test', 'testRpc', [], Task::TYPE_CO, 5);
         $result1 = Task::deliver('test', 'asyncTask', [], Task::TYPE_ASYNC);
 
         return [$rpc, $http, $mysql, $result, $result1];
@@ -145,10 +139,10 @@ class DemoController
      */
     public function i18n()
     {
-        $data[] = App::t("title", [], 'zh');
-        $data[] = App::t("title", [], 'en');
-        $data[] = App::t("msg.body", ["stelin", 999], 'en');
-        $data[] = App::t("msg.body", ["stelin", 666], 'en');
+        $data[] = translate("title", [], 'zh');
+        $data[] = translate("title", [], 'en');
+        $data[] = translate("msg.body", ["stelin", 999], 'en');
+        $data[] = translate("msg.body", ["stelin", 666], 'en');
 
         return $data;
     }

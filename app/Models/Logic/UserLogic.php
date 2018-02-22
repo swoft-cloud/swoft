@@ -3,6 +3,7 @@
 namespace App\Models\Logic;
 
 use Swoft\Bean\Annotation\Bean;
+use Swoft\Rpc\Client\Bean\Annotation\Reference;
 
 /**
  * 用户逻辑层
@@ -17,6 +18,25 @@ use Swoft\Bean\Annotation\Bean;
  */
 class UserLogic
 {
+    /**
+     * @Reference("user")
+     *
+     * @var \App\Lib\DemoInterface
+     */
+    private $demoService;
+
+    /**
+     * @Reference(name="user", version="1.0.1")
+     *
+     * @var \App\Lib\DemoInterface
+     */
+    private $demoServiceV2;
+
+    public function rpcCall()
+    {
+        return ['bean', $this->demoService->getUser('12'), $this->demoServiceV2->getUser('16')];
+    }
+
     public function getUserInfo(array $uids)
     {
         $user = [

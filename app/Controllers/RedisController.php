@@ -3,19 +3,13 @@
 namespace App\Controllers;
 
 
-use Swoft\Bean\Annotation\Controller;
 use Swoft\Bean\Annotation\Inject;
-use Swoft\Cache\Redis\CacheRedis;
 use Swoft\Cache\Cache;
+use Swoft\Http\Server\Bean\Annotation\Controller;
 
 
 /**
  * @Controller(prefix="/redis")
- * @uses      RedisController
- * @version   2017-11-12
- * @author    huangzhhui <huangzhwork@gmail.com>
- * @copyright Copyright 2010-2017 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class RedisController
 {
@@ -27,7 +21,7 @@ class RedisController
 
     /**
      * @Inject()
-     * @var CacheRedis
+     * @var \Swoft\Redis\Redis
      */
     private $redis;
 
@@ -36,7 +30,11 @@ class RedisController
         $result = $this->cache->set('name', 'stelin');
         $name   = $this->cache->get('name');
 
-        return [$result, $name];
+        $this->redis->incr("count");
+
+        $this->redis->incrBy("count2", 2);
+
+        return [$result, $name, $this->redis->get('count'), $this->redis->get('count2')];
     }
 
     public function testRedis()

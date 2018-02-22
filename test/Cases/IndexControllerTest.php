@@ -1,9 +1,8 @@
 <?php
 
-namespace Swoft\Test\Web;
+namespace Swoft\Test\Cases;
 
-
-use Swoft\Testing\Web\Response;
+use Swoft\Http\Message\Testing\Web\Response;
 
 /**
  * @uses      IndexControllerTest
@@ -99,8 +98,12 @@ class IndexControllerTest extends AbstractTestCase
      */
     public function testException()
     {
+        $data = [
+            'message' => 'bad request exception'
+        ];
+
         $response = $this->request('GET', '/index/exception', [], parent::ACCEPT_JSON);
-        $response->assertStatus(400)->assertJson(['message' => 'Bad Request']);
+        $response->assertJson($data);
     }
 
     /**

@@ -44,8 +44,6 @@ RUN wget https://github.com/swoole/swoole-src/archive/v2.1.0.tar.gz -O swoole.ta
     ) \
     && rm -r swoole \
     && docker-php-ext-enable swoole
-RUN pecl install inotify \
-    && docker-php-ext-enable inotify
 
 ADD . /var/www/swoft
 

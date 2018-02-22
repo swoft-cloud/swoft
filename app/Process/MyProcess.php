@@ -3,39 +3,30 @@
 namespace App\Process;
 
 use Swoft\App;
-use Swoft\Process\AbstractProcess;
-use Swoole\Process;
+use Swoft\Core\Coroutine;
+use Swoft\Process\Bean\Annotation\Process;
+use Swoft\Process\Process as SwoftProcess;
+use Swoft\Process\ProcessInterface;
 
 /**
- * 自定义进程demo
+ * Custom process
  *
- * @uses      MyProcess
- * @version   2017年10月02日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ * @Process(name="customProcess", coroutine=true)
  */
-class MyProcess extends AbstractProcess
+class MyProcess implements ProcessInterface
 {
-    /**
-     * 实际进程运行逻辑
-     *
-     * @param Process $process 进程对象
-     */
-    public function run(Process $process)
+    public function run(SwoftProcess $process)
     {
-        $pname = $this->server->getPname();
+        $pname = App::$server->getPname();
         $processName = "$pname myProcess process";
         $process->name($processName);
 
-        $i = 1;
-        while (true) {
+        echo "Custom child process \n";
+        var_dump(Coroutine::id());
+    }
 
-            $this->task('test', 'testRpc', [], 5);
-            echo "this my process \n";
-            App::trace("my process count=" . $i);
-            sleep(10);
-            $i++;
-        }
+    public function check(): bool
+    {
+        return true;
     }
 }
