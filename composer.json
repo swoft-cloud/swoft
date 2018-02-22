@@ -10,7 +10,7 @@
     "license": "Apache-2.0",
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "dev-component",
+        "swoft/framework": "dev-master",
         "swoft/rpc": "dev-master",
         "swoft/rpc-server": "dev-master",
         "swoft/rpc-client": "dev-master",
@@ -54,6 +54,10 @@
         "test": "./vendor/bin/phpunit -c phpunit.xml"
     },
     "repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-framework"
+        },
         {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
