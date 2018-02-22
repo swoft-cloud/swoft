@@ -4,9 +4,9 @@ namespace App\Pool\Config;
 
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Annotation\Value;
-use Swoft\Pool\BalancerSelector;
-use Swoft\Pool\ProviderSelector;
-use Swoft\Testing\Pool\Config\PropertyPoolConfig;
+use Swoft\Sg\BalancerSelector;
+use Swoft\Pool\PoolProperties;
+use Swoft\Sg\ProviderSelector;
 
 /**
  * the config of service user
@@ -18,7 +18,7 @@ use Swoft\Testing\Pool\Config\PropertyPoolConfig;
  * @copyright Copyright 2010-2016 swoft software
  * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class UserPoolConfig extends PropertyPoolConfig
+class UserPoolConfig extends PoolProperties
 {
     /**
      * the name of pool

@@ -2,30 +2,66 @@
 
 namespace App\Controllers;
 
+use App\Lib\DemoInterface;
+use Swoft\Bean\Annotation\Inject;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
-use Swoft\Rpc\Client\Service\Service;
+use Swoft\Rpc\Client\Bean\Annotation\Reference;
 
 /**
  * rpc controller test
  *
  * @Controller(prefix="rpc")
- * @uses      RpcController
- * @version   2017年11月27日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class RpcController
 {
+
+    /**
+     * @Reference("user")
+     *
+     * @var DemoInterface
+     */
+    private $demoService;
+
+    /**
+     * @Reference(name="user", version="1.0.1")
+     *
+     * @var DemoInterface
+     */
+    private $demoServiceV2;
+
+    /**
+     * @Reference("user")
+     * @var \App\Lib\MdDemoInterface
+     */
+    private $mdDemoService;
+
+    /**
+     * @Inject()
+     * @var \App\Models\Logic\UserLogic
+     */
+    private $logic;
+
     /**
      * @RequestMapping(route="call")
      * @return array
      */
     public function call()
     {
-        $result = Service::call("user", 'User::getUserInfo', [2, 6, 8]);
-        return ['call', $result];
+        $version  = $this->demoService->getUser('11');
+        $version2 = $this->demoServiceV2->getUser('11');
+
+        return [
+            'version'  => $version,
+            'version2' => $version2,
+        ];
+    }
+
+    public function beanCall()
+    {
+        return [
+            $this->logic->rpcCall()
+        ];
     }
 
     /**
@@ -33,7 +69,8 @@ class RpcController
      */
     public function validate()
     {
-        $result = Service::call("user", 'User::getUser', [1,2,'boy', '1.3']);
+        $result = $this->demoService->getUserByCond(1, 2, 'boy', '4');
+
         return ['validator', $result];
     }
 
@@ -43,9 +80,9 @@ class RpcController
      */
     public function parentMiddleware()
     {
-        $result = Service::call("user", 'Md::pm');
+        $result = $this->mdDemoService->parentMiddleware();
 
-        return ['validator', $result];
+        return ['parentMiddleware', $result];
     }
 
     /**
@@ -53,8 +90,8 @@ class RpcController
      */
     public function funcMiddleware()
     {
-        $result = Service::call("user", 'Md::fm');
+        $result = $this->mdDemoService->funcMiddleware();
 
-        return ['validator', $result];
+        return ['funcMiddleware', $result];
     }
 }

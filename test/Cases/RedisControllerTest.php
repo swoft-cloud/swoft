@@ -1,9 +1,6 @@
 <?php
 
-namespace Web;
-
-use Swoft\Test\Web\AbstractTestCase;
-
+namespace Swoft\Test\Cases;
 
 /**
  * @uses      RedisControllerTest
@@ -66,7 +63,7 @@ class RedisControllerTest extends AbstractTestCase
         $expected = [
             true,
             'stelin3',
-            'value3'
+            'value3',
         ];
         $response = $this->request('GET', '/redis/testFunc2', [], parent::ACCEPT_JSON);
         $response->assertSuccessful()->assertJson($expected);

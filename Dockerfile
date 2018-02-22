@@ -13,6 +13,7 @@ RUN apt-get update \
         vim \
         zip \
         libz-dev \
+        libssl-dev \
     && apt-get clean
 
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -30,21 +31,19 @@ RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.
         && ldconfig \
     ) \
     && rm -r hiredis
-RUN wget https://github.com/swoole/swoole-src/archive/v2.0.12.tar.gz -O swoole.tar.gz \
+RUN wget https://github.com/swoole/swoole-src/archive/v2.1.0.tar.gz -O swoole.tar.gz \
     && mkdir -p swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
     && rm swoole.tar.gz \
     && ( \
         cd swoole \
         && phpize \
-        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine \
+        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine --enable-openssl \
         && make -j$(nproc) \
         && make install \
     ) \
     && rm -r swoole \
     && docker-php-ext-enable swoole
-RUN pecl install inotify \
-    && docker-php-ext-enable inotify
 
 ADD . /var/www/swoft
 

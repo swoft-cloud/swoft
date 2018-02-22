@@ -9,6 +9,8 @@ use Exception;
 use Swoft\Http\Message\Server\Request;
 use Swoft\Http\Message\Server\Response;
 use Swoft\Exception\BadMethodCallException;
+use Swoft\Exception\ValidatorException;
+use Swoft\Http\Server\Exception\BadRequestException;
 
 /**
  * the handler of global exception
@@ -33,10 +35,12 @@ class SwoftExceptionHandler
     public function handlerException(Response $response, \Throwable $throwable)
     {
         $file      = $throwable->getFile();
+        $line      = $throwable->getLine();
         $code      = $throwable->getCode();
         $exception = $throwable->getMessage();
 
-        return $response->json([$exception, $file, $code]);
+        $data = ['msg' => $exception, 'file' => $file, 'line' => $line, 'code' => $code];
+        return $response->json($data);
     }
 
     /**
@@ -54,6 +58,36 @@ class SwoftExceptionHandler
         $exception = $throwable->getMessage();
 
         return $response->json([$exception, 'runtimeException']);
+    }
+
+    /**
+     * @Handler(ValidatorException::class)
+     *
+     * @param Response   $response
+     * @param \Throwable $throwable
+     *
+     * @return Response
+     */
+    public function handlerValidatorException(Response $response, \Throwable $throwable)
+    {
+        $exception = $throwable->getMessage();
+
+        return $response->json(["message" => $exception]);
+    }
+
+    /**
+     * @Handler(BadRequestException::class)
+     *
+     * @param Response   $response
+     * @param \Throwable $throwable
+     *
+     * @return Response
+     */
+    public function handlerBadRequestException(Response $response, \Throwable $throwable)
+    {
+        $exception = $throwable->getMessage();
+
+        return $response->json(["message" => $exception]);
     }
 
     /**

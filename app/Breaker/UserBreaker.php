@@ -2,19 +2,14 @@
 
 namespace App\Breaker;
 
-use Swoft\Bean\Annotation\Breaker;
+use Swoft\Sg\Bean\Annotation\Breaker;
 use Swoft\Bean\Annotation\Value;
-use Swoft\Circuit\CircuitBreaker;
+use Swoft\Sg\Circuit\CircuitBreaker;
 
 /**
  * the breaker of user
  *
  * @Breaker("user")
- * @uses      UserBreaker
- * @version   2017年12月14日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class UserBreaker extends CircuitBreaker
 {
