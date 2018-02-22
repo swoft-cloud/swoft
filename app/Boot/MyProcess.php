@@ -12,7 +12,7 @@ use Swoft\Task\Task;
 /**
  * Custom process
  *
- * @Process(boot=true)
+ * @Process(boot=false)
  */
 class MyProcess implements ProcessInterface
 {
