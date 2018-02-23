@@ -3,48 +3,45 @@
 namespace Swoft\Test\Cases;
 
 /**
- * middleware teste
- *
- * @uses      MiddlewareTest
- * @version   2017年11月29日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ * Middleware test case
  */
 class MiddlewareTest extends AbstractTestCase
 {
     /**
-     * @covers \App\Controllers\MiddlewareController@controllerAndAction
+     * @covers \App\Controllers\MiddlewareController::action1
+     * @test
      */
-    public function testControllerAndAction()
+    public function action1()
     {
-        $response = $this->request('GET', '/md/caa', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/middleware/action1', [], parent::ACCEPT_JSON);
         $response->assertExactJson(['middleware']);
         $response->assertHeader('Middleware-Group-Test', 'success');
-        $response->assertHeader('Sub-Middleware-Test', 'Success');
+        $response->assertHeader('Sub-Middleware-Test', 'success');
         $response->assertHeader('Middleware-Action-Test', 'success');
     }
 
     /**
-     * @covers \App\Controllers\MiddlewareController@controllerAndAction2
+     * @covers \App\Controllers\MiddlewareController::action2
+     * @test
      */
-    public function testControllerAndAction2()
+    public function action2()
     {
-        $response = $this->request('GET', '/md/caa2', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/middleware/action2', [], parent::ACCEPT_JSON);
         $response->assertExactJson(['middleware2']);
         $response->assertHeader('Middleware-Group-Test', 'success');
-        $response->assertHeader('Sub-Middleware-Test', 'Success');
+        $response->assertHeader('Sub-Middleware-Test', 'success');
         $response->assertHeader('Middleware-Action-Test', 'success');
     }
 
     /**
-     * @covers \App\Controllers\MiddlewareController@controlerMiddleware
+     * @covers \App\Controllers\MiddlewareController::action3
+     * @test
      */
-    public function testControlerMiddleware()
+    public function action3()
     {
-        $response = $this->request('GET', '/md/cm', [], parent::ACCEPT_JSON);
+        $response = $this->request('GET', '/middleware/action3', [], parent::ACCEPT_JSON);
         $response->assertExactJson(['middleware3']);
-        $response->assertHeader('ControlerTestMiddleware', 'success');
-        $response->assertHeader('ControlerSubMiddleware', 'success');
+        $response->assertHeader('Controler-Test-Middleware', 'success');
+        $response->assertHeader('Controler-Sub-Middleware', 'success');
     }
 }

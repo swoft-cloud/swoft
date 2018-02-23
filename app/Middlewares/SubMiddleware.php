@@ -27,10 +27,12 @@ class SubMiddleware implements MiddlewareInterface
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Server\RequestHandlerInterface $handler
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \InvalidArgumentException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        return $response->withAddedHeader('Sub-Middleware-Test', 'Success');
+        $response = $response->withAddedHeader('Sub-Middleware-Test', 'success');
+        return $response;
     }
 }
