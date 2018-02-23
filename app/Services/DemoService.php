@@ -8,9 +8,15 @@ use Swoft\Bean\Annotation\Floats;
 use Swoft\Bean\Annotation\Number;
 use Swoft\Bean\Annotation\Strings;
 use Swoft\Rpc\Server\Bean\Annotation\Service;
+use Swoft\Core\ResultInterface;
 
 /**
  * Demo servcie
+ *
+ * @method ResultInterface deferGetUsers(array $ids)
+ * @method ResultInterface deferGetUser(string $id)
+ * @method ResultInterface deferGetUserByCond(int $type, int $uid, string $name, float $price, string $desc = "desc")
+ *
  * @Service()
  */
 class DemoService implements DemoInterface

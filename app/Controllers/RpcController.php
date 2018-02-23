@@ -57,6 +57,21 @@ class RpcController
         ];
     }
 
+    /**
+     * Defer call
+     */
+    public function defer(){
+        $defer1 = $this->demoService->deferGetUser('123');
+        $defer2 = $this->demoServiceV2->deferGetUsers(['2', '3']);
+        $defer3 = $this->demoServiceV2->deferGetUserByCond(1, 2, 'boy', 1.6);
+
+        $result1 = $defer1->getResult();
+        $result2 = $defer2->getResult();
+        $result3 = $defer3->getResult();
+
+        return [$result1, $result2, $result3];
+    }
+
     public function beanCall()
     {
         return [
