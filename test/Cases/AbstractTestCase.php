@@ -52,7 +52,7 @@ class AbstractTestCase extends TestCase
         $response = new Response($swooleResponse);
 
         /** @var \Swoft\Http\Server\ServerDispatcher $dispatcher */
-        $dispatcher = App::getBean('ServerDispatcher');
+        $dispatcher = App::getBean('serverDispatcher');
         return $dispatcher->dispatch($request, $response);;
     }
 

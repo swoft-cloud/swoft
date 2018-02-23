@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'ServerDispatcher' => [
+    'serverDispatcher' => [
         'middlewares' => [
             \Swoft\View\Middleware\ViewMiddleware::class,
             \Swoft\Session\Middleware\SessionMiddleware::class,
