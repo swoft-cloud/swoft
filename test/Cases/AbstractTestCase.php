@@ -11,11 +11,9 @@ use Swoft\Http\Message\Testing\Web\Request;
 use Swoft\Http\Message\Testing\Web\Response;
 
 /**
- * @uses      AbstractTestCase
- * @version   2017年11月03日
- * @author    huangzhhui <huangzhwork@gmail.com>
- * @copyright Copyright 2010-2017 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ * Class AbstractTestCase
+ *
+ * @package Swoft\Test\Cases
  */
 class AbstractTestCase extends TestCase
 {
@@ -24,8 +22,10 @@ class AbstractTestCase extends TestCase
     const ACCEPT_RAW = 'text/plain';
 
     /**
-     * @param        $method
-     * @param        $uri
+     * Send a mock request
+     *
+     * @param string $method
+     * @param string $uri
      * @param array  $parameters
      * @param string $accept
      * @param array  $headers
@@ -33,12 +33,12 @@ class AbstractTestCase extends TestCase
      * @return bool|\Swoft\Http\Message\Testing\Web\Response
      */
     public function request(
-        $method,
-        $uri,
-        $parameters = [],
-        $accept = self::ACCEPT_JSON,
-        $headers = [],
-        $rawContent = ''
+        string $method,
+        string $uri,
+        array $parameters = [],
+        string $accept = self::ACCEPT_JSON,
+        array $headers = [],
+        string $rawContent = ''
     ) {
         $method = strtoupper($method);
         $swooleResponse = new TestSwooleResponse();
@@ -52,20 +52,86 @@ class AbstractTestCase extends TestCase
         $response = new Response($swooleResponse);
 
         /** @var \Swoft\Http\Server\ServerDispatcher $dispatcher */
-        $dispatcher = App::getBean('serverDispatcher');
-        return $dispatcher->dispatch($request, $response);;
+        $dispatcher = App::getBean('ServerDispatcher');
+        return $dispatcher->dispatch($request, $response);
     }
 
     /**
-     * @param       $method
-     * @param       $uri
-     * @param       $parameters
-     * @param       $accept
-     * @param       $swooleRequest
-     * @param array $headers
+     * Send a mock json request
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array  $parameters
+     * @param array  $headers
+     * @param string $rawContent
+     * @return bool|\Swoft\Http\Message\Testing\Web\Response
      */
-    protected function buildMockRequest($method, $uri, $parameters, $accept, &$swooleRequest, $headers = [])
-    {
+    public function json(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $headers = [],
+        string $rawContent = ''
+    ) {
+        return $this->request($method, $uri, $parameters, self::ACCEPT_JSON, $headers, $rawContent);
+    }
+
+    /**
+     * Send a mock view request
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array  $parameters
+     * @param array  $headers
+     * @param string $rawContent
+     * @return bool|\Swoft\Http\Message\Testing\Web\Response
+     */
+    public function view(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $headers = [],
+        string $rawContent = ''
+    ) {
+        return $this->request($method, $uri, $parameters, self::ACCEPT_VIEW, $headers, $rawContent);
+    }
+
+    /**
+     * Send a mock raw content request
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array  $parameters
+     * @param array  $headers
+     * @param string $rawContent
+     * @return bool|\Swoft\Http\Message\Testing\Web\Response
+     */
+    public function raw(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $headers = [],
+        string $rawContent = ''
+    ) {
+        return $this->request($method, $uri, $parameters, self::ACCEPT_RAW, $headers, $rawContent);
+    }
+
+    /**
+     * @param string               $method
+     * @param string               $uri
+     * @param array                $parameters
+     * @param string               $accept
+     * @param \Swoole\Http\Request $swooleRequest
+     * @param array                $headers
+     */
+    protected function buildMockRequest(
+        string $method,
+        string $uri,
+        array $parameters,
+        string $accept,
+        &$swooleRequest,
+        array $headers = []
+    ) {
         $urlAry = parse_url($uri);
         $urlParams = [];
         if (isset($urlAry['query'])) {

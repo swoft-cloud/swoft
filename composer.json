@@ -55,8 +55,8 @@
     },
     "repositories": [
         {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-framework"
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-framework"
         },
         {
           "type": "vcs",

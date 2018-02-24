@@ -14,8 +14,7 @@ use App\Middlewares\ControlerTestMiddleware;
 
 
 /**
- * @Controller("md")
- *
+ * @Controller("middleware")
  * @Middleware(class=ControlerTestMiddleware::class)
  * @Middlewares({
  *     @Middleware(ControlerSubMiddleware::class)
@@ -24,37 +23,35 @@ use App\Middlewares\ControlerTestMiddleware;
 class MiddlewareController
 {
     /**
-     * @RequestMapping(route="caa")
-     *
+     * @RequestMapping()
      * @Middlewares({
      *     @Middleware(GroupTestMiddleware::class),
      *     @Middleware(ActionTestMiddleware::class)
      * })
      * @Middleware(SubMiddleware::class)
      */
-    public function controllerAndAction()
+    public function action1(): array
     {
         return ['middleware'];
     }
 
     /**
-     * @RequestMapping(route="caa2")
-     *
+     * @RequestMapping()
      * @Middleware(SubMiddleware::class)
      * @Middlewares({
      *     @Middleware(GroupTestMiddleware::class),
      *     @Middleware(ActionTestMiddleware::class)
      * })
      */
-    public function controllerAndAction2()
+    public function action2(): array
     {
         return ['middleware2'];
     }
 
     /**
-     * @RequestMapping("cm")
+     * @RequestMapping()
      */
-    public function controlerMiddleware()
+    public function action3(): array
     {
         return ['middleware3'];
     }
