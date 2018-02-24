@@ -28,7 +28,7 @@
         "swoft/i18n": "dev-master",
         "swoft/process": "dev-master",
         "swoft/memory": "dev-master",
-        "swoft/sg": "dev-master"
+        "swoft/service-governance": "dev-master"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
@@ -57,6 +57,10 @@
         {
           "type": "vcs",
           "url": "https://github.com/swoft-cloud/swoft-framework"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-service-governance"
         },
         {
             "type": "composer",
