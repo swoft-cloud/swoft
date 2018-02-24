@@ -63,6 +63,10 @@
           "url": "https://github.com/swoft-cloud/swoft-service-governance"
         },
         {
+          "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-http-message"
+        },
+        {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
         }
