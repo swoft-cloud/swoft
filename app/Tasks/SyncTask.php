@@ -103,15 +103,12 @@ class SyncTask
      */
     public function http()
     {
-        $client = new Client([
-                'base_uri' => 'http://127.0.0.1/index/post?a=b',
-                'timeout'  => 2,
-            ]);
+        $client = new Client();
+        $response = $client->get('http://www.swoft.org')->getResponse()->getBody()->getContents();
+        $response2 = $client->get('http://127.0.0.1/redis/testCache')->getResponse()->getBody()->getContents();
 
-        $result = $client->post('http://127.0.0.1/index/post?a=b')->getResponse();
-        $result2 = $client->get('http://www.baidu.com/');
-        $data['result'] = $result;
-        $data['result2'] = $result2;
+        $data['result1'] = $response;
+        $data['result2'] = $response2;
         return $data;
     }
 
