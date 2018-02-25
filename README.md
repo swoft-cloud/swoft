@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/stelin/swoft" target="_blank">
+    <a href="https://github.com/swoft-cloud/swoft" target="_blank">
         <img src="http://www.stelin.me/assets/img/swoft.png" alt="swoft" />
     </a>
 </p>
@@ -13,39 +13,42 @@
 [![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
-首个基于 Swoole 原生协程，新时代PHP高性能协程框架，内置 HTTP 服务器，常驻内存，不依赖传统的 PHP-FPM，没有复杂的异步回调、没有繁琐的yield, 有类似 Go 语言的协程、灵活的注解、强大的全局容器、完善的服务治理等等。
+首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield, 有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
 
 - 基于 Swoole 扩展
-- 内置 HTTP 协程服务器
+- 内置协程网络服务器
 - MVC 分层设计
 - 高性能路由
-- 强大的AOP
-- 全局容器注入
-- 灵活的中间件
-- 高性能 RPC
-- 别名机制
-- 事件机制
-- 国际化(i18n)
-- 参数验证器
-- RESTful支持
-- 服务治理熔断、降级、负载、注册与发现
-- 连接池 Mysql、Redis、RPC
+- 强大的 AOP (面向切面编程)
+- 灵活的注解功能
+- 全局的依赖注入容器
+- 基于 PSR-7 的 HTTP 消息实现
+- 基于 PSR-14 的事件管理器
+- 基于 PSR-15 的中间件
+- 基于 PSR-16 的缓存设计
+- 可扩展的高性能 RPC
+- RESTful 支持
+- 国际化(i18n)支持
+- 快速灵活的参数验证器
+- 完善的服务治理，熔断、降级、负载、注册与发现
+- 通用连接池 Mysql、Redis、RPC
 - 数据库 ORM
 - 协程、异步任务投递
 - 自定义用户进程
-- RPC、Redis、HTTP、Mysql 协程和同步阻塞客户端无缝切换
+- 协程和同步阻塞客户端无缝自动切换
+- 别名机制
 - 跨平台热更新自动 Reload
 - 强大的日志系统
 
 # 文档
 [**中文文档**](https://doc.swoft.org)
 
-QQ交流群:548173319
+QQ 交流群: 548173319
 
 # 环境要求
 
-1. PHP 7.x
-2. [Swoole 2.x](https://github.com/swoole/swoole-src/releases), 需开启协程和异步Redis
+1. PHP 7.0 +
+2. [Swoole 2.0.12](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
@@ -66,7 +69,7 @@ QQ交流群:548173319
 
 # 配置
 
-复制项目根目录的 `.env.example` 并命名为 `.env`
+若在执行 `composer install` 的时候由程序自动复制环境变量配置文件失败，则可手动复制项目根目录的 `.env.example` 并命名为 `.env`，注意在执行 `composer update` 时并不会触发相关的复制操作
 
 ```
 # Server
@@ -173,17 +176,8 @@ php bin/swoft rpc:stop
 
 [更新日志](changelog.md)
 
-# 开发成员
-
-- [stelin](https://github.com/stelin) (swoft@qq.com)
-- [inhere](https://github.com/inhere) (in.798@qq.com)
-- [ccinn](https://github.com/whiteCcinn) (471113744@qq.com)
-- [esion](https://github.com/esion1) (esionwong@126.com)
-- [huangzhhui](https://github.com/huangzhhui) (huangzhwork@gmail.com)
-- [daydaygo](https://github.com/daydaygo) (1252409767@qq.com)
-
 # 协议
-Swoft的开源协议为Apache-2.0，详情参见[LICENSE](LICENSE)。
+Swoft 的开源协议为 Apache-2.0，详情参见[LICENSE](LICENSE)。
 
 
 

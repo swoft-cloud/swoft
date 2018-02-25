@@ -34,7 +34,7 @@ class RedisController
 
         $this->redis->incrBy("count2", 2);
 
-        return [$result, $name, $this->redis->get('count'), $this->redis->get('count2')];
+        return [$result, $name, $this->redis->get('count'), $this->redis->get('count2'), '3'];
     }
 
     public function testRedis()
