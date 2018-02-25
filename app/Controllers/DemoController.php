@@ -82,9 +82,9 @@ class DemoController
     public function index2()
     {
         Coroutine::create(function () {
-            App::trace("this is child trace" . Coroutine::id());
+            App::trace('this is child trace' . Coroutine::id());
             Coroutine::create(function () {
-                App::trace("this is child child trace" . Coroutine::id());
+                App::trace('this is child child trace' . Coroutine::id());
             });
         });
 
@@ -121,8 +121,8 @@ class DemoController
     {
         // 创建子协程
         Coroutine::create(function () {
-            App::error("child cor error msg");
-            App::trace("child cor error msg");
+            App::error('child cor error msg');
+            App::trace('child cor error msg');
         });
 
         // 当前协程id
@@ -139,10 +139,10 @@ class DemoController
      */
     public function i18n()
     {
-        $data[] = translate("title", [], 'zh');
-        $data[] = translate("title", [], 'en');
-        $data[] = translate("msg.body", ["stelin", 999], 'en');
-        $data[] = translate("msg.body", ["stelin", 666], 'en');
+        $data[] = translate('title', [], 'zh');
+        $data[] = translate('title', [], 'en');
+        $data[] = translate('msg.body', ['stelin', 999], 'en');
+        $data[] = translate('msg.body', ['stelin', 666], 'en');
 
         return $data;
     }
