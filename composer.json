@@ -64,6 +64,10 @@
         },
         {
           "type": "vcs",
+          "url": "https://github.com/swoft-cloud/swoft-process"
+        },
+        {
+          "type": "vcs",
           "url": "https://github.com/swoft-cloud/swoft-view"
         },
         {
