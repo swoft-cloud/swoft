@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Swoft\Http\Client;
+use Swoft\HttpClient\Client;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 
 /**
