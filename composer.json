@@ -59,16 +59,24 @@
             "url": "https://github.com/swoft-cloud/swoft-framework"
         },
         {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-rpc-client"
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-service-governance"
         },
         {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-process"
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-rpc-client"
         },
         {
-          "type": "vcs",
-          "url": "https://github.com/swoft-cloud/swoft-view"
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-http-message"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-process"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-view"
         },
         {
             "type": "composer",

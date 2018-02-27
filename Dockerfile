@@ -1,6 +1,6 @@
 FROM php:7.1
 
-MAINTAINER huangzhhui <huangzhwork@gmail.com>
+MAINTAINER huangzhhui <h@swoft.org>
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone
@@ -10,7 +10,6 @@ RUN apt-get update \
         curl \
         wget \
         git \
-        vim \
         zip \
         libz-dev \
         libssl-dev \
@@ -31,6 +30,7 @@ RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.
         && ldconfig \
     ) \
     && rm -r hiredis
+    
 RUN wget https://github.com/swoole/swoole-src/archive/v2.1.0.tar.gz -O swoole.tar.gz \
     && mkdir -p swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
