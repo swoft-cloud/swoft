@@ -64,12 +64,11 @@ QQ 交流群: 548173319
 * `composer create-project swoft/swoft swoft dev-master`
 
 ## Docker 安装
-* `cd swoft`
 * `docker run -p 80:80 swoft/swoft`
 
 ## Docker-compose 安装
 * `cd swoft`
-* `docker-compose up -d`
+* `docker-compose up`
 
 # 配置
 
