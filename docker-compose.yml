@@ -1,6 +1,6 @@
 version: '2'
 services:
-    swoft-dev:
+    swoft:
         image: swoft/swoft:latest
         ports:
             - "80:80"
