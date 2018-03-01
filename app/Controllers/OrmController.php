@@ -200,9 +200,9 @@ class OrmController
      */
     public function arFindId()
     {
-        $result = User::findById(425)->getResult();
+        $result = User::findById(720)->getResult();
 
-        $query = User::findById(426);
+        $query = User::findById(720);
 
         /* @var User $user */
         $user = $query->getResult(User::class);
@@ -279,21 +279,28 @@ class OrmController
         $user->setDesc('this my desc');
         $user->setAge(mt_rand(1, 100));
 
+        $user2 = new User();
+        $user2->setName('stelin');
+        $user2->setSex(1);
+        $user2->setDesc('this my desc');
+        $user2->setAge(mt_rand(1, 100));
+
         $count = new Count();
         $count->setFans(mt_rand(1, 1000));
         $count->setFollows(mt_rand(1, 1000));
 
         $em = EntityManager::create();
+        $re = $user2->save()->getResult();
         $em->beginTransaction();
+
         $uid = $em->save($user)->getResult();
         $count->setUid($uid);
 
         $result = $em->save($count)->getResult();
-        if ($result === false) {
-            $em->rollback();
-        } else {
-            $em->commit();
-        }
+
+        $result2 = $user2->save()->getResult();
+        $em->rollback();
+//        $em->commit();
         $em->close();
 
         return [$uid, $result];

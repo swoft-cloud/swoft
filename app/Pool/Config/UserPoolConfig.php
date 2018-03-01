@@ -29,12 +29,12 @@ class UserPoolConfig extends PoolProperties
     protected $name = "";
 
     /**
-     * the maximum number of idle connections
+     * Minimum active number of connections
      *
-     * @Value(name="${config.service.user.maxIdel}", env="${USER_POOL_MAX_IDEL}")
+     * @Value(name="${config.service.user.minActive}", env="${USER_POOL_MIN_ACTIVE}")
      * @var int
      */
-    protected $maxIdel = 6;
+    protected $minActive = 5;
 
     /**
      * the maximum number of active connections
@@ -51,6 +51,22 @@ class UserPoolConfig extends PoolProperties
      * @var int
      */
     protected $maxWait = 100;
+
+    /**
+     * Maximum waiting time
+     *
+     * @Value(name="${config.service.user.maxWaitTime}", env="${USER_POOL_MAX_WAIT_TIME}")
+     * @var int
+     */
+    protected $maxWaitTime = 3;
+
+    /**
+     * Maximum idle time
+     *
+     * @Value(name="${config.service.user.maxIdleTime}", env="${USER_POOL_MAX_IDLE_TIME}")
+     * @var int
+     */
+    protected $maxIdleTime = 60;
 
     /**
      * the time of connect timeout
