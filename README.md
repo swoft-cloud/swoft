@@ -66,7 +66,7 @@ QQ 交流群: 548173319
 ## Docker 安装
 * `docker run -p 80:80 swoft/swoft`
 
-## Docker-compose 安装
+## Docker-ompose 安装
 * `cd swoft`
 * `docker-compose up`
 
