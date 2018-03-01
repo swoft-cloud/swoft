@@ -1,9 +1,9 @@
-version: '0.2'
+version: '2'
 services:
     swoft-dev:
         image: swoft/swoft:latest
         ports:
-            - "801:80"
+            - "80:80"
         volumes:
             - ./:/var/www/swoft
         stdin_open: true
