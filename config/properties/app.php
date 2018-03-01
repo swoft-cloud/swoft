@@ -17,6 +17,7 @@ return [
         'App\Exception',
         'App\Listener',
         'App\Process',
+        'App\Fallback',
     ],
     'I18n'         => [
         'sourceLanguage' => '@root/resources/messages/',

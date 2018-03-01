@@ -17,7 +17,7 @@ class RpcController
 {
 
     /**
-     * @Reference("user")
+     * @Reference(name="user", fallback="demoFallback")
      *
      * @var DemoInterface
      */
@@ -41,6 +41,40 @@ class RpcController
      * @var \App\Models\Logic\UserLogic
      */
     private $logic;
+
+
+    /**
+     * @return array
+     */
+    public function fallback()
+    {
+        $result1  = $this->demoService->getUser('11');
+        $result2  = $this->demoService->getUsers(['1','2']);
+        $result3  = $this->demoService->getUserByCond(1, 2, 'boy', 1.6);
+
+        return [
+            $result1,
+            $result2,
+            $result3,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function deferFallback()
+    {
+        $result1  = $this->demoService->deferGetUser('11')->getResult();
+        $result2  = $this->demoService->deferGetUsers(['1','2'])->getResult();
+        $result3  = $this->demoService->deferGetUserByCond(1, 2, 'boy', 1.6)->getResult();
+
+        return [
+            'defer',
+            $result1,
+            $result2,
+            $result3,
+        ];
+    }
 
     /**
      * @RequestMapping(route="call")
