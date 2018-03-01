@@ -12,6 +12,7 @@ class HttpClientController
 {
     /**
      * @return array
+     * @throws \Swoft\HttpClient\Exception\RuntimeException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
