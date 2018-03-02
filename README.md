@@ -65,8 +65,11 @@ QQ 交流群: 548173319
 * `composer create-project swoft/swoft swoft dev-master`
 
 ## Docker 安装
-
 * `docker run -p 80:80 swoft/swoft`
+
+## Docker-Compose 安装
+* `cd swoft`
+* `docker-compose up`
 
 # 配置
 
@@ -178,11 +181,4 @@ php bin/swoft rpc:stop
 [更新日志](changelog.md)
 
 # 协议
-Swoft 的开源协议为 Apache-2.0，详情参见[LICENSE](LICENSE)。
-
-
-
-
-
-
-
+Swoft 的开源协议为 Apache-2.0，详情参见[LICENSE](LICENSE)
