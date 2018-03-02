@@ -1,6 +1,6 @@
 <?php
 $header = <<<'EOF'
-This file is part of PHPUnit.
+This file is part of Swoft.
 (c) Swoft <group@swoft.org>
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -13,7 +13,6 @@ return PhpCsFixer\Config::create()
         '@Symfony:risky'             => true,
         'array_syntax'               => ['syntax' => 'short'],
         'combine_consecutive_unsets' => true,
-        // one should use PHPUnit methods to set up expected exception instead of annotations
         'general_phpdoc_annotation_remove'      => ['expectedException', 'expectedExceptionMessage', 'expectedExceptionMessageRegExp'],
         'header_comment'                        => ['header' => $header],
         'heredoc_to_nowdoc'                     => true,
