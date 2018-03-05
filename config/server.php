@@ -10,7 +10,7 @@ return [
     'tcp'     => [
         'host'               => env('TCP_HOST', '0.0.0.0'),
         'port'               => env('TCP_PORT', 8099),
-        'model'              => env('TCP_MODEL', SWOOLE_PROCESS),
+        'mode'              => env('TCP_MODE', SWOOLE_PROCESS),
         'type'               => env('TCP_TYPE', SWOOLE_SOCK_TCP),
         'package_max_length' => env('TCP_PACKAGE_MAX_LENGTH', 2048),
         'open_eof_check'     => env('TCP_OPEN_EOF_CHECK', false),
@@ -18,7 +18,7 @@ return [
     'http'    => [
         'host'  => env('HTTP_HOST', '0.0.0.0'),
         'port'  => env('HTTP_PORT', 80),
-        'model' => env('HTTP_MODEL', SWOOLE_PROCESS),
+        'mode' => env('HTTP_MODE', SWOOLE_PROCESS),
         'type'  => env('HTTP_TYPE', SWOOLE_SOCK_TCP),
     ],
     'crontab' => [
