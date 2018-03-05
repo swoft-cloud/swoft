@@ -48,6 +48,15 @@ class OrmController
         return [$userResult, $countResult, $directUser, $directCount];
     }
 
+    public function test(){
+        $sql = "select * from user";
+        $em = EntityManager::create();
+        $result = $em->createQuery($sql)->execute()->getResult();
+        $em->close();
+
+        return [$result];
+    }
+
     /**
      * EM查找
      */
