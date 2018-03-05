@@ -56,43 +56,15 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-framework.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-cache.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-session.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-db.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-task.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-view.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-http-server.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-rpc-server.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:daydaygo/swoft-rpc-client.git"
+            "url": "https://github.com/swoft-cloud/swoft-framework"
         },
         {
             "type": "vcs",
             "url": "https://github.com/swoft-cloud/swoft-service-governance"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-rpc-client"
         },
         {
             "type": "vcs",
@@ -101,6 +73,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/swoft-cloud/swoft-process"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/swoft-cloud/swoft-view"
         },
         {
             "type": "composer",
