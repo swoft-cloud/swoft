@@ -32,6 +32,7 @@ return [
         'dispatch_mode'         => env('DISPATCH_MODE', 2),
         'log_file'              => env('LOG_FILE', '@runtime/logs/swoole.log'),
         'task_worker_num'       => env('TASK_WORKER_NUM', 1),
+        'package_max_length'    => env('PACKAGE_MAX_LENGTH', 2048),
         'upload_tmp_dir'        => env('UPLOAD_TMP_DIR', '@runtime/uploadfiles'),
         'document_root'         => env('DOCUMENT_ROOT', BASE_PATH . '/public'),
         'enable_static_handler' => env('ENABLE_STATIC_HANDLER', true),

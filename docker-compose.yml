@@ -1,0 +1,11 @@
+version: '2'
+services:
+    swoft:
+        image: swoft/swoft:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/swoft
+        stdin_open: true
+        tty: true
+        command: php /var/www/swoft/bin/swoft start
