@@ -10,25 +10,25 @@
     "license": "Apache-2.0",
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "dev-master",
-        "swoft/rpc": "dev-master",
-        "swoft/rpc-server": "dev-master",
-        "swoft/rpc-client": "dev-master",
-        "swoft/http-server": "dev-master",
-        "swoft/http-client": "dev-master",
-        "swoft/task": "dev-master",
-        "swoft/http-message": "dev-master",
-        "swoft/view": "dev-master",
-        "swoft/db": "dev-master",
-        "swoft/cache": "dev-master",
-        "swoft/redis": "dev-master",
-        "swoft/console": "dev-master",
-        "swoft/devtool": "dev-master",
-        "swoft/session": "dev-master",
-        "swoft/i18n": "dev-master",
-        "swoft/process": "dev-master",
-        "swoft/memory": "dev-master",
-        "swoft/service-governance": "dev-master"
+        "swoft/framework": "^1.0",
+        "swoft/rpc": "^1.0",
+        "swoft/rpc-server": "^1.0",
+        "swoft/rpc-client": "^1.0",
+        "swoft/http-server": "^1.0",
+        "swoft/http-client": "^1.0",
+        "swoft/task": "^1.0",
+        "swoft/http-message": "^1.0",
+        "swoft/view": "^1.0",
+        "swoft/db": "^1.0",
+        "swoft/cache": "^1.0",
+        "swoft/redis": "^1.0",
+        "swoft/console": "^1.0",
+        "swoft/devtool": "^1.0",
+        "swoft/session": "^1.0",
+        "swoft/i18n": "^1.0",
+        "swoft/process": "^1.0",
+        "swoft/memory": "^1.0",
+        "swoft/service-governance": "^1.0"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
@@ -54,30 +54,6 @@
         "test": "./vendor/bin/phpunit -c phpunit.xml"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-framework"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-service-governance"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-rpc-client"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-http-message"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-process"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-view"
-        },
         {
             "type": "composer",
             "url": "https://packagist.phpcomposer.com"
