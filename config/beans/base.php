@@ -22,5 +22,5 @@ return [
     ],
     'cache'            => [
         'driver' => 'redis',
-    ]
+    ],
 ];

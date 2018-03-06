@@ -4,19 +4,12 @@ namespace App\Pool\Config;
 
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Annotation\Value;
-use Swoft\Sg\BalancerSelector;
 use Swoft\Pool\PoolProperties;
-use Swoft\Sg\ProviderSelector;
 
 /**
  * the config of service user
  *
  * @Bean()
- * @uses      UserPoolConfig
- * @version   2017年12月16日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
 class UserPoolConfig extends PoolProperties
 {
@@ -105,7 +98,7 @@ class UserPoolConfig extends PoolProperties
      * @Value(name="${config.service.user.balancer}", env="${USER_POOL_BALANCER}")
      * @var string
      */
-    protected $balancer = BalancerSelector::TYPE_RANDOM;
+    protected $balancer = "";
 
     /**
      * the default provider is consul provider
@@ -113,5 +106,5 @@ class UserPoolConfig extends PoolProperties
      * @Value(name="${config.service.user.provider}", env="${USER_POOL_PROVIDER}")
      * @var string
      */
-    protected $provider = ProviderSelector::TYPE_CONSUL;
+    protected $provider = "";
 }

@@ -9,13 +9,13 @@ return [
             'tags'              => [],
             'enableTagOverride' => false,
             'service'           => [
-                'address' => 'http://127.0.0.1',
-                'port'   => '88',
+                'address' => 'localhost',
+                'port'   => '8099',
             ],
             'check'             => [
                 'id'       => '',
                 'name'     => '',
-                'tcp'      => 'localhost:22',
+                'tcp'      => 'localhost:8099',
                 'interval' => 10,
                 'timeout'  => 1,
             ],
