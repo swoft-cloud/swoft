@@ -62,7 +62,7 @@ QQ 交流群: 548173319
 
 ## Composer 安装
 
-* `composer create-project swoft/swoft swoft dev-master`
+* `composer create-project swoft/swoft swoft`
 
 ## Docker 安装
 * `docker run -p 80:80 swoft/swoft`
