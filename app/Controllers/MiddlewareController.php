@@ -9,15 +9,15 @@ use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use App\Middlewares\GroupTestMiddleware;
 use App\Middlewares\ActionTestMiddleware;
 use App\Middlewares\SubMiddleware;
-use App\Middlewares\ControlerSubMiddleware;
-use App\Middlewares\ControlerTestMiddleware;
+use App\Middlewares\ControllerSubMiddleware;
+use App\Middlewares\ControllerTestMiddleware;
 
 
 /**
  * @Controller("middleware")
- * @Middleware(class=ControlerTestMiddleware::class)
+ * @Middleware(class=ControllerTestMiddleware::class)
  * @Middlewares({
- *     @Middleware(ControlerSubMiddleware::class)
+ *     @Middleware(ControllerSubMiddleware::class)
  * })
  */
 class MiddlewareController
