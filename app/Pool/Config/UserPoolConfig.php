@@ -19,7 +19,7 @@ class UserPoolConfig extends PoolProperties
      * @Value(name="${config.service.user.name}", env="${USER_POOL_NAME}")
      * @var string
      */
-    protected $name = "";
+    protected $name = '';
 
     /**
      * Minimum active number of connections
@@ -98,7 +98,7 @@ class UserPoolConfig extends PoolProperties
      * @Value(name="${config.service.user.balancer}", env="${USER_POOL_BALANCER}")
      * @var string
      */
-    protected $balancer = "";
+    protected $balancer = '';
 
     /**
      * the default provider is consul provider
@@ -106,5 +106,5 @@ class UserPoolConfig extends PoolProperties
      * @Value(name="${config.service.user.provider}", env="${USER_POOL_PROVIDER}")
      * @var string
      */
-    protected $provider = "";
+    protected $provider = '';
 }
