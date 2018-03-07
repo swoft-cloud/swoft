@@ -47,7 +47,7 @@ class RedisControllerTest extends AbstractTestCase
         $this->runRedisTest(function () {
             $expected = [
                 true,
-                'stelin',
+                'swoft',
             ];
             $response = $this->request('GET', '/redis/testCache', [], parent::ACCEPT_JSON);
             $response->assertSuccessful()->assertJson($expected);
@@ -63,7 +63,7 @@ class RedisControllerTest extends AbstractTestCase
         $this->runRedisTest(function () {
             $expected = [
                 true,
-                'stelin2',
+                'swoft2',
             ];
             $response = $this->request('GET', '/redis/testRedis', [], parent::ACCEPT_JSON);
             $response->assertSuccessful()->assertJson($expected);
@@ -79,7 +79,7 @@ class RedisControllerTest extends AbstractTestCase
         $this->runRedisTest(function () {
             $expected = [
                 true,
-                'stelin3',
+                'swoft3',
             ];
             $response = $this->request('GET', '/redis/testFunc', [], parent::ACCEPT_JSON);
             $response->assertSuccessful()->assertJson($expected);
@@ -95,7 +95,7 @@ class RedisControllerTest extends AbstractTestCase
         $this->runRedisTest(function () {
             $expected = [
                 true,
-                'stelin3',
+                'swoft3',
                 'value3',
             ];
             $response = $this->request('GET', '/redis/testFunc2', [], parent::ACCEPT_JSON);
@@ -144,8 +144,8 @@ class RedisControllerTest extends AbstractTestCase
             $expected = [
                 true,
                 [
-                    'stelin6',
-                    'stelin8',
+                    'name6' => 'swoft6',
+                    'name8' => 'swoft8',
                 ],
             ];
             $response = $this->request('GET', '/redis/setMultiple', [], parent::ACCEPT_JSON);
