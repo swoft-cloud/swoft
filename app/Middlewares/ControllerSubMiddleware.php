@@ -29,6 +29,6 @@ class ControllerSubMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        return $response->withAddedHeader('Controler-Sub-Middleware', 'success');
+        return $response->withAddedHeader('Controller-Sub-Middleware', 'success');
     }
 }

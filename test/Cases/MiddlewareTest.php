@@ -41,7 +41,7 @@ class MiddlewareTest extends AbstractTestCase
     {
         $response = $this->request('GET', '/middleware/action3', [], parent::ACCEPT_JSON);
         $response->assertExactJson(['middleware3']);
-        $response->assertHeader('Controler-Test-Middleware', 'success');
-        $response->assertHeader('Controler-Sub-Middleware', 'success');
+        $response->assertHeader('Controller-Test-Middleware', 'success');
+        $response->assertHeader('Controller-Sub-Middleware', 'success');
     }
 }

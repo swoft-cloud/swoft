@@ -23,6 +23,6 @@ class ControllerTestMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        return $response->withAddedHeader('Controler-Test-Middleware', 'success');
+        return $response->withAddedHeader('Controller-Test-Middleware', 'success');
     }
 }
