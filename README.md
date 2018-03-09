@@ -4,13 +4,13 @@
     </a>
 </p>
 
-[![Latest Version](https://img.shields.io/badge/unstable-v0.2.6-yellow.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Latest Version](https://img.shields.io/badge/beta-v1.0.0-green.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/releases)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.0.12-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
-[![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://packagist.org/packages/swoft/swoft)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.1.1-brightgreen.svg?maxAge=2592000)](https://github.com/redis/hiredis)
+[![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://github.com/swoole/swoole-src)
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
-[![Swoft License](https://img.shields.io/badge/license-apache%202.0-lightgrey.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
+[![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
 # 简介
 首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield, 有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
@@ -62,7 +62,7 @@ QQ 交流群: 548173319
 
 ## Composer 安装
 
-* `composer create-project swoft/swoft swoft dev-master`
+* `composer create-project swoft/swoft swoft`
 
 ## Docker 安装
 * `docker run -p 80:80 swoft/swoft`

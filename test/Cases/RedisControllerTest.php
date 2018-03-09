@@ -2,15 +2,41 @@
 
 namespace Swoft\Test\Cases;
 
+use Swoft\Redis\Redis;
+
 /**
- * @uses      RedisControllerTest
- * @version   2017年11月30日
- * @author    huangzhhui <huangzhwork@gmail.com>
- * @copyright Copyright 2010-2017 Swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
+ * Class RedisControllerTest
+ *
+ * @package Swoft\Test\Cases
  */
 class RedisControllerTest extends AbstractTestCase
 {
+
+    protected $isRedisConnected = false;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $redis = bean(Redis::class);
+        try {
+            $redis->has('test');
+            $this->isRedisConnected = true;
+        } catch (\Exception $e) {
+            // No connection or else error
+        }
+    }
+
+    /**
+     * @param \Closure $closure
+     */
+    protected function runRedisTest(\Closure $closure)
+    {
+        if ($this->isRedisConnected) {
+            $closure();
+        } else {
+            $this->markTestSkipped('No redis connection');
+        }
+    }
 
     /**
      * @test
@@ -18,12 +44,14 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function cache()
     {
-        $expected = [
-            true,
-            'stelin',
-        ];
-        $response = $this->request('GET', '/redis/testCache', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                'swoft',
+            ];
+            $response = $this->request('GET', '/redis/testCache', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -32,12 +60,14 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function redis()
     {
-        $expected = [
-            true,
-            'stelin2',
-        ];
-        $response = $this->request('GET', '/redis/testRedis', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                'swoft2',
+            ];
+            $response = $this->request('GET', '/redis/testRedis', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -46,12 +76,14 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function func()
     {
-        $expected = [
-            true,
-            'stelin3',
-        ];
-        $response = $this->request('GET', '/redis/testFunc', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                'swoft3',
+            ];
+            $response = $this->request('GET', '/redis/testFunc', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -60,13 +92,15 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function func2()
     {
-        $expected = [
-            true,
-            'stelin3',
-            'value3',
-        ];
-        $response = $this->request('GET', '/redis/testFunc2', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                'swoft3',
+                'value3',
+            ];
+            $response = $this->request('GET', '/redis/testFunc2', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -75,12 +109,14 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function delete()
     {
-        $expected = [
-            true,
-            1,
-        ];
-        $response = $this->request('GET', '/redis/testDelete', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                1,
+            ];
+            $response = $this->request('GET', '/redis/testDelete', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -89,11 +125,13 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function clear()
     {
-        $expected = [
-            true,
-        ];
-        $response = $this->request('GET', '/redis/clear', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+            ];
+            $response = $this->request('GET', '/redis/clear', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -102,15 +140,17 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function multiple()
     {
-        $expected = [
-            true,
-            [
-                'stelin6',
-                'stelin8',
-            ],
-        ];
-        $response = $this->request('GET', '/redis/setMultiple', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                [
+                    'name6' => 'swoft6',
+                    'name8' => 'swoft8',
+                ],
+            ];
+            $response = $this->request('GET', '/redis/setMultiple', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -119,12 +159,14 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function deleteMultiple()
     {
-        $expected = [
-            true,
-            2,
-        ];
-        $response = $this->request('GET', '/redis/deleteMultiple', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                2,
+            ];
+            $response = $this->request('GET', '/redis/deleteMultiple', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 
     /**
@@ -133,11 +175,13 @@ class RedisControllerTest extends AbstractTestCase
      */
     public function has()
     {
-        $expected = [
-            true,
-            true,
-        ];
-        $response = $this->request('GET', '/redis/has', [], parent::ACCEPT_JSON);
-        $response->assertSuccessful()->assertJson($expected);
+        $this->runRedisTest(function () {
+            $expected = [
+                true,
+                true,
+            ];
+            $response = $this->request('GET', '/redis/has', [], parent::ACCEPT_JSON);
+            $response->assertSuccessful()->assertJson($expected);
+        });
     }
 }

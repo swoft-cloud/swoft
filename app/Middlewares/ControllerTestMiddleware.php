@@ -9,16 +9,10 @@ use Swoft\Bean\Annotation\Bean;
 use Swoft\Http\Message\Middleware\MiddlewareInterface;
 
 /**
- * the sub middleware of controler
- *
+ * Controler middleware test
  * @Bean()
- * @uses      ControlerSubMiddleware
- * @version   2017年11月29日
- * @author    stelin <phpcrazy@126.com>
- * @copyright Copyright 2010-2016 swoft software
- * @license   PHP Version 7.x {@link http://www.php.net/license/3_0.txt}
  */
-class ControlerSubMiddleware implements MiddlewareInterface
+class ControllerTestMiddleware implements MiddlewareInterface
 {
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -29,6 +23,6 @@ class ControlerSubMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        return $response->withAddedHeader('Controler-Sub-Middleware', 'success');
+        return $response->withAddedHeader('Controller-Test-Middleware', 'success');
     }
 }
