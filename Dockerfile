@@ -13,7 +13,8 @@ RUN apt-get update \
         zip \
         libz-dev \
         libssl-dev \
-    && apt-get clean
+    && apt-get clean \
+    && apt-get autoremove
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
