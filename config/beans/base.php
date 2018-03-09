@@ -4,7 +4,7 @@ return [
     'serverDispatcher' => [
         'middlewares' => [
             \Swoft\View\Middleware\ViewMiddleware::class,
-            \Swoft\Session\Middleware\SessionMiddleware::class,
+            //\Swoft\Session\Middleware\SessionMiddleware::class,
         ]
     ],
     'httpRouter'       => [

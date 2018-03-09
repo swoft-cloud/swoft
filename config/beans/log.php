@@ -22,8 +22,8 @@ return [
     ],
     'logger'             => [
         'name'          => APP_NAME,
-        'flushInterval' => 100,
-        'flushRequest'  => true,
+        'flushInterval' => 100000,
+        'flushRequest'  => false,
         'handlers'      => [
             '${noticeHandler}',
             '${applicationHandler}',
