@@ -87,9 +87,9 @@ class SyncTask
      * @return array
      */
     public function mysql(){
-        $result = User::findById(425)->getResult();
+        $result = User::findById(720)->getResult();
 
-        $query = User::findById(426);
+        $query = User::findById(720);
 
         /* @var User $user */
         $user = $query->getResult(User::class);

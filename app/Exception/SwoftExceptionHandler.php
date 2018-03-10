@@ -2,6 +2,7 @@
 
 namespace App\Exception;
 
+use Swoft\App;
 use Swoft\Bean\Annotation\ExceptionHandler;
 use Swoft\Bean\Annotation\Handler;
 use Swoft\Exception\RuntimeException;
@@ -40,6 +41,7 @@ class SwoftExceptionHandler
         $exception = $throwable->getMessage();
 
         $data = ['msg' => $exception, 'file' => $file, 'line' => $line, 'code' => $code];
+        App::error(json_encode($data));
         return $response->json($data);
     }
 
