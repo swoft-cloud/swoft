@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Entity\Count;
 use App\Models\Entity\User;
+use Swoft\Db\Pool;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Db\EntityManager;
 use Swoft\Db\QueryBuilder;
@@ -209,9 +210,9 @@ class OrmController
      */
     public function arFindId()
     {
-        $result = User::findById(720)->getResult();
+        $result = User::findById(4212)->getResult();
 
-        $query = User::findById(720);
+        $query = User::findById(4212);
 
         /* @var User $user */
         $user = $query->getResult(User::class);
@@ -345,32 +346,62 @@ class OrmController
         return [$result1, $result2];
     }
 
-
     public function sql()
     {
-        $params = [
-            ['uid', 433],
-            ['uid2', 434],
-            ['uid3', 431, Types::INT],
-        ];
-        $em = EntityManager::create();
-//        $querySql = "SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (:uid, :uid1, :uid3) ORDER BY u.id DESC LIMIT 2";
-//        $query = $em->createQuery($querySql);
-//                        $query->setParameter('uid', 433);
-//                        $query->setParameter('uid2', 434);
-//                        $query->setParameter('uid3', 431);
-//        $query->setParameters($params);
+        $ids = [4212, 4213];
+        $poolId = Pool::MASTER;
 
-                $querySql = 'SELECT * FROM user AS u LEFT JOIN count AS c ON u.id=c.uid WHERE u.id IN (?, ?, ?) ORDER BY u.id DESC LIMIT 2';
-                $query = $em->createQuery($querySql);
-                $query->setParameter(1, 433);
-                $query->setParameter(2, 434);
-                $query->setParameter(3, 431);
-
-        $result = $query->execute();
-        $sql = $query->getSql();
+        $em = EntityManager::create($poolId);
+        $result = $em->createQuery('select * from user where id in(?, ?) and name = ? order by id desc limit 2')
+            ->setParameter(0, $ids[0])
+            ->setParameter(1, $ids[1])
+            ->setParameter(2, 'stelin')
+            ->execute()->getResult();
         $em->close();
 
-        return [$result, $sql];
+        $em = EntityManager::create($poolId);
+        $result2 = $em->createQuery('select * from user where id in(?, ?) and name = ? order by id desc limit 2')
+            ->setParameter(0, $ids[0])
+            ->setParameter(1, $ids[1])
+            ->setParameter(2, 'stelin', Types::STRING)
+            ->execute()->getResult();
+        $em->close();
+
+        $em = EntityManager::create($poolId);
+        $result3 = $em->createQuery('select * from user where id in(?, ?) and name = ? order by id desc limit 2')
+            ->setParameters([$ids[0], $ids[1], 'stelin'])
+            ->execute()->getResult();
+        $em->close();
+
+        $em = EntityManager::create($poolId);
+        $result4 = $em->createQuery('select * from user where id in(:id1, :id2) and name = :name order by id desc limit 2')
+            ->setParameter(':id1', $ids[0])
+            ->setParameter('id2', $ids[1])
+            ->setParameter('name', 'stelin')
+            ->execute()->getResult();
+        $em->close();
+
+        $em = EntityManager::create($poolId);
+        $result5 = $em->createQuery('select * from user where id in(:id1, :id2) and name = :name order by id desc limit 2')
+            ->setParameters([
+                'id1' => $ids[0],
+                ':id2' => $ids[1],
+                'name' => 'stelin'
+            ])
+            ->execute()->getResult();
+        $em->close();
+
+
+        $em = EntityManager::create($poolId);
+        $result6 = $em->createQuery('select * from user where id in(:id1, :id2) and name = :name order by id desc limit 2')
+            ->setParameters([
+                ['id1', $ids[0]],
+                [':id2', $ids[1], Types::INT],
+                ['name', 'stelin', Types::STRING],
+            ])
+            ->execute()->getResult();
+        $em->close();
+
+        return [\count($result)];
     }
 }

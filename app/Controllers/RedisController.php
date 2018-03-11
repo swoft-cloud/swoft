@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 
+use App\Models\Entity\User;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\Cache\Cache;
 use Swoft\Http\Server\Bean\Annotation\Controller;
@@ -43,6 +44,14 @@ class RedisController
         $name   = $this->redis->get('nameRedis');
 
         return [$result, $name];
+    }
+
+    public function ab()
+    {
+        $result1 = User::query()->select('*')->where('id', '720')->limit(1)->execute()->getResult();
+        $result2 = $this->redis->set('test1', 1);
+
+        return [$result1, $result2];
     }
 
     public function testFunc()
