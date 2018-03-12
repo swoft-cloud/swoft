@@ -1,10 +1,11 @@
 <?php
-
-/*
+/**
  * This file is part of Swoft.
- * (c) Swoft <group@swoft.org>
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
 namespace App\Models\Entity;
@@ -70,7 +71,7 @@ class User extends Model
      * @Column(name="description", type="string")
      * @var string
      */
-    private $desc = "";
+    private $desc = '';
 
     /**
      * 非数据库字段，未定义映射关系

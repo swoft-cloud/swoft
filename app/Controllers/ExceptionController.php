@@ -1,10 +1,11 @@
 <?php
-
-/*
+/**
  * This file is part of Swoft.
- * (c) Swoft <group@swoft.org>
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
 namespace App\Controllers;
@@ -26,7 +27,7 @@ class ExceptionController
      */
     public function exceptioin()
     {
-        throw new \Exception("this is exception");
+        throw new \Exception('this is exception');
     }
 
     /**
@@ -35,7 +36,7 @@ class ExceptionController
      */
     public function runtimeException()
     {
-        throw new RuntimeException("my exception");
+        throw new RuntimeException('my exception');
     }
 
     /**
@@ -44,7 +45,7 @@ class ExceptionController
      */
     public function defaultException()
     {
-        throw new ValidatorException("validator exception! ");
+        throw new ValidatorException('validator exception! ');
     }
 
     /**
@@ -53,6 +54,6 @@ class ExceptionController
      */
     public function viewException()
     {
-        throw new BadMethodCallException("view exception! ");
+        throw new BadMethodCallException('view exception! ');
     }
 }
