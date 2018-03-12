@@ -13,6 +13,7 @@ RUN apt-get update \
         zip \
         libz-dev \
         libssl-dev \
+        libnghttp2-dev \
     && apt-get clean \
     && apt-get autoremove
 
@@ -41,7 +42,7 @@ RUN wget https://github.com/swoole/swoole-src/archive/v2.1.1.tar.gz -O swoole.ta
     && ( \
         cd swoole \
         && phpize \
-        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine --enable-openssl \
+        && ./configure --enable-async-redis --enable-mysqlnd --enable-coroutine --enable-openssl --enable-http2 \
         && make -j$(nproc) \
         && make install \
     ) \
