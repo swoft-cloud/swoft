@@ -7,29 +7,29 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Admin;
 
 use App\Models\Logic\IndexLogic;
 use Swoft\App;
-use Swoft\Core\Coroutine;
 use Swoft\Bean\Annotation\Inject;
+use Swoft\Core\Application;
+use Swoft\Core\Coroutine;
+use Swoft\Http\Message\Server\Request;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Http\Server\Bean\Annotation\RequestMethod;
-use Swoft\View\Bean\Annotation\View;
 use Swoft\Task\Task;
-use Swoft\Core\Application;
-use Swoft\Http\Message\Server\Request;
+use Swoft\View\Bean\Annotation\View;
 
 /**
- * 控制器demo
- * @Controller(prefix="/demo2")
+ * 控制器demo.
+ *
+ * @Controller(prefix="/admin/demo2")
  */
 class DemoController
 {
-
     /**
-     * 别名注入
+     * 别名注入.
      *
      * @Inject("httpRouter")
      *
@@ -38,7 +38,7 @@ class DemoController
     private $router;
 
     /**
-     * 别名注入
+     * 别名注入.
      *
      * @Inject("application")
      *
@@ -46,9 +46,9 @@ class DemoController
      */
     private $application;
 
-
     /**
      * 注入逻辑层
+     *
      * @Inject()
      *
      * @var IndexLogic
@@ -56,7 +56,7 @@ class DemoController
     private $logic;
 
     /**
-     * 定义一个route,支持get和post方式，处理uri=/demo2/index
+     * 定义一个route,支持get和post方式，处理uri=/demo2/index.
      *
      * @RequestMapping(route="index", method={RequestMethod::GET, RequestMethod::POST})
      *
@@ -83,7 +83,8 @@ class DemoController
     }
 
     /**
-     * 定义一个route,支持get,以"/"开头的定义，直接是根路径，处理uri=/index2
+     * 定义一个route,支持get,以"/"开头的定义，直接是根路径，处理uri=/index2.
+     *
      * @RequestMapping(route="/index2", method=RequestMethod::GET)
      */
     public function index2()
@@ -99,7 +100,7 @@ class DemoController
     }
 
     /**
-     * 没有使用注解，自动解析注入，默认支持get和post
+     * 没有使用注解，自动解析注入，默认支持get和post.
      */
     public function task()
     {
@@ -122,7 +123,7 @@ class DemoController
     }
 
     /**
-     * 子协程测试
+     * 子协程测试.
      */
     public function cor()
     {
@@ -142,7 +143,7 @@ class DemoController
     }
 
     /**
-     * 国际化测试
+     * 国际化测试.
      */
     public function i18n()
     {
@@ -155,7 +156,8 @@ class DemoController
     }
 
     /**
-     * 视图渲染demo - 没有使用布局文件
+     * 视图渲染demo - 没有使用布局文件.
+     *
      * @RequestMapping()
      * @View(template="demo/view")
      */
@@ -173,7 +175,8 @@ class DemoController
     }
 
     /**
-     * 视图渲染demo - 使用布局文件
+     * 视图渲染demo - 使用布局文件.
+     *
      * @RequestMapping()
      * @View(template="demo/content", layout="layouts/default.php")
      */
@@ -191,5 +194,4 @@ class DemoController
 
         return $data;
     }
-
 }

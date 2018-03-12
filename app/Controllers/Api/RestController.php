@@ -7,37 +7,36 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
+use Swoft\Http\Message\Server\Request;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Http\Server\Bean\Annotation\RequestMethod;
-use Swoft\Http\Message\Server\Request;
 
 /**
- * RESTful和参数验证测试demo
+ * RESTful和参数验证测试demo.
  *
- * @Controller(prefix="/user")
+ * @Controller(prefix="/api/user")
  */
 class RestController
 {
     /**
      * 查询列表接口
-     * 地址:/user/
+     * 地址:/api/user/.
      *
-     * @RequestMapping(route="/user", method={RequestMethod::GET})
+     * @RequestMapping(route="/api/user", method={RequestMethod::GET})
      */
     public function list()
     {
         return ['list'];
     }
 
-
     /**
      * 创建一个用户
-     * 地址:/user
+     * 地址:/api/user.
      *
-     * @RequestMapping(route="/user", method={RequestMethod::POST,RequestMethod::PUT})
+     * @RequestMapping(route="/api/user", method={RequestMethod::POST,RequestMethod::PUT})
      *
      * @param Request $request
      *
@@ -48,14 +47,14 @@ class RestController
         $name = $request->input('name');
 
         $bodyParams = $request->getBodyParams();
-        $bodyParams = empty($bodyParams) ? ["create", $name] : $bodyParams;
+        $bodyParams = empty($bodyParams) ? ['create', $name] : $bodyParams;
 
         return $bodyParams;
     }
 
     /**
      * 查询一个用户信息
-     * 地址:/user/6
+     * 地址:/api/user/6.
      *
      * @RequestMapping(route="{uid}", method={RequestMethod::GET})
      *
@@ -70,7 +69,7 @@ class RestController
 
     /**
      * 查询用户的书籍信息
-     * 地址:/user/6/book/8
+     * 地址:/api/user/6/book/8.
      *
      * @RequestMapping(route="{userId}/book/{bookId}", method={RequestMethod::GET})
      *
@@ -86,7 +85,7 @@ class RestController
 
     /**
      * 删除一个用户信息
-     * 地址:/user/6
+     * 地址:/api/user/6.
      *
      * @RequestMapping(route="{uid}", method={RequestMethod::DELETE})
      *
@@ -101,19 +100,20 @@ class RestController
 
     /**
      * 更新一个用户信息
-     * 地址:/user/6
+     * 地址:/api/user/6.
      *
      * @RequestMapping(route="{uid}", method={RequestMethod::PUT, RequestMethod::PATCH})
      *
-     * @param int $uid
+     * @param int     $uid
      * @param Request $request
+     *
      * @return array
      */
     public function updateUser(Request $request, int $uid)
     {
-        $body = $request->getBodyParams();
+        $body           = $request->getBodyParams();
         $body['update'] = 'update';
-        $body['uid'] = $uid;
+        $body['uid']    = $uid;
 
         return $body;
     }

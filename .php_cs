@@ -8,6 +8,13 @@ file that was distributed with this source code.
 EOF;
 
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        'header_comment'                        => ['header' => $header],
+        'array_syntax'                          => ['syntax' => 'short'],
+
+    ])
+
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('vendor')
