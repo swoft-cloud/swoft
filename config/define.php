@@ -1,6 +1,12 @@
 <?php
 
-// Constants
+/*
+ * This file is part of Swoft.
+ * (c) Swoft <group@swoft.org>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 ! defined('DS') && define('DS', DIRECTORY_SEPARATOR);
 // App name
 ! defined('APP_NAME') && define('APP_NAME', 'swoft');
