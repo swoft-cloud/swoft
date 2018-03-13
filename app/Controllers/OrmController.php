@@ -49,13 +49,124 @@ class OrmController
         return [$userResult, $countResult, $directUser, $directCount];
     }
 
-    public function test(){
-        $sql = "select * from user";
+    public function ntotClose(){
+        $sql = "select * from user limit 2";
         $em = EntityManager::create();
         $result = $em->createQuery($sql)->execute()->getResult();
-        $em->close();
+//        $em->close();
 
         return [$result];
+    }
+
+    public function notGetResult(){
+
+        $user2 = User::findById(4212)->getResult();
+        $user = User::findById(4212);
+        return [$user2];
+    }
+
+    /**
+     * @return array
+     */
+    public function notCommitAndClose()
+    {
+        $user2 = User::findById(4212)->getResult();
+
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $result = $em->save($user)->getResult();
+
+        return [$user2, $result];
+    }
+
+    /**
+     * @return array
+     */
+    public function notCommitAndCloseAndGetResult()
+    {
+        $user2 = User::findById(4212)->getResult();
+
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $result = $em->save($user);
+
+        return [$user2, $result];
+    }
+
+    /**
+     * @return array
+     */
+    public function notCommit()
+    {
+        $user2 = User::findById(4212)->getResult();
+
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $result = $em->save($user)->getResult();
+        $em->close();
+
+        return [$user2, $result];
+    }
+
+    /**
+     * @return array
+     */
+    public function notCloseButCommit()
+    {
+        $user2 = User::findById(4212)->getResult();
+
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+        $em->beginTransaction();
+        $result = $em->save($user)->getResult();
+        $em->commit();
+
+        return [$user2, $result];
+    }
+
+    /**
+     * @return array
+     */
+    public function closeAndNotGetResult()
+    {
+        $user = new User();
+        $user->setName('stelin');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $em = EntityManager::create();
+        $user2 = User::findById(4212)->getResult();
+        $em->beginTransaction();
+        $result = $em->save($user)->getResult();
+        $result = $em->save($user);
+        $em->commit();
+        $em->close();
+
+        return [$user2, $result];
     }
 
     /**
@@ -324,10 +435,9 @@ class OrmController
                         ->orderBy('u.id', QueryBuilder::ORDER_BY_DESC)->limit(2)->execute();
         //        $result = $query->getResult();
         $result = $result->getResult();
-        $sql = $query->getSql();
         $em->close();
 
-        return [$result, $sql];
+        return [$result];
     }
 
     /**

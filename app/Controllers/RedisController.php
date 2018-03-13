@@ -46,12 +46,30 @@ class RedisController
         return [$result, $name];
     }
 
+    public function error()
+    {
+        $result = $this->redis->set('nameRedis', 'swoft2');
+        $name   = $this->redis->get('nameRedis');
+        $ret1 = $this->redis->deferCall('set', ['name1', 'swoft1']);
+        return [$name];
+    }
+
     public function ab()
     {
         $result1 = User::query()->select('*')->where('id', '720')->limit(1)->execute()->getResult();
         $result2 = $this->redis->set('test1', 1);
 
         return [$result1, $result2];
+    }
+
+    public function ab2()
+    {
+        var_dump($this->redis->incr("count"));
+        var_dump($this->redis->incr("count"));
+        var_dump($this->redis->incr("count"));
+        var_dump($this->redis->incr("count"));
+        $ret1 = $this->redis->deferCall('set', ['name1', 'swoft1']);
+        return ['ab'];
     }
 
     public function testFunc()
