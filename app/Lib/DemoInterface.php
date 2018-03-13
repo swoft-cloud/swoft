@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of Swoft.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Lib;
 
@@ -35,5 +43,5 @@ interface DemoInterface
      */
     public function getUser(string $id);
 
-    public function getUserByCond(int $type, int $uid, string $name, float $price, string $desc = "desc");
+    public function getUserByCond(int $type, int $uid, string $name, float $price, string $desc = 'desc');
 }

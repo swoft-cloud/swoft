@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of Swoft.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Controllers;
 
@@ -31,9 +39,9 @@ class RedisController
         $result = $this->cache->set('name', 'swoft');
         $name   = $this->cache->get('name');
 
-        $this->redis->incr("count");
+        $this->redis->incr('count');
 
-        $this->redis->incrBy("count2", 2);
+        $this->redis->incrBy('count2', 2);
 
         return [$result, $name, $this->redis->get('count'), $this->redis->get('count2'), '3'];
     }
@@ -122,7 +130,7 @@ class RedisController
 
     public function has()
     {
-        $result = $this->cache->set("name666", 'swoft666');
+        $result = $this->cache->set('name666', 'swoft666');
         $ret    = $this->cache->has('name666');
 
         return [$result, $ret];

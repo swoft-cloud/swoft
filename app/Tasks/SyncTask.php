@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of Swoft.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Tasks;
 
@@ -41,11 +49,11 @@ class SyncTask
      */
     public function deliverCo(string $p1, string $p2)
     {
-        App::profileStart("co");
+        App::profileStart('co');
         App::trace('trace');
         App::info('info');
         App::pushlog('key', 'stelin');
-        App::profileEnd("co");
+        App::profileEnd('co');
 
         return sprintf('deliverCo-%s-%s', $p1, $p2);
     }
@@ -60,11 +68,11 @@ class SyncTask
      */
     public function deliverAsync(string $p1, string $p2)
     {
-        App::profileStart("co");
+        App::profileStart('co');
         App::trace('trace');
         App::info('info');
         App::pushlog('key', 'stelin');
-        App::profileEnd("co");
+        App::profileEnd('co');
 
         return sprintf('deliverCo-%s-%s', $p1, $p2);
     }

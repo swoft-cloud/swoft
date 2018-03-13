@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of Swoft.
+ *
+ * @link https://swoft.org
+ * @document https://doc.swoft.org
+ * @contact group@swoft.org
+ * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Controllers;
 
@@ -49,8 +57,8 @@ class OrmController
         return [$userResult, $countResult, $directUser, $directCount];
     }
 
-    public function ntotClose(){
-        $sql = "select * from user limit 2";
+    public function test(){
+        $sql = 'select * from user';
         $em = EntityManager::create();
         $result = $em->createQuery($sql)->execute()->getResult();
 //        $em->close();
