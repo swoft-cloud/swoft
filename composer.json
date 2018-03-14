@@ -53,10 +53,10 @@
         ],
         "test": "./vendor/bin/phpunit -c phpunit.xml"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
-        }
-    ]
+    "repositories":  {
+      "packagist": {
+        "type": "composer",
+        "url": "https://packagist.phpcomposer.com"
+      }
+    }
 }
