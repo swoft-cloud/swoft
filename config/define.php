@@ -16,6 +16,7 @@
 // Register alias
 $aliases = [
     '@root'       => BASE_PATH,
+    '@env'        => '@root',
     '@app'        => '@root/app',
     '@res'        => '@root/resources',
     '@runtime'    => '@root/runtime',
