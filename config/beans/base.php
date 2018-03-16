@@ -15,7 +15,7 @@ return [
         ]
     ],
     'httpRouter'       => [
-        'ignoreLastSep'  => false,
+        'ignoreLastSlash'  => false,
         'tmpCacheNumber' => 1000,
         'matchAll'       => '',
     ],
