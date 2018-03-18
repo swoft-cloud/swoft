@@ -30,4 +30,8 @@ return [
     'cache'            => [
         'driver' => 'redis',
     ],
+    'demoRedis' => [
+        'class' => \Swoft\Redis\Redis::class,
+        'poolName' => 'demoRedis'
+    ]
 ];

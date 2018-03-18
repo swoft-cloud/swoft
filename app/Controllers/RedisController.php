@@ -34,6 +34,23 @@ class RedisController
      */
     private $redis;
 
+    /**
+     * @Inject("demoRedis")
+     * @var \Swoft\Redis\Redis
+     */
+    private $demoRedis;
+
+    public function testDemoRedis()
+    {
+        $result = $this->demoRedis->set('name', 'swoft');
+        $name   = $this->demoRedis->get('name');
+
+        $this->demoRedis->incr('count');
+        $this->demoRedis->incrBy('count2', 2);
+
+        return [$result, $name, $this->demoRedis->get('count'), $this->demoRedis->get('count2'), '3'];
+    }
+
     public function testCache()
     {
         $result = $this->cache->set('name', 'swoft');

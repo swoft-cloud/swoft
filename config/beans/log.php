@@ -28,10 +28,11 @@ return [
             \Swoft\Log\Logger::WARNING,
         ],
     ],
-    'logger'             => [
+    'logger' => [
         'name'          => APP_NAME,
-        'flushInterval' => 100000,
-        'flushRequest'  => false,
+        'enable'        => false,
+        'flushInterval' => 100,
+        'flushRequest'  => true,
         'handlers'      => [
             '${noticeHandler}',
             '${applicationHandler}',

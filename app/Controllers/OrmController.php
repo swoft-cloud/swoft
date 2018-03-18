@@ -196,6 +196,12 @@ class OrmController
         return [$result];
     }
 
+    public function forceMater()
+    {
+        $user = User::findById(4212, 'default.master')->getResult();
+        return [$user];
+    }
+
     /**
      * 实体内容删除
      */

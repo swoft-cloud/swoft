@@ -10,8 +10,10 @@
 
 namespace App\Controllers;
 
+use Swoft\App;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
+use Swoft\Log\Log;
 use Swoft\View\Bean\Annotation\View;
 use Swoft\Contract\Arrayable;
 use Swoft\Http\Server\Exception\BadRequestException;
@@ -188,6 +190,15 @@ class IndexController
     {
         $name = 'Swoft';
         return $name;
+    }
+
+    public function testLog()
+    {
+        App::trace('this is app trace');
+        Log::trace('this is log trace');
+        App::error('this is log error');
+        Log::trace('this is log error');
+        return ['log'];
     }
 
     /**
