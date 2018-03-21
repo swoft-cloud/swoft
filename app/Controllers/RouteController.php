@@ -31,6 +31,23 @@ class RouteController
     }
 
     /**
+     * access /routes you can see all registered routes.
+     * @RequestMapping("/routes")
+     */
+    public function routes(): array
+    {
+        /** @var \Swoft\Http\Server\Router\HandlerMapping $router */
+        $router = \bean('httpRouter');
+
+        return [
+            'static' => $router->getStaticRoutes(),
+            'regular' => $router->getRegularRoutes(),
+            'vague' => $router->getVagueRoutes(),
+            'cached' => $router->getCacheRoutes(),
+        ];
+    }
+    
+    /**
      * @RequestMapping(route="user/{uid}/book/{bid}/{bool}/{name}")
      *
      * @param bool                $bool
