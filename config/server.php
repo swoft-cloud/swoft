@@ -29,6 +29,12 @@ return [
         'mode' => env('HTTP_MODE', SWOOLE_PROCESS),
         'type'  => env('HTTP_TYPE', SWOOLE_SOCK_TCP),
     ],
+    'ws'  => [
+        // enable handler http request ?
+        'enable_http' => true,
+        // other settings will extend the 'http' config
+        // you can define separately to overwrite existing settings
+    ],
     'crontab' => [
         'task_count' => env('CRONTAB_TASK_COUNT', 1024),
         'task_queue' => env('CRONTAB_TASK_QUEUE', 2048),
