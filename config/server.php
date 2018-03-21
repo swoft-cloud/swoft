@@ -30,7 +30,7 @@ return [
         'type'  => env('HTTP_TYPE', SWOOLE_SOCK_TCP),
     ],
     'ws'  => [
-        // enable handler http request ?
+        // enable handle http request ?
         'enable_http' => true,
         // other settings will extend the 'http' config
         // you can define separately to overwrite existing settings
