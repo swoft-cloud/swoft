@@ -95,9 +95,9 @@ class SyncTask
      * @return array
      */
     public function mysql(){
-        $result = User::findById(720)->getResult();
+        $result = User::findById(4212)->getResult();
 
-        $query = User::findById(720);
+        $query = User::findById(4212);
 
         /* @var User $user */
         $user = $query->getResult(User::class);
@@ -118,6 +118,12 @@ class SyncTask
         $data['result1'] = $response;
         $data['result2'] = $response2;
         return $data;
+    }
+
+    public function console(string $data)
+    {
+        var_dump('console', $data);
+        return ['console'];
     }
 
     /**

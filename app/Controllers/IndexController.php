@@ -11,6 +11,7 @@
 namespace App\Controllers;
 
 use Swoft\App;
+use Swoft\Core\Coroutine;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Log\Log;
@@ -219,5 +220,4 @@ class IndexController
     {
         return $response->redirect('/');
     }
-
 }

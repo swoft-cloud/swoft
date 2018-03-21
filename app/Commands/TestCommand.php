@@ -18,11 +18,12 @@ use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
 use Swoft\Core\Coroutine;
 use Swoft\Log\Log;
+use Swoft\Task\Task;
 
 /**
  * Test command
  *
- * @Command(coroutine=true)
+ * @Command(coroutine=false)
  */
 class TestCommand
 {
@@ -87,5 +88,28 @@ class TestCommand
         $logic = App::getBean(UserLogic::class);
         $data  = $logic->getUserInfo(['uid1']);
         var_dump($hasOpt, $opt, $name, $data);
+    }
+
+    /**
+     * this task command
+     *
+     * @Usage
+     * test:{command} [arguments] [options]
+     *
+     * @Options
+     * -o,--o this is command option
+     *
+     * @Arguments
+     * arg this is argument
+     *
+     * @Example
+     * php swoft test:task
+     *
+     * @Mapping()
+     */
+    public function task()
+    {
+        $result = Task::deliver('sync', 'console', ['console']);
+        var_dump($result);
     }
 }
