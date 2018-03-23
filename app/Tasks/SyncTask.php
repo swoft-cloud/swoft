@@ -133,7 +133,13 @@ class SyncTask
      */
     public function rpc()
     {
-        return $this->demoService->getUser('6666');
+        $user = $this->demoService->getUser('6666');
+        $defer1 = $this->demoService->deferGetUser('666');
+        $defer2 = $this->demoService->deferGetUser('888');
+
+        $result1 = $defer1->getResult();
+        $result2 = $defer2->getResult();
+        return [$user, $result1, $result2];
     }
 
     /**

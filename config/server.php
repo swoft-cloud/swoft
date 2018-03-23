@@ -47,7 +47,7 @@ return [
         'open_http2_protocol'   => env('OPEN_HTTP2_PROTOCOL', false),
         'ssl_cert_file'         => env('SSL_CERT_FILE', ''),
         'ssl_key_file'          => env('SSL_KEY_FILE', ''),
-        'task_ipc_mode'         => env('TASK_IPC_MODE', 3),
+        'task_ipc_mode'         => env('TASK_IPC_MODE', 2),
         'message_queue_key'     => env('MESSAGE_QUEUE_KEY', 0x70001001),
         'task_tmpdir'           => env('TASK_TMPDIR', '/tmp'),
     ],
