@@ -26,6 +26,7 @@ return [
         'App\Listener',
         'App\Process',
         'App\Fallback',
+        'App\WebSocket',
     ],
     'I18n'         => [
         'sourceLanguage' => '@root/resources/messages/',
