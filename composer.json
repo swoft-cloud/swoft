@@ -16,6 +16,7 @@
         "swoft/rpc-client": "^1.0",
         "swoft/http-server": "^1.0",
         "swoft/http-client": "^1.0",
+        "swoft/websocket-server": "^1.0",
         "swoft/task": "^1.0",
         "swoft/http-message": "^1.0",
         "swoft/view": "^1.0",
