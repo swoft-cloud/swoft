@@ -26,6 +26,7 @@
 
 - 基于 Swoole 扩展
 - 内置协程网络服务器
+- webSocket 服务器
 - 强大的 AOP (面向切面编程)
 - 灵活完善的注解功能
 - 全局的依赖注入容器
@@ -58,7 +59,7 @@ QQ 交流群: 548173319
 # 环境要求
 
 1. PHP 7.0 +
-2. [Swoole 2.0.12](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
+2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
@@ -74,9 +75,11 @@ QQ 交流群: 548173319
 * `composer create-project swoft/swoft swoft`
 
 ## Docker 安装
+
 * `docker run -p 80:80 swoft/swoft`
 
 ## Docker-Compose 安装
+
 * `cd swoft`
 * `docker-compose up`
 
@@ -95,6 +98,9 @@ AUTO_RELOAD=true
 # HTTP
 HTTP_HOST=0.0.0.0
 HTTP_PORT=80
+
+# WebSocket
+WS_ENABLE_HTTP=true
 
 # TCP
 TCP_HOST=0.0.0.0
@@ -120,7 +126,7 @@ TASK_WORKER_NUM=1
 **帮助命令**
 
 ```
-[root@swoft bin]# php swoft -h
+[root@swoft]# php bin/swoft -h
  ____                __ _
 / ___|_      _____  / _| |_
 \___ \ \ /\ / / _ \| |_| __|
@@ -128,16 +134,18 @@ TASK_WORKER_NUM=1
 |____/ \_/\_/ \___/|_|  \__|
 
 Usage:
-  php swoft -h
+  php bin/swoft -h
 
 Commands:
-  entity  the group command list of database entity
-  rpc     the group command list of rpc server
-  server  the group command list of http-server
+  entity  The group command list of database entity
+  gen     Generate some common application template classes
+  rpc     The group command list of rpc server
+  server  The group command list of http-server
+  ws      There some commands for manage the webSocket server
 
 Options:
-  -v,--version  show version
-  -h,--help     show help
+  -v, --version  show version
+  -h, --help     show help
 ```
 
 **HTTP启动**
@@ -161,7 +169,6 @@ php bin/swoft reload
 php bin/swoft stop
 
 ```
-
 
 **RPC启动**
 
