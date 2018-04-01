@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/swoft-cloud/swoft/releases">
-    <img alt="Latest Version" src="https://img.shields.io/badge/beta-v1.0.0-green.svg?maxAge=2592000" /></a>
+    <img alt="Latest Version" src="https://img.shields.io/badge/beta-v1.0.3-green.svg?maxAge=2592000" /></a>
   <a href="https://travis-ci.org/swoft-cloud/swoft">
     <img alt="Build Status" src="https://travis-ci.org/swoft-cloud/swoft.svg?branch=master" /></a>
   <a href="https://secure.php.net/">
