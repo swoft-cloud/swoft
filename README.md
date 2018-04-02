@@ -121,11 +121,11 @@ LOG_FILE=@runtime/swoole.log
 TASK_WORKER_NUM=1
 ```
 
-## 启动
+## 管理
 
-**帮助命令**
+### 帮助命令
 
-```
+```text
 [root@swoft]# php bin/swoft -h
  ____                __ _
 / ___|_      _____  / _| |_
@@ -134,7 +134,7 @@ TASK_WORKER_NUM=1
 |____/ \_/\_/ \___/|_|  \__|
 
 Usage:
-  php bin/swoft -h
+  php bin/swoft {command} [arguments ...] [options ...]
 
 Commands:
   entity  The group command list of database entity
@@ -148,11 +148,11 @@ Options:
   -h, --help     show help
 ```
 
-**HTTP启动**
+## HTTP Server启动
 
 > 是否同时启动RPC服务器取决于.env文件配置
 
-```php
+```bash
 // 启动服务，根据 .env 配置决定是否是守护进程
 php bin/swoft start
 
@@ -167,14 +167,34 @@ php bin/swoft reload
 
 // 关闭服务
 php bin/swoft stop
-
 ```
 
-**RPC启动**
+### WebSocket Server启动
+
+启动WebSocket服务器,可选是否同时支持http处理
+
+```bash
+// 启动服务，根据 .env 配置决定是否是守护进程
+php bin/swoft ws:start
+
+// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+php bin/swoft ws:start -d
+
+// 重启
+php bin/swoft ws:restart
+
+// 重新加载
+php bin/swoft ws:reload
+
+// 关闭服务
+php bin/swoft ws:stop
+```
+
+## RPC Server启动
 
 > 启动独立的RPC服务器
 
-```php
+```bash
 // 启动服务，根据 .env 配置决定是否是守护进程
 php bin/swoft rpc:start
 
