@@ -22,6 +22,7 @@ services:
       - "3306:3306"
     volumes:
       - ./data/mysql/data:/var/lib/mysql:rw
+      - ./data/mysql/log:/var/log/mysql/:rw
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123456
