@@ -1,12 +1,51 @@
 version: '2'
 services:
-    swoft:
-        container_name: swoft
-        image: swoft/swoft:latest
+  swoole:
+    container_name: swoft
+    image: "549658/swoft:latest"
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/swoft:rw
+    stdin_open: true
+    tty: true
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    command: php /var/www/swoft/bin/swoft start
+
+  mysql:
+    image: "549658/docker-compose-swoole:mysql_latest"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql:rw
+      - ./data/mysql/sock:/var/run/mysqld:rw # remove when windows.
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 549658
+      MYSQL_DATABASE: swoft
+      MYSQL_USER: swoft
+      MYSQL_PASSWORD: 123456
+
+  redis:
+    image: "549658/docker-compose-swoole:redis_latest"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis/data:/var/lib/redis:rw
+    restart: always
+
+  phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin:latest
         ports:
-            - "80:80"
+            - "8080:80"
+        environment:
+            - PMA_ARBITRARY=1
+            - TESTSUITE_PASSWORD=549658
+        depends_on:
+            - mysql
         volumes:
-            - ./:/var/www/swoft
-        stdin_open: true
-        tty: true
-        command: php /var/www/swoft/bin/swoft start
+            - ./data/phpmyadmin:/sessions
