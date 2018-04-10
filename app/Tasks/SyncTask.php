@@ -15,6 +15,7 @@ use App\Models\Entity\User;
 use Swoft\App;
 use Swoft\Bean\Annotation\Inject;
 use Swoft\HttpClient\Client;
+use Swoft\Redis\Redis;
 use Swoft\Rpc\Client\Bean\Annotation\Reference;
 use Swoft\Task\Bean\Annotation\Scheduled;
 use Swoft\Task\Bean\Annotation\Task;
@@ -84,9 +85,12 @@ class SyncTask
      */
     public function cache()
     {
-        cache()->set('cacheKey', 'cache');
-
-        return cache('cacheKey');
+        /* @var Redis $cache */
+        $cache = \Swoft\App::getBean(Redis::class);
+//        $ret1 = $cache->deferCall('set', ['name1', 'swoft1'])->getResult();
+        $ret1 = $cache->deferCall('set', ['name1', 'swoft1']);
+//        return cache('cacheKey');
+        return 111;
     }
 
     /**

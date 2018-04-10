@@ -81,7 +81,7 @@ class RedisController
 
     public function ab()
     {
-        $result1 = User::query()->select('*')->where('id', '720')->limit(1)->execute()->getResult();
+        $result1 = User::query()->where('id', '720')->limit(1)->get()->getResult();
         $result2 = $this->redis->set('test1', 1);
 
         return [$result1, $result2];
@@ -156,15 +156,21 @@ class RedisController
     public function testDefer()
     {
         $ret1 = $this->redis->deferCall('set', ['name1', 'swoft1']);
-        $ret2 = $this->redis->deferCall('set', ['name2', 'swoft2']);
+//        $ret2 = $this->redis->deferCall('set', ['name2', 'swoft2']);
 
         $r1 = $ret1->getResult();
         $r2 = 1;
-        $r2 = $ret2->getResult();
+//        $r2 = $ret2->getResult();
 
         $ary = 1;
         // $ary = $this->redis->getMultiple(['name1', 'name2']);
 
         return [$r1, $r2, $ary];
+    }
+
+    public function deferError()
+    {
+        $ret1 = $this->redis->deferCall('set', ['name1', 'swoft1']);
+        return 'error';
     }
 }

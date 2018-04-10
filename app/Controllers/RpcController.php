@@ -114,6 +114,12 @@ class RpcController
         return [$result1, $result2, $result3];
     }
 
+    public function deferError()
+    {
+        $defer1 = $this->demoService->deferGetUser('123');
+        return ['error'];
+    }
+
     public function beanCall()
     {
         return [
