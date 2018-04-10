@@ -3,15 +3,16 @@
 $header = <<<'EOF'
 This file is part of Swoft.
 
-@link https://swoft.org
+@link     https://swoft.org
 @document https://doc.swoft.org
-@contact group@swoft.org
-@license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+@contact  group@swoft.org
+@license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
 EOF;
 
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
+        '@PSR2' => true,
         'header_comment' => [
             'commentType' => 'PHPDoc',
             'header' => $header,
@@ -21,6 +22,9 @@ return PhpCsFixer\Config::create()
             'syntax' => 'short'
         ],
         'single_quote' => true,
+        'class_attributes_separation' => true,
+        'no_unused_imports' => true,
+        'standardize_not_equals' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

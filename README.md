@@ -12,11 +12,12 @@
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
+
 # 简介
-首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈组件化框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield, 有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
+首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈组件化框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
 
 - 基于 Swoole 扩展
-- 内置协程网络服务器
+- 内置协程 HTTP, TCP, WebSocket 网络服务器
 - 强大的 AOP (面向切面编程)
 - 灵活完善的注解功能
 - 全局的依赖注入容器
@@ -49,7 +50,7 @@ QQ 交流群: 548173319
 # 环境要求
 
 1. PHP 7.0 +
-2. [Swoole 2.0.12](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
+2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
@@ -65,9 +66,11 @@ QQ 交流群: 548173319
 * `composer create-project swoft/swoft swoft`
 
 ## Docker 安装
+
 * `docker run -p 80:80 swoft/swoft`
 
 ## Docker-Compose 安装
+
 * `cd swoft`
 * `docker-compose up`
 
@@ -86,6 +89,9 @@ AUTO_RELOAD=true
 # HTTP
 HTTP_HOST=0.0.0.0
 HTTP_PORT=80
+
+# WebSocket
+WS_ENABLE_HTTP=true
 
 # TCP
 TCP_HOST=0.0.0.0
@@ -106,12 +112,12 @@ LOG_FILE=@runtime/swoole.log
 TASK_WORKER_NUM=1
 ```
 
-## 启动
+## 管理
 
-**帮助命令**
+### 帮助命令
 
-```
-[root@swoft bin]# php swoft -h
+```text
+[root@swoft]# php bin/swoft -h
  ____                __ _
 / ___|_      _____  / _| |_
 \___ \ \ /\ / / _ \| |_| __|
@@ -119,23 +125,25 @@ TASK_WORKER_NUM=1
 |____/ \_/\_/ \___/|_|  \__|
 
 Usage:
-  php swoft -h
+  php bin/swoft {command} [arguments ...] [options ...]
 
 Commands:
-  entity  the group command list of database entity
-  rpc     the group command list of rpc server
-  server  the group command list of http-server
+  entity  The group command list of database entity
+  gen     Generate some common application template classes
+  rpc     The group command list of rpc server
+  server  The group command list of http-server
+  ws      There some commands for manage the webSocket server
 
 Options:
-  -v,--version  show version
-  -h,--help     show help
+  -v, --version  show version
+  -h, --help     show help
 ```
 
-**HTTP启动**
+## HTTP Server启动
 
 > 是否同时启动RPC服务器取决于.env文件配置
 
-```php
+```bash
 // 启动服务，根据 .env 配置决定是否是守护进程
 php bin/swoft start
 
@@ -150,15 +158,34 @@ php bin/swoft reload
 
 // 关闭服务
 php bin/swoft stop
-
 ```
 
+### WebSocket Server启动
 
-**RPC启动**
+启动WebSocket服务器,可选是否同时支持http处理
+
+```bash
+// 启动服务，根据 .env 配置决定是否是守护进程
+php bin/swoft ws:start
+
+// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+php bin/swoft ws:start -d
+
+// 重启
+php bin/swoft ws:restart
+
+// 重新加载
+php bin/swoft ws:reload
+
+// 关闭服务
+php bin/swoft ws:stop
+```
+
+## RPC Server启动
 
 > 启动独立的RPC服务器
 
-```php
+```bash
 // 启动服务，根据 .env 配置决定是否是守护进程
 php bin/swoft rpc:start
 
