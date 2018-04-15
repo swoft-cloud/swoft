@@ -12,8 +12,8 @@
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
+## 简介
 
-# 简介
 首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈组件化框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
 
 - 基于 Swoole 扩展
@@ -42,39 +42,40 @@
 - 跨平台热更新自动 Reload
 
 
-# 文档
+## 文档
+
 [**中文文档**](https://doc.swoft.org)
 
 QQ 交流群: 548173319
 
-# 环境要求
+## 环境要求
 
 1. PHP 7.0 +
 2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
-# 安装
+## 安装
 
-## 手动安装
+### 手动安装
 
 * Clone 项目
 * 安装依赖 `composer install`
 
-## Composer 安装
+### Composer 安装
 
 * `composer create-project swoft/swoft swoft`
 
-## Docker 安装
+### Docker 安装
 
 * `docker run -p 80:80 swoft/swoft`
 
-## Docker-Compose 安装
+### Docker-Compose 安装
 
 * `cd swoft`
 * `docker-compose up`
 
-# 配置
+## 配置
 
 若在执行 `composer install` 的时候由程序自动复制环境变量配置文件失败，则可手动复制项目根目录的 `.env.example` 并命名为 `.env`，注意在执行 `composer update` 时并不会触发相关的复制操作
 
@@ -139,7 +140,7 @@ Options:
   -h, --help     show help
 ```
 
-## HTTP Server启动
+### HTTP Server启动
 
 > 是否同时启动RPC服务器取决于.env文件配置
 
@@ -181,7 +182,7 @@ php bin/swoft ws:reload
 php bin/swoft ws:stop
 ```
 
-## RPC Server启动
+### RPC Server启动
 
 > 启动独立的RPC服务器
 
@@ -200,12 +201,12 @@ php bin/swoft rpc:reload
 
 // 关闭服务
 php bin/swoft rpc:stop
-
 ```
 
-# 更新日志
+## 更新日志
 
 [更新日志](changelog.md)
 
-# 协议
+## 协议
+
 Swoft 的开源协议为 Apache-2.0，详情参见[LICENSE](LICENSE)
