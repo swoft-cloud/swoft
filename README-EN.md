@@ -12,8 +12,8 @@
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
+## Introduction
 
-# Introduction
 The first high-performance PHP coroutine full-stack componentization framework based on Swoole native coroutine, built-in coroutine web server and commonly-used coroutine client, resident memory, which has no dependency on PHP-FPM, asynchronous non-blocking IO implementation, similar to synchronous client style of writing to achieve the use of asynchronous clients, without complex asynchronous callback, no tedious yield, similar Go language coroutines, flexible annotations framework, a powerful global dependency injection container base on annotations, and great service governance , flexible and powerful AOP, standard PSR specification implementation, etc., could be used to build high-performance Web systems, APIs, middleware, basic services, microservice and so on.
 
 - Base on Swoole extension
@@ -42,40 +42,41 @@ The first high-performance PHP coroutine full-stack componentization framework b
 - Cross-platform application auto-reload
 
 
-# Document
+## Document
+
 [**Chinese Document**](https://doc.swoft.org)  
 [**English Document**](https://doc.swoft.org) Not yet, please help us write it.
 
 QQ Group: 548173319
 
-# Environmental Requirements
+## Environmental Requirements
 
 1. PHP 7.0 +
 2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, *coroutine* and *async redis client* options are required
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
-# Install
+## Install
 
-## Manual Installation
+### Manual Installation
 
 * Clone project
 * Install requires `composer install`
 
-## Install by Composer
+### Install by Composer
 
 * `composer create-project swoft/swoft swoft`
 
-## Install by Docker
+### Install by Docker
 
 * `docker run -p 80:80 swoft/swoft`
 
-## Install by Docker-Compose
+### Install by Docker-Compose
 
 * `cd swoft`
 * `docker-compose up`
 
-# Configuration
+## Configuration
 
 If automatically copy `.env` file fails when `composer install` is executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that when `composer update` is executed will not trigger related copy operations
 
@@ -140,7 +141,7 @@ Options:
   -h, --help     show help
 ```
 
-## Start HTTP Server
+### Start HTTP Server
 
 ```bash
 // Start HTTP Server
@@ -180,7 +181,7 @@ php bin/swoft ws:reload
 php bin/swoft ws:stop
 ```
 
-## Start RPC Server
+### Start RPC Server
 
 > Start an independent RPC Server
 
@@ -199,12 +200,12 @@ php bin/swoft rpc:reload
 
 // Stop RPC Server
 php bin/swoft rpc:stop
-
 ```
 
-# Changelog
+## Changelog
 
 [Changelog](changelog.md)
 
-# License
+## License
+
 Swoft is open-source software licensed under the [LICENSE](LICENSE)
