@@ -80,7 +80,7 @@ QQ Group: 548173319
 
 ## Configuration
 
-If automatically copy `.env` file fails when `composer install` is executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that when `composer update` is executed will not trigger related copy operations
+If automatically copied `.env` file fails when `composer install` was executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that `composer update` will not trigger related copy operations.
 
 ```
 # Server
@@ -164,7 +164,7 @@ php bin/swoft stop
 
 ### Start WebSocket Server
 
-Start WebSocket Server, optional whether to support http processing
+Start WebSocket Server, optional whether to support HTTP processing.
 
 ```bash
 // Star WebSocket Server
@@ -185,7 +185,7 @@ php bin/swoft ws:stop
 
 ### Start RPC Server
 
-> Start an independent RPC Server
+Start an independent RPC Server.
 
 ```bash
 // Start RPC Server
@@ -210,4 +210,4 @@ php bin/swoft rpc:stop
 
 ## License
 
-Swoft is open-source software licensed under the [LICENSE](LICENSE)
+Swoft is an open-source software licensed under the [LICENSE](LICENSE)
