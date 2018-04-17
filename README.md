@@ -54,7 +54,7 @@ QQ Group: 548173319
 ## Environmental Requirements
 
 1. PHP 7.0 +
-2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, *coroutine* and *async redis client* options are required
+2. [Swoole 2.1.3](https://github.com/swoole/swoole-src/releases) +, *coroutine* and *async redis client* options are required
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
