@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Swoft.
  * (c) Swoft <group@swoft.org>
@@ -30,7 +29,7 @@ return [
     ],
     'logger' => [
         'name'          => APP_NAME,
-        'enable'        => false,
+        'enable'        => env('LOG_ENABLE', false),
         'flushInterval' => 100,
         'flushRequest'  => true,
         'handlers'      => [
