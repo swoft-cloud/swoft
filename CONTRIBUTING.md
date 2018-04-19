@@ -35,7 +35,7 @@ Add appropriate test coverage if applicable.
 
 ## Development Guidelines
 
-Because Swoft using [swoft-component](https://github.com/swoft-cloud/swoft-component) repository to centralized manage all Swoft components, then you should add `swoft/component` requires to `composer.json` if you are developing in swoft forked repository, after this, component of swoft-component will replace all original components requires, see [Composer replace schema](https://getcomposer.org/doc/04-schema.md#replace) for more details.
+Because Swoft using [swoft-component](https://github.com/swoft-cloud/swoft-component) repository to centralized manage all Swoft components, then you should add `swoft/component` requires to `composer.json` if you are developing in swoft forked repository, after this, components of swoft-component will replace all original components requires, see [Composer replace schema](https://getcomposer.org/doc/04-schema.md#replace) for more details.
 
 composer requires e.g.
 
