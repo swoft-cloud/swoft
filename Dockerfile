@@ -5,6 +5,12 @@ MAINTAINER huangzhhui <h@swoft.org>
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone
 
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+    echo "deb http://mirrors.163.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list && \
+    echo "deb http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list
+
 RUN apt-get update \
     && apt-get install -y \
         curl \
@@ -17,11 +23,22 @@ RUN apt-get update \
     && apt-get clean \
     && apt-get autoremove
 
-RUN curl -sS https://getcomposer.org/installer | php \
+#RUN curl -sS https://getcomposer.org/installer | php \
+RUN php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer \
     && composer self-update --clean-backups
 
-RUN pecl install redis && docker-php-ext-enable redis && pecl clear-cache
+#RUN pecl install redis && docker-php-ext-enable redis && pecl clear-cache
+ENV PHPREDIS_VERSION 3.1.3
+RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz \
+    && tar xfz /tmp/redis.tar.gz \
+    && rm -r /tmp/redis.tar.gz \
+    && mkdir -p /usr/src/php/ext \
+    && mv phpredis-$PHPREDIS_VERSION /usr/src/php/ext/redis \
+    && docker-php-ext-install redis \
+    && rm -rf /usr/src/php
 
 RUN docker-php-ext-install pdo_mysql
 
