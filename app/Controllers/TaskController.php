@@ -19,6 +19,22 @@ use Swoft\Task\Task;
 class TaskController
 {
     /**
+     * @return array
+     */
+    public function batch()
+    {
+        $count = 0;
+        $result = [];
+        while ($count < 10000){
+            $result[] = Task::deliver('sync', 'batchTask', [], Task::TYPE_ASYNC);
+            $count++;
+        }
+
+        return $result;
+    }
+
+
+    /**
      * Deliver co task
      *
      * @return array

@@ -30,7 +30,7 @@ return [
     ],
     'logger' => [
         'name'          => APP_NAME,
-        'enable'        => false,
+        'enable'        => true,
         'flushInterval' => 100,
         'flushRequest'  => true,
         'handlers'      => [

@@ -29,7 +29,8 @@
         "swoft/i18n": "^1.0",
         "swoft/process": "^1.0",
         "swoft/memory": "^1.0",
-        "swoft/service-governance": "^1.0"
+        "swoft/service-governance": "^1.0",
+        "swoft/component": "dev-master as 1.0"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
@@ -54,10 +55,14 @@
         ],
         "test": "./vendor/bin/phpunit -c phpunit.xml"
     },
-    "repositories":  {
-      "packagist": {
+    "repositories":  [
+      {
+        "type": "vcs",
+        "url": "https://github.com/swoft-cloud/swoft-component"
+      },
+      {
         "type": "composer",
         "url": "https://packagist.phpcomposer.com"
       }
-    }
+    ]
 }
