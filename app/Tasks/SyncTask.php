@@ -158,7 +158,10 @@ class SyncTask
 
     public function batchTask(){
         sleep(mt_rand(1, 2));
-        return 'batchTask';
+
+        /* @var User $user*/
+        $user = User::findById(80368)->getResult();
+        return $user->toJson();
     }
 
     /**

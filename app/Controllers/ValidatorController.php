@@ -46,6 +46,16 @@ class ValidatorController
     }
 
     /**
+     * @RequestMapping("stringTpl")
+     * @Strings(from=ValidatorFrom::GET, name="name", min=3, max=10, template="{name}-{min}-{max} must")
+     * @return string
+     */
+    public function stringTpl()
+    {
+        return 'stringTpl';
+    }
+
+    /**
      * @RequestMapping("number/{id}")
      *
      * @Number(from=ValidatorFrom::GET, name="id", min=5, max=10, default=7)
@@ -63,6 +73,16 @@ class ValidatorController
         $post = $request->post('id');
 
         return [$get, $post, $id];
+    }
+
+    /**
+     * @RequestMapping("numberTpl")
+     * @Number(from=ValidatorFrom::GET, name="id", min=5, max=10, template="{name}-{min}-{max} must")
+     * @return string
+     */
+    public function numberTpl()
+    {
+        return 'numberTpl';
     }
 
     /**
@@ -86,6 +106,16 @@ class ValidatorController
     }
 
     /**
+     * @RequestMapping("integerTpl")
+     * @Integer(from=ValidatorFrom::GET, name="id", min=5, max=10, template="{name}-{min}-{max} must")
+     * @return string
+     */
+    public function integerTpl()
+    {
+        return 'integerTpl';
+    }
+
+    /**
      * @RequestMapping("float/{id}")
      *
      * @Floats(from=ValidatorFrom::GET, name="id", min=5.1, max=5.9, default=5.6)
@@ -103,6 +133,16 @@ class ValidatorController
         $post = $request->post('id');
 
         return [$get, $post, $id];
+    }
+
+    /**
+     * @RequestMapping("floatTpl")
+     * @Floats(from=ValidatorFrom::GET, name="id", min=5.1, max=5.9, template="{name}-{min}-{max} must")
+     * @return string
+     */
+    public function floatTpl()
+    {
+        return 'floatTpl';
     }
 
 
@@ -124,6 +164,16 @@ class ValidatorController
         $postName = $request->post('name');
 
         return [$getName, $postName, $name];
+    }
+
+    /**
+     * @RequestMapping("enumTpl")
+     * @Enum(from=ValidatorFrom::GET, name="name", values={1,"a",3}, template="{name}-{value} must")
+     * @return string
+     */
+    public function enumTpl()
+    {
+        return 'enumTpl';
     }
 
 }

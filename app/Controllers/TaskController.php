@@ -25,7 +25,7 @@ class TaskController
     {
         $count = 0;
         $result = [];
-        while ($count < 10000){
+        while ($count < 50000){
             $result[] = Task::deliver('sync', 'batchTask', [], Task::TYPE_ASYNC);
             $count++;
         }

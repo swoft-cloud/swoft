@@ -2,7 +2,7 @@
 /**
  * This file is part of Swoft.
  *
- * @link https://swoft.org
+ * @link    https://swoft.org
  * @document https://doc.swoft.org
  * @contact group@swoft.org
  * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
@@ -49,6 +49,9 @@ class ValidatorControllerTest extends AbstractTestCase
 
         $response = $this->request('POST', '/validator/string/swoftPath?name=swoftGet', ['name' => 'swoftPost'], parent::ACCEPT_JSON);
         $response->assertExactJson(['swoftGet', 'swoftPost', 'swoftPath']);
+
+        $response = $this->request('GET', '/validator/stringTpl', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(['message' => 'name-3-10 must']);
     }
 
     /**
@@ -85,6 +88,9 @@ class ValidatorControllerTest extends AbstractTestCase
 
         $response = $this->request('POST', '/validator/number/9?id=9', ['id' => '9'], parent::ACCEPT_JSON);
         $response->assertExactJson(['9', '9', 9]);
+
+        $response = $this->request('GET', '/validator/numberTpl', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(['message' => 'id-5-10 must']);
     }
 
     /**
@@ -128,6 +134,9 @@ class ValidatorControllerTest extends AbstractTestCase
 
         $response = $this->request('POST', '/validator/float/5.2?id=5.2', ['id' => '5.2'], parent::ACCEPT_JSON);
         $response->assertExactJson(['5.2', '5.2', 5.2]);
+
+        $response = $this->request('GET', '/validator/floatTpl', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(['message' => 'id-5.1-5.9 must']);
     }
 
     /**
@@ -164,6 +173,9 @@ class ValidatorControllerTest extends AbstractTestCase
 
         $response = $this->request('POST', '/validator/integer/9?id=9', ['id' => '9'], parent::ACCEPT_JSON);
         $response->assertExactJson(['9', '9', 9]);
+
+        $response = $this->request('GET', '/validator/integerTpl', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(['message' => 'id-5-10 must']);
     }
 
     /**
@@ -182,5 +194,8 @@ class ValidatorControllerTest extends AbstractTestCase
 
         $response = $this->request('POST', '/validator/enum/1?name=a', ['name' => '3'], parent::ACCEPT_JSON);
         $response->assertExactJson(['a', '3', '1']);
+
+        $response = $this->request('GET', '/validator/enumTpl', [], parent::ACCEPT_JSON);
+        $response->assertExactJson(['message' => 'name-null must']);
     }
 }
