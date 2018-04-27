@@ -7,76 +7,80 @@
 [![Latest Version](https://img.shields.io/badge/beta-v1.0.0-green.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/releases)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?maxAge=2592000)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.1.1-brightgreen.svg?maxAge=2592000)](https://github.com/swoole/swoole-src)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.1.3-brightgreen.svg?maxAge=2592000)](https://github.com/swoole/swoole-src)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?maxAge=2592000)](https://github.com/redis/hiredis)
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://doc.swoft.org)
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 
+**[中文说明](README_CN.md)**
 
-# 简介
-首个基于 Swoole 原生协程的新时代 PHP 高性能协程全栈组件化框架，内置协程网络服务器及常用的协程客户端，常驻内存，不依赖传统的 PHP-FPM，全异步非阻塞 IO 实现，以类似于同步客户端的写法实现异步客户端的使用，没有复杂的异步回调，没有繁琐的 yield，有类似 Go 语言的协程、灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等，可以用于构建高性能的Web系统、API、中间件、基础服务等等。
+## Introduction
 
-- 基于 Swoole 扩展
-- 内置协程 HTTP, TCP, WebSocket 网络服务器
-- 强大的 AOP (面向切面编程)
-- 灵活完善的注解功能
-- 全局的依赖注入容器
-- 基于 PSR-7 的 HTTP 消息实现
-- 基于 PSR-14 的事件管理器
-- 基于 PSR-15 的中间件
-- 基于 PSR-16 的缓存设计
-- 可扩展的高性能 RPC
-- 完善的服务治理，熔断，降级，负载，注册与发现
-- 数据库 ORM
-- 通用连接池
-- 协程 Mysql, Redis, RPC, HTTP 客户端
-- 协程和同步阻塞客户端无缝自动切换
-- 协程、异步任务投递
-- 自定义用户进程
-- RESTful 支持
-- 国际化(i18n)支持
-- 高性能路由
-- 快速灵活的参数验证器
-- 别名机制
-- 强大的日志系统
-- 跨平台热更新自动 Reload
+The first high-performance PHP coroutine full-stack componentization framework based on Swoole native coroutine, built-in coroutine web server and commonly-used coroutine client, resident memory, which has no dependency on PHP-FPM, asynchronous non-blocking IO implementation, similar to synchronous client style of writing to achieve the use of asynchronous clients, without complex asynchronous callback, no tedious yield, similar Go language coroutines, flexible annotations framework, a powerful global dependency injection container base on annotations, and great service governance , flexible and powerful AOP, PSR specification implementation, etc., could be used to build high-performance Web systems, APIs, middleware, basic services, microservice and so on.
+
+- Base on Swoole extension
+- Built-in HTTP, TCP, WebSocket Server
+- Poweful AOP (Aspect Oriented Programming)
+- Flexible and comprehensive annotations framework
+- Global dependency injection container
+- PSR-7 based HTTP message implementation
+- PSR-14 based event manager
+- PSR-15 based middleware
+- PSR-16 based cache design
+- Scalable high performance RPC
+- Great service governance, fallback, load balance, service registration and discovery
+- Database ORM
+- Universal connection pool
+- Mysql, Redis, RPC, HTTP Coroutine Clients
+- Coroutine driver client and blocking driver client seamlessly switch automatically
+- Coroutine and asynchronous task delivery
+- Custom user process
+- RESTful support
+- Internationalization (i18n) support
+- High performance router
+- Fast and flexible parameter validator
+- Alias mechanism
+- Powerful log component
+- Cross-platform application auto-reload
 
 
-# 文档
-[**中文文档**](https://doc.swoft.org)
+## Document
 
-QQ 交流群: 548173319
+[**Chinese Document**](https://doc.swoft.org)  
+[**English Document**](https://doc.swoft.org) Not yet, please help us write it.
 
-# 环境要求
+QQ Group: 548173319
+
+## Environmental Requirements
 
 1. PHP 7.0 +
-2. [Swoole 2.1.1](https://github.com/swoole/swoole-src/releases) +, 需开启协程和异步Redis
+2. [Swoole 2.1.3](https://github.com/swoole/swoole-src/releases) +, *coroutine* and *async redis client* options are required
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
-# 安装
+## Install
 
-## 手动安装
+### Manual Installation
 
-* Clone 项目
-* 安装依赖 `composer install`
+* Clone project
+* Install requires `composer install`
 
-## Composer 安装
+### Install by Composer
 
 * `composer create-project swoft/swoft swoft`
 
-## Docker 安装
+### Install by Docker
 
 * `docker run -p 80:80 swoft/swoft`
 
-## Docker-Compose 安装
+### Install by Docker-Compose
 
 * `cd swoft`
 * `docker-compose up`
 
-# 配置
+## Configuration
 
-若在执行 `composer install` 的时候由程序自动复制环境变量配置文件失败，则可手动复制项目根目录的 `.env.example` 并命名为 `.env`，注意在执行 `composer update` 时并不会触发相关的复制操作
+If automatically copied `.env` file fails when `composer install` was executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that `composer update` will not trigger related copy operations.
 
 ```
 # Server
@@ -112,9 +116,9 @@ LOG_FILE=@runtime/swoole.log
 TASK_WORKER_NUM=1
 ```
 
-## 管理
+## Management
 
-### 帮助命令
+### Help command
 
 ```text
 [root@swoft]# php bin/swoft -h
@@ -139,73 +143,71 @@ Options:
   -h, --help     show help
 ```
 
-## HTTP Server启动
-
-> 是否同时启动RPC服务器取决于.env文件配置
+### Start HTTP Server
 
 ```bash
-// 启动服务，根据 .env 配置决定是否是守护进程
+// Start HTTP Server
 php bin/swoft start
 
-// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+// Start Daemonize HTTP Server
 php bin/swoft start -d
 
-// 重启
+// Restart HTTP server
 php bin/swoft restart
 
-// 重新加载
+// Reload HTTP server
 php bin/swoft reload
 
-// 关闭服务
+// Stop HTTP server
 php bin/swoft stop
 ```
 
-### WebSocket Server启动
+### Start WebSocket Server
 
-启动WebSocket服务器,可选是否同时支持http处理
+Start WebSocket Server, optional whether to support HTTP processing.
 
 ```bash
-// 启动服务，根据 .env 配置决定是否是守护进程
+// Star WebSocket Server
 php bin/swoft ws:start
 
-// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+// Start Daemonize WebSocket Server
 php bin/swoft ws:start -d
 
-// 重启
+// Restart WebSocket server
 php bin/swoft ws:restart
 
-// 重新加载
+// Reload WebSocket server
 php bin/swoft ws:reload
 
-// 关闭服务
+// Stop WebSocket server
 php bin/swoft ws:stop
 ```
 
-## RPC Server启动
+### Start RPC Server
 
-> 启动独立的RPC服务器
+Start an independent RPC Server.
 
 ```bash
-// 启动服务，根据 .env 配置决定是否是守护进程
+// Start RPC Server
 php bin/swoft rpc:start
 
-// 守护进程启动，覆盖 .env 守护进程(DAEMONIZE)的配置
+// Start Daemonize RPC Server
 php bin/swoft rpc:start -d
 
-// 重启
+// Restart RPC Server
 php bin/swoft rpc:restart
 
-// 重新加载
+// Reload RPC Server
 php bin/swoft rpc:reload
 
-// 关闭服务
+// Stop RPC Server
 php bin/swoft rpc:stop
-
 ```
 
-# 更新日志
+## Changelog
 
-[更新日志](changelog.md)
+[Changelog](changelog.md)
 
-# 协议
-Swoft 的开源协议为 Apache-2.0，详情参见[LICENSE](LICENSE)
+## License
+
+Swoft is an open-source software licensed under the [LICENSE](LICENSE)
