@@ -35,6 +35,34 @@ class OrmController
         return [$userId];
     }
 
+    public function retEntity()
+    {
+        $user = new User();
+        $user->setName('name');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $userId = $user->save()->getResult();
+        $user = User::findById($userId)->getResult();
+
+        return $user;
+    }
+
+    public function retEntitys()
+    {
+        $user = new User();
+        $user->setName('name');
+        $user->setSex(1);
+        $user->setDesc('this my desc');
+        $user->setAge(mt_rand(1, 100));
+
+        $userId = $user->save()->getResult();
+        $users = User::findByIds([$userId])->getResult();
+
+        return $users;
+    }
+
     public function findById()
     {
         $result = User::findById(41710)->getResult();
