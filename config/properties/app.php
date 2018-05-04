@@ -8,6 +8,8 @@
  */
 
 return [
+    'env'          => env('APP_ENV', 'test'),
+    'debug'        => env('APP_DEBUG', false),
     'version'      => '1.0',
     'autoInitBean' => true,
     'bootScan'     => [
@@ -31,7 +33,6 @@ return [
     'I18n'         => [
         'sourceLanguage' => '@root/resources/messages/',
     ],
-    'env'          => 'Base',
     'db'           => require __DIR__ . DS . 'db.php',
     'cache'        => require __DIR__ . DS . 'cache.php',
     'service'      => require __DIR__ . DS . 'service.php',
