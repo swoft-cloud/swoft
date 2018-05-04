@@ -11,7 +11,6 @@
 namespace App\Controllers;
 
 use Swoft\App;
-use Swoft\Core\Coroutine;
 use Swoft\Http\Server\Bean\Annotation\Controller;
 use Swoft\Http\Server\Bean\Annotation\RequestMapping;
 use Swoft\Log\Log;
@@ -37,7 +36,7 @@ class IndexController
         $name = 'Swoft';
         $notes = [
             'New Generation of PHP Framework',
-            'Hign Performance, Coroutine and Full Stack'
+            'High Performance, Coroutine and Full Stack'
         ];
         $links = [
             [
@@ -73,7 +72,7 @@ class IndexController
         $name = 'Swoft View';
         $notes = [
             'New Generation of PHP Framework',
-            'Hign Performance, Coroutine and Full Stack'
+            'High Performance, Coroutine and Full Stack'
         ];
         $links = [
             [
@@ -118,7 +117,7 @@ class IndexController
             {
                 return [
                     'name'  => 'Swoft',
-                    'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
+                    'notes' => ['New Generation of PHP Framework', 'High Performance, Coroutine and Full Stack'],
                     'links' => [
                         [
                             'name' => 'Home',
@@ -155,7 +154,7 @@ class IndexController
     {
         $data = [
             'name'  => 'Swoft',
-            'notes' => ['New Generation of PHP Framework', 'Hign Performance, Coroutine and Full Stack'],
+            'notes' => ['New Generation of PHP Framework', 'High Performance, Coroutine and Full Stack'],
             'links' => [
                 [
                     'name' => 'Home',

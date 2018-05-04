@@ -32,7 +32,7 @@ class IndexControllerTest extends AbstractTestCase
             'name' => 'Swoft',
             'notes' => [
                 'New Generation of PHP Framework',
-                'Hign Performance, Coroutine and Full Stack'
+                'High Performance, Coroutine and Full Stack'
             ],
             'links' => [
                 [
