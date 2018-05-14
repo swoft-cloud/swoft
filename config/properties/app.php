@@ -16,19 +16,8 @@ return [
         'App\Commands',
         'App\Boot',
     ],
-    'beanScan'     => [
-        'App\Controllers',
-        'App\Models',
-        'App\Middlewares',
-        'App\Tasks',
-        'App\Services',
-        'App\Breaker',
-        'App\Pool',
-        'App\Exception',
-        'App\Listener',
-        'App\Process',
-        'App\Fallback',
-        'App\WebSocket',
+    'excludeScan'  => [
+
     ],
     'I18n'         => [
         'sourceLanguage' => '@root/resources/messages/',
@@ -37,5 +26,5 @@ return [
     'cache'        => require __DIR__ . DS . 'cache.php',
     'service'      => require __DIR__ . DS . 'service.php',
     'breaker'      => require __DIR__ . DS . 'breaker.php',
-    'provider'      => require __DIR__ . DS . 'provider.php',
+    'provider'     => require __DIR__ . DS . 'provider.php',
 ];
