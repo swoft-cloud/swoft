@@ -33,7 +33,7 @@
         "swoft/component": "dev-master as 1.0"
     },
     "require-dev": {
-        "eaglewu/swoole-ide-helper": "dev-master",
+        "swoft/swoole-ide-helper": "dev-master",
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {
