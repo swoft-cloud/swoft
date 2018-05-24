@@ -1,8 +1,8 @@
-version: '2'
+version: '3'
 services:
     swoft:
         container_name: swoft
-        image: swoft/swoft:latest
+        image: swoft/swoft
         ports:
             - "80:80"
         volumes:
