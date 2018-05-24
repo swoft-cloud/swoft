@@ -32,7 +32,7 @@
     "swoft/service-governance": "^1.0"
   },
   "require-dev": {
-    "swoft/swoole-ide-helper": "dev-master",
+    "swoft/swoole-ide-helper": "2.1.3",
     "phpunit/phpunit": "^5.7"
   },
   "autoload": {
