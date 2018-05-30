@@ -14,6 +14,7 @@ RUN apt-get update \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
+        libpcre3-dev \
     && apt-get clean \
     && apt-get autoremove
 
