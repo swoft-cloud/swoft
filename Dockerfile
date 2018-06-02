@@ -26,6 +26,9 @@ RUN pecl install redis && docker-php-ext-enable redis && pecl clear-cache
 
 RUN docker-php-ext-install pdo_mysql
 
+# Install bcmath
+RUN docker-php-ext-install bcmath
+
 RUN wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz \
     && mkdir -p hiredis \
     && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 \
