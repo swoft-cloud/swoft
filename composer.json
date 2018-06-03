@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "require": {
     "php": ">=7.0",
+    "ext-swoole": ">=2.1",
     "swoft/framework": "^1.0",
     "swoft/rpc": "^1.0",
     "swoft/rpc-server": "^1.0",
