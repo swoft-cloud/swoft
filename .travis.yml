@@ -12,3 +12,7 @@ before_script:
   - composer update --dev
 
 script: composer test
+
+cache:
+  directories:
+    - "$HOME/.composer/cache/files"
