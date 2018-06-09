@@ -1,64 +1,66 @@
 {
-  "name": "swoft/swoft",
-  "type": "project",
-  "keywords": [
-    "php",
-    "swoole",
-    "swoft"
-  ],
-  "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole 2",
-  "license": "Apache-2.0",
-  "require": {
-    "php": ">=7.0",
-    "ext-swoole": ">=2.1",
-    "swoft/framework": "^1.0",
-    "swoft/rpc": "^1.0",
-    "swoft/rpc-server": "^1.0",
-    "swoft/rpc-client": "^1.0",
-    "swoft/http-server": "^1.0",
-    "swoft/http-client": "^1.0",
-    "swoft/websocket-server": "^1.0",
-    "swoft/task": "^1.0",
-    "swoft/http-message": "^1.0",
-    "swoft/view": "^1.0",
-    "swoft/db": "^1.0",
-    "swoft/cache": "^1.0",
-    "swoft/redis": "^1.0",
-    "swoft/console": "^1.0",
-    "swoft/devtool": "^1.0",
-    "swoft/session": "^1.0",
-    "swoft/i18n": "^1.0",
-    "swoft/process": "^1.0",
-    "swoft/memory": "^1.0",
-    "swoft/service-governance": "^1.0"
-  },
-  "require-dev": {
-    "swoft/swoole-ide-helper": "dev-master",
-    "phpunit/phpunit": "^5.7"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "app/"
-    },
-    "files": [
-      "app/Swoft.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Swoft\\Test\\": "test/"
-    }
-  },
-  "scripts": {
-    "post-root-package-install": [
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    "name": "swoft/swoft",
+    "type": "project",
+    "keywords": [
+        "php",
+        "swoole",
+        "swoft"
     ],
-    "test": "./vendor/bin/phpunit -c phpunit.xml"
-  },
-  "repositories":  {
-    "packagist": {
-      "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
+    "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole 2",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.0",
+        "ext-swoole": ">=2.1",
+        "swoft/framework": "^1.0",
+        "swoft/rpc": "^1.0",
+        "swoft/rpc-server": "^1.0",
+        "swoft/rpc-client": "^1.0",
+        "swoft/http-server": "^1.0",
+        "swoft/http-client": "^1.0",
+        "swoft/websocket-server": "^1.0",
+        "swoft/task": "^1.0",
+        "swoft/http-message": "^1.0",
+        "swoft/view": "^1.0",
+        "swoft/db": "^1.0",
+        "swoft/cache": "^1.0",
+        "swoft/redis": "^1.0",
+        "swoft/console": "^1.0",
+        "swoft/devtool": "^1.0",
+        "swoft/session": "^1.0",
+        "swoft/i18n": "^1.0",
+        "swoft/process": "^1.0",
+        "swoft/memory": "^1.0",
+        "swoft/service-governance": "^1.0"
+    },
+    "require-dev": {
+        "swoft/swoole-ide-helper": "dev-master",
+        "phpunit/phpunit": "^5.7",
+        "friendsofphp/php-cs-fixer": "^2.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/Swoft.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Swoft\\Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "test": "./vendor/bin/phpunit -c phpunit.xml",
+        "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
-  }
 }
