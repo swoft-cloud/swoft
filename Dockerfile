@@ -65,7 +65,8 @@ ADD . /var/www/swoft
 
 WORKDIR /var/www/swoft
 
-RUN composer install --no-dev \
+RUN composer self-update
+    && composer install --no-dev \
     && composer dump-autoload -o \
     && composer clearcache
 
