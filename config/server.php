@@ -18,10 +18,12 @@ return [
     'tcp'     => [
         'host'               => env('TCP_HOST', '0.0.0.0'),
         'port'               => env('TCP_PORT', 8099),
-        'mode'              => env('TCP_MODE', SWOOLE_PROCESS),
+        'mode'               => env('TCP_MODE', SWOOLE_PROCESS),
         'type'               => env('TCP_TYPE', SWOOLE_SOCK_TCP),
         'package_max_length' => env('TCP_PACKAGE_MAX_LENGTH', 2048),
         'open_eof_check'     => env('TCP_OPEN_EOF_CHECK', false),
+        'open_eof_split'     => env('TCP_OPEN_EOF_SPLIT', true),
+        'package_eof'        => "\r\n",
     ],
     'http'    => [
         'host'  => env('HTTP_HOST', '0.0.0.0'),
