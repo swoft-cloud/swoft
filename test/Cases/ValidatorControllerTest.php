@@ -30,28 +30,28 @@ class ValidatorControllerTest extends AbstractTestCase
         $response->assertExactJson(['boy', 'girl', 'swoft']);
 
         $response = $this->request('POST', '/validator/string/c', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too short (minimum is 3)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too short (minimum is 3)']);
 
         $response = $this->request('POST', '/validator/string/swoft', ['name' => 'a'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too short (minimum is 3)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too short (minimum is 3)']);
 
         $response = $this->request('POST', '/validator/string/swoft?name=b', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too short (minimum is 3)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too short (minimum is 3)']);
 
         $response = $this->request('POST', '/validator/string/swoft66666666', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too long (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too long (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/string/swoft', ['name' => 'swoft66666666'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too long (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too long (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/string/swoft?name=swoft66666666', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name length is too long (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter name length is too long (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/string/swoftPath?name=swoftGet', ['name' => 'swoftPost'], parent::ACCEPT_JSON);
         $response->assertExactJson(['swoftGet', 'swoftPost', 'swoftPath']);
 
         $response = $this->request('GET', '/validator/stringTpl', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'name-3-10 must']);
+        $response->assertJsonFragment(['message' => 'name-3-10 must']);
     }
 
     /**
@@ -63,34 +63,34 @@ class ValidatorControllerTest extends AbstractTestCase
         $response->assertExactJson([7, 8, 10]);
 
         $response = $this->request('POST', '/validator/number/3', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/number/6', ['id' => '-2'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not a number']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not a number']);
 
         $response = $this->request('POST', '/validator/number/6', ['id' => '2'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/number/6?id=-2', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not a number']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not a number']);
 
         $response = $this->request('POST', '/validator/number/6?id=2', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/number/12', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/number/9', ['id' => '12'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/number/9?id=12', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/number/9?id=9', ['id' => '9'], parent::ACCEPT_JSON);
         $response->assertExactJson(['9', '9', 9]);
 
         $response = $this->request('GET', '/validator/numberTpl', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'id-5-10 must']);
+        $response->assertJsonFragment(['message' => 'id-5-10 must']);
     }
 
     /**
@@ -99,44 +99,44 @@ class ValidatorControllerTest extends AbstractTestCase
     public function testFloat()
     {
         $response = $this->request('GET', '/validator/float/a', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not float type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not float type']);
 
         $response = $this->request('GET', '/validator/float/5', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not float type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not float type']);
 
         $response = $this->request('POST', '/validator/float/5.0', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/float/6.0', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 5)']);
 
         $response = $this->request('POST', '/validator/float/5.2', ['id' => 5], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not float type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not float type']);
 
         $response = $this->request('POST', '/validator/float/5.2', ['id' => '5.0'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/float/5.2', ['id' => '6.0'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 5)']);
 
         $response = $this->request('POST', '/validator/float/5.2', ['id' => '5.2'], parent::ACCEPT_JSON);
         $response->assertExactJson([5.6, '5.2', 5.2]);
 
         $response = $this->request('POST', '/validator/float/5.2?id=5', [5.2], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not float type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not float type']);
 
         $response = $this->request('POST', '/validator/float/5.2?id=5.0', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/float/5.2?id=6.0', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 5)']);
 
 
         $response = $this->request('POST', '/validator/float/5.2?id=5.2', ['id' => '5.2'], parent::ACCEPT_JSON);
         $response->assertExactJson(['5.2', '5.2', 5.2]);
 
         $response = $this->request('GET', '/validator/floatTpl', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'id-5.1-5.9 must']);
+        $response->assertJsonFragment(['message' => 'id-5.1-5.9 must']);
     }
 
     /**
@@ -148,54 +148,54 @@ class ValidatorControllerTest extends AbstractTestCase
         $response->assertExactJson([7, 8, 10]);
 
         $response = $this->request('POST', '/validator/integer/3', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/integer/6', ['id' => 'a'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not integer type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not integer type']);
 
         $response = $this->request('POST', '/validator/integer/6', ['id' => '2'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/integer/6?id=a', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is not integer type']);
+        $response->assertJsonFragment(['message' => 'Parameter id is not integer type']);
 
         $response = $this->request('POST', '/validator/integer/6?id=2', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too small (minimum is 5)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too small (minimum is 5)']);
 
         $response = $this->request('POST', '/validator/integer/12', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/integer/9', ['id' => '12'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/integer/9?id=12', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter id is too big (maximum is 10)']);
+        $response->assertJsonFragment(['message' => 'Parameter id is too big (maximum is 10)']);
 
         $response = $this->request('POST', '/validator/integer/9?id=9', ['id' => '9'], parent::ACCEPT_JSON);
         $response->assertExactJson(['9', '9', 9]);
 
         $response = $this->request('GET', '/validator/integerTpl', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'id-5-10 must']);
+        $response->assertJsonFragment(['message' => 'id-5-10 must']);
     }
 
     /**
-     * @covers \App\Controllers\ValidatorController::enum
+     * @covers \App\Controllers\ValidatorController::estring
      */
     public function testEnum()
     {
         $response = $this->request('POST', '/validator/enum/4', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name is an invalid enum value']);
+        $response->assertJsonFragment(['message' => 'Parameter name is an invalid enum value']);
 
         $response = $this->request('POST', '/validator/enum/1?name=4', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name is an invalid enum value']);
+        $response->assertJsonFragment(['message' => 'Parameter name is an invalid enum value']);
 
         $response = $this->request('POST', '/validator/enum/1', ['name' => '4'], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'Parameter name is an invalid enum value']);
+        $response->assertJsonFragment(['message' => 'Parameter name is an invalid enum value']);
 
         $response = $this->request('POST', '/validator/enum/1?name=a', ['name' => '3'], parent::ACCEPT_JSON);
         $response->assertExactJson(['a', '3', '1']);
 
         $response = $this->request('GET', '/validator/enumTpl', [], parent::ACCEPT_JSON);
-        $response->assertExactJson(['message' => 'name-null must']);
+        $response->assertJsonFragment(['message' => 'name-null must']);
     }
 }
