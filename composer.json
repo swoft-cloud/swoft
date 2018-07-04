@@ -35,7 +35,8 @@
     "require-dev": {
         "swoft/swoole-ide-helper": "dev-master",
         "phpunit/phpunit": "^5.7",
-        "friendsofphp/php-cs-fixer": "^2.10"
+        "friendsofphp/php-cs-fixer": "^2.10",
+        "psy/psysh": "@stable"
     },
     "autoload": {
         "psr-4": {

@@ -28,7 +28,7 @@ return [
     'http'    => [
         'host'  => env('HTTP_HOST', '0.0.0.0'),
         'port'  => env('HTTP_PORT', 80),
-        'mode' => env('HTTP_MODE', SWOOLE_PROCESS),
+        'mode'  => env('HTTP_MODE', SWOOLE_PROCESS),
         'type'  => env('HTTP_TYPE', SWOOLE_SOCK_TCP),
     ],
     'ws'  => [

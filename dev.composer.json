@@ -35,7 +35,8 @@
     "require-dev": {
         "swoft/swoole-ide-helper": "2.1.3",
         "phpunit/phpunit": "^5.7",
-        "friendsofphp/php-cs-fixer": "^2.10"
+        "friendsofphp/php-cs-fixer": "^2.10",
+        "psy/psysh": "@stable"
     },
     "autoload": {
         "psr-4": {
@@ -59,8 +60,8 @@
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/swoft-cloud/swoft-component"
+            "type": "git",
+            "url": "git@github.com:swoft-cloud/swoft-component.git"
         },
         {
             "type": "composer",
