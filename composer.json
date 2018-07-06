@@ -21,7 +21,7 @@
         "swoft/task": "^1.0",
         "swoft/http-message": "^1.0",
         "swoft/view": "^1.0",
-        "swoft/db": "^1.0",
+        "swoft/db": "^1.1",
         "swoft/cache": "^1.0",
         "swoft/redis": "^1.0",
         "swoft/console": "^1.0",
