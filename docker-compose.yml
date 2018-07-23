@@ -9,4 +9,4 @@ services:
             - ./:/var/www/swoft
         stdin_open: true
         tty: true
-        command: php /var/www/swoft/bin/swoft start
+        command: bash -c "cd /var/www/swoft && composer install --no-dev && composer dump-autoload -o && composer clearcache && php /var/www/swoft/bin/swoft start"
