@@ -49,7 +49,8 @@ The first high-performance PHP coroutine full-stack componentization framework b
 [**Chinese Document**](https://doc.swoft.org)  
 [**English Document**](https://doc.swoft.org) Not yet, please help us write it.
 
-QQ Group1: 548173319(full)      QQ Group2: 778656850
+QQ Group1: 548173319(full)      
+QQ Group2: 778656850
 
 ## Environmental Requirements
 
