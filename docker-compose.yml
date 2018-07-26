@@ -33,6 +33,7 @@ services:
             - "80:80"
         volumes:
             - ./:/var/www/swoft
+        env_file: ./.env.docker-compose
         stdin_open: true
         tty: true
         privileged: true
