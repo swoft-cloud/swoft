@@ -80,4 +80,4 @@ RUN composer install --no-dev \
 
 EXPOSE 80
 
-CMD ["php", "/var/www/swoft/bin/swoft", "start"]
+ENTRYPOINT ["php", "/var/www/swoft/bin/swoft", "start"]
