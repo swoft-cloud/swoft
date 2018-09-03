@@ -11,4 +11,12 @@ services:
        stdin_open: true 
        tty: true
        privileged: true
-       command: php /var/www/swoft/bin/swoft start
+#       command: php /var/www/swoft/bin/swoft start
+       entrypoint:
+          - sh
+          - -c
+          - |
+            composer install --no-dev
+            composer dump-autoload
+            composer clearcache
+            php /var/www/swoft/bin/swoft start
