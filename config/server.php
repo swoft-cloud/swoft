@@ -9,7 +9,7 @@
 
 return [
     'server'  => [
-        'pfile'      => env('PFILE', '/tmp/swoft.pid'),
+        'pfile'      => alias(env('PFILE', '@runtime/swoft.pid')),
         'pname'      => env('PNAME', 'php-swoft'),
         'tcpable'    => env('TCPABLE', true),
         'cronable'   => env('CRONABLE', false),
