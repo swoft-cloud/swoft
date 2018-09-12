@@ -11,4 +11,4 @@ services:
        stdin_open: true 
        tty: true
        privileged: true
-       command: php /var/www/swoft/bin/swoft start
+       entrypoint: ["php", "/var/www/swoft/bin/swoft", "start"]
