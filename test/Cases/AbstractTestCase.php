@@ -23,7 +23,7 @@ use Swoft\Http\Message\Testing\Web\Response;
  *
  * @package Swoft\Test\Cases
  */
-class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
     const ACCEPT_VIEW = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
     const ACCEPT_JSON = 'application/json';
