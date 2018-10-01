@@ -19,8 +19,8 @@
 The first high-performance PHP coroutine full-stack componentization framework based on Swoole native coroutine, built-in coroutine web server and commonly-used coroutine client, resident memory, which has no dependency on PHP-FPM, asynchronous non-blocking IO implementation, similar to synchronous client style of writing to achieve the use of asynchronous clients, without complex asynchronous callback, no tedious yield, similar  Go language coroutines, flexible annotations framework, a powerful global dependency injection container base on annotations, and great service governance , flexible and powerful AOP, PSR specification implementation, etc., could be used to build high-performance Web systems, APIs, middleware, basic services, microservice and so on.
 
 - Base on Swoole extension
-- Built-in HTTP, TCP, WebSocket Server
-- Poweful AOP (Aspect Oriented Programming)
+- Built-in HTTP, TCP, WebSocket Coroutine Server
+- Powerful AOP (Aspect Oriented Programming)
 - Flexible and comprehensive annotations framework
 - Global dependency injection container
 - PSR-7 based HTTP message implementation
@@ -28,34 +28,34 @@ The first high-performance PHP coroutine full-stack componentization framework b
 - PSR-15 based middleware
 - PSR-16 based cache design
 - Scalable high performance RPC
-- Great service governance, fallback, load balance, service registration and discovery
+- Holistic service governance, fallback, load balance, service registration and discovery
 - Database ORM
-- Universal connection pool
+- Universal connection pools
 - Mysql, Redis, RPC, HTTP Coroutine Clients
 - Coroutine driver client and blocking driver client seamlessly switch automatically
 - Coroutine and asynchronous task delivery
-- Custom user process
-- RESTful support
-- Internationalization (i18n) support
+- Custom user processes
+- RESTful supported
+- Internationalization (i18n) supported
 - High performance router
 - Fast and flexible parameter validator
 - Alias mechanism
 - Powerful log component
-- Cross-platform application auto-reload
+- Cross-platform application auto-reload mechanism
 
 
 ## Document
 
 [**Chinese Document**](https://doc.swoft.org)  
-[**English Document**](https://doc.swoft.org) Not yet, please help us write it.
+[**English Document**](https://doc.swoft.org) Not yet, please help us to complete it.
 
-QQ Group1: 548173319(Full)      
+QQ Group1: 548173319      
 QQ Group2: 778656850
 
 ## Environmental Requirements
 
 1. PHP 7.0 +
-2. [Swoole 2.1.3](https://github.com/swoole/swoole-src/releases) +, *coroutine* and *async redis client* options are required
+2. [Swoole 2.1.3](https://github.com/swoole/swoole-src/releases) + ( >= 4.1 is better), *coroutine* and *async redis client* options are required
 3. [Hiredis](https://github.com/redis/hiredis/releases)
 4. [Composer](https://getcomposer.org/)
 
@@ -81,7 +81,7 @@ QQ Group2: 778656850
 
 ## Configuration
 
-If automatically copied `.env` file fails when `composer install` was executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that `composer update` will not trigger related copy operations.
+If automatically copied `.env` file operation fails when `composer install` was executed, the `.env.example` that in root directory can be manually copied and named `.env`. Note that `composer update` will not trigger related copy operations.
 
 ```
 # Server
