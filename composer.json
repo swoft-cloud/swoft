@@ -44,7 +44,7 @@
         },
         "files": [
             "app/Swoft.php",
-            "app/Helper/functions.php"
+            "app/Helper/Functions.php"
         ]
     },
     "autoload-dev": {
