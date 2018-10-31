@@ -25,7 +25,7 @@ class ExceptionController
      * @RequestMapping()
      * @throws \Exception
      */
-    public function exceptioin()
+    public function exception()
     {
         throw new \Exception('this is exception');
     }
