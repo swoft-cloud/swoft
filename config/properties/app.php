@@ -20,7 +20,7 @@ return [
 
     ],
     'I18n'         => [
-        'sourceLanguage' => '@root/resources/messages/',
+        'sourceLanguage' => '@resources/languages/',
     ],
     'db'           => require __DIR__ . DS . 'db.php',
     'cache'        => require __DIR__ . DS . 'cache.php',
