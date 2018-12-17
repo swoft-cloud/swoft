@@ -17,7 +17,7 @@ return [
         'App\Boot',
     ],
     'excludeScan'  => [
-        'App\Helper',
+        
     ],
     'I18n'         => [
         'sourceLanguage' => '@resources/languages/',
