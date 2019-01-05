@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+// Enable strict mode
+declare(strict_types=1);
+
+// Boostrap
+require_once __DIR__ . '/bootstrap.php';
+
+
+// Run application
+(new \App\Application())->run();

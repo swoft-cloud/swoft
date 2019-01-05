@@ -1,0 +1,80 @@
+{
+  "name": "swoft/swoft",
+  "type": "project",
+  "keywords": [
+    "php",
+    "swoole",
+    "swoft"
+  ],
+  "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=7.1",
+    "swoft/core": "dev-master",
+    "swoft/annotation": "dev-master",
+    "swoft/bean": "dev-master",
+    "swoft/event": "dev-master",
+    "swoft/aop": "dev-master",
+    "swoft/config": "dev-master",
+    "swoft/stdlib": "dev-master",
+    "swoft/log": "dev-master"
+  },
+  "require-dev": {
+    "swoft/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^5.7",
+    "friendsofphp/php-cs-fixer": "^2.10",
+    "psy/psysh": "@stable"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "app/Helper/Functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  },
+  "scripts": {
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-core.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-annotation.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-bean.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-event.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-aop.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-config.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-log.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-stdlib.git"
+    },
+    {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    }
+  ]
+}
