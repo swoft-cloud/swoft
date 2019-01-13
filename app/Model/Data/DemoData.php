@@ -16,4 +16,10 @@ class DemoData
      * @var DemoDao
      */
     private $dao;
+
+    public function getDao()
+    {
+        echo 'data getDao'.PHP_EOL;
+        $this->dao->get();
+    }
 }

@@ -4,7 +4,7 @@ return [
         [
             'dDname',
             12,
-            '${\App\Model\Data\DemoData}'
+            '${App\Model\Data\DemoData}'
         ],
         'definitionData' => 'definitionData...'
     ]

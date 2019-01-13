@@ -1,4 +1,4 @@
 <?php
 return [
-    'name' => 'stelin'
+    'name' => 'swoft framework 2.0'
 ];
