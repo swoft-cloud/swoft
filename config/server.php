@@ -57,7 +57,7 @@ return [
         'package_max_length'    => env('PACKAGE_MAX_LENGTH', 2048),
         'upload_tmp_dir'        => env('UPLOAD_TMP_DIR', '@runtime/uploadfiles'),
         'document_root'         => env('DOCUMENT_ROOT', BASE_PATH . '/public'),
-        'enable_static_handler' => env('ENABLE_STATIC_HANDLER', true),
+        'enable_static_handler' => env('ENABLE_STATIC_HANDLER', false),
         'open_http2_protocol'   => env('OPEN_HTTP2_PROTOCOL', false),
         'ssl_cert_file'         => env('SSL_CERT_FILE', ''),
         'ssl_key_file'          => env('SSL_KEY_FILE', ''),
