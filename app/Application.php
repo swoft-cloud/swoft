@@ -3,7 +3,7 @@
 namespace App;
 
 
-use Swoft\Core\SwoftApplication;
+use Swoft\SwoftApplication;
 
 /**
  * Application

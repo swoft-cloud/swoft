@@ -8,5 +8,8 @@
 // Project config path
 !defined('CONFIG_PATH') && define('CONFIG_PATH', BASE_PATH . '/config');
 
+// Project runtime path
+!defined('RUNTIME_PATH') && define('RUNTIME_PATH', BASE_PATH . '/runtime');
+
 // Composer autoload
 require_once BASE_PATH . '/vendor/autoload.php';

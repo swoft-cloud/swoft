@@ -17,11 +17,17 @@
     "swoft/aop": "dev-master",
     "swoft/config": "dev-master",
     "swoft/stdlib": "dev-master",
+    "swoft/framework": "2.0.x-dev",
+    "swoft/http-message": "2.0.x-dev",
+    "swoft/server": "dev-master",
+    "swoft/tcp-server": "dev-master",
+    "swoft/http-server": "2.0.x-dev",
+    "swoft/websocket-server": "2.0.x-dev",
     "swoft/log": "dev-master"
   },
   "require-dev": {
     "swoft/swoole-ide-helper": "dev-master",
-    "phpunit/phpunit": "^5.7",
+    "phpunit/phpunit": "^7.5",
     "friendsofphp/php-cs-fixer": "^2.10",
     "psy/psysh": "@stable"
   },
@@ -71,6 +77,30 @@
     {
       "type": "git",
       "url": "git@github.com:swoft-cloud/swoft-stdlib.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-framework.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-http-message.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-server.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-tcp-server.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-http-server.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-websocket-server.git"
     },
     {
       "type": "composer",
