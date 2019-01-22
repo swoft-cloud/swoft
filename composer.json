@@ -10,9 +10,6 @@
   "license": "Apache-2.0",
   "require": {
     "php": ">=7.1",
-    "psr/http-message": "^1.0",
-    "psr/http-server-handler": "^1.0",
-    "psr/http-server-middleware": "^1.0",
     "swoft/annotation": "^2.0",
     "swoft/bean": "^2.0",
     "swoft/event": "^2.0",

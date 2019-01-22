@@ -1,7 +1,5 @@
 #!/usr/bin/env php
-<?php
-// Enable strict mode
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 // Boostrap
 require_once __DIR__ . '/bootstrap.php';
