@@ -25,16 +25,11 @@ use Swoft\Aop\Point\ProceedingJoinPoint;
 class LogAspect
 {
     /**
-     * @var
-     */
-    private $test;
-
-    /**
      * @Before()
      */
     public function before()
     {
-        $this->test .= ' before1 ';
+        echo ' before1 ' . PHP_EOL;
     }
 
     /**
@@ -42,7 +37,7 @@ class LogAspect
      */
     public function after()
     {
-        $this->test .= ' after1 ';
+        echo ' after ' . PHP_EOL;
     }
 
     /**
@@ -51,7 +46,9 @@ class LogAspect
     public function afterReturn(JoinPoint $joinPoint)
     {
         $result = $joinPoint->getReturn();
-        return $result . ' afterReturn1 ';
+        echo ' afterReturn ' . PHP_EOL;
+
+        return $result . ' afterReturn1';
     }
 
     /**
@@ -62,9 +59,9 @@ class LogAspect
      */
     public function around(ProceedingJoinPoint $proceedingJoinPoint)
     {
-        $this->test .= ' around-before1 ';
-        $result     = $proceedingJoinPoint->proceed();
-        $this->test .= ' around-after1 ';
+        echo ' around-before1 ' . PHP_EOL;
+        $result = $proceedingJoinPoint->proceed();
+        echo ' around-after1 ' . PHP_EOL;
         return $result . $this->test;
     }
 
