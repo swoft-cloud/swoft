@@ -68,7 +68,7 @@ class DemoLogic
     /**
      * @return string
      */
-    public function getData(): string
+    public function getData(): DemoData
     {
         $this->data->getDao();
         echo 'name=' . $this->name . PHP_EOL;
@@ -76,9 +76,7 @@ class DemoLogic
         echo 'configName=' . $this->configName . PHP_EOL;
         echo 'configHost=' . $this->configHost . PHP_EOL;
 
-        var_dump($this->construnctData);
-
-        return 'do demo logic';
+        return $this->construnctData;
     }
 
     /**

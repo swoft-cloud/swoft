@@ -14,22 +14,23 @@ use Swoft\Aop\Point\JoinPoint;
 use Swoft\Aop\Point\ProceedingJoinPoint;
 
 /**
- * Class LogAspect
+ * Class LogAspect2
  *
- * @Aspect(1)
+ * @Aspect()
  * @PointBean(
  *     include={"testLog"}
  * )
+ *
  * @since 2.0
  */
-class LogAspect
+class LogAspect2
 {
     /**
      * @Before()
      */
     public function before()
     {
-        echo 'apsect1 before' . PHP_EOL;
+        echo 'apsect2 before' . PHP_EOL;
     }
 
     /**
@@ -37,7 +38,7 @@ class LogAspect
      */
     public function after()
     {
-        echo 'apsect1 after' . PHP_EOL;
+        echo 'apsect2 after' . PHP_EOL;
     }
 
     /**
@@ -46,9 +47,9 @@ class LogAspect
     public function afterReturn(JoinPoint $joinPoint)
     {
         $result = $joinPoint->getReturn();
-        echo 'apsect1 afterReturn ' . PHP_EOL;
+        echo 'apsect2 afterReturn ' . PHP_EOL;
 
-        return 'new value afterReturn ';
+        return 'new value afterReturn2 ';
     }
 
     /**
@@ -59,9 +60,9 @@ class LogAspect
      */
     public function around(ProceedingJoinPoint $proceedingJoinPoint)
     {
-        echo 'apsect1 around before ' . PHP_EOL;
+        echo 'apsect2 around before ' . PHP_EOL;
         $result = $proceedingJoinPoint->proceed();
-        echo 'apsect1 around after ' . PHP_EOL;
+        echo 'apsect2 around after ' . PHP_EOL;
         return $result;
     }
 
@@ -70,6 +71,6 @@ class LogAspect
      */
     public function afterThrowing()
     {
-        echo "apsect1 afterThrowing !\n";
+        echo "apsect2 afterThrowing !\n";
     }
 }
