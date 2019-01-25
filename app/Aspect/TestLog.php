@@ -18,7 +18,7 @@ class TestLog
 
     public function log()
     {
-        throw new Exception('11');
+//        throw new Exception('11');
         echo 'test log' . PHP_EOL;
     }
 }
