@@ -3,7 +3,6 @@
 
 namespace App\Aspect;
 
-use mysql_xdevapi\Exception;
 use Swoft\Bean\Annotation\Mapping\Bean;
 
 /**

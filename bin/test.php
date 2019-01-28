@@ -1,16 +1,19 @@
 <?php
 
-namespace Swoft\Tcp\Server\Swoole;
+use Swoft\Bean\Annotation\Mapping\Bean;
 
-use Co\Server as CoServer;
-
-class ConnectListener_5c46c8f69d793 extends \Swoft\Tcp\Server\Swoole\ConnectListener
+/**
+ * Class A
+ *
+ * @Bean(scope="singleton")
+ * @Bean(scope="prototype")
+ * @Bean(scope="pool", size = 100)
+ *
+ * @since 2.0
+ */
+class A
 {
-    use \Swoft\Aop\AopTrait;
-    public function onConnect(CoServer $server, int $fd, int $reactorId) : void
-    {
-        return $this->__proxyCall('Swoft\\Tcp\\Server\\Swoole\\ConnectListener', 'onConnect', func_get_args());
-    }
+
 }
 
 
