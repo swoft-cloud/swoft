@@ -12,5 +12,8 @@ use Swoft\Http\Server\Annotation\Mapping\Controller;
  */
 class TestController
 {
-
+    public function test()
+    {
+        return 'swoft framework';
+    }
 }
