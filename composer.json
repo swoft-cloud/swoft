@@ -27,6 +27,8 @@
     "swoft/log": "^2.0",
     "swoft/db": "^2.0",
     "swoft/connection-pool": "^2.0",
+    "swoft/test": "^2.0",
+    "swoft/console": "^2.0",
     "swoft/component": "2.0.x-dev as 2.0"
   },
   "require-dev": {
