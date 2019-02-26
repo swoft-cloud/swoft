@@ -14,6 +14,6 @@ class TestController
 {
     public function test()
     {
-        return 'swoft framework';
+        return 'swoft framework hello';
     }
 }

@@ -5,7 +5,7 @@ namespace App\Model\Logic;
 use App\Model\Data\DemoData;
 use Swoft\Bean\Annotation\Mapping\Bean;
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Config\Annotation\Config;
+use Swoft\Config\Annotation\Mapping\Config;
 
 /**
  * @Bean(alias="deloc")
@@ -57,7 +57,7 @@ class DemoLogic
      * @param string $type
      * @param DemoData
      */
-    public function __construct(string $name, string $type, DemoData $data)
+    public function __construct(string $name = '', string $type = '', DemoData $data = null)
     {
         $this->name = $name;
         $this->type = $type;
