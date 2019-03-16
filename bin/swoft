@@ -4,6 +4,7 @@
 // Boostrap
 require_once __DIR__ . '/bootstrap.php';
 
+\Swoole\Runtime::enableCoroutine();
 
 // Run application
 (new \App\Application())->run();
