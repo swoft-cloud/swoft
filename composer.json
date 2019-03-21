@@ -25,7 +25,6 @@
         "swoft/cache": "^1.0",
         "swoft/redis": "^1.0",
         "swoft/console": "^1.0",
-        "swoft/devtool": "^1.0",
         "swoft/session": "^1.0",
         "swoft/i18n": "^1.0",
         "swoft/process": "^1.0",
@@ -34,6 +33,7 @@
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "dev-master",
+        "swoft/devtool": "^1.0",
         "phpunit/phpunit": "^5.7",
         "friendsofphp/php-cs-fixer": "^2.10",
         "psy/psysh": "@stable"
