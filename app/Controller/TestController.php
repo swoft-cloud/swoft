@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
+use function foo\func;
+use Swoft\Db\DB;
+use Swoft\Db\DbEvent;
 use Swoft\Http\Message\Request;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoole\Coroutine;
 
 /**
  * Class TestController
@@ -24,8 +29,82 @@ class TestController
      */
     public function test(): string
     {
-        return 'swoft framework hello';
+        $user = User::find(22);
+        sgo(function () {
+//            $user = User::find(22);
+            User::where('id', '=', 22);
+        });
+
+        return json_encode($user->toArray());
     }
+
+    /**
+     * @RequestMapping(route="ts")
+     *
+     * @return false|string
+     * @throws \ReflectionException
+     * @throws \Swoft\Bean\Exception\ContainerException
+     * @throws \Swoft\Db\Exception\PoolException
+     */
+    public function ts()
+    {
+        DB::pool()->beginTransaction();
+        $user = User::find(22);
+
+        \sgo(function (){
+            DB::pool()->beginTransaction();
+            $user = User::find(22);
+        });
+
+        return json_encode($user->toArray());
+    }
+
+    /**
+     * @RequestMapping(route="cm")
+     *
+     * @return false|string
+     * @throws \ReflectionException
+     * @throws \Swoft\Bean\Exception\ContainerException
+     * @throws \Swoft\Db\Exception\PoolException
+     */
+    public function cm()
+    {
+        DB::pool()->beginTransaction();
+        $user = User::find(22);
+        DB::pool()->commit();
+
+        \sgo(function (){
+            DB::pool()->beginTransaction();
+            $user = User::find(22);
+            DB::pool()->commit();
+        });
+
+        return json_encode($user->toArray());
+    }
+
+    /**
+     * @RequestMapping(route="rl")
+     *
+     * @return false|string
+     * @throws \ReflectionException
+     * @throws \Swoft\Bean\Exception\ContainerException
+     * @throws \Swoft\Db\Exception\PoolException
+     */
+    public function rl()
+    {
+        DB::pool()->beginTransaction();
+        $user = User::find(22);
+        DB::pool()->rollBack();
+
+        \sgo(function (){
+            DB::pool()->beginTransaction();
+            $user = User::find(22);
+            DB::pool()->rollBack();
+        });
+
+        return json_encode($user->toArray());
+    }
+
 
     /**
      * @param Response $response
