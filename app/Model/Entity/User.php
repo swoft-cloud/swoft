@@ -20,23 +20,36 @@ class User extends Model
 {
     /**
      * @Id()
+     *
      * @Column(name="id", prop="id")
      * @var int|null
      */
-    public $id;
+    private $id;
+
+    /**
+     * @Column()
+     * @var string|null
+     */
+    private $name;
+
+    /**
+     * @Column(name="password", hidden=true)
+     * @var string|null
+     */
+    private $pwd;
 
     /**
      * @Column()
      *
      * @var int|null
      */
-    public $age;
+    private $age;
 
     /**
      * @Column(name="user_desc", prop="udesc")
      * @var string|null
      */
-    public $userDesc;
+    private $userDesc;
 
     /**
      * @return int|null
@@ -68,6 +81,38 @@ class User extends Model
     public function setAge(?int $age): void
     {
         $this->age = $age;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPwd(): ?string
+    {
+        return $this->pwd;
+    }
+
+    /**
+     * @param string|null $pwd
+     */
+    public function setPwd(?string $pwd): void
+    {
+        $this->pwd = $pwd;
     }
 
     /**
