@@ -33,6 +33,7 @@
     "swoft/rpc-server": "^2.0",
     "swoft/rpc-client": "^2.0",
     "swoft/task": "^2.0",
+    "swoft/proxy": "^2.0",
     "swoft/component": "2.0.x-dev as 2.0"
   },
   "require-dev": {
@@ -62,7 +63,7 @@
     },
     {
       "type": "composer",
-      "url": "https://packagist.phpcomposer.com"
+      "url": "https://packagist.laravel-china.org"
     }
   ]
 }
