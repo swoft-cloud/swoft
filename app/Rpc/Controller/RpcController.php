@@ -19,14 +19,16 @@ use Swoft\Rpc\Client\Annotation\Mapping\Reference;
 class RpcController
 {
     /**
-     * @Reference(pool="user")
+     * @Reference(pool="user.pool")
+     *
      * @var UserInterface
      */
     private $userService;
 
     /**
      * @RequestMapping("user")
-     * @return string
+     *
+     * @return array
      */
     public function user(): array
     {
