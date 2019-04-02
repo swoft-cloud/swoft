@@ -17,6 +17,11 @@ use Swoole\WebSocket\Server;
  */
 class ChatModule implements WsModuleInterface
 {
+    public function onError(\Throwable $e, int $fd): void
+    {
+
+    }
+
     public function checkHandshake(\Swoft\Http\Message\Request $request, \Swoft\Http\Message\Response $response): array
     {
         return [];
