@@ -26,7 +26,7 @@ return [
             'write_timeout'   => 10.0,
             'read_timeout'    => 0.5,
         ],
-        'packet'  => \bean('clientPacket')
+        'packet'  => \bean('rpcClientPacket')
     ],
     'user.pool'  => [
         'class'  => \Swoft\Rpc\Client\Pool::class,
