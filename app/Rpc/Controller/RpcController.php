@@ -26,12 +26,51 @@ class RpcController
     private $userService;
 
     /**
+     * @Reference(pool="user.pool", version="1.1")
+     *
+     * @var UserInterface
+     */
+    private $userService2;
+
+    /**
      * @RequestMapping("user")
      *
      * @return array
      */
     public function user(): array
     {
-        return $this->userService->getUsers([1, 2]);
+        $users = $this->userService->getUsers([12, 16]);
+        $user  = $this->userService->getUser(12);
+        $user2 = $this->userService->getByName('name');
+        $bool  = $this->userService->isExist(12);
+
+        $data = [
+            $users,
+            $user,
+            $user2,
+            $bool,
+        ];
+        return $data;
+    }
+
+    /**
+     * @RequestMapping("user2")
+     *
+     * @return array
+     */
+    public function user2(): array
+    {
+        $users = $this->userService2->getUsers([12, 16]);
+        $user  = $this->userService2->getUser(12);
+        $user2 = $this->userService2->getByName('name');
+        $bool  = $this->userService2->isExist(12);
+
+        $data = [
+            $users,
+            $user,
+            $user2,
+            $bool,
+        ];
+        return $data;
     }
 }

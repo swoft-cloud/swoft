@@ -10,8 +10,8 @@ return [
     ],
 
     'logger'             => [
-        'flushRequest' => true,
-        'enable'       => true,
+        'flushRequest' => false,
+        'enable'       => false,
     ],
     'httpServer' => [
         'class'    => \Swoft\Http\Server\HttpServer::class,

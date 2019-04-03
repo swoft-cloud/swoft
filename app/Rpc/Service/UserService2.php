@@ -8,13 +8,13 @@ use App\Rpc\Lib\UserInterface;
 use Swoft\Rpc\Server\Annotation\Mapping\Service;
 
 /**
- * Class UserService
+ * Class UserService2
  *
  * @since 2.0
  *
- * @Service()
+ * @Service(version="1.1")
  */
-class UserService implements UserInterface
+class UserService2 implements UserInterface
 {
     /**
      * @param int $id
@@ -24,6 +24,7 @@ class UserService implements UserInterface
     public function getUser(int $id): array
     {
         return [
+            'v'    => '1.1',
             'id'   => $id,
             'name' => 'name'
         ];
@@ -46,7 +47,7 @@ class UserService implements UserInterface
      */
     public function getByName(string $name): int
     {
-        return 18306;
+        return 18306 + 10000;
     }
 
     /**
@@ -58,9 +59,9 @@ class UserService implements UserInterface
     {
         $users = [];
         foreach ($ids as $id) {
-            $user['id']   = $id;
-            $user['name'] = 'name' . $id;
-            $users[]      = $user;
+            $users['id']   = $id;
+            $users['v']    = '1.1';
+            $users['name'] = 'name' . $id;
         }
 
         return $users;

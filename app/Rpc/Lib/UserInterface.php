@@ -4,8 +4,6 @@
 namespace App\Rpc\Lib;
 
 
-use Swoft\Rpc\Client\Concern\ServiceTrait;
-
 interface UserInterface
 {
     /**
