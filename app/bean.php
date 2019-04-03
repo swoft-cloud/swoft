@@ -9,6 +9,10 @@ return [
         'definitionData' => 'definitionData...'
     ],
 
+    'logger'             => [
+        'flushRequest' => true,
+        'enable'       => true,
+    ],
     'httpServer' => [
         'class'    => \Swoft\Http\Server\HttpServer::class,
         'port'     => 88,
