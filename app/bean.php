@@ -9,7 +9,7 @@ return [
         'definitionData' => 'definitionData...'
     ],
 
-    'logger'             => [
+    'logger'     => [
         'flushRequest' => false,
         'enable'       => false,
     ],
@@ -18,6 +18,14 @@ return [
         'port'     => 88,
         'listener' => [
             'rpc' => \bean('rpcServer')
+        ],
+        'on'       => [
+            \Swoft\Server\Swoole\SwooleEvent::TASK   => \bean(\Swoft\Task\Swoole\TaskListener::class),
+            \Swoft\Server\Swoole\SwooleEvent::FINISH => \bean(\Swoft\Task\Swoole\FinishListener::class)
+        ],
+        'setting'  => [
+            'task_worker_num'       => 1,
+            'task_enable_coroutine' => true
         ]
     ],
     'user'       => [
