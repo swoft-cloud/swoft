@@ -1,42 +1,43 @@
 <?php
-\Swoole\Runtime::enableCoroutine();
+echo swoole_version();
+$serv = new Swoole\Http\Server("127.0.0.1", 9501);
 
-$http = new Swoole\Http\Server("0.0.0.0", 88);
-$http->on('request', function ($request, $response) {
-    $pdo = new \PDO('mysql:dbname=test;host=172.17.0.2', 'root', 'swoft123456');
+$serv->set(array(
+    'worker_num'            => 1,
+    'task_worker_num'       => 4,
+    'task_enable_coroutine' => true,
+));
 
-    for ($i = 0; $i < 30000; $i++) {
-        $pdo->beginTransaction();
-        $stmt = $pdo->prepare('select * from `user` where `user`.`id` = 22 limit 1');
-        $stmt->execute();
-        $stmt->setFetchMode(\PDO::FETCH_OBJ);
-        $result = $stmt->fetchAll();
-
-//    var_dump($result);
-
-        $pdo->rollBack();
-    }
-
-
+$serv->on('request', function ($request, $response) use ($serv) {
+//    $task_id = $serv->task('stelins', -1);
+    $task_id = $serv->task('stelins', -1, null);
+var_dump($task_id);
     $response->end("<h1>Hello Swoole. #" . rand(1000, 9999) . "</h1>");
 });
-$http->start();
 
-class Pool
-{
-    private static $pdo;
+$serv->on('Task', function ($serv, Swoole\Server\Task $task) {
+    //来自哪个`Worker`进程
+    $task->worker_id;
+    //任务的编号
+    $task->id;
+    //任务的类型，taskwait, task, taskCo, taskWaitMulti 可能使用不同的 flags
+    $task->flags;
+    //任务的数据
+    $task->data;
+    //协程 API
+    co::sleep(0.2);
+    //完成任务，结束并返回数据
+    $task->finish([123, 'hello']);
+});
 
-    /**
-     * @return PDO
-     */
-    public static function getPdo(): \PDO
-    {
-        if (!empty(self::$pdo)) {
-            return self::$pdo;
-        }
+$serv->on('Finish', function (swoole_server $serv, $task_id, $data) {
+    var_dump($data, $task_id);
+//    echo "Task#$task_id finished, data_len=" . strlen($data) . PHP_EOL;
+});
 
-        self::$pdo = new \PDO('mysql:dbname=test;host=172.17.0.2', 'root', 'swoft123456');
+$serv->on('workerStart', function ($serv, $worker_id) {
 
-        return self::$pdo;
-    }
-}
+});
+
+$serv->start();
+

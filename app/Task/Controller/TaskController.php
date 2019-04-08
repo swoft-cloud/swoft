@@ -25,8 +25,9 @@ class TaskController
      */
     public function co(): array
     {
-        $result = Task::co('test', 'getData', [], 10);
-//        $result = Task::async('test', 'getData', []);
-        return $result;
+//        $result = Task::co('test', 'getData', [], 10);
+        $result = Task::async('test', 'getData', []);
+        var_dump($result);
+        return [$result];
     }
 }
