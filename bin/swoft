@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-require_once __DIR__ . '/bootstrap.php';
-$console = new \Swoft\Console\Console();
-$console->run();
