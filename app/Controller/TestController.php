@@ -10,6 +10,7 @@ use Swoft\Http\Message\Request;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Redis\Redis;
 use Swoole\Coroutine;
 
 /**
@@ -51,7 +52,7 @@ class TestController
         DB::pool()->beginTransaction();
         $user = User::find(22);
 
-        \sgo(function (){
+        \sgo(function () {
             DB::pool()->beginTransaction();
             $user = User::find(22);
         });
@@ -73,7 +74,7 @@ class TestController
         $user = User::find(22);
         DB::pool()->commit();
 
-        \sgo(function (){
+        \sgo(function () {
             DB::pool()->beginTransaction();
             $user = User::find(22);
             DB::pool()->commit();
@@ -96,7 +97,7 @@ class TestController
         $user = User::find(22);
         DB::pool()->rollBack();
 
-        \sgo(function (){
+        \sgo(function () {
             DB::pool()->beginTransaction();
             $user = User::find(22);
             DB::pool()->rollBack();
@@ -133,5 +134,18 @@ class TestController
     public function user(int $uid, Response $response, string $name, int $age, int $count = 1): string
     {
         return 'uid=' . $uid . ' name=' . $name . ' age=' . $age . ' count=' . $count . ' response=' . get_class($response);
+    }
+
+    /**
+     * @RequestMapping(route="redis")
+     *
+     * @return array
+     */
+    public function redis(): array
+    {
+        Redis::set('a', 'b');
+        $a = Redis::get('a');
+
+        return [$a];
     }
 }
