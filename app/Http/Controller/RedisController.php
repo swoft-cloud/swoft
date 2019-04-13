@@ -32,4 +32,23 @@ class RedisController
 
         return $data;
     }
+
+    /**
+     * Auto release connection
+     *
+     * @RequestMapping("release")
+     *
+     * @return array
+     * @throws \Swoft\Redis\Exception\RedisException
+     */
+    public function release(): array
+    {
+        \sgo(function () {
+            Redis::connection();
+        });
+
+        Redis::connection();
+
+        return ['release'];
+    }
 }
