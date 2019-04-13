@@ -7,11 +7,11 @@ namespace App\Rpc\Service;
 use App\Rpc\Lib\UserInterface;
 
 /**
- * Class UserService
+ * Class UserServiceV2
  *
  * @since 2.0
  */
-class UserService implements UserInterface
+class UserServiceV2 implements UserInterface
 {
 
 }

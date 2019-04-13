@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 
 namespace App;
 
@@ -6,9 +7,7 @@ namespace App;
 use Swoft\SwoftApplication;
 
 /**
- * Application
- *
- * It extends from [\Swoft\Core\SwoftApplication] which provides funtions.
+ * Class Application
  *
  * @since 2.0
  */

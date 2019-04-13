@@ -1,17 +1,19 @@
-<?php
+<?php declare(strict_types=1);
+
 
 namespace App;
 
-use Swoft\Annotation\LoaderInterface;
+
+use Swoft\SwoftComponent;
 
 /**
  * Class AutoLoader
+ *
+ * @since 2.0
  */
-class AutoLoader implements LoaderInterface
+class AutoLoader extends SwoftComponent
 {
     /**
-     * Get namespace and dirs
-     *
      * @return array
      */
     public function getPrefixDirs(): array
@@ -19,5 +21,13 @@ class AutoLoader implements LoaderInterface
         return [
             __NAMESPACE__ => __DIR__,
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function metadata(): array
+    {
+        return [];
     }
 }
