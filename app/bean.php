@@ -2,11 +2,12 @@
 return [
     'logger'     => [
         'flushRequest' => false,
-        'enable'       => false,
+        'enable'       => true,
+        'json'         => false,
     ],
     'httpServer' => [
         'class'    => \Swoft\Http\Server\HttpServer::class,
-        'port'     => 88,
+        'port'     => 18306,
         'listener' => [
             'rpc' => \bean('rpcServer')
         ],
