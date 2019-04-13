@@ -36,7 +36,7 @@
     "swoft/task": "^2.0",
     "swoft/redis": "^2.0",
     "swoft/proxy": "^2.0",
-    "swoft/component": "2.0.x-dev as 2.0"
+    "swoft/component": "dev-master as 2.0"
   },
   "require-dev": {
     "swoft/swoole-ide-helper": "dev-master",
