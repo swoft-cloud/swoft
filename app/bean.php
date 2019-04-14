@@ -2,7 +2,7 @@
 return [
     'logger'     => [
         'flushRequest' => false,
-        'enable'       => true,
+        'enable'       => false,
         'json'         => false,
     ],
     'httpServer' => [
