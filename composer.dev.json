@@ -1,0 +1,45 @@
+{
+  "name": "swoft/swoft",
+  "type": "project",
+  "keywords": [
+    "php",
+    "swoole",
+    "swoft"
+  ],
+  "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=7.1",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "ext-redis": "*",
+    "swoft/component": "2.0.x-dev as 2.0"
+  },
+  "require-dev": {
+    "swoft/swoole-ide-helper": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "app/Helper/Functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  },
+  "scripts": {
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    },
+    {
+      "type": "path",
+      "url": "../swoft-component"
+    }
+  ]
+}
