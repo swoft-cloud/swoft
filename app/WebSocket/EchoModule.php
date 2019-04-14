@@ -2,22 +2,19 @@
 
 namespace App\WebSocket;
 
-use App\WebSocket\Chat\HomeController;
 use Swoft\Http\Message\Request;
+use Swoft\WebSocket\Server\Annotation\Mapping\OnMessage;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
-use Swoft\WebSocket\Server\MessageParser\TokenTextParser;
+use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server;
 
 /**
- * Class ChatModule
+ * Class EchoModule
  *
- * @WsModule(
- *     "/chat",
- *     messageParser=TokenTextParser::class,
- *     controllers={HomeController::class}
- * )
+ * @WsModule()
  */
-class ChatModule
+class EchoModule
 {
     /**
      * @OnOpen()
@@ -27,5 +24,15 @@ class ChatModule
     public function onOpen(Request $request, int $fd): void
     {
         \server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+    }
+
+    /**
+     * @OnMessage()
+     * @param Server $server
+     * @param Frame  $frame
+     */
+    public function onMessage(Server $server, Frame $frame): void
+    {
+        $server->push($frame->fd, 'Recv: ' . $frame->data);
     }
 }
