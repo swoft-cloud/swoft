@@ -1,2 +1,4 @@
 <?php
-
+/**
+ * Custom global functions
+ */

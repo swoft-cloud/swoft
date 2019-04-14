@@ -1,4 +1,5 @@
 <?php
+
 return [
     'logger'     => [
         'flushRequest' => false,
@@ -38,5 +39,15 @@ return [
     ],
     'rpcServer'  => [
         'class' => \Swoft\Rpc\Server\ServiceServer::class,
+    ],
+    'wsServer'   => [
+        'on'      => [
+            // Enable http handle
+            \Swoft\Server\Swoole\SwooleEvent::REQUEST => bean(\Swoft\Http\Server\Swoole\RequestListener::class),
+        ],
+        /** @see \Swoft\WebSocket\Server\WebSocketServer::$setting */
+        'setting' => [
+            'log_file' => alias('@runtime/swoole.log'),
+        ],
     ],
 ];
