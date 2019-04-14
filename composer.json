@@ -12,7 +12,6 @@
     "php": ">=7.1",
     "ext-pdo": "*",
     "ext-json": "*",
-    "ext-redis": "*",
     "swoft/annotation": "^2.0",
     "swoft/bean": "^2.0",
     "swoft/event": "^2.0",
@@ -36,6 +35,7 @@
     "swoft/task": "^2.0",
     "swoft/redis": "^2.0",
     "swoft/proxy": "^2.0",
+    "swoft/error": "^2.0",
     "swoft/component": "dev-master as 2.0"
   },
   "require-dev": {
