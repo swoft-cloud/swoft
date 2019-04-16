@@ -3,7 +3,13 @@
 
 namespace App\Http\Controller;
 
+use Swoft\Http\Server\Annotation\Mapping\Controller;
 
+/**
+ * Class DbBuilderController
+ *
+ * @since 2.0
+ */
 class DbBuilderController
 {
 
