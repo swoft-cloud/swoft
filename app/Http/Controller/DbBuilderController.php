@@ -3,7 +3,11 @@
 
 namespace App\Http\Controller;
 
-
+/**
+ * Class DbBuilderController
+ *
+ * @since 2.0
+ */
 class DbBuilderController
 {
 

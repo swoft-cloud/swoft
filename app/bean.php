@@ -35,7 +35,7 @@ return [
     ],
     'user.pool'  => [
         'class'  => \Swoft\Rpc\Client\Pool::class,
-        'client' => bean('user')
+        'client' => \bean('user')
     ],
     'rpcServer'  => [
         'class' => \Swoft\Rpc\Server\ServiceServer::class,
