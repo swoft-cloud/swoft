@@ -3,8 +3,6 @@
 
 namespace App\Http\Controller;
 
-use Swoft\Http\Server\Annotation\Mapping\Controller;
-
 /**
  * Class DbBuilderController
  *
