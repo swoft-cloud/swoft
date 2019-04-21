@@ -16,6 +16,7 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
     /**
      * @param \Throwable $e
      * @param Response   $response
+     *
      * @return Response
      * @throws \ReflectionException
      * @throws \Swoft\Bean\Exception\ContainerException
@@ -23,15 +24,19 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
     public function handle(\Throwable $e, Response $response): Response
     {
         if (!\APP_DEBUG) {
-            return $response->withStatus(500)->withContent($e->getMessage());
+            return $response->withStatus(500)->withContent(
+                \sprintf(' %s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine())
+            );
         }
 
-        // Debug is true
-        return $response->withData([
+        $data = [
             'code'  => $e->getCode(),
             'error' => $e->getMessage(),
             'file'  => \sprintf('At %s line %d', $e->getFile(), $e->getLine()),
             'trace' => $e->getTraceAsString(),
-        ]);
+        ];
+
+        // Debug is true
+        return $response->withData($data);
     }
 }
