@@ -1,66 +1,70 @@
 {
-    "name": "swoft/swoft",
-    "type": "project",
-    "keywords": [
-        "php",
-        "swoole",
-        "swoft"
-    ],
-    "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole 2",
-    "license": "Apache-2.0",
-    "require": {
-        "php": ">=7.0",
-        "ext-swoole": ">=2.1",
-        "swoft/framework": "^1.0",
-        "swoft/rpc": "^1.0",
-        "swoft/rpc-server": "^1.0",
-        "swoft/rpc-client": "^1.0",
-        "swoft/http-server": "^1.0",
-        "swoft/http-client": "^1.0",
-        "swoft/websocket-server": "^1.0",
-        "swoft/task": "^1.0",
-        "swoft/http-message": "^1.0",
-        "swoft/view": "^1.0",
-        "swoft/db": "^1.0",
-        "swoft/cache": "^1.0",
-        "swoft/redis": "^1.0",
-        "swoft/console": "^1.0",
-        "swoft/devtool": "^1.0",
-        "swoft/session": "^1.0",
-        "swoft/i18n": "^1.0",
-        "swoft/process": "^1.0",
-        "swoft/memory": "^1.0",
-        "swoft/service-governance": "^1.0"
+  "name": "swoft/swoft",
+  "type": "project",
+  "keywords": [
+    "php",
+    "swoole",
+    "swoft"
+  ],
+  "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=7.1",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "swoft/annotation": "^2.0",
+    "swoft/bean": "^2.0",
+    "swoft/event": "^2.0",
+    "swoft/aop": "^2.0",
+    "swoft/config": "^2.0",
+    "swoft/stdlib": "^2.0",
+    "swoft/framework": "^2.0",
+    "swoft/http-message": "^2.0",
+    "swoft/server": "^2.0",
+    "swoft/tcp-server": "^2.0",
+    "swoft/http-server": "^2.0",
+    "swoft/websocket-server": "^2.0",
+    "swoft/log": "^2.0",
+    "swoft/db": "^2.0",
+    "swoft/connection-pool": "^2.0",
+    "swoft/test": "^2.0",
+    "swoft/console": "^2.0",
+    "swoft/rpc": "^2.0",
+    "swoft/rpc-server": "^2.0",
+    "swoft/rpc-client": "^2.0",
+    "swoft/task": "^2.0",
+    "swoft/redis": "^2.0",
+    "swoft/proxy": "^2.0",
+    "swoft/error": "^2.0",
+    "swoft/component": "dev-master as 2.0"
+  },
+  "require-dev": {
+    "swoft/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^7.5",
+    "friendsofphp/php-cs-fixer": "^2.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
     },
-    "require-dev": {
-        "swoft/swoole-ide-helper": "dev-master",
-        "phpunit/phpunit": "^5.7",
-        "friendsofphp/php-cs-fixer": "^2.10"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "app/"
-        },
-        "files": [
-            "app/Swoft.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Swoft\\Test\\": "test/"
-        }
-    },
-    "scripts": {
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "test": "./vendor/bin/phpunit -c phpunit.xml",
-        "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
-        }
+    "files": [
+      "app/Helper/Functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
     }
+  },
+  "scripts": {
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-component.git"
+    },
+    {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    }
+  ]
 }
