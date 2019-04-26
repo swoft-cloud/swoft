@@ -4,6 +4,7 @@
 namespace App\Http\Controller;
 
 use App\Model\Entity\User;
+use mysql_xdevapi\Exception;
 use Swoft\Db\DB;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
@@ -25,11 +26,11 @@ class DbTransactionController
     public function ts()
     {
         DB::beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(22);
+            User::find(296);
         });
 
         return json_encode($user->toArray());
@@ -43,12 +44,12 @@ class DbTransactionController
     public function cm()
     {
         DB::beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
         DB::commit();
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(22);
+            User::find(296);
             DB::commit();
         });
 
@@ -63,12 +64,12 @@ class DbTransactionController
     public function rl()
     {
         DB::beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
         DB::rollBack();
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(22);
+            User::find(296);
             DB::rollBack();
         });
 
@@ -86,11 +87,11 @@ class DbTransactionController
     public function ts2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(22);
+            User::find(296);
         });
 
         return json_encode($user->toArray());
@@ -107,12 +108,12 @@ class DbTransactionController
     public function cm2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
         DB::connection()->commit();
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(22);
+            User::find(296);
             DB::connection()->commit();
         });
 
@@ -130,12 +131,12 @@ class DbTransactionController
     public function rl2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(22);
+        $user = User::find(296);
         DB::connection()->rollBack();
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(22);
+            User::find(296);
             DB::connection()->rollBack();
         });
 
