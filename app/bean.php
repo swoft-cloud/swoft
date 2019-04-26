@@ -1,29 +1,53 @@
 <?php
 
+use Swoft\Http\Server\HttpServer;
+use Swoft\Task\Swoole\TaskListener;
+use Swoft\Task\Swoole\FinishListener;
+use Swoft\Rpc\Client\Client as ServiceClient;
+use Swoft\Rpc\Client\Pool as ServicePool;
+use Swoft\Rpc\Server\ServiceServer;
+use Swoft\Http\Server\Swoole\RequestListener;
+use Swoft\WebSocket\Server\WebSocketServer;
+use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Db\Database;
+use Swoft\Redis\RedisDb;
+
 return [
     'logger'     => [
-        'flushRequest' => false,
-        'enable'       => false,
+        'flushRequest' => true,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer' => [
-        'class'    => \Swoft\Http\Server\HttpServer::class,
-//        'port'     => 18306,
-        'port'     => 88,
+        'class'    => HttpServer::class,
+        'port'     => 18306,
         'listener' => [
             'rpc' => \bean('rpcServer')
         ],
         'on'       => [
-            \Swoft\Server\Swoole\SwooleEvent::TASK   => \bean(\Swoft\Task\Swoole\TaskListener::class),
-            \Swoft\Server\Swoole\SwooleEvent::FINISH => \bean(\Swoft\Task\Swoole\FinishListener::class)
+            SwooleEvent::TASK   => \bean(TaskListener::class),  // Enable task must task and finish event
+            SwooleEvent::FINISH => \bean(FinishListener::class)
         ],
+        /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 1,
+            'task_worker_num'       => 4,
             'task_enable_coroutine' => true
         ]
     ],
+    'db'         => [
+        'class'    => Database::class,
+        'dsn'      => 'mysql:dbname=test;host=172.17.0.1',
+        'username' => 'root',
+        'password' => 'swoft123456',
+    ],
+    'redis'      => [
+        'class'    => RedisDb::class,
+        'host'     => '127.0.0.1',
+        'port'     => 6379,
+        'database' => 0,
+    ],
     'user'       => [
-        'class'   => \Swoft\Rpc\Client\Client::class,
+        'class'   => ServiceClient::class,
         'host'    => '127.0.0.1',
         'port'    => 18307,
         'setting' => [
@@ -35,18 +59,18 @@ return [
         'packet'  => \bean('rpcClientPacket')
     ],
     'user.pool'  => [
-        'class'  => \Swoft\Rpc\Client\Pool::class,
+        'class'  => ServicePool::class,
         'client' => \bean('user')
     ],
     'rpcServer'  => [
-        'class' => \Swoft\Rpc\Server\ServiceServer::class,
+        'class' => ServiceServer::class,
     ],
     'wsServer'   => [
+        'class'   => WebSocketServer::class,
         'on'      => [
-            // Enable http handle
-            \Swoft\Server\Swoole\SwooleEvent::REQUEST => bean(\Swoft\Http\Server\Swoole\RequestListener::class),
+            SwooleEvent::REQUEST => \bean(RequestListener::class),  // Enable http handle
         ],
-        /** @see \Swoft\WebSocket\Server\WebSocketServer::$setting */
+        /* @see WebSocketServer::$setting */
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),
         ],
