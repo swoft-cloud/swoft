@@ -45,6 +45,7 @@ return [
             // Enable http handle
             \Swoft\Server\Swoole\SwooleEvent::REQUEST => bean(\Swoft\Http\Server\Swoole\RequestListener::class),
         ],
+        'debug' => env('SWOFT_DEBUG', 1),
         /** @see \Swoft\WebSocket\Server\WebSocketServer::$setting */
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),

@@ -53,4 +53,13 @@ class HomeController
     {
         throw new \RuntimeException('exception throw on ' . __METHOD__);
     }
+
+    /**
+     * @RequestMapping("/er")
+     * @throws \Throwable
+     */
+    public function er(): void
+    {
+        \trigger_error('user error', \E_USER_ERROR);
+    }
 }

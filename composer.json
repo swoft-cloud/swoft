@@ -9,7 +9,7 @@
   "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole",
   "license": "Apache-2.0",
   "require": {
-    "php": ">=7.1",
+    "php": ">7.1",
     "ext-pdo": "*",
     "ext-json": "*",
     "swoft/annotation": "^2.0",
