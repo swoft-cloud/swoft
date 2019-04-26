@@ -1,3 +1,7 @@
 <?php
 
-system('ab -n 10000 -c 2000  127.0.0.1:18306/redis/et > /dev/null');
+$fruits = array("apple","banana","pear");
+$numbered = array("1","2","3","pear");
+$cards = array_merge($fruits, $numbered);
+print_r($cards);
+print_r(array_unique($cards));

@@ -34,10 +34,14 @@ class TestCommand
         }
 
         foreach ($exeUris as $uri) {
-            $shell = \sprintf('ab -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $abShell   = \sprintf('ab -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $curlShell = \sprintf('curl 127.0.0.1:18306%s', $uri);
 
-            \output()->writeln('执行URL:' . $shell . PHP_EOL);
-            exec($shell, $result);
+            exec($curlShell, $curlResult);
+            \output()->writeln('执行结果:' . json_encode($curlResult));
+            \output()->writeln('执行URL:' . $abShell . PHP_EOL);
+
+            exec($abShell, $abResult);
         }
     }
 
@@ -55,6 +59,20 @@ class TestCommand
             ],
             'log'   => [
                 '/log/test'
+            ],
+            'db'    => [
+                '/dbTransaction/ts',
+                '/dbTransaction/cm',
+                '/dbTransaction/rl',
+                '/dbTransaction/ts2',
+                '/dbTransaction/cm2',
+                '/dbTransaction/rl2',
+            ],
+            'task' => [
+                '/task/getListByCo',
+                '/task/deleteByCo',
+                '/task/getListByAsync',
+                '/task/deleteByAsync',
             ]
         ];
     }
