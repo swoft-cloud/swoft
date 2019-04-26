@@ -9,7 +9,7 @@ use Swoft\Http\Server\Exception\Handler\AbstractHttpErrorHandler;
 /**
  * Class HttpExceptionHandler
  *
- * @ExceptionHandler(Exception::class)
+ * @ExceptionHandler(\Throwable::class)
  */
 class HttpExceptionHandler extends AbstractHttpErrorHandler
 {
@@ -23,6 +23,7 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
      */
     public function handle(\Throwable $e, Response $response): Response
     {
+        // Debug is false
         if (!\APP_DEBUG) {
             return $response->withStatus(500)->withContent(
                 \sprintf(' %s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine())
@@ -31,7 +32,7 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
 
         $data = [
             'code'  => $e->getCode(),
-            'error' => $e->getMessage(),
+            'error' => \sprintf('(%s) %s', \get_class($e), $e->getMessage()),
             'file'  => \sprintf('At %s line %d', $e->getFile(), $e->getLine()),
             'trace' => $e->getTraceAsString(),
         ];
