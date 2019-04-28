@@ -36,6 +36,7 @@
     "swoft/redis": "^2.0",
     "swoft/proxy": "^2.0",
     "swoft/error": "^2.0",
+    "swoft/view": "dev-master as 2.0",
     "swoft/component": "dev-master as 2.0"
   },
   "require-dev": {
