@@ -15,7 +15,7 @@
     "ext-redis": "*",
     "swoft/view": "dev-master",
     "swoft/devtool": "dev-master",
-    "swoft/component": "2.0.x-dev as 2.0"
+    "swoft/component": "dev-master as 2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.5",
