@@ -13,7 +13,7 @@
     "ext-pdo": "*",
     "ext-json": "*",
     "ext-redis": "*",
-    "swoft/component": "2.0.x-dev as 2.0"
+    "swoft/component": "dev-master as 2.0"
   },
   "require-dev": {
     "swoft/swoole-ide-helper": "dev-master"
