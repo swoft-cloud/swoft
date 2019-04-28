@@ -78,6 +78,9 @@ class TestCommand
                 '/rpc/getList',
                 '/rpc/returnBool',
                 '/rpc/bigString',
+            ],
+            'co' => [
+                '/co/multi'
             ]
         ];
     }
