@@ -20,7 +20,8 @@ return [
     ],
     'httpServer' => [
         'class'    => HttpServer::class,
-        'port'     => 18306,
+//        'port'     => 18306,
+        'port'     => 88,
         'listener' => [
             'rpc' => \bean('rpcServer')
         ],
