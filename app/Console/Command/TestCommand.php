@@ -73,6 +73,11 @@ class TestCommand
                 '/task/deleteByCo',
                 '/task/getListByAsync',
                 '/task/deleteByAsync',
+            ],
+            'rpc' => [
+                '/rpc/getList',
+                '/rpc/returnBool',
+                '/rpc/bigString',
             ]
         ];
     }
