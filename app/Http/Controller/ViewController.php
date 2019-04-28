@@ -32,4 +32,24 @@ class ViewController
         $response = $response->withContentType(ContentType::HTML);
         return $response;
     }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     */
+    public function ary(): array
+    {
+        return ['ary'];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return string
+     */
+    public function str(): string
+    {
+        return 'string';
+    }
 }
