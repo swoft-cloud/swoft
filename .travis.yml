@@ -1,0 +1,17 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+install:
+  - pecl install -f swoole-4.3.3
+before_script:
+  - composer update --dev
+
+script: composer test
+
+cache:
+  directories:
+    - "$HOME/.composer/cache/files"
