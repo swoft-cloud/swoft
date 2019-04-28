@@ -15,7 +15,7 @@ use Swoft\Redis\RedisDb;
 return [
     'logger'     => [
         'flushRequest' => true,
-        'enable'       => true,
+        'enable'       => false,
         'json'         => false,
     ],
     'httpServer' => [
@@ -68,8 +68,10 @@ return [
     'wsServer'   => [
         'class'   => WebSocketServer::class,
         'on'      => [
-            SwooleEvent::REQUEST => \bean(RequestListener::class),  // Enable http handle
+            // Enable http handle
+            SwooleEvent::REQUEST => \bean(RequestListener::class),
         ],
+        'debug' => env('SWOFT_DEBUG', 0),
         /* @see WebSocketServer::$setting */
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),

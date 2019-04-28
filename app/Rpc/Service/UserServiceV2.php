@@ -5,13 +5,49 @@ namespace App\Rpc\Service;
 
 
 use App\Rpc\Lib\UserInterface;
+use Swoft\Co;
+use Swoft\Rpc\Server\Annotation\Mapping\Service;
 
 /**
  * Class UserServiceV2
  *
  * @since 2.0
+ *
+ * @Service(version="1.2")
  */
 class UserServiceV2 implements UserInterface
 {
+    /**
+     * @param int   $id
+     * @param mixed $type
+     * @param int   $count
+     *
+     * @return array
+     */
+    public function getList(int $id, $type, int $count = 10): array
+    {
+        return [
+            'name' => ['list'],
+            'v'    => '1.2'
+        ];
+    }
 
+    /**
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBigContent(): string
+    {
+        $content = Co::readFile(__DIR__ . '/big.data');
+        return $content;
+    }
 }
