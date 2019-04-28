@@ -15,7 +15,7 @@ use Swoft\Redis\RedisDb;
 return [
     'logger'     => [
         'flushRequest' => true,
-        'enable'       => true,
+        'enable'       => false,
         'json'         => false,
     ],
     'httpServer' => [
