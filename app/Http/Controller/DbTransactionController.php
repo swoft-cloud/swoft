@@ -26,11 +26,11 @@ class DbTransactionController
     public function ts()
     {
         DB::beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(296);
+            User::find(37978);
         });
 
         return json_encode($user->toArray());
@@ -44,12 +44,12 @@ class DbTransactionController
     public function cm()
     {
         DB::beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
         DB::commit();
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(296);
+            User::find(37978);
             DB::commit();
         });
 
@@ -64,12 +64,12 @@ class DbTransactionController
     public function rl()
     {
         DB::beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
         DB::rollBack();
 
         \sgo(function () {
             DB::beginTransaction();
-            User::find(296);
+            User::find(37978);
             DB::rollBack();
         });
 
@@ -87,11 +87,11 @@ class DbTransactionController
     public function ts2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(296);
+            User::find(37978);
         });
 
         return json_encode($user->toArray());
@@ -108,12 +108,12 @@ class DbTransactionController
     public function cm2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
         DB::connection()->commit();
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(296);
+            User::find(37978);
             DB::connection()->commit();
         });
 
@@ -131,12 +131,12 @@ class DbTransactionController
     public function rl2()
     {
         DB::connection()->beginTransaction();
-        $user = User::find(296);
+        $user = User::find(37978);
         DB::connection()->rollBack();
 
         \sgo(function () {
             DB::connection()->beginTransaction();
-            User::find(296);
+            User::find(37978);
             DB::connection()->rollBack();
         });
 
