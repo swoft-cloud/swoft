@@ -10,6 +10,6 @@ before_script:
 
 script: composer test
 
-cache:
-  directories:
-    - "$HOME/.composer/cache/files"
+#cache:
+#  directories:
+#    - "$HOME/.composer/cache/files"
