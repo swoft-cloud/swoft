@@ -53,9 +53,15 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "SwoftTest\\": "./test/"
     }
   },
   "scripts": {
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "test": "./vendor/bin/phpunit -c phpunit.xml",
+    "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
   },
   "repositories": [
     {
