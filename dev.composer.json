@@ -50,10 +50,6 @@
       "type": "path",
       "url": "../swoft-component"
     },
-    "1": {
-      "type": "path",
-      "url": "../swoft-view"
-    },
     "2": {
       "type": "path",
       "url": "../swoft-devtool"
