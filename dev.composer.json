@@ -1,0 +1,82 @@
+{
+  "name": "swoft/swoft",
+  "type": "project",
+  "keywords": [
+    "php",
+    "swoole",
+    "swoft"
+  ],
+  "description": "Modern High performance AOP and Coroutine PHP Framework, base on Swoole",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">7.1",
+    "ext-pdo": "*",
+    "ext-json": "*",
+    "ext-swoole": ">=4.3",
+    "swoft/annotation": "dev-master",
+    "swoft/bean": "dev-master",
+    "swoft/event": "dev-master",
+    "swoft/aop": "dev-master",
+    "swoft/config": "dev-master",
+    "swoft/stdlib": "dev-master",
+    "swoft/framework": "dev-master",
+    "swoft/http-message": "dev-master",
+    "swoft/server": "dev-master",
+    "swoft/tcp-server": "dev-master",
+    "swoft/http-server": "dev-master",
+    "swoft/websocket-server": "dev-master",
+    "swoft/log": "dev-master",
+    "swoft/db": "dev-master",
+    "swoft/connection-pool": "dev-master",
+    "swoft/test": "dev-master",
+    "swoft/console": "dev-master",
+    "swoft/rpc": "dev-master",
+    "swoft/rpc-server": "dev-master",
+    "swoft/rpc-client": "dev-master",
+    "swoft/task": "dev-master",
+    "swoft/redis": "dev-master",
+    "swoft/proxy": "dev-master",
+    "swoft/error": "dev-master",
+    "swoft/view": "dev-master",
+    "swoft/devtool": "dev-master"
+  },
+  "require-dev": {
+    "swoft/swoole-ide-helper": "dev-master",
+    "phpunit/phpunit": "^7.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "files": [
+      "app/Helper/Functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SwoftTest\\": "./test/"
+    }
+  },
+  "minimum-stability": "dev",
+  "scripts": {
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "test": "./vendor/bin/phpunit -c phpunit.xml",
+    "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
+    },
+    "swoft": {
+      "type": "path",
+      "url": "../swoft-component/src/*"
+    },
+    "swoft/devtool": {
+      "type": "path",
+      "url": "../swoft-devtool"
+    }
+  }
+}
