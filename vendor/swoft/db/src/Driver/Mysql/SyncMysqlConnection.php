@@ -126,7 +126,6 @@ class SyncMysqlConnection extends AbstractDbConnection
      */
     public function reconnect()
     {
-        $this->stmt = null;
         $this->createConnection();
     }
 
