@@ -53,9 +53,8 @@ class LogController
         // Tag2 end
         Log::profileEnd('tagName');
 
-        // Counting
-        Log::counting('mget', 1, 10);
-        Log::counting('mget', 2, 10);
+
+
 
         return ['log'];
     }

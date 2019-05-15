@@ -67,6 +67,7 @@ class TestCommand
                 '/dbTransaction/ts2',
                 '/dbTransaction/cm2',
                 '/dbTransaction/rl2',
+                '/dbModel/find'
             ],
             'task' => [
                 '/task/getListByCo',
