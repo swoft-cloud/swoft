@@ -64,14 +64,16 @@ class TestCommand
                 '/log/test'
             ],
             'db'    => [
-                '/dbModel/save',
                 '/dbTransaction/ts',
                 '/dbTransaction/cm',
                 '/dbTransaction/rl',
                 '/dbTransaction/ts2',
                 '/dbTransaction/cm2',
                 '/dbTransaction/rl2',
-                '/dbModel/find'
+                '/dbModel/find',
+                '/dbModel/update',
+                '/dbModel/delete',
+                '/dbModel/save',
             ],
             'task' => [
                 '/task/getListByCo',
