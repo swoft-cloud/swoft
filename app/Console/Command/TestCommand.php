@@ -3,6 +3,9 @@
 
 namespace App\Console\Command;
 
+use function input;
+use function output;
+use function sprintf;
 use Swoft\Console\Annotation\Mapping\Command;
 use Swoft\Console\Annotation\Mapping\CommandMapping;
 
@@ -20,7 +23,7 @@ class TestCommand
      */
     public function ab()
     {
-        $type = \input()->get('type', '');
+        $type = input()->get('type', '');
         $uris = $this->uris();
 
         // Format data
@@ -34,12 +37,12 @@ class TestCommand
         }
 
         foreach ($exeUris as $uri) {
-            $abShell   = \sprintf('ab -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
-            $curlShell = \sprintf('curl 127.0.0.1:18306%s', $uri);
+            $abShell   = sprintf('ab -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $curlShell = sprintf('curl 127.0.0.1:18306%s', $uri);
 
             exec($curlShell, $curlResult);
-            \output()->writeln('执行结果:' . json_encode($curlResult));
-            \output()->writeln('执行URL:' . $abShell . PHP_EOL);
+            output()->writeln('执行结果:' . json_encode($curlResult));
+            output()->writeln('执行URL:' . $abShell . PHP_EOL);
 
             exec($abShell, $abResult);
         }
@@ -61,6 +64,7 @@ class TestCommand
                 '/log/test'
             ],
             'db'    => [
+                '/dbModel/save',
                 '/dbTransaction/ts',
                 '/dbTransaction/cm',
                 '/dbTransaction/rl',

@@ -3,6 +3,8 @@
 
 namespace App\Http\Controller;
 
+use ReflectionException;
+use Swoft\Bean\Exception\ContainerException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Log\Helper\Log;
@@ -20,8 +22,8 @@ class LogController
      * @RequestMapping("test")
      *
      * @return array
-     * @throws \ReflectionException
-     * @throws \Swoft\Bean\Exception\ContainerException
+     * @throws ReflectionException
+     * @throws ContainerException
      */
     public function test(): array
     {
