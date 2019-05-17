@@ -22,11 +22,11 @@ return [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
-            'rpc' => \bean('rpcServer')
+            'rpc' => bean('rpcServer')
         ],
         'on'       => [
-            SwooleEvent::TASK   => \bean(TaskListener::class),  // Enable task must task and finish event
-            SwooleEvent::FINISH => \bean(FinishListener::class)
+            SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
+            SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
@@ -36,7 +36,7 @@ return [
     ],
     'db'         => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=172.17.0.1',
+        'dsn'      => 'mysql:dbname=test;host=172.17.0.3',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
@@ -56,11 +56,11 @@ return [
             'write_timeout'   => 10.0,
             'read_timeout'    => 0.5,
         ],
-        'packet'  => \bean('rpcClientPacket')
+        'packet'  => bean('rpcClientPacket')
     ],
     'user.pool'  => [
         'class'  => ServicePool::class,
-        'client' => \bean('user')
+        'client' => bean('user')
     ],
     'rpcServer'  => [
         'class' => ServiceServer::class,
@@ -69,7 +69,7 @@ return [
         'class'   => WebSocketServer::class,
         'on'      => [
             // Enable http handle
-            SwooleEvent::REQUEST => \bean(RequestListener::class),
+            SwooleEvent::REQUEST => bean(RequestListener::class),
         ],
         'debug' => env('SWOFT_DEBUG', 0),
         /* @see WebSocketServer::$setting */

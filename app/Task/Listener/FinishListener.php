@@ -3,6 +3,7 @@
 
 namespace App\Task\Listener;
 
+use function context;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
@@ -23,6 +24,6 @@ class FinishListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        CLog::info(\context()->getTaskUniqid());
+        CLog::info(context()->getTaskUniqid());
     }
 }
