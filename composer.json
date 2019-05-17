@@ -45,7 +45,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@github.com:swoft-cloud/swoft-component.git"
+      "url": "https://github.com/swoft-cloud/swoft-component.git"
     },
     {
       "type": "composer",
