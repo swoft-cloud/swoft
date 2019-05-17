@@ -11,6 +11,7 @@
   "require": {
     "php": ">7.1",
     "ext-pdo": "*",
+    "ext-redis": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
     "swoft/view": "dev-master as 2.0",
