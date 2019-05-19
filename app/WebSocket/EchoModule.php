@@ -8,6 +8,7 @@ use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
+use function server;
 
 /**
  * Class EchoModule
@@ -23,7 +24,7 @@ class EchoModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        \server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+        server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
     }
 
     /**
