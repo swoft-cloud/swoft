@@ -3,6 +3,7 @@
 namespace App\WebSocket;
 
 use App\WebSocket\Chat\HomeController;
+use function server;
 use Swoft\Http\Message\Request;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
@@ -26,6 +27,6 @@ class ChatModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        \server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+        server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controller;
 
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Task\Exception\TaskException;
 use Swoft\Task\Task;
 
 /**
@@ -20,7 +21,7 @@ class TaskController
      * @RequestMapping()
      *
      * @return array
-     * @throws \Swoft\Task\Exception\TaskException
+     * @throws TaskException
      */
     public function getListByCo(): array
     {
@@ -33,7 +34,7 @@ class TaskController
      * @RequestMapping(route="deleteByCo")
      *
      * @return array
-     * @throws \Swoft\Task\Exception\TaskException
+     * @throws TaskException
      */
     public function deleteByCo(): array
     {
@@ -49,7 +50,7 @@ class TaskController
      * @RequestMapping()
      *
      * @return array
-     * @throws \Swoft\Task\Exception\TaskException
+     * @throws TaskException
      */
     public function getListByAsync(): array
     {
@@ -62,7 +63,7 @@ class TaskController
      * @RequestMapping(route="deleteByAsync")
      *
      * @return array
-     * @throws \Swoft\Task\Exception\TaskException
+     * @throws TaskException
      */
     public function deleteByAsync(): array
     {

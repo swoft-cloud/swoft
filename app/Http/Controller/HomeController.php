@@ -2,12 +2,19 @@
 
 namespace App\Http\Controller;
 
+use const E_USER_ERROR;
+use ReflectionException;
+use RuntimeException;
+use Swoft;
+use Swoft\Bean\Exception\ContainerException;
 use Swoft\Context\Context;
 use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\View\Renderer;
+use Throwable;
+use function trigger_error;
 
 /**
  * Class HomeController
@@ -17,12 +24,12 @@ class HomeController
 {
     /**
      * @RequestMapping("/")
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function index(): Response
     {
         /** @var Renderer $renderer */
-        $renderer = \Swoft::getBean('view');
+        $renderer = Swoft::getBean('view');
         $content  = $renderer->render('home/index');
 
         return Context::mustGet()
@@ -35,8 +42,8 @@ class HomeController
      * @RequestMapping("/hello[/{name}]")
      * @param string $name
      * @return Response
-     * @throws \ReflectionException
-     * @throws \Swoft\Bean\Exception\ContainerException
+     * @throws ReflectionException
+     * @throws ContainerException
      */
     public function hello(string $name): Response
     {
@@ -47,19 +54,19 @@ class HomeController
 
     /**
      * @RequestMapping("/ex")
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function ex(): void
     {
-        throw new \RuntimeException('exception throw on ' . __METHOD__);
+        throw new RuntimeException('exception throw on ' . __METHOD__);
     }
 
     /**
      * @RequestMapping("/er")
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function er(): void
     {
-        \trigger_error('user error', \E_USER_ERROR);
+        trigger_error('user error', E_USER_ERROR);
     }
 }

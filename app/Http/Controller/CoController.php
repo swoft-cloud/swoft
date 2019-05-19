@@ -4,11 +4,13 @@
 namespace App\Http\Controller;
 
 use App\Model\Entity\User;
+use Exception;
 use Swoft\Co;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Redis\Redis;
 use Swoole\Coroutine\Http\Client;
+use Throwable;
 
 /**
  * Class CoController
@@ -24,7 +26,7 @@ class CoController
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function multi(): array
     {
@@ -58,7 +60,7 @@ class CoController
 
     /**
      * @return array
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function addUser(): array
     {

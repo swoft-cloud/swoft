@@ -3,8 +3,11 @@
 
 namespace App\Http\Controller;
 
+use Exception;
+use function sgo;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Redis\Exception\RedisException;
 use Swoft\Redis\Redis;
 
 /**
@@ -39,11 +42,11 @@ class RedisController
      * @RequestMapping("release")
      *
      * @return array
-     * @throws \Swoft\Redis\Exception\RedisException
+     * @throws RedisException
      */
     public function release(): array
     {
-        \sgo(function () {
+        sgo(function () {
             Redis::connection();
         });
 
@@ -61,14 +64,14 @@ class RedisController
      */
     public function exPipeline(): array
     {
-        \sgo(function () {
+        sgo(function () {
             Redis::pipeline(function () {
-                throw new \Exception('');
+                throw new Exception('');
             });
         });
 
         Redis::pipeline(function () {
-            throw new \Exception('');
+            throw new Exception('');
         });
 
         return ['exPipeline'];
@@ -83,14 +86,14 @@ class RedisController
      */
     public function exTransaction(): array
     {
-        \sgo(function () {
+        sgo(function () {
             Redis::transaction(function () {
-                throw new \Exception('');
+                throw new Exception('');
             });
         });
 
         Redis::transaction(function () {
-            throw new \Exception('');
+            throw new Exception('');
         });
 
         return ['exPipeline'];

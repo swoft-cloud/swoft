@@ -11,6 +11,7 @@
   "require": {
     "php": ">7.1",
     "ext-pdo": "*",
+    "ext-redis": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
     "swoft/view": "dev-master as 2.0",
@@ -43,12 +44,12 @@
   },
   "repositories": [
     {
-      "type": "composer",
-      "url": "https://packagist.laravel-china.org"
+      "type": "git",
+      "url": "https://github.com/swoft-cloud/swoft-component.git"
     },
     {
-      "type": "git",
-      "url": "git@github.com:swoft-cloud/swoft-component.git"
+      "type": "composer",
+      "url": "https://packagist.laravel-china.org"
     }
   ]
 }
