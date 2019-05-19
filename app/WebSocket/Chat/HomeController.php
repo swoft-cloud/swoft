@@ -3,11 +3,12 @@
 namespace App\WebSocket\Chat;
 
 use Swoft\Session\Session;
-use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
 use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
+use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
 
 /**
  * Class HomeController
+ *
  * @WsController()
  */
 class HomeController
@@ -31,7 +32,7 @@ class HomeController
      */
     public function echo($data): void
     {
-        Session::mustGet()->push('(home.echo)Recv: ' .$data);
+        Session::mustGet()->push('(home.echo)Recv: ' . $data);
     }
 
     /**
@@ -39,10 +40,11 @@ class HomeController
      *
      * @param $data
      * @MessageMapping("ar")
+     *
      * @return string
      */
     public function autoReply($data): string
     {
-        return'(home.ar)Recv: ' .$data;
+        return '(home.ar)Recv: ' . $data;
     }
 }

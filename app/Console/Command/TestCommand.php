@@ -3,11 +3,11 @@
 
 namespace App\Console\Command;
 
+use Swoft\Console\Annotation\Mapping\Command;
+use Swoft\Console\Annotation\Mapping\CommandMapping;
 use function input;
 use function output;
 use function sprintf;
-use Swoft\Console\Annotation\Mapping\Command;
-use Swoft\Console\Annotation\Mapping\CommandMapping;
 
 /**
  * Class TestCommand
@@ -75,18 +75,18 @@ class TestCommand
                 '/dbModel/delete',
                 '/dbModel/save',
             ],
-            'task' => [
+            'task'  => [
                 '/task/getListByCo',
                 '/task/deleteByCo',
                 '/task/getListByAsync',
                 '/task/deleteByAsync',
             ],
-            'rpc' => [
+            'rpc'   => [
                 '/rpc/getList',
                 '/rpc/returnBool',
                 '/rpc/bigString',
             ],
-            'co' => [
+            'co'    => [
                 '/co/multi'
             ]
         ];

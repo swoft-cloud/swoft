@@ -3,11 +3,11 @@
 namespace App\WebSocket;
 
 use App\WebSocket\Chat\HomeController;
-use function server;
 use Swoft\Http\Message\Request;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
 use Swoft\WebSocket\Server\MessageParser\TokenTextParser;
+use function server;
 
 /**
  * Class ChatModule

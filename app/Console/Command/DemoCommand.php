@@ -9,7 +9,7 @@ use Swoft\Console\Input\Input;
 
 /**
  * Class DemoCommand
- * @package App\Console\Command
+ *
  * @Command()
  */
 class DemoCommand
