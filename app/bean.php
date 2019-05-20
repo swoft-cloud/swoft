@@ -36,7 +36,7 @@ return [
     ],
     'db'         => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=172.17.0.3',
+        'dsn'      => 'mysql:dbname=test;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
