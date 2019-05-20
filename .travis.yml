@@ -1,15 +1,20 @@
 language: php
 
 php:
+  - 7.1
+  - 7.2
   - 7.3
-
+services:
+  - redis
 install:
-  - printf "\n" | pecl install -f swoole-2.1.3
+  - echo 'no' | pecl install -f redis
+  - wget https://github.com/swoole/swoole-src/archive/v4.3.3.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j$(nproc) && make install && cd -
+  - echo "extension = swoole.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 before_script:
-  - composer i
+  - composer config -g process-timeout 900 && composer update
+  - phpenv config-rm xdebug.ini
 
-script: composer test
 
-#cache:
-#  directories:
-#    - "$HOME/.composer/cache/files"
+script:
+  - composer test
