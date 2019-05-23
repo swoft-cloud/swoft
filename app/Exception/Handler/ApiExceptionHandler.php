@@ -1,14 +1,4 @@
 <?php declare(strict_types=1);
-/**
- * +----------------------------------------------------------------------
- * | 自定义异常处理器
- * +----------------------------------------------------------------------
- * | Copyright (c) 2019 http://www.sunnyos.com All rights reserved.
- * +----------------------------------------------------------------------
- * | Date：2019-05-22 15:58:50
- * | Author: Sunny (admin@mail.sunnyos.com) QQ：327388905
- * +----------------------------------------------------------------------
- */
 
 namespace App\Exception\Handler;
 
@@ -20,6 +10,10 @@ use Swoft\Http\Server\Exception\Handler\AbstractHttpErrorHandler;
 use Throwable;
 
 /**
+ * Class ApiExceptionHandler
+ *
+ * @sunny 2.0
+ *
  * @ExceptionHandler(ApiException::class)
  */
 class ApiExceptionHandler extends AbstractHttpErrorHandler
