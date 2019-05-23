@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * +----------------------------------------------------------------------
  * | 自定义异常处理器
@@ -31,13 +31,13 @@ class ApiExceptionHandler extends AbstractHttpErrorHandler
      *
      * @return Response
      */
-    public function handle(Throwable $e, Response $response): Response
+    public function handle(Throwable $except, Response $response): Response
     {
         $data = [
-            'code'  => $e->getCode(),
-            'error' => sprintf('(%s) %s', get_class($e), $e->getMessage()),
-            'file'  => sprintf('At %s line %d', $e->getFile(), $e->getLine()),
-            'trace' => $e->getTraceAsString(),
+            'code'  => $except->getCode(),
+            'error' => sprintf('(%s) %s', get_class($except), $except->getMessage()),
+            'file'  => sprintf('At %s line %d', $except->getFile(), $except->getLine()),
+            'trace' => $except->getTraceAsString(),
         ];
        return $response->withData($data);
     }
