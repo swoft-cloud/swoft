@@ -88,6 +88,9 @@ class TestCommand
             ],
             'co' => [
                 '/co/multi'
+            ],
+            'bean' => [
+                '/bean/request'
             ]
         ];
     }
