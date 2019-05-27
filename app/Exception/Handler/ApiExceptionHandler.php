@@ -20,7 +20,7 @@ class ApiExceptionHandler extends AbstractHttpErrorHandler
 {
 
     /**
-     * @param Throwable $e
+     * @param Throwable $except
      * @param Response $response
      *
      * @return Response

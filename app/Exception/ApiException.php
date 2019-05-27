@@ -12,7 +12,11 @@
 
 namespace App\Exception;
 
-
+/**
+ * Class ApiException
+ *
+ * @sunny 2.0
+ */
 class ApiException extends \Exception
 {
 
