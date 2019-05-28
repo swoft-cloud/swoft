@@ -5,6 +5,7 @@ namespace App\Rpc\Service;
 
 
 use App\Rpc\Lib\UserInterface;
+use Exception;
 use Swoft\Co;
 use Swoft\Rpc\Server\Annotation\Mapping\Service;
 
@@ -49,5 +50,14 @@ class UserServiceV2 implements UserInterface
     {
         $content = Co::readFile(__DIR__ . '/big.data');
         return $content;
+    }
+
+    /**
+     * Exception
+     * @throws Exception
+     */
+    public function exception(): void
+    {
+        throw new Exception('exception version2');
     }
 }

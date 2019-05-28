@@ -30,4 +30,9 @@ interface UserInterface
      * @return string
      */
     public function getBigContent(): string;
+
+    /**
+     * Exception
+     */
+    public function exception(): void;
 }
