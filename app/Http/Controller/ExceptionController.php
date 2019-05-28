@@ -1,15 +1,4 @@
 <?php
-/**
- * +----------------------------------------------------------------------
- * | 异常demo
- * +----------------------------------------------------------------------
- * | Copyright (c) 2019 http://www.sunnyos.com All rights reserved.
- * +----------------------------------------------------------------------
- * | Date：2019-05-22 16:01:33
- * | Author: Sunny (admin@mail.sunnyos.com) QQ：327388905
- * +----------------------------------------------------------------------
- */
-
 namespace App\Http\Controller;
 
 use App\Exception\ApiException;
@@ -23,6 +12,8 @@ class ExceptionController
 {
     /**
      * @RequestMapping(route="api")
+     *
+     * @throws ApiException
      */
     public function api(){
         throw new ApiException("api of ExceptionController");

@@ -4,7 +4,7 @@
 namespace App\Http\Controller;
 
 use App\Rpc\Lib\UserInterface;
-use Swoft\Bean\Annotation\Mapping\Bean;
+use Exception;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Rpc\Client\Annotation\Mapping\Reference;
@@ -68,8 +68,22 @@ class RpcController
      */
     public function bigString(): array
     {
-        $string = $this->userService->getBigContent();
+        $this->userService->getBigContent();
 
         return ['string'];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    public function exception(): array
+    {
+        $this->userService->exception();
+
+        return ['exception'];
     }
 }
