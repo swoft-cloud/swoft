@@ -12,7 +12,7 @@ use Throwable;
 /**
  * Class ApiExceptionHandler
  *
- * @sunny 2.0
+ * @since 2.0
  *
  * @ExceptionHandler(ApiException::class)
  */
