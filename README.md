@@ -34,9 +34,57 @@
 - Flexible exception handling
 - Powerful log system
 
-## Notice
+## Document
 
-> The **master** is version `2.0`. If you want to use the 1.x version, please choose the 1.x branch code.
+[中文](https://www.swoft.org/docs/2.x/zh-CN/README.html)
+
+[English](https://www.swoft.org/docs/2.x/zh-CN/README.html)
+
+QQ Group1: 548173319      
+QQ Group2: 778656850
+
+## Requirement
+
+- [PHP 7.1 +](https://github.com/php/php-src/releases)
+- [Swoole 4.3.4 + ](https://github.com/swoole/swoole-src/releases)
+- [Composer](https://getcomposer.org/)
+
+## Install
+
+### Composer
+
+* `composer create-project swoft/swoft swoft`
+
+## Start
+
+```python
+[root@swoft swoft]# php bin/swoft http:start
+2019/06/02-11:18:06 [INFO] Swoole\Runtime::enableCoroutine
+2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @base=/data/www/swoft
+2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @app=@base/app
+2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @config=@base/config
+2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @runtime=@base/runtime
+2019/06/02-11:18:06 [INFO] Project path is /data/www/swoft
+2019/06/02-11:18:06 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) Env file(/data/www/swoft/.env) is loaded
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) Annotations is scanned(autoloader 23, annotation 226, parser 57)
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) config path=/data/www/swoft/config
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) config env=
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) Bean is initialized(singleton 144, prototype 41, definition 30)
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) Event manager initialized(30 listener, 3 subscriber)
+2019/06/02-11:18:11 [INFO] Swoft\Event\Manager\EventManager:triggerListeners(324) WebSocket server route registered(module 2, message command 3)
+2019/06/02-11:18:11 [INFO] Swoft\Event\Manager\EventManager:triggerListeners(324) Error manager init completed(2 type, 3 handler, 3 exception)
+2019/06/02-11:18:11 [INFO] Swoft\Processor\ApplicationProcessor:handle(221) Console command route registered (group 14, command 5)
+                            Information Panel
+  ***********************************************************************
+  * HTTP     | Listen: 0.0.0.0:18306, type: TCP, mode: Process, worker: 1
+  * rpc      | Listen: 0.0.0.0:18307, type: TCP
+  ***********************************************************************
+
+HTTP server start success !
+2019/06/02-11:18:11 [INFO] Swoft\Event\Manager\EventManager:triggerListeners(324) Registered swoole events:
+ start, shutdown, managerStart, managerStop, workerStart, workerStop, workerError, request, task, finish
+Server start success (Master PID: 249, Manager PID: 250)
+```
 
 ## License
 
