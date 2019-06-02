@@ -57,7 +57,7 @@ QQ Group2: 778656850
 
 ## Start
 
-```python
+```
 [root@swoft swoft]# php bin/swoft http:start
 2019/06/02-11:18:06 [INFO] Swoole\Runtime::enableCoroutine
 2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @base=/data/www/swoft
