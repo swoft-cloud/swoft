@@ -1,5 +1,7 @@
 <?php
 
+use App\Common\DbSelector;
+use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
 use Swoft\Task\Swoole\TaskListener;
 use Swoft\Task\Swoole\FinishListener;
@@ -40,6 +42,17 @@ return [
         'username' => 'root',
         'password' => 'swoft123456',
     ],
+    'db2'        => [
+        'class'      => Database::class,
+        'dsn'        => 'mysql:dbname=test;host=172.17.0.4',
+        'username'   => 'root',
+        'password'   => 'swoft123456',
+        'dbSelector' => bean(DbSelector::class)
+    ],
+    'db2.pool'   => [
+        'class'    => Pool::class,
+        'database' => bean('db2')
+    ],
     'redis'      => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
@@ -71,7 +84,7 @@ return [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
         ],
-        'debug' => env('SWOFT_DEBUG', 0),
+        'debug'   => env('SWOFT_DEBUG', 0),
         /* @see WebSocketServer::$setting */
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),

@@ -3,7 +3,9 @@
 
 namespace App\Http\Controller;
 
+use App\Model\Entity\Count;
 use App\Model\Entity\User;
+use Exception;
 use Swoft\Db\DB;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
@@ -172,6 +174,25 @@ class SelectDbController
         });
 
         return [$user, $result];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function select(): array
+    {
+        $count = new Count();
+        $count->setUserId(mt_rand(1, 100));
+        $count->setAttributes('attr');
+        $count->setCreateTime(time());
+
+        $result = $count->save();
+
+        return [$result, $count->getId()];
+
     }
 
     public function insertId2(): bool

@@ -80,6 +80,8 @@ class TestCommand
                 '/selectDb/modelDb',
                 '/selectDb/queryDb',
                 '/selectDb/dbDb',
+                '/selectDb/select?id=2',
+                '/selectDb/select',
             ],
             'task'  => [
                 '/task/getListByCo',
