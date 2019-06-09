@@ -192,7 +192,6 @@ class SelectDbController
         $result = $count->save();
 
         return [$result, $count->getId()];
-
     }
 
     public function insertId2(): bool
