@@ -37,7 +37,7 @@ class TestCommand
         }
 
         foreach ($exeUris as $uri) {
-            $abShell   = sprintf('ab -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $abShell   = sprintf('ab -k -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
             $curlShell = sprintf('curl 127.0.0.1:18306%s', $uri);
 
             exec($curlShell, $curlResult);
@@ -74,6 +74,12 @@ class TestCommand
                 '/dbModel/update',
                 '/dbModel/delete',
                 '/dbModel/save',
+                '/selectDb/modelNotExistDb',
+                '/selectDb/queryNotExistDb',
+                '/selectDb/dbNotExistDb',
+                '/selectDb/modelDb',
+                '/selectDb/queryDb',
+                '/selectDb/dbDb',
             ],
             'task'  => [
                 '/task/getListByCo',
