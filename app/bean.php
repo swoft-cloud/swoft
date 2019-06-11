@@ -36,6 +36,13 @@ return [
             'task_enable_coroutine' => true
         ]
     ],
+    'httpDispatcher' => [
+        // Add global http middleware
+        'middlewares' => [
+            // Allow use @View tag
+            \Swoft\View\Middleware\ViewMiddleware::class,
+        ],
+    ],
     'db'         => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test;host=172.17.0.4',
