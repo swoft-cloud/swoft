@@ -37,7 +37,7 @@ class TestCommand
         }
 
         foreach ($exeUris as $uri) {
-            $abShell   = sprintf('ab -k -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $abShell   = sprintf('ab -k -n 10000 -k -c 2000  127.0.0.1:18306%s', $uri);
             $curlShell = sprintf('curl 127.0.0.1:18306%s', $uri);
 
             exec($curlShell, $curlResult);
@@ -59,6 +59,7 @@ class TestCommand
                 '/redis/et',
                 '/redis/ep',
                 '/redis/release',
+                '/redis/poolSet',
             ],
             'log'   => [
                 '/log/test'
