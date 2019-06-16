@@ -1,15 +1,24 @@
 <?php
 
-$dns = 'mysql:dbname=test;host=172.17.0.4';
-$dns = 'mysql:host=172.17.0.4;dbname=test';
+trait  Tr
+{
+    public function traitMethod()
+    {
 
-$paramsStr = parse_url($dns, PHP_URL_PATH);
-$paramsAry = explode(';', $paramsStr);
-
-$params = [];
-foreach ($paramsAry as $param) {
-    [$key, $value] = explode('=', $param);
-    $params[$key] = $value;
+    }
 }
 
-var_dump($params);
+class A
+{
+    use Tr;
+
+    public function method()
+    {
+
+    }
+}
+
+$a = new ReflectionClass(A::class);
+foreach ($a->getTraits() as $traitClass){
+    var_dump($traitClass->getMethods());
+}

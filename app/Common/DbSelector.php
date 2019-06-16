@@ -29,6 +29,10 @@ class DbSelector implements DbSelectorInterface
             $selectIndex = '';
         }
 
+        if($createDbName == 'test2'){
+            $createDbName = 'test';
+        }
+
         $dbName = sprintf('%s%s', $createDbName, (string)$selectIndex);
         $connection->db($dbName);
     }
