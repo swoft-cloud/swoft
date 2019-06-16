@@ -5,9 +5,11 @@ namespace App\Http\Controller;
 
 use Exception;
 use function sgo;
+use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Redis\Exception\RedisException;
+use Swoft\Redis\Pool;
 use Swoft\Redis\Redis;
 
 /**
@@ -18,6 +20,30 @@ use Swoft\Redis\Redis;
  */
 class RedisController
 {
+
+    /**
+     * @Inject()
+     *
+     * @var Pool
+     */
+    private $redis;
+
+    /**
+     * @RequestMapping("poolSet")
+     */
+    public function set(): array
+    {
+        $key   = 'key';
+        $value = uniqid();
+
+        $this->redis->set($key, $value);
+
+        $get = $this->redis->get($key);
+
+        return [$get, $value];
+    }
+
+
     /**
      * @RequestMapping("str")
      */
