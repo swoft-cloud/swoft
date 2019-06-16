@@ -4,13 +4,11 @@
 namespace App\Http\Controller;
 
 use App\Model\Entity\Count;
-use App\Model\Entity\Count2;
 use App\Model\Entity\User;
 use App\Model\Entity\User3;
 use Swoft\Db\DB;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
-use SwoftTest\Db\Testing\Entity\Count4;
 use Throwable;
 use function sgo;
 
