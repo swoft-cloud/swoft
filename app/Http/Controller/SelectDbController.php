@@ -3,7 +3,7 @@
 
 namespace App\Http\Controller;
 
-use App\Model\Entity\Count;
+use App\Model\Entity\Count2;
 use App\Model\Entity\Desc;
 use App\Model\Entity\User;
 use Exception;
@@ -198,7 +198,7 @@ class SelectDbController
      */
     public function select(): array
     {
-        $count = new Count();
+        $count = new Count2();
         $count->setUserId(mt_rand(1, 100));
         $count->setAttributes('attr');
         $count->setCreateTime(time());

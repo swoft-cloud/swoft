@@ -3,6 +3,7 @@
 
 namespace App\Model\Entity;
 
+
 use Swoft\Db\Annotation\Mapping\Column;
 use Swoft\Db\Annotation\Mapping\Entity;
 use Swoft\Db\Annotation\Mapping\Id;
@@ -13,9 +14,9 @@ use Swoft\Db\Eloquent\Model;
  *
  * @since 2.0
  *
- * @Entity(table="count")
+ * @Entity(table="count", pool="db2.pool")
  */
-class Count extends Model
+class Count2 extends Model
 {
     /**
      * @Id(incrementing=true)

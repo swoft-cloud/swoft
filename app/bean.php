@@ -53,6 +53,16 @@ return [
         'class'    => Pool::class,
         'database' => bean('db2')
     ],
+    'db3'        => [
+        'class'    => Database::class,
+        'dsn'      => 'mysql:dbname=test2;host=172.17.0.3',
+        'username' => 'root',
+        'password' => 'swoft123456'
+    ],
+    'db3.pool'   => [
+        'class'    => Pool::class,
+        'database' => bean('db3')
+    ],
     'redis'      => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
