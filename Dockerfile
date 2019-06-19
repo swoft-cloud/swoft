@@ -4,7 +4,7 @@ LABEL maintainer="inhere <in.798@qq.com>" version="2.0"
 
 # Version
 ENV PHPREDIS_VERSION=4.3.0 \
-    SWOOLE_VERSION 4.3.5
+    SWOOLE_VERSION=4.3.5
 
 ADD . /var/www/swoft
 
