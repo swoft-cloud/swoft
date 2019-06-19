@@ -1,6 +1,6 @@
 FROM php:7.1
 
-LABEL maintainer="inhere <cloud798@126.com>" version="2.0"
+LABEL maintainer="inhere <in.798@qq.com>" version="2.0"
 
 # Version
 ENV PHPREDIS_VERSION=4.3.0 \
