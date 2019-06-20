@@ -24,14 +24,18 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
         libpcre3-dev \
     && apt-get clean \
     && apt-get autoremove \
-# Composer
+# Install composer
     && curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && composer self-update --clean-backups \
-# PDO extension
+# Some php extension
     && docker-php-ext-install pdo_mysql \
-# Bcmath extension
-    && docker-php-ext-install bcmath \
+       bcmath \
+       sockets \
+       zip \
+       sysvmsg \
+       sysvsem \
+       sysvshm \
 # Redis extension
     && wget http://pecl.php.net/get/redis-${PHPREDIS_VERSION}.tgz -O /tmp/redis.tar.tgz \
     && pecl install /tmp/redis.tar.tgz \
