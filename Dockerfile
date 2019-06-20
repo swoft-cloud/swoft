@@ -56,8 +56,8 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && rm -r swoole \
     && docker-php-ext-enable swoole \
 # Install composer deps
-    && composer install --no-dev \
-    && composer dump-autoload -o \
+    && cd /var/www/swoft \
+    && composer install \
     && composer clearcache
 
 WORKDIR /var/www/swoft
