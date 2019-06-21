@@ -5,6 +5,7 @@ namespace App\Http\Controller;
 
 use App\Model\Entity\User;
 use Exception;
+use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Throwable;
@@ -21,16 +22,18 @@ class DbModelController
     /**
      * @RequestMapping(route="find")
      *
-     * @return array
+     * @param Response $response
+     *
+     * @return Response
      *
      * @throws Throwable
      */
-    public function find(): array
+    public function find(Response $response): Response
     {
         $id   = $this->getId();
         $user = User::find($id);
 
-        return $user->toArray();
+        return $response->withData($user);
     }
 
     /**

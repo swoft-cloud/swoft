@@ -37,7 +37,8 @@ class TestCommand
         }
 
         foreach ($exeUris as $uri) {
-            $abShell   = sprintf('ab -k -n 10000 -k -c 2000  127.0.0.1:18306%s', $uri);
+            $curlResult = null;
+            $abShell   = sprintf('ab -k -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
             $curlShell = sprintf('curl 127.0.0.1:18306%s', $uri);
 
             exec($curlShell, $curlResult);
@@ -71,6 +72,7 @@ class TestCommand
                 '/dbTransaction/ts2',
                 '/dbTransaction/cm2',
                 '/dbTransaction/rl2',
+                '/dbTransaction/multiPool',
                 '/dbModel/find',
                 '/dbModel/update',
                 '/dbModel/delete',
