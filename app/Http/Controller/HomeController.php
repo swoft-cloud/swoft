@@ -12,6 +12,7 @@ use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\View\Annotation\Mapping\View;
 use Swoft\View\Renderer;
 use Throwable;
 use function trigger_error;
@@ -36,6 +37,21 @@ class HomeController
             ->getResponse()
             ->withContentType(ContentType::HTML)
             ->withContent($content);
+    }
+
+    /**
+     * Will render view by annotation tag View
+     *
+     * @RequestMapping("/home")
+     * @View("home/index")
+     *
+     * @throws Throwable
+     */
+    public function indexByViewTag(): array
+    {
+        return [
+            'msg' => 'hello'
+        ];
     }
 
     /**

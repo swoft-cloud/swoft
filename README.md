@@ -4,8 +4,9 @@
     </a>
 </p>
 
-[![Latest Version](https://img.shields.io/badge/version-v2.0.0-green.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/releases)
+[![Latest Version](https://img.shields.io/badge/version-v2.0.1-green.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/releases)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
+[![Docker Build Status](https://img.shields.io/docker/build/swoft/alphp.svg)](https://hub.docker.com/r/swoft/alphp/)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg?maxAge=2592000)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.3-brightgreen.svg?maxAge=2592000)](https://github.com/swoole/swoole-src)
 [![Swoft Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://www.swoft.org/docs)
@@ -36,9 +37,8 @@
 
 ## Document
 
-[中文](https://www.swoft.org/docs/2.x/zh-CN/README.html)
-
-[English](https://www.swoft.org/docs/2.x/zh-CN/README.html)
+- [中文](https://www.swoft.org/docs/2.x/zh-CN/README.html)
+- [English](https://www.swoft.org/docs/2.x/en)
 
 QQ Group1: 548173319      
 QQ Group2: 778656850
@@ -57,7 +57,7 @@ QQ Group2: 778656850
 
 ## Start
 
-```python
+```text
 [root@swoft swoft]# php bin/swoft http:start
 2019/06/02-11:18:06 [INFO] Swoole\Runtime::enableCoroutine
 2019/06/02-11:18:06 [INFO] Swoft\SwoftApplication:__construct(14) Set alias @base=/data/www/swoft

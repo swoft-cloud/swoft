@@ -60,6 +60,7 @@ class TestCommand
                 '/redis/et',
                 '/redis/ep',
                 '/redis/release',
+                '/redis/poolSet',
             ],
             'log'   => [
                 '/log/test'
