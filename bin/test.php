@@ -1,24 +1,12 @@
 <?php
 
-trait  Tr
-{
-    public function traitMethod()
-    {
+$a = [
+    'a' => '1',
+    'b' => '2'
+];
 
-    }
-}
+echo '----'.current($a);
 
-class A
-{
-    use Tr;
+var_dump(key($a));
 
-    public function method()
-    {
-
-    }
-}
-
-$a = new ReflectionClass(A::class);
-foreach ($a->getTraits() as $traitClass){
-    var_dump($traitClass->getMethods());
-}
+var_dump($a);

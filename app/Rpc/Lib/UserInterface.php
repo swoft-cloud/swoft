@@ -35,4 +35,11 @@ interface UserInterface
      * Exception
      */
     public function exception(): void;
+
+    /**
+     * @param string $content
+     *
+     * @return int
+     */
+    public function sendBigContent(string $content): int;
 }
