@@ -8,6 +8,9 @@ use Swoft\Console\Annotation\Mapping\CommandMapping;
 use function input;
 use function output;
 use function sprintf;
+use Swoft\Console\Exception\ConsoleErrorException;
+use Swoft\Console\Helper\Show;
+use Swoft\Http\Server\Router\Route;
 
 /**
  * Class TestCommand
@@ -103,5 +106,35 @@ class TestCommand
                 '/bean/request'
             ]
         ];
+    }
+
+    /**
+     * Mock request some api for test server
+     *
+     * @CommandMapping("ca")
+     */
+    public function checkAccess(): void
+    {
+        \bean('httpRouter')->each(function (Route $route) {
+            $path = $route->getPath();
+
+            // Skip some routes
+            if ($route->getMethod() !== 'GET' || false !== \strpos($path, '{')) {
+                return;
+            }
+
+            $command = sprintf('curl -I 127.0.0.1:18306%s', $path);
+            Show::colored('> ' . $command);
+            \exec($command);
+        });
+    }
+
+    /**
+     * @CommandMapping("err")
+     * @throws ConsoleErrorException
+     */
+    public function error(): void
+    {
+        ConsoleErrorException::throw('this is an error message');
     }
 }
