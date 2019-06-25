@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace App\Annotation\Mapping;
 
@@ -9,8 +8,9 @@ use Swoft\Validator\Annotation\Mapping\Type;
 
 /**
  * Class AlphaDash
- * @package App\Annotation\Mapping
+ *
  * @since 2.0
+ *
  * @Annotation
  * @Attributes({
  *     @Attribute("message",type="string")
@@ -61,6 +61,4 @@ class AlphaDash extends Type
     {
         return $this->name;
     }
-
-
 }

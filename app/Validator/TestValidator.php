@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace App\Validator;
 
@@ -10,8 +9,9 @@ use Swoft\Validator\Annotation\Mapping\Validator;
 
 /**
  * Class TestValidator
- * @package App\Validator
+ *
  * @since 2.0
+ *
  * @Validator(name="TestValidator")
  */
 class TestValidator
@@ -24,14 +24,14 @@ class TestValidator
     protected $name = 'defualtName';
 
     /**
-     * @IsInt(message="类型必须传递且整数")
+     * @IsInt(message="type must Integer")
      *
      * @var int
      */
     protected $type;
 
     /**
-     * @AlphaDash(message="密码只能是字母,数字,短横,下划线")
+     * @AlphaDash(message="Passwords can only be alphabet, numbers, dashes, underscores")
      * @var string
      */
     protected $password;

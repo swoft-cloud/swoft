@@ -1,8 +1,6 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace App\Annotation\Parser;
-
 
 use ReflectionException;
 use Swoft\Annotation\Annotation\Mapping\AnnotationParser;
@@ -13,7 +11,7 @@ use Swoft\Validator\ValidatorRegister;
 
 /**
  * Class AlphaDashParser
- * @package App\Annotation\Parser
+ *
  * @AnnotationParser(annotation=AlphaDash::class)
  */
 class AlphaDashParser extends Parser
@@ -21,6 +19,7 @@ class AlphaDashParser extends Parser
     /**
      * @param int $type
      * @param object $annotationObject
+     *
      * @return array
      * @throws ReflectionException
      * @throws ValidatorException
@@ -33,6 +32,4 @@ class AlphaDashParser extends Parser
         ValidatorRegister::registerValidatorItem($this->className, $this->propertyName, $annotationObject);
         return [];
     }
-
-
 }
