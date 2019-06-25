@@ -60,4 +60,14 @@ class UserServiceV2 implements UserInterface
     {
         throw new Exception('exception version2');
     }
+
+    /**
+     * @param string $content
+     *
+     * @return int
+     */
+    public function sendBigContent(string $content): int
+    {
+        return strlen($content);
+    }
 }
