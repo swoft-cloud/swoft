@@ -32,6 +32,7 @@ class TestValidator
 
     /**
      * @AlphaDash(message="Passwords can only be alphabet, numbers, dashes, underscores")
+     *
      * @var string
      */
     protected $password;

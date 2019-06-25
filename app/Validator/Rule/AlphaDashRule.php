@@ -19,6 +19,7 @@ class AlphaDashRule implements RuleInterface
      * @param string $propertyName
      * @param object $item
      * @param null $default
+     *
      * @return array
      * @throws ValidatorException
      */

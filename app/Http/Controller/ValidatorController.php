@@ -16,6 +16,7 @@ class ValidatorController
 {
     /**
      * Verify all defined fields in the TestValidator validator
+     *
      * @RequestMapping()
      * @Validate(validator="TestValidator")
      * @param Request $request
@@ -29,6 +30,7 @@ class ValidatorController
 
     /**
      * Verify only the type field in the TestValidator validator
+     *
      * @RequestMapping()
      * @Validate(validator="TestValidator",fields={"type"})
      * @param Request $request
@@ -42,6 +44,7 @@ class ValidatorController
 
     /**
      * Verify only the password field in the TestValidator validator
+     *
      * @RequestMapping()
      * @Validate(validator="TestValidator",fields={"password"})
      * @param Request $request
@@ -55,6 +58,7 @@ class ValidatorController
 
     /**
      * Customize the validator with userValidator
+     *
      * @RequestMapping()
      * @Validate(validator="userValidator")
      * @param Request $request
