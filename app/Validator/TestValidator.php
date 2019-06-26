@@ -36,5 +36,4 @@ class TestValidator
      * @var string
      */
     protected $password;
-
 }

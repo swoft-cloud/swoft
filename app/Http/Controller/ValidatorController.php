@@ -19,6 +19,7 @@ class ValidatorController
      *
      * @RequestMapping()
      * @Validate(validator="TestValidator")
+     *
      * @param Request $request
      *
      * @return array
@@ -33,6 +34,7 @@ class ValidatorController
      *
      * @RequestMapping()
      * @Validate(validator="TestValidator",fields={"type"})
+     *
      * @param Request $request
      *
      * @return array
@@ -47,6 +49,7 @@ class ValidatorController
      *
      * @RequestMapping()
      * @Validate(validator="TestValidator",fields={"password"})
+     *
      * @param Request $request
      *
      * @return array
@@ -61,6 +64,7 @@ class ValidatorController
      *
      * @RequestMapping()
      * @Validate(validator="userValidator")
+     *
      * @param Request $request
      *
      * @return array
@@ -68,6 +72,5 @@ class ValidatorController
     function validateCustomer(Request $request): array
     {
         return $request->getParsedBody();
-
     }
 }

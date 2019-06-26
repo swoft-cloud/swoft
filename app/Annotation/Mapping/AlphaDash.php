@@ -4,7 +4,6 @@ namespace App\Annotation\Mapping;
 
 use Doctrine\Common\Annotations\Annotation\Attribute;
 use Doctrine\Common\Annotations\Annotation\Attributes;
-use Swoft\Validator\Annotation\Mapping\Type;
 
 /**
  * Class AlphaDash
@@ -16,7 +15,7 @@ use Swoft\Validator\Annotation\Mapping\Type;
  *     @Attribute("message",type="string")
  * })
  */
-class AlphaDash extends Type
+class AlphaDash
 {
     /**
      * @var string
