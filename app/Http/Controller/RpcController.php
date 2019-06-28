@@ -5,6 +5,7 @@ namespace App\Http\Controller;
 
 use App\Rpc\Lib\UserInterface;
 use Exception;
+use Swoft\Co;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Rpc\Client\Annotation\Mapping\Reference;
@@ -68,9 +69,23 @@ class RpcController
      */
     public function bigString(): array
     {
-        $this->userService->getBigContent();
+        $string = $this->userService->getBigContent();
 
-        return ['string'];
+        return ['string', strlen($string)];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     */
+    public function sendBigString(): array
+    {
+        $content = Co::readFile(__DIR__ . '/../../Rpc/Service/big.data');
+
+        $len    = strlen($content);
+        $result = $this->userService->sendBigContent($content);
+        return [$len, $result];
     }
 
     /**

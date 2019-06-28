@@ -41,8 +41,8 @@ class TestCommand
 
         foreach ($exeUris as $uri) {
             $curlResult = null;
-            $abShell   = sprintf('ab -k -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
-            $curlShell = sprintf('curl 127.0.0.1:18306%s', $uri);
+            $abShell    = sprintf('ab -k -n 10000 -c 2000  127.0.0.1:18306%s', $uri);
+            $curlShell  = sprintf('curl 127.0.0.1:18306%s', $uri);
 
             exec($curlShell, $curlResult);
             output()->writeln('执行结果:' . json_encode($curlResult));
@@ -98,11 +98,12 @@ class TestCommand
                 '/rpc/getList',
                 '/rpc/returnBool',
                 '/rpc/bigString',
+                '/rpc/sendBigString'
             ],
             'co'    => [
                 '/co/multi'
             ],
-            'bean' => [
+            'bean'  => [
                 '/bean/request'
             ]
         ];
