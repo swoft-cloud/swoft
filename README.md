@@ -4,6 +4,7 @@
     </a>
 </p>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/909c902daf71441995e33772120c5500)](https://app.codacy.com/app/wujunze/swoft?utm_source=github.com&utm_medium=referral&utm_content=swoft-cloud/swoft&utm_campaign=Badge_Grade_Dashboard)
 [![Latest Version](https://img.shields.io/badge/version-v2.0.1-green.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/releases)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
 [![Docker Build Status](https://img.shields.io/docker/build/swoft/alphp.svg)](https://hub.docker.com/r/swoft/alphp/)
