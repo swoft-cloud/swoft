@@ -38,7 +38,7 @@
 ## Document
 
 - [中文](https://www.swoft.org/docs/2.x/zh-CN/README.html)
-- [English](https://www.swoft.org/docs/2.x/en)
+- [English](https://en.swoft.org/docs)
 
 QQ Group1: 548173319      
 QQ Group2: 778656850
