@@ -11,16 +11,20 @@ use Swoft\Bean\Exception\ContainerException;
 use Swoft\Co;
 use Swoft\Console\Annotation\Mapping\Command;
 use Swoft\Console\Annotation\Mapping\CommandMapping;
+use Swoft\Http\Server\HttpServer;
 use Swoft\Log\Helper\CLog;
+use Swoft\Rpc\Server\ServiceServer;
+use Swoft\WebSocket\Server\WebSocketServer;
+use Throwable;
 
 /**
- * Class ApolloCommand
+ * Class AgentCommand
  *
  * @since 2.0
  *
- * @Command("apollo")
+ * @Command("agent")
  */
-class ApolloCommand
+class AgentCommand
 {
     /**
      * @Inject()
@@ -31,10 +35,6 @@ class ApolloCommand
 
     /**
      * @CommandMapping(name="index")
-     *
-     * @throws ReflectionException
-     * @throws ApolloException
-     * @throws ContainerException
      */
     public function index(): void
     {
@@ -42,11 +42,20 @@ class ApolloCommand
             'application'
         ];
 
-        $this->config->listen($namespaces, [$this, 'updateConfigFile']);
+        while (true) {
+            try {
+                $this->config->listen($namespaces, [$this, 'updateConfigFile']);
+            } catch (Throwable $e) {
+                CLog::error('Config agent fail(%s %s %d)!', $e->getMessage(), $e->getFile(), $e->getLine());
+            }
+        }
     }
 
     /**
      * @param array $data
+     *
+     * @throws ContainerException
+     * @throws ReflectionException
      */
     public function updateConfigFile(array $data): void
     {
@@ -57,7 +66,19 @@ class ApolloCommand
             $content   = '<?php return ' . var_export($configKVs, true) . ';';
             Co::writeFile(alias($configFile), $content, FILE_NO_DEFAULT_CONTEXT);
 
-            CLog::info('Apollo 配置文件更新成功！');
+            CLog::info('Apollo update success！');
+
+//            /** @var HttpServer $server */
+//            $server = bean('httpServer');
+//            $server->restart();
+
+//            /** @var ServiceServer $server */
+//            $server = bean('rpcServer');
+//            $server->restart();
+
+            /* @var WebSocketServer $server */
+            $server = bean('wsServer');
+            $server->restart();
         }
     }
 }
