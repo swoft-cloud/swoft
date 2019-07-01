@@ -30,10 +30,12 @@ class AlphaDashRule implements RuleInterface
             $message = (empty($message)) ? sprintf('%s must exist!', $propertyName) : $message;
             throw new ValidatorException($message);
         }
+
         $rule = '/^[A-Za-z0-9\-\_]+$/';
         if (preg_match($rule, $data[$propertyName])) {
             return [$data];
         }
+
         $message = (empty($message)) ? sprintf('%s must be a email', $propertyName) : $message;
         throw new ValidatorException($message);
     }

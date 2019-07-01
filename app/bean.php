@@ -107,4 +107,8 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    'apollo' => [
+        'host'    => '192.168.4.11',
+        'timeout' => -1
+    ]
 ];
