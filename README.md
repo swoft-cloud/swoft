@@ -47,6 +47,8 @@
 ## Discuss
 
 - [swoft-cloud/community](https://gitter.im/swoft-cloud/community)
+- QQ Group1: 548173319      
+- QQ Group2: 778656850
 
 ## Requirement
 
