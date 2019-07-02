@@ -61,6 +61,7 @@ class TestCommand
                 '/redis/ep',
                 '/redis/release',
                 '/redis/poolSet',
+                '/redis/set',
             ],
             'log'   => [
                 '/log/test'
@@ -77,13 +78,15 @@ class TestCommand
                 '/dbModel/update',
                 '/dbModel/delete',
                 '/dbModel/save',
+                '/dbModel/batchUpdate',
                 '/selectDb/modelNotExistDb',
                 '/selectDb/queryNotExistDb',
                 '/selectDb/dbNotExistDb',
                 '/selectDb/modelDb',
                 '/selectDb/queryDb',
                 '/selectDb/dbDb',
-                '/selectDb/select'
+                '/selectDb/select',
+                '/builder/schema'
             ],
             'task'  => [
                 '/task/getListByCo',

@@ -31,7 +31,7 @@ class RedisController
     /**
      * @RequestMapping("poolSet")
      */
-    public function set(): array
+    public function poolSet(): array
     {
         $key   = 'key';
         $value = uniqid();
@@ -39,6 +39,25 @@ class RedisController
         $this->redis->set($key, $value);
 
         $get = $this->redis->get($key);
+
+        return [$get, $value];
+    }
+
+    /**
+     * @RequestMapping()
+     */
+    public function set(): array
+    {
+        $key   = 'key';
+        $value = uniqid();
+
+        $this->redis->zAdd($key, [
+            'add'    => 11.1,
+            'score2' => 11.1,
+            'score3' => 11.21
+        ]);
+
+        $get = $this->redis->sMembers($key);
 
         return [$get, $value];
     }

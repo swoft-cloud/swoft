@@ -8,7 +8,9 @@ use Swoft\Db\Annotation\Mapping\Entity;
 use Swoft\Db\Annotation\Mapping\Id;
 use Swoft\Db\Eloquent\Model;
 
+
 /**
+ * 
  * Class Count
  *
  * @since 2.0
@@ -18,45 +20,41 @@ use Swoft\Db\Eloquent\Model;
 class Count extends Model
 {
     /**
-     * @Id(incrementing=true)
-     *
-     * @Column(name="id", prop="id")
+     * 
+     * @Id()
+     * @Column()
      * @var int|null
      */
     private $id;
 
     /**
+     * 
+     *
      * @Column(name="user_id", prop="userId")
      * @var int|null
      */
     private $userId;
 
     /**
-     * @Column(name="create_time", prop="createTime")
+     * 
      *
+     * @Column(name="create_time", prop="createTime")
      * @var int|null
      */
     private $createTime;
 
     /**
-     * attributes
+     * 
      *
      * @Column()
-     *
      * @var string|null
      */
     private $attributes;
 
-    /**
-     * @return null|int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
-     * @param null|int $id
+     * @param int|null $id
+     * @return void
      */
     public function setId(?int $id): void
     {
@@ -64,15 +62,8 @@ class Count extends Model
     }
 
     /**
-     * @return null|int
-     */
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param null|int $userId
+     * @param int|null $userId
+     * @return void
      */
     public function setUserId(?int $userId): void
     {
@@ -80,15 +71,8 @@ class Count extends Model
     }
 
     /**
-     * @return null|int
-     */
-    public function getCreateTime(): ?int
-    {
-        return $this->createTime;
-    }
-
-    /**
-     * @param null|int $createTime
+     * @param int|null $createTime
+     * @return void
      */
     public function setCreateTime(?int $createTime): void
     {
@@ -96,18 +80,44 @@ class Count extends Model
     }
 
     /**
-     * @return null|string
+     * @param string|null $attributes
+     * @return void
+     */
+    public function setAttributes(?string $attributes): void
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCreateTime(): ?int
+    {
+        return $this->createTime;
+    }
+
+    /**
+     * @return string|null
      */
     public function getAttributes(): ?string
     {
         return $this->attributes;
     }
 
-    /**
-     * @param null|string $attributes
-     */
-    public function setAttributes(?string $attributes): void
-    {
-        $this->attributes = $attributes;
-    }
 }
