@@ -8,6 +8,13 @@ use Swoft\Console\Annotation\Mapping\CommandMapping;
 use function input;
 use function output;
 use function sprintf;
+use Swoft\Console\Annotation\Mapping\CommandOption;
+use Swoft\Console\Exception\ConsoleErrorException;
+use Swoft\Console\Helper\Show;
+use Swoft\Console\Input\Input;
+use Swoft\Console\Output\Output;
+use Swoft\Http\Server\Router\Route;
+use Swoole\Client;
 
 /**
  * Class TestCommand
@@ -104,5 +111,80 @@ class TestCommand
                 '/bean/request'
             ]
         ];
+    }
+
+    /**
+     * Mock request some api for test server
+     *
+     * @CommandMapping("ca")
+     */
+    public function checkAccess(): void
+    {
+        \bean('httpRouter')->each(function (Route $route) {
+            $path = $route->getPath();
+
+            // Skip some routes
+            if ($route->getMethod() !== 'GET' || false !== \strpos($path, '{')) {
+                return;
+            }
+
+            $command = sprintf('curl -I 127.0.0.1:18306%s', $path);
+            Show::colored('> ' . $command);
+            \exec($command);
+        });
+    }
+
+    /**
+     * @CommandMapping("err")
+     * @throws ConsoleErrorException
+     */
+    public function error(): void
+    {
+        ConsoleErrorException::throw('this is an error message');
+    }
+
+    /**
+     * @CommandMapping(desc="connect to an tcp server and allow send message interactive")
+     * @CommandOption("host", short="H", desc="the tcp server host address", default="127.0.0.1", type="string")
+     * @CommandOption("port", short="p", desc="the tcp server port number", default="18309", type="integer")
+     *
+     * @param Input  $input
+     * @param Output $output
+     */
+    public function tcp(Input $input, Output $output): void
+    {
+        $cli = new Client(\SWOOLE_SOCK_TCP);
+        $host = $input->getSameOpt(['host', 'H'], '127.0.0.1');
+        $port = $input->getSameOpt(['port', 'p'], 18309);
+
+        if (!$ok = $cli->connect((string)$host, (int)$port, 5.0)) {
+            $code = $cli->errCode;
+            $msg  = socket_strerror($code);
+            Show::error("Connect failed. Error($code): $msg");
+            return;
+        }
+
+        $addr = $host . ':' . $port;
+        $output->colored('Successful connect to tcp server ' . $addr, 'success');
+
+        while (true) {
+            if (!$msg = $input->read('> ')) {
+                $output->liteWarning('Please input message for send');
+                continue;
+            }
+
+            // Exit interactive terminal
+            if ($msg === 'quit' || $msg === 'exit') {
+                $output->colored('Quit, Bye!');
+                break;
+            }
+
+            $cli->send($msg);
+
+            $res = $cli->recv();
+            $output->writef('Return: %s', $res);
+        }
+
+        $cli->close();
     }
 }

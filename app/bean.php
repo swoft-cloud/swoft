@@ -107,6 +107,9 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    'cliRouter' => [
+        // 'disabledGroups' => ['demo', 'test'],
+    ],
     'apollo' => [
         'host'    => '192.168.4.11',
         'timeout' => -1

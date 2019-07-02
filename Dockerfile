@@ -1,10 +1,30 @@
-FROM php:7.1
+# @description php image base on the debian 9.x
+#
+#                       Some Information
+# ------------------------------------------------------------------------------------
+# @link https://hub.docker.com/_/debian/      alpine image
+# @link https://hub.docker.com/_/php/         php image
+# @link https://github.com/docker-library/php php dockerfiles
+# @see https://github.com/docker-library/php/tree/master/7.2/stretch/cli/Dockerfile
+# ------------------------------------------------------------------------------------
+# @build-example docker build . -f Dockerfile -t swoft/swoft
+#
+FROM php:7.2
 
 LABEL maintainer="inhere <in.798@qq.com>" version="2.0"
 
-# Version
-ENV PHPREDIS_VERSION=4.3.0 \
-    SWOOLE_VERSION=4.3.5
+# --build-arg timezone=Asia/Shanghai
+ARG timezone
+# app env: prod pre test dev
+ARG app_env=prod
+# default use www-data user
+ARG work_user=www-data
+
+ENV APP_ENV=${app_env:-"prod"} \
+    TIMEZONE=${timezone:-"Asia/Shanghai"} \
+    PHPREDIS_VERSION=4.3.0 \
+    SWOOLE_VERSION=4.3.5 \
+    COMPOSER_ALLOW_SUPERUSER=1
 
 ADD . /var/www/swoft
 
@@ -13,35 +33,25 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone \
 # Libs
     && apt-get update \
-    && apt-get install -y \
-        curl \
-        wget \
-        git \
-        zip \
+    && apt-get install -y --no-install-recommends \
+        curl wget git zip unzip less vim openssl \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
         libpcre3-dev \
-    && apt-get clean \
-    && apt-get autoremove \
 # Install composer
     && curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && composer self-update --clean-backups \
-# Some php extension
-    && docker-php-ext-install pdo_mysql \
-       bcmath \
-       sockets \
-       zip \
-       sysvmsg \
-       sysvsem \
-       sysvshm \
-# Redis extension
+# Install PHP extensions
+    && docker-php-ext-install \
+       bcmath gd pdo_mysql mbstring sockets zip sysvmsg sysvsem sysvshm \
+# Install redis extension
     && wget http://pecl.php.net/get/redis-${PHPREDIS_VERSION}.tgz -O /tmp/redis.tar.tgz \
     && pecl install /tmp/redis.tar.tgz \
     && rm -rf /tmp/redis.tar.tgz \
     && docker-php-ext-enable redis \
-# Swoole extension
+# Install swoole extension
     && wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -O swoole.tar.gz \
     && mkdir -p swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
@@ -55,9 +65,16 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     ) \
     && rm -r swoole \
     && docker-php-ext-enable swoole \
+# Clear dev deps
+    && apt-get clean \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+# Timezone
+    && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && echo "${TIMEZONE}" > /etc/timezone \
+    && echo "[Date]\ndate.timezone=${TIMEZONE}" > /usr/local/etc/php/conf.d/timezone.ini \
 # Install composer deps
     && cd /var/www/swoft \
-    && composer install \
+    && composer install --no-dev \
     && composer clearcache
 
 WORKDIR /var/www/swoft
