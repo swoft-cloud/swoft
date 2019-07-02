@@ -29,9 +29,11 @@ class CustomerValidator implements ValidatorInterface
         if ($start === null && $end === null) {
             throw new ValidatorException('Start time and end time cannot be empty');
         }
+
         if ($start > $end) {
             throw new ValidatorException('Start cannot be greater than the end time');
         }
+
         return $data;
     }
 }
