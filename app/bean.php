@@ -107,4 +107,7 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    'cliRouter' => [
+        // 'disabledGroups' => ['demo', 'test'],
+    ],
 ];
