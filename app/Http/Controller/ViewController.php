@@ -9,6 +9,8 @@ use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\View\Annotation\Mapping\View;
+use Throwable;
 
 /**
  * Class ViewController
@@ -28,11 +30,26 @@ class ViewController
      * @throws ReflectionException
      * @throws ContainerException
      */
-    public function index(Response $response)
+    public function index(Response $response): Response
     {
-        $response = $response->withContent('<html><h1>Swoft framework</h1></html>');
+        $response = $response->withContent('<html lang="en"><h1>Swoft framework</h1></html>');
         $response = $response->withContentType(ContentType::HTML);
         return $response;
+    }
+
+    /**
+     * Will render view by annotation tag View
+     *
+     * @RequestMapping("/home")
+     * @View("home/index")
+     *
+     * @throws Throwable
+     */
+    public function indexByViewTag(): array
+    {
+        return [
+            'msg' => 'hello'
+        ];
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Console\Command;
 
 use Swoft\Console\Annotation\Mapping\Command;
 use Swoft\Console\Annotation\Mapping\CommandMapping;
+use Swoft\Console\Exception\ConsoleErrorException;
 use Swoft\Console\Helper\Show;
 use Swoft\Console\Input\Input;
 
@@ -24,5 +25,14 @@ class DemoCommand
             'args' => $input->getArgs(),
             'opts' => $input->getOptions(),
         ]);
+    }
+
+    /**
+     * @CommandMapping("err")
+     * @throws ConsoleErrorException
+     */
+    public function coError(): void
+    {
+        ConsoleErrorException::throw('this is an error message');
     }
 }

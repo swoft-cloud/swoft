@@ -14,6 +14,7 @@
     "ext-json": "*",
     "ext-swoole": ">=4.3",
     "swoft/component": "dev-master as 2.0",
+    "swoft/ext": "dev-master as 2.0",
     "swoft/view": "~2.0.0",
     "swoft/devtool": "~2.0.0"
   },
@@ -34,7 +35,6 @@
       "SwoftTest\\": "./test/"
     }
   },
-  "minimum-stability": "dev",
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -46,6 +46,10 @@
     {
       "type": "git",
       "url": "git@github.com:swoft-cloud/swoft-component.git"
+    },
+    {
+      "type": "git",
+      "url": "git@github.com:swoft-cloud/swoft-ext.git"
     }
   ]
 }

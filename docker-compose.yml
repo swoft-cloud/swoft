@@ -1,0 +1,40 @@
+version: '3.4'
+services:
+  swoft:
+    image: swoft/swoft
+    container_name: swoft-srv
+    environment:
+      - APP_ENV=dev
+      - TIMEZONE=Asia/Shanghai
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "18306:18306"
+      - "18307:18307"
+      - "18308:18308"
+    volumes:
+      - ./:/var/www
+      # - ./tmp/ng-conf:/etc/nginx
+      # - ./tmp/logs:/var/log
+
+  mysql:
+    image: mysql
+    container_name: mysql-srv
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./tmp/data/mysql:/var/lib/mysql
+    restart: always
+
+  redis:
+    container_name: redis-srv
+    image: redis:4-alpine
+    ports:
+      - "16379:6379"
+    sysctls:
+      net.core.somaxconn: 65535
+    restart: always
