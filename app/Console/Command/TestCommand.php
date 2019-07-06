@@ -117,6 +117,11 @@ class TestCommand
                 '/breaker/unbreak',
                 '/breaker/breaked',
                 '/breaker/loopBreaker'
+            ],
+            'limiter' => [
+                '/limiter/requestLimiter',
+                '/limiter/requestLimiter2',
+                '/limiter/paramLimiter?id=12',
             ]
         ];
     }
