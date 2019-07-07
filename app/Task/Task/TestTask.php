@@ -47,4 +47,26 @@ class TestTask
 
         return false;
     }
+
+    /**
+     * @TaskMapping()
+     *
+     * @param string $name
+     *
+     * @return null
+     */
+    public function returnNull(string $name)
+    {
+        return null;
+    }
+
+    /**
+     * @TaskMapping()
+     *
+     * @param string $name
+     */
+    public function returnVoid(string $name): void
+    {
+        return;
+    }
 }

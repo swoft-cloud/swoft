@@ -100,6 +100,8 @@ class TestCommand
                 '/task/deleteByCo',
                 '/task/getListByAsync',
                 '/task/deleteByAsync',
+                '/task/returnNull',
+                '/task/returnVoid',
             ],
             'rpc'     => [
                 '/rpc/getList',

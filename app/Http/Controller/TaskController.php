@@ -71,4 +71,28 @@ class TaskController
 
         return [$data];
     }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws TaskException
+     */
+    public function returnNull(): array
+    {
+        $result = Task::co('testTask', 'returnNull', ['name']);
+        return [$result];
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws TaskException
+     */
+    public function returnVoid(): array
+    {
+        $result = Task::co('testTask', 'returnVoid', ['name']);
+        return [$result];
+    }
 }
