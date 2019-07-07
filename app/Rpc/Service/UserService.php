@@ -41,6 +41,14 @@ class UserService implements UserInterface
     }
 
     /**
+     * @return void
+     */
+    public function returnNull(): void
+    {
+        return;
+    }
+
+    /**
      * @return string
      */
     public function getBigContent(): string
