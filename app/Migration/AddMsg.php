@@ -12,14 +12,14 @@ use Swoft\Devtool\Migration\Migration as BaseMigration;
  *
  * @since 2.0
  *
- * @Migration()
+ * @Migration(20190630164222)
  */
-class AddMsg20190630164222 extends BaseMigration
+class AddMsg extends BaseMigration
 {
     /**
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $sql = <<<sql
 CREATE TABLE `users` (
@@ -37,7 +37,7 @@ sql;
     /**
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $truncate = <<<sql
 truncate `users`;
