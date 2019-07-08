@@ -34,6 +34,14 @@ class UserServiceV2 implements UserInterface
     }
 
     /**
+     * @return void
+     */
+    public function returnNull(): void
+    {
+        return;
+    }
+
+    /**
      * @param int $id
      *
      * @return bool

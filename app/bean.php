@@ -15,12 +15,12 @@ use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
-    'logger'     => [
+    'logger'         => [
         'flushRequest' => true,
         'enable'       => false,
         'json'         => false,
     ],
-    'httpServer' => [
+    'httpServer'     => [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
@@ -32,7 +32,7 @@ return [
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 12,
+            'task_worker_num'       => 3,
             'task_enable_coroutine' => true
         ]
     ],
@@ -43,40 +43,43 @@ return [
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
     ],
-    'db'         => [
+    'db'             => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test;host=172.17.0.3',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
-    'db2'        => [
+    'db2'            => [
         'class'      => Database::class,
         'dsn'        => 'mysql:dbname=test2;host=172.17.0.3',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
     ],
-    'db2.pool'   => [
+    'db2.pool'       => [
         'class'    => Pool::class,
         'database' => bean('db2')
     ],
-    'db3'        => [
+    'db3'            => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test2;host=172.17.0.3',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
-    'db3.pool'   => [
+    'db3.pool'       => [
         'class'    => Pool::class,
         'database' => bean('db3')
     ],
-    'redis'      => [
+    'migrationManager' => [
+        'migrationPath' => '@app/Migration',
+    ],
+    'redis'          => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
     ],
-    'user'       => [
+    'user'           => [
         'class'   => ServiceClient::class,
         'host'    => '127.0.0.1',
         'port'    => 18307,
@@ -88,14 +91,14 @@ return [
         ],
         'packet'  => bean('rpcClientPacket')
     ],
-    'user.pool'  => [
+    'user.pool'      => [
         'class'  => ServicePool::class,
         'client' => bean('user')
     ],
-    'rpcServer'  => [
+    'rpcServer'      => [
         'class' => ServiceServer::class,
     ],
-    'wsServer'   => [
+    'wsServer'       => [
         'class'   => WebSocketServer::class,
         'on'      => [
             // Enable http handle
@@ -107,4 +110,14 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    'cliRouter'      => [
+        // 'disabledGroups' => ['demo', 'test'],
+    ],
+    'apollo'         => [
+        'host'    => '192.168.4.11',
+        'timeout' => -1
+    ],
+    'consul'         => [
+        'host' => '192.168.4.11'
+    ]
 ];

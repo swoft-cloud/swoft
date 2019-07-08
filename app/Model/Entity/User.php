@@ -10,6 +10,7 @@ use Swoft\Db\Eloquent\Model;
 
 
 /**
+ * 
  * Class User
  *
  * @since 2.0
@@ -19,37 +20,149 @@ use Swoft\Db\Eloquent\Model;
 class User extends Model
 {
     /**
+     * 
      * @Id()
-     *
-     * @Column(name="id", prop="id")
+     * @Column()
      * @var int|null
      */
     private $id;
 
     /**
+     * 
+     *
      * @Column()
-     * @var string|null
+     * @var string
      */
     private $name;
 
     /**
-     * @Column(name="password", hidden=true)
-     * @var string|null
-     */
-    private $pwd;
-
-    /**
-     * @Column()
+     * 
      *
-     * @var int|null
+     * @Column()
+     * @var int
      */
     private $age;
 
     /**
-     * @Column(name="user_desc", prop="udesc")
-     * @var string|null
+     * 
+     *
+     * @Column(hidden=true)
+     * @var string
+     */
+    private $password;
+
+    /**
+     * 
+     *
+     * @Column(name="user_desc", prop="userDesc")
+     * @var string
      */
     private $userDesc;
+
+    /**
+     * 
+     *
+     * @Column()
+     * @var int|null
+     */
+    private $add;
+
+    /**
+     * 
+     *
+     * @Column()
+     * @var int|null
+     */
+    private $hahh;
+
+    /**
+     * 
+     *
+     * @Column(name="test_json", prop="testJson")
+     * @var array|null
+     */
+    private $testJson;
+
+
+    /**
+     * @param int|null $id
+     *
+     * @return void
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param int $age
+     *
+     * @return void
+     */
+    public function setAge(int $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @param string $password
+     *
+     * @return void
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @param string $userDesc
+     *
+     * @return void
+     */
+    public function setUserDesc(string $userDesc): void
+    {
+        $this->userDesc = $userDesc;
+    }
+
+    /**
+     * @param int|null $add
+     *
+     * @return void
+     */
+    public function setAdd(?int $add): void
+    {
+        $this->add = $add;
+    }
+
+    /**
+     * @param int|null $hahh
+     *
+     * @return void
+     */
+    public function setHahh(?int $hahh): void
+    {
+        $this->hahh = $hahh;
+    }
+
+    /**
+     * @param array|null $testJson
+     *
+     * @return void
+     */
+    public function setTestJson(?array $testJson): void
+    {
+        $this->testJson = $testJson;
+    }
 
     /**
      * @return int|null
@@ -60,74 +173,59 @@ class User extends Model
     }
 
     /**
-     * @param int|null $id
+     * @return string
      */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getAge(): ?int
-    {
-        return $this->age;
-    }
-
-    /**
-     * @param int|null $age
-     */
-    public function setAge(?int $age): void
-    {
-        $this->age = $age;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param string|null $name
+     * @return int
      */
-    public function setName(?string $name): void
+    public function getAge(): int
     {
-        $this->name = $name;
+        return $this->age;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPwd(): ?string
+    public function getPassword(): string
     {
-        return $this->pwd;
+        return $this->password;
     }
 
     /**
-     * @param string|null $pwd
+     * @return string
      */
-    public function setPwd(?string $pwd): void
-    {
-        $this->pwd = $pwd;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUserDesc(): ?string
+    public function getUserDesc(): string
     {
         return $this->userDesc;
     }
 
     /**
-     * @param string|null $userDesc
+     * @return int|null
      */
-    public function setUserDesc(?string $userDesc): void
+    public function getAdd(): ?int
     {
-        $this->userDesc = $userDesc;
+        return $this->add;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getHahh(): ?int
+    {
+        return $this->hahh;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getTestJson(): ?array
+    {
+        return $this->testJson;
+    }
+
 }

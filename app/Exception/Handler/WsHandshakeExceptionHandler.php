@@ -2,27 +2,26 @@
 
 namespace App\Exception\Handler;
 
-use const APP_DEBUG;
-use function get_class;
 use ReflectionException;
-use function sprintf;
 use Swoft\Bean\Exception\ContainerException;
 use Swoft\Error\Annotation\Mapping\ExceptionHandler;
 use Swoft\Http\Message\Response;
-use Swoft\Http\Server\Exception\Handler\AbstractHttpErrorHandler;
-use Swoft\Log\Helper\CLog;
+use Swoft\WebSocket\Server\Exception\Handler\AbstractHandshakeErrorHandler;
 use Throwable;
+use function get_class;
+use function sprintf;
+use const APP_DEBUG;
 
 /**
  * Class HttpExceptionHandler
  *
  * @ExceptionHandler(\Throwable::class)
  */
-class HttpExceptionHandler extends AbstractHttpErrorHandler
+class WsHandshakeExceptionHandler extends AbstractHandshakeErrorHandler
 {
     /**
      * @param Throwable $e
-     * @param Response   $response
+     * @param Response  $response
      *
      * @return Response
      * @throws ReflectionException
@@ -30,14 +29,11 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
      */
     public function handle(Throwable $e, Response $response): Response
     {
-        // Log
-        CLog::error($e->getMessage());
-
         // Debug is false
         if (!APP_DEBUG) {
-            return $response->withStatus(500)->withContent(
-                sprintf(' %s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine())
-            );
+            return $response->withStatus(500)->withContent(sprintf(
+                '%s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine()
+            ));
         }
 
         $data = [

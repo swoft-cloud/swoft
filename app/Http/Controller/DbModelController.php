@@ -3,6 +3,7 @@
 
 namespace App\Http\Controller;
 
+use App\Model\Entity\Count;
 use App\Model\Entity\User;
 use Exception;
 use Swoft\Http\Message\Response;
@@ -51,6 +52,10 @@ class DbModelController
 
         $user->save();
 
+        $count = Count::new();
+        $count->setUserId($user->getId());
+        $count->save();
+
         return $user->toArray();
     }
 
@@ -65,7 +70,7 @@ class DbModelController
     {
         $id = $this->getId();
 
-        User::updateOrInsert(['id'=>$id], ['name'=> 'swoft']);
+        User::updateOrInsert(['id' => $id], ['name' => 'swoft']);
 
         $user = User::find($id);
 
@@ -81,7 +86,7 @@ class DbModelController
      */
     public function delete(): array
     {
-        $id = $this->getId();
+        $id     = $this->getId();
         $result = User::find($id)->delete();
 
         return [$result];
@@ -100,5 +105,40 @@ class DbModelController
         $user->save();
 
         return $user->getId();
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws Throwable
+     */
+    public function batchUpdate()
+    {
+        // User::truncate();
+        User::updateOrCreate(['id' => 1], ['age' => 23]);
+        User::updateOrCreate(['id' => 2], ['age' => 23]);
+
+        $values = [
+            ['id' => 1, 'age' => 18],
+            ['id' => 2, 'age' => 19],
+        ];
+        $values = array_column($values, null, 'id');
+
+        User::batchUpdateByIds($values);
+
+        $users = User::find(array_column($values, 'id'));
+
+        $updateResults = [];
+        /* @var User $user */
+        foreach ($users as $user) {
+            $updateResults[$user->getId()] = true;
+            if ($user->getAge() != $values[$user->getId()]['age']) {
+                $updateResults[$user->getId()] = false;
+            }
+        }
+
+
+        return $updateResults;
     }
 }
