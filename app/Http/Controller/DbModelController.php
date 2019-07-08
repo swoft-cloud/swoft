@@ -3,6 +3,7 @@
 
 namespace App\Http\Controller;
 
+use App\Model\Entity\Count;
 use App\Model\Entity\User;
 use Exception;
 use Swoft\Http\Message\Response;
@@ -50,6 +51,10 @@ class DbModelController
         $user->setUserDesc('desc');
 
         $user->save();
+
+        $count = Count::new();
+        $count->setUserId($user->getId());
+        $count->save();
 
         return $user->toArray();
     }

@@ -10,16 +10,16 @@ use Swoft\Db\Exception\DbException;
 use Swoft\Db\Schema;
 use Swoft\Db\Schema\Blueprint;
 use Swoft\Devtool\Annotation\Mapping\Migration;
-use Swoft\Devtool\Migration\MigrationInterface;
+use Swoft\Devtool\Migration\Contract\MigrationInterface;
 
 /**
  * Class AddUser20190627225524
  *
  * @since 2.0
  *
- * @Migration()
+ * @Migration(20190627225524)
  */
-class AddUser20190627225524 implements MigrationInterface
+class AddUser implements MigrationInterface
 {
     /**
      * @return void
@@ -28,7 +28,7 @@ class AddUser20190627225524 implements MigrationInterface
      * @throws ContainerException
      * @throws DbException
      */
-    public function up()
+    public function up(): void
     {
         Schema::createIfNotExists('users', function (Blueprint $blueprint) {
             $blueprint->increments('id');
@@ -49,10 +49,10 @@ class AddUser20190627225524 implements MigrationInterface
      * @throws ContainerException
      * @throws DbException
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('users');
 
-        Schema::getSchemaBuilder('db.pool')->dropIfExists('user');
+        Schema::getSchemaBuilder('db.pool')->dropIfExists('users');
     }
 }
