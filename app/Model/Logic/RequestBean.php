@@ -21,4 +21,13 @@ class RequestBean
     {
         return ['requestBean'];
     }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    public function getName(string $type):string {
+        return 'name';
+    }
 }
