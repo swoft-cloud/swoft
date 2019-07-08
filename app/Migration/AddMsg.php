@@ -39,10 +39,6 @@ sql;
      */
     public function down(): void
     {
-        $truncate = <<<sql
-truncate `users`;
-sql;
-        $this->execute($truncate);
 
         $dropSql = <<<sql
 drop table if exists `users`;

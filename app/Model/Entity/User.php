@@ -31,6 +31,14 @@ class User extends Model
      * 
      *
      * @Column()
+     * @var string
+     */
+    private $name;
+
+    /**
+     * 
+     *
+     * @Column()
      * @var int
      */
     private $age;
@@ -75,17 +83,10 @@ class User extends Model
      */
     private $testJson;
 
-    /**
-     * 
-     *
-     * @Column()
-     * @var string
-     */
-    private $name;
-
 
     /**
      * @param int|null $id
+     *
      * @return void
      */
     public function setId(?int $id): void
@@ -94,7 +95,18 @@ class User extends Model
     }
 
     /**
+     * @param string $name
+     *
+     * @return void
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @param int $age
+     *
      * @return void
      */
     public function setAge(int $age): void
@@ -104,6 +116,7 @@ class User extends Model
 
     /**
      * @param string $password
+     *
      * @return void
      */
     public function setPassword(string $password): void
@@ -113,6 +126,7 @@ class User extends Model
 
     /**
      * @param string $userDesc
+     *
      * @return void
      */
     public function setUserDesc(string $userDesc): void
@@ -122,6 +136,7 @@ class User extends Model
 
     /**
      * @param int|null $add
+     *
      * @return void
      */
     public function setAdd(?int $add): void
@@ -131,6 +146,7 @@ class User extends Model
 
     /**
      * @param int|null $hahh
+     *
      * @return void
      */
     public function setHahh(?int $hahh): void
@@ -140,6 +156,7 @@ class User extends Model
 
     /**
      * @param array|null $testJson
+     *
      * @return void
      */
     public function setTestJson(?array $testJson): void
@@ -148,20 +165,19 @@ class User extends Model
     }
 
     /**
-     * @param string $name
-     * @return void
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
@@ -210,14 +226,6 @@ class User extends Model
     public function getTestJson(): ?array
     {
         return $this->testJson;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
     }
 
 }
