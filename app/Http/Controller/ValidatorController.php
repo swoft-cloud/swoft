@@ -33,7 +33,7 @@ class ValidatorController
      * Verify only the type field in the TestValidator validator
      *
      * @RequestMapping()
-     * @Validate(validator="TestValidator",fields={"type"})
+     * @Validate(validator="TestValidator", fields={"type"})
      *
      * @param Request $request
      *
@@ -48,7 +48,7 @@ class ValidatorController
      * Verify only the password field in the TestValidator validator
      *
      * @RequestMapping()
-     * @Validate(validator="TestValidator",fields={"password"})
+     * @Validate(validator="TestValidator", fields={"password"})
      *
      * @param Request $request
      *
