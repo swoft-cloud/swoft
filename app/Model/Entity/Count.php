@@ -10,7 +10,7 @@ use Swoft\Db\Eloquent\Model;
 
 
 /**
- * 
+ *
  * Class Count
  *
  * @since 2.0
@@ -19,8 +19,11 @@ use Swoft\Db\Eloquent\Model;
  */
 class Count extends Model
 {
+    protected const UPDATED_AT = 'update_time';
+    protected const CREATED_AT = 'create_time';
+
     /**
-     * 
+     *
      * @Id()
      * @Column()
      * @var int|null
@@ -28,7 +31,7 @@ class Count extends Model
     private $id;
 
     /**
-     * 
+     *
      *
      * @Column(name="user_id", prop="userId")
      * @var int|null
@@ -36,7 +39,7 @@ class Count extends Model
     private $userId;
 
     /**
-     * 
+     *
      *
      * @Column(name="create_time", prop="createTime")
      * @var int|null
@@ -44,16 +47,25 @@ class Count extends Model
     private $createTime;
 
     /**
-     * 
+     *
      *
      * @Column()
      * @var string|null
      */
     private $attributes;
 
+    /**
+     *
+     *
+     * @Column(name="update_time", prop="updateTime")
+     * @var string|null
+     */
+    private $updateTime;
+
 
     /**
      * @param int|null $id
+     *
      * @return void
      */
     public function setId(?int $id): void
@@ -63,6 +75,7 @@ class Count extends Model
 
     /**
      * @param int|null $userId
+     *
      * @return void
      */
     public function setUserId(?int $userId): void
@@ -72,6 +85,7 @@ class Count extends Model
 
     /**
      * @param int|null $createTime
+     *
      * @return void
      */
     public function setCreateTime(?int $createTime): void
@@ -81,11 +95,22 @@ class Count extends Model
 
     /**
      * @param string|null $attributes
+     *
      * @return void
      */
     public function setAttributes(?string $attributes): void
     {
         $this->attributes = $attributes;
+    }
+
+    /**
+     * @param string|null $updateTime
+     *
+     * @return void
+     */
+    public function setUpdateTime(?string $updateTime): void
+    {
+        $this->updateTime = $updateTime;
     }
 
     /**
@@ -118,6 +143,14 @@ class Count extends Model
     public function getAttributes(): ?string
     {
         return $this->attributes;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUpdateTime(): ?string
+    {
+        return $this->updateTime;
     }
 
 }
