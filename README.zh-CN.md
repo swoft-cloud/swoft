@@ -14,9 +14,15 @@
 
 ![](public/image/start-http-server.jpg)
 
-⚡️ 现代的高性能的 AOP & Coroutine PHP框架
+PHP 高性能微服务协程框架
 
 > **[EN README](README.md)**
+
+## 简介
+
+Swoft 是一款基于 Swoole 扩展实现的 PHP 微服务协程框架。Swoft 能像 Go 一样，内置协程网络服务器及常用的协程客户端且常驻内存，不依赖传统的 PHP-FPM。有类似 Go 语言的协程操作方式，有类似 Spring Cloud 框架灵活的注解、强大的全局依赖注入容器、完善的服务治理、灵活强大的 AOP、标准的 PSR 规范实现等等。
+
+Swoft 通过长达三年的积累和方向的探索，把 Swoft 打造成 PHP 界的 Spring Cloud, 它是 PHP 高性能框架和微服务治理的最佳选择。
 
 ## 功能特色
 
