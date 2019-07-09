@@ -44,6 +44,12 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Efficient task processing
 - Flexible exception handling
 - Powerful log system
+- Service registration & discovery
+- Service breaker
+- Service restrictions
+- Service fallback
+- Apollo
+- Consul
 
 ## Document
 
