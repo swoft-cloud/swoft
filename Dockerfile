@@ -33,7 +33,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone \
 # Libs -y --no-install-recommends
     && apt-get update \
-    && apt-get install \
+    && apt-get install -y \
         curl wget git zip unzip less vim openssl \
         libz-dev \
         libssl-dev \
