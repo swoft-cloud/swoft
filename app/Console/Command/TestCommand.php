@@ -62,7 +62,7 @@ class TestCommand
     private function uris(): array
     {
         return [
-            'redis' => [
+            'redis'   => [
                 '/redis/str',
                 '/redis/et',
                 '/redis/ep',
@@ -70,10 +70,10 @@ class TestCommand
                 '/redis/poolSet',
                 '/redis/set',
             ],
-            'log'   => [
+            'log'     => [
                 '/log/test'
             ],
-            'db'    => [
+            'db'      => [
                 '/dbTransaction/ts',
                 '/dbTransaction/cm',
                 '/dbTransaction/rl',
@@ -95,23 +95,36 @@ class TestCommand
                 '/selectDb/select',
                 '/builder/schema'
             ],
-            'task'  => [
+            'task'    => [
                 '/task/getListByCo',
                 '/task/deleteByCo',
                 '/task/getListByAsync',
                 '/task/deleteByAsync',
+                '/task/returnNull',
+                '/task/returnVoid',
             ],
-            'rpc'   => [
+            'rpc'     => [
                 '/rpc/getList',
                 '/rpc/returnBool',
                 '/rpc/bigString',
-                '/rpc/sendBigString'
+                '/rpc/sendBigString',
+                '/rpc/returnNull'
             ],
-            'co'    => [
+            'co'      => [
                 '/co/multi'
             ],
-            'bean'  => [
+            'bean'    => [
                 '/bean/request'
+            ],
+            'breaker' => [
+                '/breaker/unbreak',
+                '/breaker/breaked',
+                '/breaker/loopBreaker'
+            ],
+            'limiter' => [
+                '/limiter/requestLimiter',
+                '/limiter/requestLimiter2',
+                '/limiter/paramLimiter?id=12',
             ]
         ];
     }
@@ -156,7 +169,7 @@ class TestCommand
      */
     public function tcp(Input $input, Output $output): void
     {
-        $cli = new Client(\SWOOLE_SOCK_TCP);
+        $cli  = new Client(\SWOOLE_SOCK_TCP);
         $host = $input->getSameOpt(['host', 'H'], '127.0.0.1');
         $port = $input->getSameOpt(['port', 'p'], 18309);
 

@@ -16,9 +16,9 @@ use Swoft\Devtool\Migration\Migration as BaseMigration;
  *
  * @since 2.0
  *
- * @Migration("db2.pool")
+ * @Migration(time=20190627225525, pool="db3.pool")
  */
-class Message20190627225525 extends BaseMigration
+class Message extends BaseMigration
 {
     /**
      * @return void
@@ -27,7 +27,7 @@ class Message20190627225525 extends BaseMigration
      * @throws ContainerException
      * @throws DbException
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->createIfNotExists('messages', function (Blueprint $blueprint) {
             $blueprint->increments('id');
@@ -43,7 +43,7 @@ class Message20190627225525 extends BaseMigration
      * @throws ContainerException
      * @throws DbException
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('messages');
     }

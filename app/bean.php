@@ -32,7 +32,7 @@ return [
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 12,
+            'task_worker_num'       => 3,
             'task_enable_coroutine' => true
         ]
     ],
