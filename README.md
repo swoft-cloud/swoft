@@ -48,6 +48,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Service breaker
 - Service restrictions
 - Service fallback
+- Configuration Center
 - Apollo
 - Consul
 
