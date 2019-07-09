@@ -31,14 +31,17 @@ ADD . /var/www/swoft
 # Timezone
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone \
-# Libs
+# Libs -y --no-install-recommends
     && apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install -y \
         curl wget git zip unzip less vim openssl \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
         libpcre3-dev \
+        libjpeg-dev \
+        libpng-dev \
+        libfreetype6-dev \
 # Install composer
     && curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
@@ -74,7 +77,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "[Date]\ndate.timezone=${TIMEZONE}" > /usr/local/etc/php/conf.d/timezone.ini \
 # Install composer deps
     && cd /var/www/swoft \
-    && composer install --no-dev \
+    && composer install \
     && composer clearcache
 
 WORKDIR /var/www/swoft
