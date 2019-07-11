@@ -27,7 +27,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - ./tmp/data/mysql:/var/lib/mysql
+      - ./runtime/data/mysql:/var/lib/mysql
     restart: always
 
   redis:
