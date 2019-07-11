@@ -45,13 +45,13 @@ return [
     ],
     'db'             => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=172.17.0.3',
+        'dsn'      => 'mysql:dbname=test;host=192.168.4.11',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
     'db2'            => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=172.17.0.3',
+        'dsn'        => 'mysql:dbname=test2;host=192.168.4.11',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
@@ -62,7 +62,7 @@ return [
     ],
     'db3'            => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test2;host=172.17.0.3',
+        'dsn'      => 'mysql:dbname=test2;host=192.168.4.11',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
@@ -112,12 +112,5 @@ return [
     ],
     'cliRouter'      => [
         // 'disabledGroups' => ['demo', 'test'],
-    ],
-    'apollo'         => [
-        'host'    => '192.168.4.11',
-        'timeout' => -1
-    ],
-    'consul'         => [
-        'host' => '192.168.4.11'
     ]
 ];

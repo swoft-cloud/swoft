@@ -15,7 +15,7 @@ services:
       - "18307:18307"
       - "18308:18308"
     volumes:
-      - ./:/var/www
+      - ./:/var/www/swoft
       # - ./tmp/ng-conf:/etc/nginx
       # - ./tmp/logs:/var/log
 
@@ -27,7 +27,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - ./tmp/data/mysql:/var/lib/mysql
+      - ./runtime/data/mysql:/var/lib/mysql
     restart: always
 
   redis:
