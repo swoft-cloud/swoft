@@ -1,4 +1,2 @@
 <?php
 
-// todo
-return true;
