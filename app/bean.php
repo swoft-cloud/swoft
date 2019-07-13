@@ -10,7 +10,7 @@ use Swoft\Rpc\Client\Pool as ServicePool;
 use Swoft\Rpc\Server\ServiceServer;
 use Swoft\Http\Server\Swoole\RequestListener;
 use Swoft\WebSocket\Server\WebSocketServer;
-use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Server\SwooleEvent;
 use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
@@ -100,6 +100,7 @@ return [
     ],
     'wsServer'       => [
         'class'   => WebSocketServer::class,
+        'port'     => 18308,
         'on'      => [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
@@ -109,6 +110,12 @@ return [
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),
         ],
+    ],
+    'tcpServer'      => [
+        'port'     => 18309,
+    ],
+    'tcpServerProtocol' => [
+        'type'     => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
     ],
     'cliRouter'      => [
         // 'disabledGroups' => ['demo', 'test'],
