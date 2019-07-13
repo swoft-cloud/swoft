@@ -83,4 +83,5 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 WORKDIR /var/www/swoft
 EXPOSE 18306 18307 18308
 
-ENTRYPOINT ["php", "/var/www/swoft/bin/swoft", "http:start"]
+# ENTRYPOINT ["php", "/var/www/swoft/bin/swoft", "http:start"]
+CMD ["php", "/var/www/swoft/bin/swoft", "http:start"]
