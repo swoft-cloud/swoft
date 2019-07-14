@@ -1,6 +1,7 @@
 <?php
 
 use App\Common\DbSelector;
+use App\Process\MonitorProcess;
 use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
 use Swoft\Task\Swoole\TaskListener;
@@ -17,7 +18,7 @@ use Swoft\Redis\RedisDb;
 return [
     'logger'         => [
         'flushRequest' => true,
-        'enable'       => false,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer'     => [
@@ -25,6 +26,9 @@ return [
         'port'     => 18306,
         'listener' => [
             'rpc' => bean('rpcServer')
+        ],
+        'process' => [
+            'monitor' => bean(MonitorProcess::class)
         ],
         'on'       => [
             SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
@@ -45,13 +49,13 @@ return [
     ],
     'db'             => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
     'db2'            => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'        => 'mysql:dbname=test2;host=172.17.0.2',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
@@ -62,7 +66,7 @@ return [
     ],
     'db3'            => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test2;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
