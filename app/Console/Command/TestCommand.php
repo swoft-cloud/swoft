@@ -15,6 +15,7 @@ use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
 use Swoft\Http\Server\Router\Route;
 use Swoole\Client;
+use Swoole\Coroutine;
 
 /**
  * Class TestCommand
@@ -53,6 +54,8 @@ class TestCommand
             output()->writeln('执行URL:' . $abShell . PHP_EOL);
 
             exec($abShell, $abResult);
+
+            sleep(1);
         }
     }
 

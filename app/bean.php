@@ -1,8 +1,10 @@
 <?php
 
 use App\Common\DbSelector;
+use App\Process\MonitorProcess;
 use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
+use Swoft\Task\Swoole\SyncTaskListener;
 use Swoft\Task\Swoole\TaskListener;
 use Swoft\Task\Swoole\FinishListener;
 use Swoft\Rpc\Client\Client as ServiceClient;
@@ -17,7 +19,7 @@ use Swoft\Redis\RedisDb;
 return [
     'logger'         => [
         'flushRequest' => true,
-        'enable'       => false,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer'     => [
@@ -26,13 +28,17 @@ return [
         'listener' => [
             'rpc' => bean('rpcServer')
         ],
+        'process' => [
+//            'monitor' => bean(MonitorProcess::class)
+        ],
         'on'       => [
+//            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
             SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
             SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 3,
+            'task_worker_num'       => 12,
             'task_enable_coroutine' => true
         ]
     ],
@@ -45,13 +51,13 @@ return [
     ],
     'db'             => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
     'db2'            => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'        => 'mysql:dbname=test2;host=172.17.0.2',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
@@ -62,7 +68,7 @@ return [
     ],
     'db3'            => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test2;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
