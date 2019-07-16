@@ -4,6 +4,7 @@ use App\Common\DbSelector;
 use App\Process\MonitorProcess;
 use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
+use Swoft\Task\Swoole\SyncTaskListener;
 use Swoft\Task\Swoole\TaskListener;
 use Swoft\Task\Swoole\FinishListener;
 use Swoft\Rpc\Client\Client as ServiceClient;
@@ -28,16 +29,17 @@ return [
             'rpc' => bean('rpcServer')
         ],
         'process' => [
-            'monitor' => bean(MonitorProcess::class)
+//            'monitor' => bean(MonitorProcess::class)
         ],
         'on'       => [
-            SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
-            SwooleEvent::FINISH => bean(FinishListener::class)
+            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
+//            SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
+//            SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
             'task_worker_num'       => 3,
-            'task_enable_coroutine' => true
+//            'task_enable_coroutine' => true
         ]
     ],
     'httpDispatcher' => [

@@ -25,8 +25,8 @@ class Worker1Process implements ProcessInterface
      */
     public function run(Pool $pool, int $workerId): void
     {
-        while (true){
-            CLog::info('worker-1');
+        while (true) {
+            CLog::info('worker-' . $workerId);
 
             Coroutine::sleep(3);
         }

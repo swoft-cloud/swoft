@@ -95,4 +95,22 @@ class TaskController
         $result = Task::co('testTask', 'returnVoid', ['name']);
         return [$result];
     }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws TaskException
+     */
+    public function syncTask(): array
+    {
+        $result  = Task::co('sync', 'test', ['name']);
+        $result2 = Task::co('sync', 'testBool', []);
+        $result3 = Task::co('sync', 'testNull', []);
+
+        $data[] = $result;
+        $data[] = $result2;
+        $data[] = $result3;
+        return $data;
+    }
 }
