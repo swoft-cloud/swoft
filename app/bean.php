@@ -32,14 +32,14 @@ return [
 //            'monitor' => bean(MonitorProcess::class)
         ],
         'on'       => [
-            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
-//            SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
-//            SwooleEvent::FINISH => bean(FinishListener::class)
+//            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
+            SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
+            SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 3,
-//            'task_enable_coroutine' => true
+            'task_worker_num'       => 12,
+            'task_enable_coroutine' => true
         ]
     ],
     'httpDispatcher' => [
