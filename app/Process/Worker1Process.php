@@ -15,7 +15,7 @@ use Swoole\Process\Pool;
  *
  * @since 2.0
  *
- * @Process(workerId=1)
+ * @Process(workerId=0)
  */
 class Worker1Process implements ProcessInterface
 {
