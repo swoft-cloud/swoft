@@ -6,8 +6,6 @@
 .git/
 runtime/
 vendor/
-temp/
-tmp/
 *.lock
 .phpintel/
 .env
