@@ -40,14 +40,18 @@
     "test": "./vendor/bin/phpunit -c phpunit.xml",
     "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
   },
-  "repositories": [
-    {
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer/"
+    },
+    "0": {
       "type": "git",
       "url": "git@github.com:swoft-cloud/swoft-component.git"
     },
-    {
+    "1": {
       "type": "git",
       "url": "git@github.com:swoft-cloud/swoft-ext.git"
     }
-  ]
+  }
 }
