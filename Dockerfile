@@ -26,8 +26,6 @@ ENV APP_ENV=${app_env:-"prod"} \
     SWOOLE_VERSION=4.3.5 \
     COMPOSER_ALLOW_SUPERUSER=1
 
-ADD . /var/www/swoft
-
 # Timezone
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone \
@@ -74,9 +72,11 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 # Timezone
     && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" > /etc/timezone \
-    && echo "[Date]\ndate.timezone=${TIMEZONE}" > /usr/local/etc/php/conf.d/timezone.ini \
+    && echo "[Date]\ndate.timezone=${TIMEZONE}" > /usr/local/etc/php/conf.d/timezone.ini
+
 # Install composer deps
-    && cd /var/www/swoft \
+ADD . /var/www/swoft
+RUN  cd /var/www/swoft \
     && composer install \
     && composer clearcache
 
@@ -85,3 +85,4 @@ EXPOSE 18306 18307 18308
 
 # ENTRYPOINT ["php", "/var/www/swoft/bin/swoft", "http:start"]
 CMD ["php", "/var/www/swoft/bin/swoft", "http:start"]
+
