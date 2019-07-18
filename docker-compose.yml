@@ -16,8 +16,8 @@ services:
       - "18308:18308"
     volumes:
       - ./:/var/www/swoft
-      # - ./tmp/ng-conf:/etc/nginx
-      # - ./tmp/logs:/var/log
+      # - ./runtime/ng-conf:/etc/nginx
+      # - ./runtime/logs:/var/log
 
   mysql:
     image: mysql

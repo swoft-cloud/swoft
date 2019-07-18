@@ -109,6 +109,7 @@ return [
     ],
     'wsServer'         => [
         'class'   => WebSocketServer::class,
+        'port'    => 18308,
         'on'      => [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
@@ -119,7 +120,16 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
-    'cliRouter'        => [
+    'tcpServer'         => [
+        'port'  => 18309,
+        'debug' => 1,
+    ],
+    /** @see \Swoft\Tcp\Protocol */
+    'tcpServerProtocol' => [
+        'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        // 'openLengthCheck' => true,
+    ],
+    'cliRouter'         => [
         // 'disabledGroups' => ['demo', 'test'],
     ]
 ];
