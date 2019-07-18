@@ -85,4 +85,3 @@ EXPOSE 18306 18307 18308
 
 # ENTRYPOINT ["php", "/var/www/swoft/bin/swoft", "http:start"]
 CMD ["php", "/var/www/swoft/bin/swoft", "http:start"]
-

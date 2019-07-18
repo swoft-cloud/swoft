@@ -40,7 +40,13 @@ class RedisController
 
         $get = $this->redis->get($key);
 
-        return [$get, $value];
+        $isError = $this->redis->call(function (\Redis $redis) {
+            $redis->eval('returnxxxx 1');
+
+            return $redis->getLastError();
+        });
+
+        return [$get, $value, $isError];
     }
 
     /**
@@ -73,9 +79,16 @@ class RedisController
 
         $keyVal = Redis::get($key);
 
+        $isError = Redis::call(function (\Redis $redis) {
+            $redis->eval('return 1');
+
+            return $redis->getLastError();
+        });
+
         $data = [
             $result,
-            $keyVal
+            $keyVal,
+            $isError
         ];
 
         return $data;

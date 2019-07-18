@@ -4,13 +4,19 @@
 namespace App\Listener;
 
 
+use ReflectionException;
 use Swoft\Bean\Annotation\Mapping\Inject;
+use Swoft\Bean\Exception\ContainerException;
+use Swoft\Co;
 use Swoft\Consul\Agent;
+use Swoft\Consul\Exception\ClientException;
+use Swoft\Consul\Exception\ServerException;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
 use Swoft\Http\Server\HttpServer;
-use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Server\SwooleEvent;
+use Swoole\Coroutine;
 
 /**
  * Class DeregisterServiceListener
@@ -30,16 +36,17 @@ class DeregisterServiceListener implements EventHandlerInterface
 
     /**
      * @param EventInterface $event
+     *
+     * @throws ReflectionException
+     * @throws ContainerException
+     * @throws ClientException
+     * @throws ServerException
      */
     public function handle(EventInterface $event): void
     {
         /* @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
 
-//        $scheduler = Swoole\Coroutine\Scheduler();
-//        $scheduler->add(function () use ($httpServer) {
-//            $this->agent->deregisterService('swoft');
-//        });
-//        $scheduler->start();
+//        $this->agent->deregisterService('swoft');
     }
 }
