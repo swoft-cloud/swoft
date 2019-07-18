@@ -1,26 +1,26 @@
 <?php
 
 use App\Common\DbSelector;
+use Swoft\Db\Database;
 use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
-use Swoft\Task\Swoole\TaskListener;
-use Swoft\Task\Swoole\FinishListener;
+use Swoft\Http\Server\Swoole\RequestListener;
+use Swoft\Redis\RedisDb;
 use Swoft\Rpc\Client\Client as ServiceClient;
 use Swoft\Rpc\Client\Pool as ServicePool;
 use Swoft\Rpc\Server\ServiceServer;
-use Swoft\Http\Server\Swoole\RequestListener;
-use Swoft\WebSocket\Server\WebSocketServer;
 use Swoft\Server\SwooleEvent;
-use Swoft\Db\Database;
-use Swoft\Redis\RedisDb;
+use Swoft\Task\Swoole\FinishListener;
+use Swoft\Task\Swoole\TaskListener;
+use Swoft\WebSocket\Server\WebSocketServer;
 
 return [
-    'logger'         => [
+    'logger'            => [
         'flushRequest' => true,
         'enable'       => false,
         'json'         => false,
     ],
-    'httpServer'     => [
+    'httpServer'        => [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
@@ -36,50 +36,50 @@ return [
             'task_enable_coroutine' => true
         ]
     ],
-    'httpDispatcher' => [
+    'httpDispatcher'    => [
         // Add global http middleware
         'middlewares' => [
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
     ],
-    'db'             => [
+    'db'                => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test;host=192.168.4.11',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
-    'db2'            => [
+    'db2'               => [
         'class'      => Database::class,
         'dsn'        => 'mysql:dbname=test2;host=192.168.4.11',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
     ],
-    'db2.pool'       => [
+    'db2.pool'          => [
         'class'    => Pool::class,
         'database' => bean('db2')
     ],
-    'db3'            => [
+    'db3'               => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test2;host=192.168.4.11',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
-    'db3.pool'       => [
+    'db3.pool'          => [
         'class'    => Pool::class,
         'database' => bean('db3')
     ],
-    'migrationManager' => [
+    'migrationManager'  => [
         'migrationPath' => '@app/Migration',
     ],
-    'redis'          => [
+    'redis'             => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
     ],
-    'user'           => [
+    'user'              => [
         'class'   => ServiceClient::class,
         'host'    => '127.0.0.1',
         'port'    => 18307,
@@ -91,16 +91,16 @@ return [
         ],
         'packet'  => bean('rpcClientPacket')
     ],
-    'user.pool'      => [
+    'user.pool'         => [
         'class'  => ServicePool::class,
         'client' => bean('user')
     ],
-    'rpcServer'      => [
+    'rpcServer'         => [
         'class' => ServiceServer::class,
     ],
-    'wsServer'       => [
+    'wsServer'          => [
         'class'   => WebSocketServer::class,
-        'port'     => 18308,
+        'port'    => 18308,
         'on'      => [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
@@ -111,13 +111,16 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
-    'tcpServer'      => [
-        'port'     => 18309,
+    'tcpServer'         => [
+        'port'  => 18309,
+        'debug' => 1,
     ],
+    /** @see \Swoft\Tcp\Protocol */
     'tcpServerProtocol' => [
-        'type'     => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        // 'openLengthCheck' => true,
     ],
-    'cliRouter'      => [
+    'cliRouter'         => [
         // 'disabledGroups' => ['demo', 'test'],
     ]
 ];
