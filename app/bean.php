@@ -84,13 +84,8 @@ return [
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
-<<<<<<< HEAD
         'option' => [
-            'prefix' => 'swoft:prefix:'
-=======
-        'option'   => [
-            'prefix' => "swoft"
->>>>>>> 31b0690969adf32c1a57c7c63a21052f6c377f91
+            'prefix' => 'swoft:'
         ]
     ],
     'user'             => [
