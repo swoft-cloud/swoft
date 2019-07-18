@@ -12,7 +12,7 @@ use Swoft\Rpc\Client\Pool as ServicePool;
 use Swoft\Rpc\Server\ServiceServer;
 use Swoft\Http\Server\Swoole\RequestListener;
 use Swoft\WebSocket\Server\WebSocketServer;
-use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Server\SwooleEvent;
 use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
