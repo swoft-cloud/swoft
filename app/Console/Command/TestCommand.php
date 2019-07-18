@@ -104,7 +104,7 @@ class TestCommand
                 '/rpc/getList',
                 '/rpc/returnBool',
                 '/rpc/bigString',
-                '/rpc/sendBigString',
+//                '/rpc/sendBigString',
                 '/rpc/returnNull'
             ],
             'co'      => [
