@@ -48,6 +48,8 @@ class TestCommand
             output()->writeln('执行URL:' . $abShell . PHP_EOL);
 
             exec($abShell, $abResult);
+
+            sleep(1);
         }
     }
 

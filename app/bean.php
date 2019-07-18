@@ -1,85 +1,94 @@
 <?php
 
 use App\Common\DbSelector;
-use Swoft\Db\Database;
+use App\Process\MonitorProcess;
 use Swoft\Db\Pool;
 use Swoft\Http\Server\HttpServer;
-use Swoft\Http\Server\Swoole\RequestListener;
-use Swoft\Redis\RedisDb;
+use Swoft\Task\Swoole\SyncTaskListener;
+use Swoft\Task\Swoole\TaskListener;
+use Swoft\Task\Swoole\FinishListener;
 use Swoft\Rpc\Client\Client as ServiceClient;
 use Swoft\Rpc\Client\Pool as ServicePool;
 use Swoft\Rpc\Server\ServiceServer;
-use Swoft\Server\SwooleEvent;
-use Swoft\Task\Swoole\FinishListener;
-use Swoft\Task\Swoole\TaskListener;
+use Swoft\Http\Server\Swoole\RequestListener;
 use Swoft\WebSocket\Server\WebSocketServer;
+use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Db\Database;
+use Swoft\Redis\RedisDb;
 
 return [
-    'logger'            => [
+    'logger'           => [
         'flushRequest' => true,
-        'enable'       => false,
+        'enable'       => true,
         'json'         => false,
     ],
-    'httpServer'        => [
+    'httpServer'       => [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
             'rpc' => bean('rpcServer')
         ],
+        'process' => [
+//            'monitor' => bean(MonitorProcess::class)
+        ],
         'on'       => [
+//            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
             SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
             SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
         'setting'  => [
-            'task_worker_num'       => 3,
+            'task_worker_num'       => 12,
             'task_enable_coroutine' => true
         ]
     ],
-    'httpDispatcher'    => [
+    'httpDispatcher'   => [
         // Add global http middleware
         'middlewares' => [
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
     ],
-    'db'                => [
+    'db'               => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
-    'db2'               => [
+    'db2'              => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'        => 'mysql:dbname=test2;host=172.17.0.2',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
     ],
-    'db2.pool'          => [
+    'db2.pool'         => [
         'class'    => Pool::class,
         'database' => bean('db2')
     ],
-    'db3'               => [
+    'db3'              => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test2;host=192.168.4.11',
+        'dsn'      => 'mysql:dbname=test2;host=172.17.0.2',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
-    'db3.pool'          => [
+    'db3.pool'         => [
         'class'    => Pool::class,
         'database' => bean('db3')
     ],
-    'migrationManager'  => [
+    'migrationManager' => [
         'migrationPath' => '@app/Migration',
     ],
-    'redis'             => [
+    'redis'            => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
+        'option'   => [
+            'prefix' => "swoft"
+        ]
     ],
-    'user'              => [
+    'user'             => [
         'class'   => ServiceClient::class,
         'host'    => '127.0.0.1',
         'port'    => 18307,
@@ -91,14 +100,14 @@ return [
         ],
         'packet'  => bean('rpcClientPacket')
     ],
-    'user.pool'         => [
+    'user.pool'        => [
         'class'  => ServicePool::class,
         'client' => bean('user')
     ],
-    'rpcServer'         => [
+    'rpcServer'        => [
         'class' => ServiceServer::class,
     ],
-    'wsServer'          => [
+    'wsServer'         => [
         'class'   => WebSocketServer::class,
         'port'    => 18308,
         'on'      => [
