@@ -56,9 +56,7 @@ class RanListener implements EventHandlerInterface
             return $sql;
         }
         foreach ($bindings as $name => $value) {
-            if (is_string($name) && strncmp(':', $name, 1)) {
-                $name = ':' . $name;
-            } else {
+            if (is_int($name)) {
                 $name = '?';
             }
 
