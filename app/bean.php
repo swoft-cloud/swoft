@@ -12,14 +12,14 @@ use Swoft\Rpc\Client\Pool as ServicePool;
 use Swoft\Rpc\Server\ServiceServer;
 use Swoft\Http\Server\Swoole\RequestListener;
 use Swoft\WebSocket\Server\WebSocketServer;
-use Swoft\Server\Swoole\SwooleEvent;
+use Swoft\Server\SwooleEvent;
 use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
     'logger'           => [
-        'flushRequest' => true,
-        'enable'       => true,
+        'flushRequest' => false,
+        'enable'       => false,
         'json'         => false,
     ],
     'httpServer'       => [
@@ -84,8 +84,8 @@ return [
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
-        'option'   => [
-            'prefix' => "swoft"
+        'option' => [
+            'prefix' => 'swoft:'
         ]
     ],
     'user'             => [

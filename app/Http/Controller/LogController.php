@@ -7,6 +7,7 @@ use ReflectionException;
 use Swoft\Bean\Exception\ContainerException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Log\Helper\CLog;
 use Swoft\Log\Helper\Log;
 
 /**
@@ -40,6 +41,10 @@ class LogController
         Log::error('this %s log', 'error');
         Log::alert('this %s log', 'alert');
         Log::emergency('this %s log', 'emergency');
+
+        Log::error('Special message user@%');
+
+        CLog::info('Special message user@%');
 
         // Tag end
         Log::profileEnd('tagName');
