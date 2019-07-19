@@ -23,14 +23,11 @@ ARG work_user=www-data
 ENV APP_ENV=${app_env:-"prod"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
     PHPREDIS_VERSION=4.3.0 \
-    SWOOLE_VERSION=4.3.5 \
+    SWOOLE_VERSION=4.4.1 \
     COMPOSER_ALLOW_SUPERUSER=1
 
-# Timezone
-RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo 'Asia/Shanghai' > /etc/timezone \
 # Libs -y --no-install-recommends
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y \
         curl wget git zip unzip less vim openssl \
         libz-dev \
