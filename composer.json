@@ -25,6 +25,7 @@
     "swoft/rpc-server": "~2.0.0",
     "swoft/websocket-server": "~2.0.0",
     "swoft/tcp-server": "~2.0.0",
+    "swoft/process": "~2.0.0",
     "swoft/apollo": "~2.0.0",
     "swoft/consul": "~2.0.0",
     "swoft/limiter": "~2.0.0",
