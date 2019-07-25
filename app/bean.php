@@ -45,6 +45,7 @@ return [
     'httpDispatcher'   => [
         // Add global http middleware
         'middlewares' => [
+            \App\Http\Middleware\FavIconMiddleware::class,
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
