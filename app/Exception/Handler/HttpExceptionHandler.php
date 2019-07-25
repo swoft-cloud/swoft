@@ -11,6 +11,7 @@ use Swoft\Error\Annotation\Mapping\ExceptionHandler;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Exception\Handler\AbstractHttpErrorHandler;
 use Swoft\Log\Helper\CLog;
+use Swoft\Log\Helper\Log;
 use Throwable;
 
 /**
@@ -31,6 +32,7 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
     public function handle(Throwable $e, Response $response): Response
     {
         // Log
+        Log::error($e->getMessage());
         CLog::error($e->getMessage());
 
         // Debug is false
