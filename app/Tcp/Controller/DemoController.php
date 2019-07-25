@@ -6,6 +6,7 @@ use Swoft\Tcp\Server\Annotation\Mapping\TcpController;
 use Swoft\Tcp\Server\Annotation\Mapping\TcpMapping;
 use Swoft\Tcp\Server\Request;
 use Swoft\Tcp\Server\Response;
+use function strrev;
 
 /**
  * Class DemoController
@@ -44,7 +45,7 @@ class DemoController
     {
         $str = $request->getPackage()->getDataString();
 
-        $response->setData(\strrev($str));
+        $response->setData(strrev($str));
     }
 
     /**
@@ -54,7 +55,8 @@ class DemoController
      */
     public function echo(Request $request, Response $response): void
     {
-        $str = $request->getRawData();
+        // $str = $request->getRawData();
+        $str = $request->getPackage()->getDataString();
 
         $response->setData('[echo]hi, we received your message: ' . $str);
     }

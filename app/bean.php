@@ -126,7 +126,8 @@ return [
     ],
     /** @see \Swoft\Tcp\Protocol */
     'tcpServerProtocol' => [
-        'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        'type'            => \Swoft\Tcp\Packer\JsonPacker::TYPE,
+        // 'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
         // 'openLengthCheck' => true,
     ],
     'cliRouter'         => [
