@@ -18,8 +18,8 @@ use Swoft\Redis\RedisDb;
 
 return [
     'logger'           => [
-        'flushRequest' => false,
-        'enable'       => false,
+        'flushRequest' => true,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer'       => [
@@ -51,13 +51,13 @@ return [
     ],
     'db'               => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test;host=172.17.0.2',
+        'dsn'      => 'mysql:dbname=test;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
     'db2'              => [
         'class'      => Database::class,
-        'dsn'        => 'mysql:dbname=test2;host=172.17.0.2',
+        'dsn'        => 'mysql:dbname=test2;host=127.0.0.1',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
@@ -68,7 +68,7 @@ return [
     ],
     'db3'              => [
         'class'    => Database::class,
-        'dsn'      => 'mysql:dbname=test2;host=172.17.0.2',
+        'dsn'      => 'mysql:dbname=test2;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
