@@ -56,7 +56,7 @@
     ],
     "test": [
       "./vendor/bin/phpstan analyze",
-      "./vendor/bin/phpunit -c phpunit.xml",
+      "./vendor/bin/phpunit -c phpunit.xml"
     ],
     "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
   }
