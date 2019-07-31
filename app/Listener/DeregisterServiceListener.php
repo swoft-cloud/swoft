@@ -44,7 +44,7 @@ class DeregisterServiceListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        /* @var HttpServer $httpServer */
+        /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
 
 //        $this->agent->deregisterService('swoft');
