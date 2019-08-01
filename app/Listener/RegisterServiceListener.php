@@ -36,7 +36,7 @@ class RegisterServiceListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        /* @var HttpServer $httpServer */
+        /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
 
         $service = [

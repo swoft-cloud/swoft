@@ -24,7 +24,7 @@ class RespController
      */
     public function cookie(): Response
     {
-        /* @var Response $resp */
+        /** @var Response $resp */
         $resp = Context::mustGet()->getResponse();
 
         return $resp->setCookie('c-name', 'c-value')->withData(['hello']);

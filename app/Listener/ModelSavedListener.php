@@ -24,7 +24,7 @@ class ModelSavedListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        /* @var Model $modelStatic */
+        /** @var Model $modelStatic */
         $modelStatic = $event->getTarget();
 
         if ($modelStatic instanceof User) {

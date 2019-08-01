@@ -130,7 +130,7 @@ class DbModelController
         $users = User::find(array_column($values, 'id'));
 
         $updateResults = [];
-        /* @var User $user */
+        /** @var User $user */
         foreach ($users as $user) {
             $updateResults[$user->getId()] = true;
             if ($user->getAge() != $values[$user->getId()]['age']) {

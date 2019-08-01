@@ -1,0 +1,16 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+parameters:
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    paths:
+        - %currentWorkingDirectory%/app/
+    autoload_files:
+        - %currentWorkingDirectory%/test/bootstrap.php
+    autoload_directories:
+        - %currentWorkingDirectory%/vendor/swoft/swoole-ide-helper/src/namespace/
+    dynamicConstantNames:
+        - APP_DEBUG
+    ignoreErrors:
+        # Variable type
+        - '#^Call to an undefined method Swoft\\Contract\\ContextInterface::get\S+\(\)\.$#'
