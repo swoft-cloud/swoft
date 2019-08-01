@@ -17,18 +17,18 @@ use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
-    'logger'           => [
+    'logger'            => [
         'flushRequest' => false,
         'enable'       => false,
         'json'         => false,
     ],
-    'httpServer'       => [
+    'httpServer'        => [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
             'rpc' => bean('rpcServer')
         ],
-        'process' => [
+        'process'  => [
 //            'monitor' => bean(MonitorProcess::class)
         ],
         'on'       => [
@@ -42,53 +42,56 @@ return [
             'task_enable_coroutine' => true
         ]
     ],
-    'httpDispatcher'   => [
+    'httpDispatcher'    => [
         // Add global http middleware
-        'middlewares' => [
+        'middlewares'      => [
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
+        'afterMiddlewares' => [
+            \Swoft\Http\Server\Middleware\ValidatorMiddleware::class
+        ]
     ],
-    'db'               => [
+    'db'                => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456',
     ],
-    'db2'              => [
+    'db2'               => [
         'class'      => Database::class,
         'dsn'        => 'mysql:dbname=test2;host=127.0.0.1',
         'username'   => 'root',
         'password'   => 'swoft123456',
         'dbSelector' => bean(DbSelector::class)
     ],
-    'db2.pool'         => [
+    'db2.pool'          => [
         'class'    => Pool::class,
         'database' => bean('db2')
     ],
-    'db3'              => [
+    'db3'               => [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test2;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456'
     ],
-    'db3.pool'         => [
+    'db3.pool'          => [
         'class'    => Pool::class,
         'database' => bean('db3')
     ],
-    'migrationManager' => [
+    'migrationManager'  => [
         'migrationPath' => '@app/Migration',
     ],
-    'redis'            => [
+    'redis'             => [
         'class'    => RedisDb::class,
         'host'     => '127.0.0.1',
         'port'     => 6379,
         'database' => 0,
-        'option' => [
+        'option'   => [
             'prefix' => 'swoft:'
         ]
     ],
-    'user'             => [
+    'user'              => [
         'class'   => ServiceClient::class,
         'host'    => '127.0.0.1',
         'port'    => 18307,
@@ -100,14 +103,14 @@ return [
         ],
         'packet'  => bean('rpcClientPacket')
     ],
-    'user.pool'        => [
+    'user.pool'         => [
         'class'  => ServicePool::class,
         'client' => bean('user')
     ],
-    'rpcServer'        => [
+    'rpcServer'         => [
         'class' => ServiceServer::class,
     ],
-    'wsServer'         => [
+    'wsServer'          => [
         'class'   => WebSocketServer::class,
         'port'    => 18308,
         'on'      => [
@@ -126,7 +129,7 @@ return [
     ],
     /** @see \Swoft\Tcp\Protocol */
     'tcpServerProtocol' => [
-        'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        'type' => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
         // 'openLengthCheck' => true,
     ],
     'cliRouter'         => [
