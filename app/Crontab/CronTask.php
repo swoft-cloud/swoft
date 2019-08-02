@@ -2,6 +2,9 @@
 
 namespace App\Crontab;
 
+use Swoft\Crontab\Annotaion\Mapping\Cron;
+use Swoft\Crontab\Annotaion\Mapping\Scheduled;
+
 /**
  * Class CronTask
  *
