@@ -2,23 +2,24 @@
 
 namespace App\WebSocket;
 
-use App\WebSocket\Chat\HomeController;
+use App\WebSocket\Test\TestController;
 use Swoft\Http\Message\Request;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
-use Swoft\WebSocket\Server\MessageParser\JsonParser;
+use Swoft\WebSocket\Server\MessageParser\TokenTextParser;
 use function server;
 
 /**
- * Class ChatModule
+ * Class TestModule
  *
  * @WsModule(
- *     "/chat",
- *     messageParser=JsonParser::class,
- *     controllers={HomeController::class}
+ *     "/test",
+ *     defaultCommand="test.index",
+ *     messageParser=TokenTextParser::class,
+ *     controllers={TestController::class}
  * )
  */
-class ChatModule
+class TestModule
 {
     /**
      * @OnOpen()
