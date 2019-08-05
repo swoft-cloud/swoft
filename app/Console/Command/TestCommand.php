@@ -111,7 +111,8 @@ class TestCommand
                 '/co/multi'
             ],
             'bean'    => [
-                '/bean/request'
+                '/bean/request',
+                '/bean/requestClass'
             ],
             'breaker' => [
                 '/breaker/unbreak',

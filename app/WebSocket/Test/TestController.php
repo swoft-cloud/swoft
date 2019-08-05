@@ -7,6 +7,7 @@ use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
 use Swoft\WebSocket\Server\Message\Message;
 use Swoft\WebSocket\Server\Message\Request;
+use Swoft\WebSocket\Server\Message\Response;
 
 /**
  * Class HomeController
@@ -83,6 +84,26 @@ class TestController
     public function echo($data): void
     {
         Session::mustGet()->push('(echo)Recv: ' . $data);
+    }
+
+    /**
+     * Message command is: 'echo'
+     *
+     * @param Request  $req
+     * @param Response $res
+     * @MessageMapping(root=true)
+     */
+    public function hi(Request $req, Response $res): void
+    {
+        $fd  = $req->getFd();
+        $ufd = (int)$req->getMessage()->getData();
+
+        if ($ufd < 1) {
+            Session::mustGet()->push('data must be an integer');
+            return;
+        }
+
+        $res->setFd($ufd)->setContent("Hi #{$ufd}, I am #{$fd}");
     }
 
     /**

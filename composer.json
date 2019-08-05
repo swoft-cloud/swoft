@@ -13,6 +13,8 @@
     "ext-pdo": "*",
     "ext-redis": "*",
     "ext-json": "*",
+    "ext-simplexml": "*",
+    "ext-libxml": "*",
     "ext-mbstring": "*",
     "swoft/db": "~2.0.0",
     "swoft/i18n": "~2.0.0",

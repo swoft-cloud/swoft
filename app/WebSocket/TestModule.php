@@ -4,10 +4,10 @@ namespace App\WebSocket;
 
 use App\WebSocket\Test\TestController;
 use Swoft\Http\Message\Request;
+use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
 use Swoft\WebSocket\Server\MessageParser\TokenTextParser;
-use function server;
 
 /**
  * Class TestModule
@@ -28,6 +28,6 @@ class TestModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+        Session::mustGet()->push("Opened, welcome!(FD: $fd)");
     }
 }
