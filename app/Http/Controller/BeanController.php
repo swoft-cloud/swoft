@@ -4,6 +4,7 @@
 namespace App\Http\Controller;
 
 use App\Model\Logic\RequestBean;
+use App\Model\Logic\RequestBeanTwo;
 use ReflectionException;
 use Swoft\Bean\Annotation\Mapping\Bean;
 use Swoft\Bean\BeanFactory;
@@ -34,6 +35,22 @@ class BeanController
 
         /** @var RequestBean $request*/
         $request = BeanFactory::getRequestBean('requestBean', $id);
+        return $request->getData();
+    }
+
+    /**
+     * @return array
+     * @throws ContainerException
+     * @throws ReflectionException
+     *
+     * @RequestMapping()
+     */
+    public function requestClass(): array
+    {
+        $id = (string)Co::tid();
+
+        /* @var RequestBeanTwo $request */
+        $request = BeanFactory::getRequestBean(RequestBeanTwo::class, $id);
         return $request->getData();
     }
 }
