@@ -28,7 +28,7 @@ class RanListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        /* @var Connection $connection */
+        /** @var Connection $connection */
         $connection = $event->getTarget();
 
         $querySql = $event->getParam(0);

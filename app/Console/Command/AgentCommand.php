@@ -76,7 +76,7 @@ class AgentCommand
 //            $server = bean('rpcServer');
 //            $server->restart();
 
-            /* @var WebSocketServer $server */
+            /** @var WebSocketServer $server */
             $server = bean('wsServer');
             $server->restart();
         }

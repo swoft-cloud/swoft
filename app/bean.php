@@ -45,6 +45,8 @@ return [
     'httpDispatcher'   => [
         // Add global http middleware
         'middlewares' => [
+            \App\Http\Middleware\FavIconMiddleware::class,
+            \Swoft\Whoops\WhoopsMiddleware::class,
             // Allow use @View tag
             \Swoft\View\Middleware\ViewMiddleware::class,
         ],
@@ -114,7 +116,8 @@ return [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
         ],
-        'debug'   => env('SWOFT_DEBUG', 0),
+        'debug'   => 1,
+        // 'debug'   => env('SWOFT_DEBUG', 0),
         /* @see WebSocketServer::$setting */
         'setting' => [
             'log_file' => alias('@runtime/swoole.log'),
@@ -126,6 +129,7 @@ return [
     ],
     /** @see \Swoft\Tcp\Protocol */
     'tcpServerProtocol' => [
+        // 'type'            => \Swoft\Tcp\Packer\JsonPacker::TYPE,
         'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
         // 'openLengthCheck' => true,
     ],

@@ -27,7 +27,7 @@ class HomeController
     /**
      * Message command is: 'home.echo'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping()
      */
     public function echo($data): void
@@ -38,7 +38,7 @@ class HomeController
     /**
      * Message command is: 'home.ar'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping("ar")
      *
      * @return string

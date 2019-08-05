@@ -13,7 +13,7 @@ use function server;
 /**
  * Class EchoModule
  *
- * @WsModule()
+ * @WsModule("echo")
  */
 class EchoModule
 {

@@ -1,0 +1,53 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+parameters:
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    paths:
+        - %currentWorkingDirectory%/app/
+    autoload_files:
+        - %currentWorkingDirectory%/test/bootstrap.php
+    autoload_directories:
+        - %currentWorkingDirectory%/vendor/swoft/swoole-ide-helper/src/namespace/
+    dynamicConstantNames:
+        - APP_DEBUG
+    ignoreErrors:
+        # Variable type
+        - '#^Call to an undefined method Swoft\\Contract\\ContextInterface::get\S+\(\)\.$#'
+        # These are ignored for now
+        -
+            path: %currentWorkingDirectory%/app/Exception/Handler/WsMessageExceptionHandler.php
+            message: '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/DbModelController.php
+            message: '#^Method App\\Http\\Controller\\DbModelController::getId\(\) should return int but returns int\|null\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/DbModelController.php
+            message: '#^Argument of an invalid type App\\Model\\Entity\\User supplied for foreach, only iterables are supported\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/DbTransactionController.php
+            message: '#^Method App\\Http\\Controller\\DbTransactionController::getId\(\) should return int but returns int\|null\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/RpcController.php
+            message: '#^Unreachable statement - code above always terminates\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/SelectDbController.php
+            message: '#^Method App\\Http\\Controller\\SelectDbController::getId\(\) should return int but returns int\|null\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Http/Controller/ValidatorController.php
+            message: '#^Method App\\Http\\Controller\\ValidatorController::(validateAll|validateType|validatePassword|validateCustomer)\(\) should return array but returns array\|object\|null\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Task/Task/SyncTask.php
+            message: '#^Method App\\Task\\Task\\SyncTask::testNull\(\) should return bool but returns null\.$#'
+        -
+            path: %currentWorkingDirectory%/app/Validator/Rule/AlphaDashRule.php
+            message: '#^Call to an undefined method object::getMessage\(\)\.$#'
+        -
+            path: %currentWorkingDirectory%/app/WebSocket/Chat/HomeController.php
+            message: '#^Call to an undefined method Swoft\\Session\\SessionInterface::push\(\)\.$#'
+        -
+            path: %currentWorkingDirectory%/app/WebSocket/ChatModule.php
+            message: '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
+        -
+            path: %currentWorkingDirectory%/app/WebSocket/EchoModule.php
+            message: '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'

@@ -173,11 +173,11 @@
     }
 
     .swoft-title {
-      margin-top: 28%;
+      margin-top: 23%;
       text-align: center;
       color: #18bc9c;
       opacity: 0.7;
-      font: 8em 'Helvetica Neue';
+      font: 7em 'Helvetica Neue';
       font-weight: 200;
       -webkit-box-reflect: below 3px linear-gradient(transparent, transparent 30%, rgba(0, 0, 0, .4));
     }
@@ -189,7 +189,7 @@
     }
 
     .top-nav {
-      margin-top: 5em;
+      margin-top: 3rem;
     }
 
     .top-nav li, .foot-nav li {
@@ -214,6 +214,39 @@
     .foot-nav a {
       color: #ccc;
     }
+
+    @media (max-width: 1199px) {
+      .swoft-title {
+        font-size: 6em;
+      }
+
+      .top-nav a, .foot-nav a {
+        font-size: 1.5em;
+      }
+    }
+
+    @media (max-width: 991px) {
+      .swoft-title {
+        font-size: 5em;
+        margin-top: 30%;
+      }
+
+      .top-nav a, .foot-nav a {
+        font-size: 1.3em;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .swoft-title {
+        font-size: 4em;
+        margin-top: 30%;
+      }
+
+      .swoft-title .framework {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -227,7 +260,7 @@
     </ul>
   </nav>
   <div class="main">
-    <h1 class="swoft-title">Swoft Framework
+    <h1 class="swoft-title">Swoft <span class="framework">Framework</span>
       <small>2.x</small>
     </h1>
   </div>

@@ -25,6 +25,7 @@
     "swoft/rpc-server": "~2.0.0",
     "swoft/websocket-server": "~2.0.0",
     "swoft/tcp-server": "~2.0.0",
+    "swoft/process": "~2.0.0",
     "swoft/apollo": "~2.0.0",
     "swoft/consul": "~2.0.0",
     "swoft/limiter": "~2.0.0",
@@ -53,7 +54,10 @@
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
-    "test": "./vendor/bin/phpunit -c phpunit.xml",
+    "test": [
+      "./vendor/bin/phpstan analyze",
+      "./vendor/bin/phpunit -c phpunit.xml"
+    ],
     "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
   }
 }
