@@ -15,6 +15,7 @@ use Swoft\WebSocket\Server\WebSocketServer;
 use Swoft\Server\SwooleEvent;
 use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
+use Swoft\Crontab\Crontab;
 
 return [
     'logger'           => [
@@ -30,6 +31,7 @@ return [
         ],
         'process' => [
 //            'monitor' => bean(MonitorProcess::class)
+//            'crontab' => bean(Crontab::class)
         ],
         'on'       => [
 //            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
