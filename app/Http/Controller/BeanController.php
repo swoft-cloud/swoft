@@ -33,7 +33,7 @@ class BeanController
     {
         $id = (string)Co::tid();
 
-        /* @var RequestBean $request */
+        /** @var RequestBean $request*/
         $request = BeanFactory::getRequestBean('requestBean', $id);
         return $request->getData();
     }

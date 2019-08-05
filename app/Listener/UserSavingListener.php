@@ -23,7 +23,7 @@ class UserSavingListener implements EventHandlerInterface
     public function handle(EventInterface $event): void
     {
 
-        /* @var User $user */
+        /** @var User $user */
         $user = $event->getTarget();
 
         /**
