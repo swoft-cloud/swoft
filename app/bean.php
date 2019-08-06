@@ -41,12 +41,13 @@ return [
         /* @see HttpServer::$setting */
         'setting'  => [
             'task_worker_num'       => 12,
-            'task_enable_coroutine' => true
+            'task_enable_coroutine' => true,
+            'worker_num'            => 6,
         ]
     ],
     'httpDispatcher'    => [
         // Add global http middleware
-        'middlewares' => [
+        'middlewares'      => [
             \App\Http\Middleware\FavIconMiddleware::class,
             // \Swoft\Whoops\WhoopsMiddleware::class,
             // Allow use @View tag
@@ -135,7 +136,7 @@ return [
     /** @see \Swoft\Tcp\Protocol */
     'tcpServerProtocol' => [
         // 'type'            => \Swoft\Tcp\Packer\JsonPacker::TYPE,
-        'type'            => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
+        'type' => \Swoft\Tcp\Packer\SimpleTokenPacker::TYPE,
         // 'openLengthCheck' => true,
     ],
     'cliRouter'         => [
