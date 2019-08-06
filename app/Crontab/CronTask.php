@@ -2,8 +2,11 @@
 
 namespace App\Crontab;
 
+use App\Model\Entity\User;
 use Swoft\Crontab\Annotaion\Mapping\Cron;
 use Swoft\Crontab\Annotaion\Mapping\Scheduled;
+use Swoft\Log\Helper\CLog;
+use Swoft\Stdlib\Helper\JsonHelper;
 
 /**
  * Class CronTask
@@ -19,7 +22,17 @@ class CronTask
      */
     public function secondTask()
     {
-        printf("second task run: %s ", date('Y-m-d H:i:s', time()));
+        $user = new User();
+        $user->setAge(mt_rand(1, 100));
+        $user->setUserDesc('desc');
+
+        $user->save();
+
+        $id   = $user->getId();
+        $user = User::find($id)->toArray();
+
+        CLog::info("second task run: %s ", date('Y-m-d H:i:s', time()));
+        CLog::info(JsonHelper::encode($user));
     }
 
     /**
@@ -27,7 +40,7 @@ class CronTask
      */
     public function minuteTask()
     {
-        printf("minute task run: %s ", date('Y-m-d H:i:s', time()));
+        CLog::info("minute task run: %s ", date('Y-m-d H:i:s', time()));
     }
 
 }
