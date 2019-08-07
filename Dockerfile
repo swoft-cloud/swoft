@@ -29,7 +29,7 @@ ENV APP_ENV=${app_env:-"prod"} \
 # Libs -y --no-install-recommends
 RUN apt-get update \
     && apt-get install -y \
-        curl wget git zip unzip less vim procps losf tcpdump htop openssl \
+        curl wget git zip unzip less vim procps lsof tcpdump htop openssl \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
