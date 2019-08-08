@@ -99,8 +99,6 @@ composer create-project swoft/swoft swoft
 [root@swoft swoft]# php bin/swoft rpc:start
 ```
 
-## Components
-
 ## Core Components
 
 Component Name   | Packagist Version
@@ -133,9 +131,17 @@ server              |   [![Latest Stable Version](http://img.shields.io/packagis
 tcp                 |   [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/tcp)
 websocket-server    |   [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/websocket-server.svg)](https://packagist.org/packages/swoft/websocket-server)
 
-### Extension Components
+## Extension Components
 
-
+Component Name   | Packagist Version
+-----------------|---------------------
+apollo  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/apollo)
+breaker | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/breaker)
+crontab | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/crontab)
+consul  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/consul)
+limiter | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/limiter)
+view    | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/view)
+whoops  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/tcp.svg)](https://packagist.org/packages/swoft/whoops)
 
 ## License
 
