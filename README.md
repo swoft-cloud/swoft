@@ -27,7 +27,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 
 ## Feature
 
-- Built-in high performance network server(Http/Websocket/RPC)
+- Built-in high performance network server(Http/Websocket/RPC/TCP)
 - Flexible componentization
 - Flexible annotation function
 - Diversified command terminal(Console)
@@ -43,6 +43,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Database is highly compatible Laravel
 - Cache Redis highly compatible Laravel
 - Efficient task processing
+- Efficient seconds corntab
 - Flexible exception handling
 - Powerful log system
 - Service registration & discovery
