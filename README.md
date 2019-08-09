@@ -100,6 +100,18 @@ composer create-project swoft/swoft swoft
 [root@swoft swoft]# php bin/swoft rpc:start
 ```
 
+- TCP server
+
+```bash
+[root@swoft swoft]# php bin/swoft tcp:start
+```
+
+- Process pool
+
+```bash
+[root@swoft swoft]# php bin/swoft process:start
+```
+
 ## Core Components
 
 Component Name   | Packagist Version
