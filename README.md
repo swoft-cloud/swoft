@@ -44,6 +44,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Cache Redis highly compatible Laravel
 - Efficient task processing
 - Efficient seconds corntab
+- Process pool
 - Flexible exception handling
 - Powerful log system
 - Service registration & discovery
