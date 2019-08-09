@@ -6,6 +6,7 @@ use App\Model\Entity\User;
 use Swoft\Crontab\Annotaion\Mapping\Cron;
 use Swoft\Crontab\Annotaion\Mapping\Scheduled;
 use Swoft\Log\Helper\CLog;
+use Swoft\Log\Helper\Log;
 use Swoft\Stdlib\Helper\JsonHelper;
 
 /**
@@ -28,8 +29,11 @@ class CronTask
 
         $user->save();
 
+        Log::profileStart("name");
         $id   = $user->getId();
         $user = User::find($id)->toArray();
+
+        Log::profileEnd("name");
 
         CLog::info("second task run: %s ", date('Y-m-d H:i:s', time()));
         CLog::info(JsonHelper::encode($user));

@@ -18,9 +18,15 @@ use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
+    'noticeHandler'      => [
+        'logFile' => '@runtime/logs/notice-%d{Y-m-d-H}.log',
+    ],
+    'applicationHandler' => [
+        'logFile' => '@runtime/logs/error-%d{Y-m-d}.log',
+    ],
     'logger'            => [
-        'flushRequest' => false,
-        'enable'       => false,
+        'flushRequest' => true,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer'        => [
