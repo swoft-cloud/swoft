@@ -35,6 +35,8 @@ class CronTask
 
         Log::profileEnd("name");
 
+        Log::info("info message", ['a' => 'b']);
+
         CLog::info("second task run: %s ", date('Y-m-d H:i:s', time()));
         CLog::info(JsonHelper::encode($user));
     }
