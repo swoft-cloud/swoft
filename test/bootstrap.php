@@ -1,3 +1,3 @@
 <?php
 
-define('APP_DEBUG', true);
+define('APP_DEBUG', 1);
