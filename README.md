@@ -13,7 +13,7 @@
 [![Swoft License](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)](https://github.com/swoft-cloud/swoft/blob/master/LICENSE)
 [![Gitter](https://img.shields.io/gitter/room/swoft-cloud/swoft.svg)](https://gitter.im/swoft-cloud/community)
 
-![start-http-server](https://raw.githubusercontent.com/swoft-cloud/swoft/master/public/start-http-server.jpg)
+![start-http-server](https://raw.githubusercontent.com/swoft-cloud/swoft/master/public/image/start-http-server.jpg)
 
 PHP microservices coroutine framework
 
