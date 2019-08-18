@@ -5,7 +5,6 @@ namespace App\Listener;
 
 
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Co;
 use Swoft\Consul\Agent;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
