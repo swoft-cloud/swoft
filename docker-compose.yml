@@ -2,6 +2,8 @@ version: '3.4'
 services:
   swoft:
     image: swoft/swoft
+#    for local develop
+#    command: php -S 127.0.0.1:13300
     container_name: swoft-srv
     environment:
       - APP_ENV=dev
