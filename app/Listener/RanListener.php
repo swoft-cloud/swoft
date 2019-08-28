@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Listener;
 
 use Swoft\Db\Connection\Connection;
@@ -36,7 +35,7 @@ class RanListener implements EventHandlerInterface
 
         $rawSql = $this->getRawSql($querySql, $bindings, $connection);
 
-//        output()->info($rawSql);
+        // output()->info($rawSql);
     }
 
     /**

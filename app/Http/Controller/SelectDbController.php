@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Http\Controller;
 
 use App\Model\Entity\Count2;
@@ -220,7 +219,7 @@ class SelectDbController
             [
                 'name'      => uniqid(),
                 'password'  => md5(uniqid()),
-                'age'       => mt_rand(1, 100),
+                'age'       => random_int(1, 100),
                 'user_desc' => 'u desc',
                 'foo'       => 'bar'
             ]

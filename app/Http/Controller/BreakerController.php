@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Http\Controller;
 
 use App\Model\Logic\BreakerLogic;

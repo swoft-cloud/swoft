@@ -1,16 +1,15 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Http\Controller;
 
-use Exception;
-use function sgo;
+use RuntimeException;
 use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Redis\Exception\RedisException;
 use Swoft\Redis\Pool;
 use Swoft\Redis\Redis;
+use function sgo;
 
 /**
  * Class RedisController
@@ -124,12 +123,12 @@ class RedisController
     {
         sgo(function () {
             Redis::pipeline(function () {
-                throw new Exception('');
+                throw new RuntimeException('');
             });
         });
 
         Redis::pipeline(function () {
-            throw new Exception('');
+            throw new RuntimeException('');
         });
 
         return ['exPipeline'];
@@ -146,12 +145,12 @@ class RedisController
     {
         sgo(function () {
             Redis::transaction(function () {
-                throw new Exception('');
+                throw new RuntimeException('');
             });
         });
 
         Redis::transaction(function () {
-            throw new Exception('');
+            throw new RuntimeException('');
         });
 
         return ['exPipeline'];
