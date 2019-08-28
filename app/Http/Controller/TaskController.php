@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Http\Controller;
 
 use Swoft\Http\Server\Annotation\Mapping\Controller;
@@ -25,9 +24,7 @@ class TaskController
      */
     public function getListByCo(): array
     {
-        $data = Task::co('testTask', 'list', [12]);
-
-        return $data;
+        return Task::co('testTask', 'list', [12]);
     }
 
     /**
@@ -105,8 +102,8 @@ class TaskController
     public function syncTask(): array
     {
         $result  = Task::co('sync', 'test', ['name']);
-        $result2 = Task::co('sync', 'testBool', []);
-        $result3 = Task::co('sync', 'testNull', []);
+        $result2 = Task::co('sync', 'testBool');
+        $result3 = Task::co('sync', 'testNull');
 
         $data[] = $result;
         $data[] = $result2;

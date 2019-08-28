@@ -2,16 +2,15 @@
 
 namespace App\Http\Controller;
 
-use ReflectionException;
 use Swoft;
-use Swoft\Bean\Exception\ContainerException;
-use Swoft\Context\Context;
+use Swoft\Exception\SwoftException;
 use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\View\Renderer;
 use Throwable;
+use function context;
 
 /**
  * Class HomeController
@@ -29,7 +28,18 @@ class HomeController
         $renderer = Swoft::getBean('view');
         $content  = $renderer->render('home/index');
 
-        return Context::mustGet()->getResponse()->withContentType(ContentType::HTML)->withContent($content);
+        return context()->getResponse()->withContentType(ContentType::HTML)->withContent($content);
+    }
+
+    /**
+     * @RequestMapping("/hi")
+     *
+     * @return Response
+     * @throws SwoftException
+     */
+    public function hi(): Response
+    {
+        return context()->getResponse()->withContent('hi');
     }
 
     /**
@@ -37,11 +47,10 @@ class HomeController
      * @param string $name
      *
      * @return Response
-     * @throws ReflectionException
-     * @throws ContainerException
+     * @throws SwoftException
      */
     public function hello(string $name): Response
     {
-        return Context::mustGet()->getResponse()->withContent('Hello' . ($name === '' ? '' : ", {$name}"));
+        return context()->getResponse()->withContent('Hello' . ($name === '' ? '' : ", {$name}"));
     }
 }

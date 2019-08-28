@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Listener;
-
 
 use ReflectionException;
 use Swoft\Bean\Annotation\Mapping\Inject;
