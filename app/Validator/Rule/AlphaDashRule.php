@@ -33,7 +33,7 @@ class AlphaDashRule implements RuleInterface
 
         $rule = '/^[A-Za-z0-9\-\_]+$/';
         if (preg_match($rule, $data[$propertyName])) {
-            return [$data];
+            return $data;
         }
 
         $message = (empty($message)) ? sprintf('%s must be a email', $propertyName) : $message;
