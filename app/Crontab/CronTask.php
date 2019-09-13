@@ -3,6 +3,7 @@
 namespace App\Crontab;
 
 use App\Model\Entity\User;
+use Exception;
 use Swoft\Crontab\Annotaion\Mapping\Cron;
 use Swoft\Crontab\Annotaion\Mapping\Scheduled;
 use Swoft\Log\Helper\CLog;
@@ -20,6 +21,8 @@ class CronTask
 {
     /**
      * @Cron("* * * * * *")
+     *
+     * @throws Exception
      */
     public function secondTask()
     {
