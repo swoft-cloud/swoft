@@ -24,6 +24,6 @@ class TaskProcessListener implements EventHandlerInterface
      */
     public function handle(EventInterface $event): void
     {
-        CLog::info('Task worker start');
+        CLog::debug('Task worker start');
     }
 }

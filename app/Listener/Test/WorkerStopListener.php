@@ -7,6 +7,7 @@ namespace App\Listener\Test;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
+use Swoft\Exception\SwoftException;
 use Swoft\Log\Helper\CLog;
 use Swoft\Server\SwooleEvent;
 
@@ -21,11 +22,13 @@ class WorkerStopListener implements EventHandlerInterface
 {
     /**
      * @param EventInterface $event
+     *
+     * @throws SwoftException
      */
     public function handle(EventInterface $event): void
     {
         $context = context();
 
-        CLog::info('Worker Start context=' . get_class($context));
+        CLog::debug('Worker Start context=' . get_class($context));
     }
 }

@@ -18,9 +18,15 @@ use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
+    'noticeHandler'      => [
+        'logFile' => '@runtime/logs/notice-%d{Y-m-d-H}.log',
+    ],
+    'applicationHandler' => [
+        'logFile' => '@runtime/logs/error-%d{Y-m-d}.log',
+    ],
     'logger'            => [
-        'flushRequest' => false,
-        'enable'       => false,
+        'flushRequest' => true,
+        'enable'       => true,
         'json'         => false,
     ],
     'httpServer'        => [
@@ -39,9 +45,10 @@ return [
             SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         /* @see HttpServer::$setting */
-        'setting'  => [
+        'setting' => [
             'task_worker_num'       => 12,
-            'task_enable_coroutine' => true
+            'task_enable_coroutine' => true,
+            'worker_num'            => 6
         ]
     ],
     'httpDispatcher'    => [
@@ -67,11 +74,11 @@ return [
         'dsn'        => 'mysql:dbname=test2;host=127.0.0.1',
         'username'   => 'root',
         'password'   => 'swoft123456',
-        'dbSelector' => bean(DbSelector::class)
+//        'dbSelector' => bean(DbSelector::class)
     ],
-    'db2.pool'          => [
+    'db2.pool' => [
         'class'    => Pool::class,
-        'database' => bean('db2')
+        'database' => bean('db2'),
     ],
     'db3'               => [
         'class'    => Database::class,
@@ -109,7 +116,7 @@ return [
     ],
     'user.pool'         => [
         'class'  => ServicePool::class,
-        'client' => bean('user')
+        'client' => bean('user'),
     ],
     'rpcServer'         => [
         'class' => ServiceServer::class,
