@@ -10,7 +10,7 @@ use Swoft\Db\Eloquent\Model;
 
 
 /**
- * 
+ *
  * Class User
  *
  * @since 2.0
@@ -20,65 +20,45 @@ use Swoft\Db\Eloquent\Model;
 class User extends Model
 {
     /**
-     * 
      * @Id()
+     *
      * @Column()
+     *
      * @var int|null
      */
     private $id;
 
     /**
-     * 
-     *
      * @Column()
+     *
      * @var string
      */
     private $name;
 
     /**
-     * 
-     *
      * @Column()
+     *
      * @var int
      */
     private $age;
 
     /**
-     * 
-     *
      * @Column(hidden=true)
+     *
      * @var string
      */
     private $password;
 
     /**
-     * 
-     *
      * @Column(name="user_desc", prop="userDesc")
+     *
      * @var string
      */
     private $userDesc;
 
     /**
-     * 
-     *
-     * @Column()
-     * @var int|null
-     */
-    private $add;
-
-    /**
-     * 
-     *
-     * @Column()
-     * @var int|null
-     */
-    private $hahh;
-
-    /**
-     * 
-     *
      * @Column(name="test_json", prop="testJson")
+     *
      * @var array|null
      */
     private $testJson;
@@ -135,26 +115,6 @@ class User extends Model
     }
 
     /**
-     * @param int|null $add
-     *
-     * @return void
-     */
-    public function setAdd(?int $add): void
-    {
-        $this->add = $add;
-    }
-
-    /**
-     * @param int|null $hahh
-     *
-     * @return void
-     */
-    public function setHahh(?int $hahh): void
-    {
-        $this->hahh = $hahh;
-    }
-
-    /**
      * @param array|null $testJson
      *
      * @return void
@@ -202,22 +162,6 @@ class User extends Model
     public function getUserDesc(): string
     {
         return $this->userDesc;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getAdd(): ?int
-    {
-        return $this->add;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getHahh(): ?int
-    {
-        return $this->hahh;
     }
 
     /**

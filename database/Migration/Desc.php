@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace App\Migration;
+namespace Database\Migration;
 
 
 use ReflectionException;
@@ -12,39 +12,37 @@ use Swoft\Devtool\Annotation\Mapping\Migration;
 use Swoft\Devtool\Migration\Migration as BaseMigration;
 
 /**
- * Class Message20190627225525
+ * Class Desc
  *
  * @since 2.0
  *
- * @Migration(time=20190627225525, pool="db3.pool")
+ * @Migration(time=20190913234407)
  */
-class Message extends BaseMigration
+class Desc extends BaseMigration
 {
     /**
-     * @return void
-     *
-     * @throws ReflectionException
      * @throws ContainerException
      * @throws DbException
+     * @throws ReflectionException
      */
     public function up(): void
     {
-        $this->schema->createIfNotExists('messages', function (Blueprint $blueprint) {
+        $this->schema->createIfNotExists('desc', function (Blueprint $blueprint) {
+            $blueprint->comment = 'user desc';
+
             $blueprint->increments('id');
-            $blueprint->text('content');
-            $blueprint->timestamps();
+            $blueprint->string('desc', 30);
         });
     }
 
     /**
-     * @return void
-     *
-     * @throws ReflectionException
      * @throws ContainerException
      * @throws DbException
+     * @throws ReflectionException
      */
     public function down(): void
     {
-        $this->schema->dropIfExists('messages');
+
+        $this->schema->dropIfExists('desc');
     }
 }

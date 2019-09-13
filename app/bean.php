@@ -91,7 +91,7 @@ return [
         'database' => bean('db3')
     ],
     'migrationManager'  => [
-        'migrationPath' => '@app/Migration',
+        'migrationPath' => '@database/Migration',
     ],
     'redis'             => [
         'class'    => RedisDb::class,
