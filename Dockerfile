@@ -23,13 +23,13 @@ ARG work_user=www-data
 ENV APP_ENV=${app_env:-"prod"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
     PHPREDIS_VERSION=4.3.0 \
-    SWOOLE_VERSION=4.4.2 \
+    SWOOLE_VERSION=4.4.5 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 # Libs -y --no-install-recommends
 RUN apt-get update \
     && apt-get install -y \
-        curl wget git zip unzip less vim openssl \
+        curl wget git zip unzip less vim procps lsof tcpdump htop openssl \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
@@ -37,13 +37,14 @@ RUN apt-get update \
         libjpeg-dev \
         libpng-dev \
         libfreetype6-dev \
-# Install composer
-    && curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && composer self-update --clean-backups \
 # Install PHP extensions
     && docker-php-ext-install \
-       bcmath gd pdo_mysql mbstring sockets zip sysvmsg sysvsem sysvshm \
+       bcmath gd pdo_mysql mbstring sockets zip sysvmsg sysvsem sysvshm
+
+# Install composer
+Run curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer \
+    && composer self-update --clean-backups \
 # Install redis extension
     && wget http://pecl.php.net/get/redis-${PHPREDIS_VERSION}.tgz -O /tmp/redis.tar.tgz \
     && pecl install /tmp/redis.tar.tgz \

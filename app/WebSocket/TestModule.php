@@ -2,23 +2,24 @@
 
 namespace App\WebSocket;
 
-use App\WebSocket\Chat\HomeController;
+use App\WebSocket\Test\TestController;
 use Swoft\Http\Message\Request;
+use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
-use Swoft\WebSocket\Server\MessageParser\JsonParser;
-use function server;
+use Swoft\WebSocket\Server\MessageParser\TokenTextParser;
 
 /**
- * Class ChatModule
+ * Class TestModule
  *
  * @WsModule(
- *     "/chat",
- *     messageParser=JsonParser::class,
- *     controllers={HomeController::class}
+ *     "/test",
+ *     defaultCommand="test.index",
+ *     messageParser=TokenTextParser::class,
+ *     controllers={TestController::class}
  * )
  */
-class ChatModule
+class TestModule
 {
     /**
      * @OnOpen()
@@ -27,6 +28,6 @@ class ChatModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+        Session::mustGet()->push("Opened, welcome!(FD: $fd)");
     }
 }
