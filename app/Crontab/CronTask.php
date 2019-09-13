@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Crontab;
 
@@ -32,15 +40,15 @@ class CronTask
 
         $user->save();
 
-        Log::profileStart("name");
+        Log::profileStart('name');
         $id   = $user->getId();
         $user = User::find($id)->toArray();
 
-        Log::profileEnd("name");
+        Log::profileEnd('name');
 
-        Log::info("info message", ['a' => 'b']);
+        Log::info('info message', ['a' => 'b']);
 
-        CLog::info("second task run: %s ", date('Y-m-d H:i:s', time()));
+        CLog::info('second task run: %s ', date('Y-m-d H:i:s', time()));
         CLog::info(JsonHelper::encode($user));
     }
 
@@ -49,7 +57,6 @@ class CronTask
      */
     public function minuteTask()
     {
-        CLog::info("minute task run: %s ", date('Y-m-d H:i:s', time()));
+        CLog::info('minute task run: %s ', date('Y-m-d H:i:s', time()));
     }
-
 }
