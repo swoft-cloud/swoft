@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Http\Controller;
 
@@ -41,12 +48,12 @@ class SelectDbController
 
             User::find($id)->toArray();
 
-            User::db("test_error");
-            User::db("test_error")->find($id);
+            User::db('test_error');
+            User::db('test_error')->find($id);
         });
 
-        User::db("test_error");
-        User::db("test_error")->find($id);
+        User::db('test_error');
+        User::db('test_error')->find($id);
 
         return $user;
     }
@@ -237,7 +244,7 @@ class SelectDbController
     public function desc(): array
     {
         $desc = new Desc();
-        $desc->setDesc("desc");
+        $desc->setDesc('desc');
         $desc->save();
 
         return Desc::find($desc->getId())->toArray();

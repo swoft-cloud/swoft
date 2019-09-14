@@ -60,6 +60,6 @@
     "test": [
       "./vendor/bin/phpunit -c phpunit.xml"
     ],
-    "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
+    "cs-fix": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff"
   }
 }

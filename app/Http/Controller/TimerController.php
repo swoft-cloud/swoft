@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Http\Controller;
 
@@ -38,7 +45,7 @@ class TimerController
             $id = $user->getId();
 
             Redis::set("$id", $user->toArray());
-            Log::info("用户ID=" . $id . " timerId=" . $timerId);
+            Log::info('用户ID=' . $id . ' timerId=' . $timerId);
             sgo(function () use ($id) {
                 $user = User::find($id)->toArray();
                 Log::info(JsonHelper::encode($user));
@@ -66,7 +73,7 @@ class TimerController
             $id = $user->getId();
 
             Redis::set("$id", $user->toArray());
-            Log::info("用户ID=" . $id . " timerId=" . $timerId);
+            Log::info('用户ID=' . $id . ' timerId=' . $timerId);
             sgo(function () use ($id) {
                 $user = User::find($id)->toArray();
                 Log::info(JsonHelper::encode($user));
