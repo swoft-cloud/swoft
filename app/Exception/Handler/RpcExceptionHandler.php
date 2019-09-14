@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Exception\Handler;
 
@@ -12,7 +19,6 @@ use Swoft\Rpc\Server\Exception\Handler\RpcErrorHandler;
 use Swoft\Rpc\Server\Response;
 use Throwable;
 
-
 /**
  * Class RpcExceptionHandler
  *
@@ -22,7 +28,6 @@ use Throwable;
  */
 class RpcExceptionHandler extends RpcErrorHandler
 {
-
     /**
      * @param Throwable $e
      * @param Response  $response

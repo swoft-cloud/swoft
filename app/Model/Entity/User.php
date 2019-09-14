@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Model\Entity;
 
@@ -7,7 +14,6 @@ use Swoft\Db\Annotation\Mapping\Column;
 use Swoft\Db\Annotation\Mapping\Entity;
 use Swoft\Db\Annotation\Mapping\Id;
 use Swoft\Db\Eloquent\Model;
-
 
 /**
  *
@@ -62,7 +68,6 @@ class User extends Model
      * @var array|null
      */
     private $testJson;
-
 
     /**
      * @param int|null $id
@@ -171,5 +176,4 @@ class User extends Model
     {
         return $this->testJson;
     }
-
 }

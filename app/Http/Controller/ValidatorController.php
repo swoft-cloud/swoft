@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Http\Controller;
 
@@ -24,7 +32,7 @@ class ValidatorController
      *
      * @return array
      */
-    function validateAll(Request $request): array
+    public function validateAll(Request $request): array
     {
         return $request->getParsedBody();
     }
@@ -39,7 +47,7 @@ class ValidatorController
      *
      * @return array
      */
-    function validateType(Request $request): array
+    public function validateType(Request $request): array
     {
         return $request->getParsedBody();
     }
@@ -54,7 +62,7 @@ class ValidatorController
      *
      * @return array
      */
-    function validatePassword(Request $request): array
+    public function validatePassword(Request $request): array
     {
         return $request->getParsedBody();
     }
@@ -69,7 +77,7 @@ class ValidatorController
      *
      * @return array
      */
-    function validateCustomer(Request $request): array
+    public function validateCustomer(Request $request): array
     {
         return $request->getParsedBody();
     }
