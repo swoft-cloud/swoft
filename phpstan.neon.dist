@@ -14,6 +14,8 @@ parameters:
     ignoreErrors:
         # Variable type
         - '#^Call to an undefined method Swoft\\Contract\\ContextInterface::get\S+\(\)\.$#'
+        - '#^Call to an undefined method Swoft\\Session\\SessionInterface::push\(\)#'
+        - '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
         # These are ignored for now
         -
             path: %currentWorkingDirectory%/app/Exception/Handler/WsMessageExceptionHandler.php
@@ -47,7 +49,4 @@ parameters:
             message: '#^Call to an undefined method Swoft\\Session\\SessionInterface::push\(\)\.$#'
         -
             path: %currentWorkingDirectory%/app/WebSocket/ChatModule.php
-            message: '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
-        -
-            path: %currentWorkingDirectory%/app/WebSocket/EchoModule.php
             message: '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
