@@ -86,7 +86,7 @@ class TestController
     /**
      * Message command is: 'echo'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping(root=true)
      */
     public function echo($data): void
@@ -117,7 +117,7 @@ class TestController
     /**
      * Message command is: 'bin'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping("bin", root=true)
      */
     public function binary($data): void
@@ -138,7 +138,7 @@ class TestController
     /**
      * Message command is: 'test.ar'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping("ar")
      *
      * @return string
