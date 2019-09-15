@@ -18,7 +18,7 @@ parameters:
         - '#^Call to an undefined method Swoft\\Session\\SessionInterface::getFd\(\)#'
         - '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
         - '#^Call to an undefined method Swoft\\Server\\Server::disconnect\(\)\.$#'
-        - '#^Call to an undefined method Psr\Http\Message\ServerRequestInterface::getUriPath\(\)#'
+        - '#^Call to an undefined method\sPsr\\Http\\Message\\ServerRequestInterface::getUriPath\(\)#'
         # These are ignored for now
         -
             path: %currentWorkingDirectory%/app/Http/Controller/DbModelController.php
