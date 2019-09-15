@@ -33,7 +33,9 @@ class EchoModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        Session::mustGet()->push("Opened, welcome #{$fd}!");
+        /** @var \Swoft\WebSocket\Server\Connection */
+        $connection = Session::mustGet();
+        $connection->push("Opened, welcome #{$fd}!");
     }
 
     /**
