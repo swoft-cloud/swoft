@@ -32,9 +32,7 @@ class TaskController
      */
     public function getListByCo(): array
     {
-        $data = Task::co('testTask', 'list', [12]);
-
-        return $data;
+        return Task::co('testTask', 'list', [12]);
     }
 
     /**
@@ -112,8 +110,8 @@ class TaskController
     public function syncTask(): array
     {
         $result  = Task::co('sync', 'test', ['name']);
-        $result2 = Task::co('sync', 'testBool', []);
-        $result3 = Task::co('sync', 'testNull', []);
+        $result2 = Task::co('sync', 'testBool');
+        $result3 = Task::co('sync', 'testNull');
 
         $data[] = $result;
         $data[] = $result2;

@@ -10,16 +10,13 @@
 
 namespace App\Console\Command;
 
-use ReflectionException;
 use Swoft\Apollo\Config;
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Co;
 use Swoft\Console\Annotation\Mapping\Command;
 use Swoft\Console\Annotation\Mapping\CommandMapping;
-use Swoft\Http\Server\HttpServer;
+use Swoft\Exception\SwoftException;
 use Swoft\Log\Helper\CLog;
-use Swoft\Rpc\Server\ServiceServer;
 use Swoft\WebSocket\Server\WebSocketServer;
 use Throwable;
 
@@ -28,7 +25,7 @@ use Throwable;
  *
  * @since 2.0
  *
- * @Command("agent")
+ * @Command("agent", desc="this is an agent for Apllo config center")
  */
 class AgentCommand
 {
@@ -60,8 +57,7 @@ class AgentCommand
     /**
      * @param array $data
      *
-     * @throws ContainerException
-     * @throws ReflectionException
+     * @throws SwoftException
      */
     public function updateConfigFile(array $data): void
     {
@@ -74,13 +70,13 @@ class AgentCommand
 
             CLog::info('Apollo update success！');
 
-//            /** @var HttpServer $server */
-//            $server = bean('httpServer');
-//            $server->restart();
+            //            /** @var HttpServer $server */
+            //            $server = bean('httpServer');
+            //            $server->restart();
 
-//            /** @var ServiceServer $server */
-//            $server = bean('rpcServer');
-//            $server->restart();
+            //            /** @var ServiceServer $server */
+            //            $server = bean('rpcServer');
+            //            $server->restart();
 
             /** @var WebSocketServer $server */
             $server = bean('wsServer');

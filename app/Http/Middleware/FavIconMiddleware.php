@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Swoft\Bean\Annotation\Mapping\Bean;
+use Swoft\Exception\SwoftException;
 use Swoft\Http\Message\Request;
 use Swoft\Http\Server\Contract\MiddlewareInterface;
 use function context;
@@ -28,11 +29,12 @@ class FavIconMiddleware implements MiddlewareInterface
     /**
      * Process an incoming server request.
      *
-     * @param ServerRequestInterface|Request  $request
-     * @param RequestHandlerInterface $handler
+     * @param ServerRequestInterface|Request $request
+     * @param RequestHandlerInterface        $handler
      *
      * @return ResponseInterface
      * @inheritdoc
+     * @throws SwoftException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

@@ -29,7 +29,7 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('public')
-            ->exclude('resources')
+            ->exclude('resource')
             ->exclude('config')
             ->exclude('runtime')
             ->exclude('vendor')

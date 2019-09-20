@@ -17,6 +17,7 @@ use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Throwable;
+use function random_int;
 
 /**
  * Class DbModelController
@@ -54,7 +55,7 @@ class DbModelController
     public function save(): array
     {
         $user = new User();
-        $user->setAge(mt_rand(1, 100));
+        $user->setAge(random_int(1, 100));
         $user->setUserDesc('desc');
 
         $user->save();
@@ -106,7 +107,7 @@ class DbModelController
     public function getId(): int
     {
         $user = new User();
-        $user->setAge(mt_rand(1, 100));
+        $user->setAge(random_int(1, 100));
         $user->setUserDesc('desc');
 
         $user->save();
@@ -120,7 +121,7 @@ class DbModelController
      * @return array
      * @throws Throwable
      */
-    public function batchUpdate()
+    public function batchUpdate(): array
     {
         // User::truncate();
         User::updateOrCreate(['id' => 1], ['age' => 23]);

@@ -10,7 +10,7 @@
 
 namespace App\Http\Controller;
 
-use Swoft\Context\Context;
+use Swoft\Exception\SwoftException;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
@@ -28,11 +28,12 @@ class RespController
      * @RequestMapping()
      *
      * @return Response
+     * @throws SwoftException
      */
     public function cookie(): Response
     {
         /** @var Response $resp */
-        $resp = Context::mustGet()->getResponse();
+        $resp = context()->getResponse();
 
         return $resp->setCookie('c-name', 'c-value')->withData(['hello']);
     }

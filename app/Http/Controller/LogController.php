@@ -10,8 +10,6 @@
 
 namespace App\Http\Controller;
 
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Log\Helper\CLog;
@@ -30,8 +28,6 @@ class LogController
      * @RequestMapping("test")
      *
      * @return array
-     * @throws ReflectionException
-     * @throws ContainerException
      */
     public function test(): array
     {
@@ -66,8 +62,6 @@ class LogController
 
         // Tag2 end
         Log::profileEnd('tagName');
-
-
 
 
         return ['log'];

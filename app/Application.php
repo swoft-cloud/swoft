@@ -24,6 +24,20 @@ class Application extends SwoftApplication
     {
         parent::beforeInit();
 
+        // you can init php setting.
         date_default_timezone_set('Asia/Shanghai');
+    }
+
+    /**
+     * @return array
+     */
+    public function getCLoggerConfig(): array
+    {
+        $config = parent::getCLoggerConfig();
+
+        // False: Dont print log to terminal
+        $config['enable'] = true;
+
+        return $config;
     }
 }

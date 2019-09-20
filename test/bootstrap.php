@@ -7,4 +7,5 @@
  * @contact  group@swoft.org
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
-define('APP_DEBUG', true);
+
+define('APP_DEBUG', 1);
