@@ -191,7 +191,7 @@ class DbModelController
                 'test_json' => ['test' => 1]
             ],
         ];
-        $baseWhere = ['age' => [18, 19, 20]];
+        $baseWhere = ['age' => 18];
 
         return User::batchUpdateOrInsert($values, $baseWhere, ['user_desc'], ['user_desc']);
     }

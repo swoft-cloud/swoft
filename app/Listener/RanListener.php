@@ -42,6 +42,6 @@ class RanListener implements EventHandlerInterface
 
         $rawSql = $connection->getRawSql($querySql, $bindings);
 
-        // output()->info($rawSql);
+        //output()->info($rawSql);
     }
 }
