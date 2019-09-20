@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Exception\Handler;
 
@@ -32,7 +40,10 @@ class WsHandshakeExceptionHandler extends AbstractHandshakeErrorHandler
         // Debug is false
         if (!APP_DEBUG) {
             return $response->withStatus(500)->withContent(sprintf(
-                '%s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine()
+                '%s At %s line %d',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
             ));
         }
 

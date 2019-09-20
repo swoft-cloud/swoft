@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Listener\Test;
 
@@ -27,6 +35,6 @@ class ShutDownListener implements EventHandlerInterface
     {
         $context = context();
 
-        CLog::info(' Shut down context=' . get_class($context));
+        CLog::debug('Shut down context=' . get_class($context));
     }
 }

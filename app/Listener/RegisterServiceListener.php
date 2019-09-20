@@ -1,8 +1,14 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Listener;
-
 
 use Swoft\Bean\Annotation\Mapping\Inject;
 use Swoft\Consul\Agent;
@@ -12,7 +18,6 @@ use Swoft\Event\EventInterface;
 use Swoft\Http\Server\HttpServer;
 use Swoft\Log\Helper\CLog;
 use Swoft\Server\SwooleEvent;
-use Swoole\Coroutine;
 
 /**
  * Class RegisterServiceListener
@@ -60,6 +65,5 @@ class RegisterServiceListener implements EventHandlerInterface
         // Register
 //        $this->agent->registerService($service);
 //        CLog::info('Swoft http register service success by consul!');
-
     }
 }

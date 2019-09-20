@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\WebSocket\Test;
 
@@ -81,7 +89,7 @@ class TestController
     /**
      * Message command is: 'echo'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping(root=true)
      */
     public function echo($data): void
@@ -136,7 +144,7 @@ class TestController
     /**
      * Message command is: 'test.ar'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping("ar")
      *
      * @return string

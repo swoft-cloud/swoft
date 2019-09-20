@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Model\Entity;
 
@@ -7,7 +14,6 @@ use Swoft\Db\Annotation\Mapping\Column;
 use Swoft\Db\Annotation\Mapping\Entity;
 use Swoft\Db\Annotation\Mapping\Id;
 use Swoft\Db\Eloquent\Model;
-
 
 /**
  *
@@ -20,6 +26,7 @@ use Swoft\Db\Eloquent\Model;
 class Count extends Model
 {
     protected const UPDATED_AT = 'update_time';
+
     protected const CREATED_AT = 'create_time';
 
     /**
@@ -61,7 +68,6 @@ class Count extends Model
      * @var string|null
      */
     private $updateTime;
-
 
     /**
      * @param int|null $id
@@ -152,5 +158,4 @@ class Count extends Model
     {
         return $this->updateTime;
     }
-
 }

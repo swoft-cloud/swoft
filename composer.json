@@ -58,8 +58,9 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
     "test": [
+      "./vendor/bin/phpstan analyze",
       "./vendor/bin/phpunit -c phpunit.xml"
     ],
-    "cs-fix": "./vendor/bin/php-cs-fixer fix $1"
+    "cs-fix": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff"
   }
 }

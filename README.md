@@ -1,8 +1,4 @@
-<p align="center">
-    <a href="https://github.com/swoft-cloud/swoft" target="_blank">
-        <img src="http://qiniu.daydaygo.top/swoft-logo.png?imageView2/2/w/300" alt="swoft"/>
-    </a>
-</p>
+![swoft-logo](https://raw.githubusercontent.com/swoft-cloud/swoft/master/public/image/swoft-logo-mdl.png)
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/swoft.svg)](https://packagist.org/packages/swoft/swoft)
 [![Build Status](https://travis-ci.org/swoft-cloud/swoft.svg?branch=master)](https://travis-ci.org/swoft-cloud/swoft)
@@ -15,7 +11,7 @@
 
 ![start-http-server](https://raw.githubusercontent.com/swoft-cloud/swoft/master/public/image/start-http-server.jpg)
 
-PHP microservices coroutine framework
+PHP microservice coroutine framework
 
 > **[中文说明](README.zh-CN.md)**
 
@@ -82,31 +78,31 @@ composer create-project swoft/swoft swoft
 
 ## Start
 
-- Http server
+- Http Server
 
 ```bash
 [root@swoft swoft]# php bin/swoft http:start
 ```
 
-- WebSocket server
+- WebSocket Server
 
 ```bash
 [root@swoft swoft]# php bin/swoft ws:start
 ```
 
-- RPC server
+- RPC Server
 
 ```bash
 [root@swoft swoft]# php bin/swoft rpc:start
 ```
 
-- TCP server
+- TCP Server
 
 ```bash
 [root@swoft swoft]# php bin/swoft tcp:start
 ```
 
-- Process pool
+- Process Pool
 
 ```bash
 [root@swoft swoft]# php bin/swoft process:start

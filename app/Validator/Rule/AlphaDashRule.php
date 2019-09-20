@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Validator\Rule;
 
@@ -33,7 +41,7 @@ class AlphaDashRule implements RuleInterface
 
         $rule = '/^[A-Za-z0-9\-\_]+$/';
         if (preg_match($rule, $data[$propertyName])) {
-            return [$data];
+            return $data;
         }
 
         $message = (empty($message)) ? sprintf('%s must be a email', $propertyName) : $message;

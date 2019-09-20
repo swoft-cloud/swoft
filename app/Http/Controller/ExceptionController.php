@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Http\Controller;
 
@@ -50,6 +58,6 @@ class ExceptionController
      */
     public function notice(): void
     {
-        trigger_error('user error', E_USER_NOTICE);
+        trigger_error('user error');
     }
 }
