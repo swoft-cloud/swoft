@@ -1,4 +1,12 @@
 <?php declare(strict_types=1);
+/**
+ * This file is part of Swoft.
+ *
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ */
 
 namespace App\Http\Controller;
 
@@ -6,6 +14,7 @@ use App\Model\Entity\Count;
 use App\Model\Entity\User;
 use App\Model\Entity\User3;
 use Swoft\Db\DB;
+use Swoft\Db\Exception\DbException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Throwable;
@@ -156,6 +165,9 @@ class DbTransactionController
 
     /**
      * @RequestMapping()
+     * @return array
+     * @throws DbException
+     * @throws Throwable
      */
     public function multiPool()
     {
@@ -163,7 +175,7 @@ class DbTransactionController
 
         // db3.pool
         $user = new User3();
-        $user->setAge(mt_rand(1, 100));
+        $user->setAge(random_int(1, 100));
         $user->setUserDesc('desc');
 
         $user->save();
@@ -174,7 +186,7 @@ class DbTransactionController
         $uid = $this->getId();
 
         $count = new Count();
-        $count->setUserId(mt_rand(1, 100));
+        $count->setUserId(random_int(1, 100));
         $count->setAttributes('attr');
         $count->setCreateTime(time());
 
@@ -197,7 +209,7 @@ class DbTransactionController
     public function getId(): int
     {
         $user = new User();
-        $user->setAge(mt_rand(1, 100));
+        $user->setAge(random_int(1, 100));
         $user->setUserDesc('desc');
 
         $user->save();
