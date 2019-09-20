@@ -158,9 +158,7 @@ class DbModelController
      */
     public function propWhere(): array
     {
-        $id = $this->getId();
-
-        User::updateOrInsert(['id' => $id], ['userDesc' => 'swoft']);
+        User::updateOrInsert(['id' => 1000], ['userDesc' => 'swoft']);
 
         $user = User::whereProp(['userDesc' => 'swoft'])->first();
 
