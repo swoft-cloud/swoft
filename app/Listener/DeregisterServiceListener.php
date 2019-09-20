@@ -10,12 +10,8 @@
 
 namespace App\Listener;
 
-use ReflectionException;
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Consul\Agent;
-use Swoft\Consul\Exception\ClientException;
-use Swoft\Consul\Exception\ServerException;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
@@ -46,6 +42,6 @@ class DeregisterServiceListener implements EventHandlerInterface
         /** @var HttpServer $httpServer */
         $httpServer = $event->getTarget();
 
-       $this->agent->deregisterService('swoft');
+        $this->agent->deregisterService('swoft');
     }
 }

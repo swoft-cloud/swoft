@@ -13,6 +13,7 @@ namespace App\WebSocket\Test;
 use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
+use Swoft\WebSocket\Server\Connection;
 use Swoft\WebSocket\Server\Message\Message;
 use Swoft\WebSocket\Server\Message\Request;
 use Swoft\WebSocket\Server\Message\Response;
@@ -48,6 +49,7 @@ class TestController
     public function close(Message $msg): void
     {
         $data = $msg->getData();
+        /** @var Connection $conn */
         $conn = Session::mustGet();
 
         $fd = is_numeric($data) ? (int)$data : $conn->getFd();
@@ -120,8 +122,8 @@ class TestController
     /**
      * Message command is: 'bin'
      *
-     * @param $data
      * @MessageMapping("bin", root=true, opcode=2)
+     * @param string $data
      *
      * @return string
      */
@@ -144,8 +146,8 @@ class TestController
     /**
      * Message command is: 'test.ar'
      *
-     * @param string $data
      * @MessageMapping("ar")
+     * @param string $data
      *
      * @return string
      */

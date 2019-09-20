@@ -17,7 +17,6 @@ use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Throwable;
 use function trigger_error;
 use const E_USER_ERROR;
-use const E_USER_NOTICE;
 
 /**
  * @Controller(prefix="ex")
