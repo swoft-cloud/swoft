@@ -91,7 +91,6 @@ class TestCommand
                 '/dbModel/delete',
                 '/dbModel/save',
                 '/dbModel/batchUpdate',
-                '/dbModel/batchUpdateOrInsert',
                 '/dbModel/propWhere',
                 '/selectDb/modelNotExistDb',
                 '/selectDb/queryNotExistDb',

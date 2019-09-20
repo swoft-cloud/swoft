@@ -164,34 +164,4 @@ class DbModelController
 
         return $user->toArray();
     }
-
-    /**
-     * @RequestMapping()
-     *
-     * @return bool
-     * @throws Throwable
-     */
-    public function batchUpdateOrInsert(): bool
-    {
-        $values    = [
-            [
-                'age'       => 18,
-                'user_desc' => 'swoft' . random_int(1, 2),
-                'test_json' => []
-            ],
-            [
-                'age'       => 19,
-                'user_desc' => 'swoft1' . random_int(2, 3),
-                'test_json' => null
-            ],
-            [
-                'age'       => 20,
-                'user_desc' => 'swoft2' . random_int(4, 6),
-                'test_json' => ['test' => 1]
-            ],
-        ];
-        $baseWhere = ['age' => 18];
-
-        return User::batchUpdateOrInsert($values, $baseWhere, ['user_desc'], ['user_desc']);
-    }
 }
