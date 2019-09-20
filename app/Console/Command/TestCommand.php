@@ -91,6 +91,8 @@ class TestCommand
                 '/dbModel/delete',
                 '/dbModel/save',
                 '/dbModel/batchUpdate',
+                '/dbModel/batchUpdateOrInsert',
+                '/dbModel/propWhere',
                 '/selectDb/modelNotExistDb',
                 '/selectDb/queryNotExistDb',
                 '/selectDb/dbNotExistDb',
@@ -98,7 +100,7 @@ class TestCommand
                 '/selectDb/queryDb',
                 '/selectDb/dbDb',
                 '/selectDb/select',
-                '/builder/schema'
+                '/builder/schema',
             ],
             'task'    => [
                 '/task/getListByCo',

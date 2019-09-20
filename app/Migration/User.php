@@ -28,7 +28,7 @@ class User extends BaseMigration
     public function up(): void
     {
         $sql = <<<sql
-CREATE TABLE `user` (
+CREATE TABLE IF NOT  EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `age` int(11) NOT NULL DEFAULT '0',
   `password` varchar(100) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
