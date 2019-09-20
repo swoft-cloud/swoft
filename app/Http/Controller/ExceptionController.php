@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of Swoft.
  *
@@ -7,6 +7,7 @@
  * @contact  group@swoft.org
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
+
 namespace App\Http\Controller;
 
 use App\Exception\ApiException;
@@ -16,7 +17,6 @@ use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Throwable;
 use function trigger_error;
 use const E_USER_ERROR;
-use const E_USER_NOTICE;
 
 /**
  * @Controller(prefix="ex")
@@ -57,6 +57,6 @@ class ExceptionController
      */
     public function notice(): void
     {
-        trigger_error('user error', E_USER_NOTICE);
+        trigger_error('user error');
     }
 }

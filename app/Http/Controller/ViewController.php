@@ -10,8 +10,6 @@
 
 namespace App\Http\Controller;
 
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
@@ -34,8 +32,6 @@ class ViewController
      * @param Response $response
      *
      * @return Response
-     * @throws ReflectionException
-     * @throws ContainerException
      */
     public function index(Response $response): Response
     {

@@ -13,9 +13,13 @@ namespace App\WebSocket\Test;
 use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
+use Swoft\WebSocket\Server\Connection;
 use Swoft\WebSocket\Server\Message\Message;
 use Swoft\WebSocket\Server\Message\Request;
 use Swoft\WebSocket\Server\Message\Response;
+use function is_numeric;
+use function json_encode;
+use const WEBSOCKET_OPCODE_PONG;
 
 /**
  * Class HomeController
@@ -45,14 +49,15 @@ class TestController
     public function close(Message $msg): void
     {
         $data = $msg->getData();
+        /** @var Connection $conn */
         $conn = Session::mustGet();
 
-        $fd = \is_numeric($data) ? (int)$data : $conn->getFd();
+        $fd = is_numeric($data) ? (int)$data : $conn->getFd();
 
         $conn->push("hi, will close conn $fd");
 
         // disconnect
-        \server()->disconnect($fd);
+        $conn->getServer()->disconnect($fd);
     }
 
     /**
@@ -67,7 +72,7 @@ class TestController
     {
         $fd = $req->getFd();
 
-        Session::mustGet()->push("(your FD: $fd)message data: " . \json_encode($req->getMessage()->toArray()));
+        Session::mustGet()->push("(your FD: $fd)message data: " . json_encode($req->getMessage()->toArray()));
     }
 
     /**
@@ -80,13 +85,13 @@ class TestController
      */
     public function injectMessage(Message $msg): void
     {
-        Session::mustGet()->push('message data: ' . \json_encode($msg->toArray()));
+        Session::mustGet()->push('message data: ' . json_encode($msg->toArray()));
     }
 
     /**
      * Message command is: 'echo'
      *
-     * @param $data
+     * @param string $data
      * @MessageMapping(root=true)
      */
     public function echo($data): void
@@ -117,12 +122,15 @@ class TestController
     /**
      * Message command is: 'bin'
      *
-     * @param $data
-     * @MessageMapping("bin", root=true)
+     * @MessageMapping("bin", root=true, opcode=2)
+     * @param string $data
+     *
+     * @return string
      */
-    public function binary($data): void
+    public function binary($data): string
     {
-        Session::mustGet()->push('Binary: ' . $data, \WEBSOCKET_OPCODE_BINARY);
+        // Session::mustGet()->push('Binary: ' . $data, \WEBSOCKET_OPCODE_BINARY);
+        return 'Binary: ' . $data;
     }
 
     /**
@@ -132,14 +140,14 @@ class TestController
      */
     public function pong(): void
     {
-        Session::mustGet()->push('pong!', \WEBSOCKET_OPCODE_PONG);
+        Session::mustGet()->push('pong!', WEBSOCKET_OPCODE_PONG);
     }
 
     /**
      * Message command is: 'test.ar'
      *
-     * @param $data
      * @MessageMapping("ar")
+     * @param string $data
      *
      * @return string
      */

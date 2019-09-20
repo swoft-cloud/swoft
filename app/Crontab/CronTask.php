@@ -10,13 +10,10 @@
 
 namespace App\Crontab;
 
-use App\Model\Entity\User;
 use Exception;
 use Swoft\Crontab\Annotaion\Mapping\Cron;
 use Swoft\Crontab\Annotaion\Mapping\Scheduled;
 use Swoft\Log\Helper\CLog;
-use Swoft\Log\Helper\Log;
-use Swoft\Stdlib\Helper\JsonHelper;
 
 /**
  * Class CronTask
@@ -32,31 +29,26 @@ class CronTask
      *
      * @throws Exception
      */
-    public function secondTask()
+    public function secondTask(): void
     {
-        $user = new User();
-        $user->setAge(mt_rand(1, 100));
-        $user->setUserDesc('desc');
+        // $user = new User();
+        // $user->setAge(mt_rand(1, 100));
+        // $user->setUserDesc('desc');
+        //
+        // $user->save();
+        //
+        // $id   = $user->getId();
+        // $user = User::find($id)->toArray();
 
-        $user->save();
-
-        Log::profileStart('name');
-        $id   = $user->getId();
-        $user = User::find($id)->toArray();
-
-        Log::profileEnd('name');
-
-        Log::info('info message', ['a' => 'b']);
-
-        CLog::info('second task run: %s ', date('Y-m-d H:i:s', time()));
-        CLog::info(JsonHelper::encode($user));
+        CLog::info('second task run: %s ', date('Y-m-d H:i:s'));
+        // CLog::info(JsonHelper::encode($user));
     }
 
     /**
      * @Cron("0 * * * * *")
      */
-    public function minuteTask()
+    public function minuteTask(): void
     {
-        CLog::info('minute task run: %s ', date('Y-m-d H:i:s', time()));
+        CLog::info('minute task run: %s ', date('Y-m-d H:i:s'));
     }
 }

@@ -35,6 +35,6 @@ class ShutDownListener implements EventHandlerInterface
     {
         $context = context();
 
-        CLog::debug(' Shut down context=' . get_class($context));
+        CLog::debug('Shut down context=' . get_class($context));
     }
 }

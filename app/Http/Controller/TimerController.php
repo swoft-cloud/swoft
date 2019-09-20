@@ -12,6 +12,7 @@ namespace App\Http\Controller;
 
 use App\Model\Entity\User;
 use Exception;
+use function random_int;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Log\Helper\Log;
@@ -38,7 +39,7 @@ class TimerController
     {
         Timer::after(3 * 1000, function (int $timerId) {
             $user = new User();
-            $user->setAge(mt_rand(1, 100));
+            $user->setAge(random_int(1, 100));
             $user->setUserDesc('desc');
 
             $user->save();
@@ -66,7 +67,7 @@ class TimerController
     {
         Timer::tick(3 * 1000, function (int $timerId) {
             $user = new User();
-            $user->setAge(mt_rand(1, 100));
+            $user->setAge(random_int(1, 100));
             $user->setUserDesc('desc');
 
             $user->save();
