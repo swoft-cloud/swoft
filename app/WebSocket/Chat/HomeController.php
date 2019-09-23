@@ -38,7 +38,7 @@ class HomeController
      * @param string $data
      * @MessageMapping()
      */
-    public function echo($data): void
+    public function echo(string $data): void
     {
         Session::mustGet()->push('(home.echo)Recv: ' . $data);
     }
@@ -51,7 +51,7 @@ class HomeController
      *
      * @return string
      */
-    public function autoReply($data): string
+    public function autoReply(string $data): string
     {
         return '(home.ar)Recv: ' . $data;
     }
