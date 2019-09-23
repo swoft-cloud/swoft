@@ -20,7 +20,6 @@ use Swoft\SwoftComponent;
  */
 class AutoLoader extends SwoftComponent
 {
-
     /**
      * Class constructor.
      */

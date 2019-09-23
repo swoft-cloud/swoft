@@ -8,7 +8,7 @@
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-namespace App\Crontab;
+namespace App\Task\Crontab;
 
 use Exception;
 use Swoft\Crontab\Annotaion\Mapping\Cron;

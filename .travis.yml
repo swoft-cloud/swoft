@@ -12,7 +12,7 @@ install:
   - |
     echo "no" | pecl install -f redis
   - |
-    wget https://github.com/swoole/swoole-src/archive/v4.3.3.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j$(nproc) && make install && cd - && rm -rf swoole
+    wget https://github.com/swoole/swoole-src/archive/v4.4.6.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j$(nproc) && make install && cd - && rm -rf swoole
     echo "extension = swoole.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - |
     wget -O bin/php-cs-fixer "https://cs.symfony.com/download/php-cs-fixer-v2.phar"
@@ -26,3 +26,4 @@ before_script:
 script:
   - composer cs-fix
   - composer test
+#  - php bin/swoft dinfo:env

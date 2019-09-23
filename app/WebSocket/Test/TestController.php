@@ -94,7 +94,7 @@ class TestController
      * @param string $data
      * @MessageMapping(root=true)
      */
-    public function echo($data): void
+    public function echo(string $data): void
     {
         Session::mustGet()->push('(echo)Recv: ' . $data);
     }
@@ -127,7 +127,7 @@ class TestController
      *
      * @return string
      */
-    public function binary($data): string
+    public function binary(string $data): string
     {
         // Session::mustGet()->push('Binary: ' . $data, \WEBSOCKET_OPCODE_BINARY);
         return 'Binary: ' . $data;
@@ -151,7 +151,7 @@ class TestController
      *
      * @return string
      */
-    public function autoReply($data): string
+    public function autoReply(string $data): string
     {
         return '(home.ar)Recv: ' . $data;
     }
