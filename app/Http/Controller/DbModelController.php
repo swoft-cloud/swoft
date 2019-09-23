@@ -78,7 +78,7 @@ class DbModelController
     {
         $id = $this->getId();
 
-        User::updateOrInsert(['id' => $id], ['name' => 'swoft']);
+        User::updateOrInsert(['id' => $id], ['name' => 'swoft', 'userDesc' => 'swoft']);
 
         $user = User::find($id);
 
@@ -148,5 +148,20 @@ class DbModelController
 
 
         return $updateResults;
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     * @throws Throwable
+     */
+    public function propWhere(): array
+    {
+        User::updateOrInsert(['id' => 1000], ['userDesc' => 'swoft']);
+
+        $user = User::whereProp(['userDesc' => 'swoft'])->first();
+
+        return $user->toArray();
     }
 }

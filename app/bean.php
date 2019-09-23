@@ -32,8 +32,8 @@ return [
         'logFile' => '@runtime/logs/error-%d{Y-m-d}.log',
     ],
     'logger'            => [
-        'flushRequest' => true,
-        'enable'       => true,
+        'flushRequest' => false,
+        'enable'       => false,
         'json'         => false,
     ],
     'httpServer'        => [
@@ -98,7 +98,7 @@ return [
         'database' => bean('db3')
     ],
     'migrationManager'  => [
-        'migrationPath' => '@app/Migration',
+        'migrationPath' => '@database/Migration',
     ],
     'redis'             => [
         'class'    => RedisDb::class,
