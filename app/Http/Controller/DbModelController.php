@@ -160,8 +160,9 @@ class DbModelController
     {
         User::updateOrInsert(['id' => 1000], ['userDesc' => 'swoft']);
 
+        /** @var User|null $user */
         $user = User::whereProp(['userDesc' => 'swoft'])->first();
 
-        return $user->toArray();
+        return $user ? $user->toArray() : [];
     }
 }

@@ -14,8 +14,8 @@ parameters:
     ignoreErrors:
         # Variable type
         - '#^Call to an undefined method Swoft\\Contract\\ContextInterface::get\S+\(\)\.$#'
-        - '#^Call to an undefined method Swoft\\Session\\SessionInterface::push\(\)#'
-        - '#^Call to an undefined method Swoft\\Session\\SessionInterface::getFd\(\)#'
+        - '#^Call to an undefined method Swoft\\Contract\\SessionInterface::push\(\)#'
+        # - '#^Call to an undefined method Swoft\\Session\\SessionInterface::getFd\(\)#'
         - '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
         # - '#^Call to an undefined method Swoft\\Server\\Server::disconnect\(\)\.$#'
         - '#^Call to an undefined method\sPsr\\Http\\Message\\ServerRequestInterface::getUriPath\(\)#'
