@@ -26,4 +26,4 @@ before_script:
 script:
   - composer cs-fix
   - composer test
-  - php bin/swoft dinfo:env
+#  - php bin/swoft dinfo:env
