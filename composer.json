@@ -62,6 +62,7 @@
       "./vendor/bin/phpstan analyze",
       "./vendor/bin/phpunit -c phpunit.xml"
     ],
-    "cs-fix": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff"
+    "cs-fix": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff",
+    "do-cs-fix": "./bin/php-cs-fixer fix"
   }
 }

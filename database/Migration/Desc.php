@@ -48,7 +48,6 @@ class Desc extends BaseMigration
      */
     public function down(): void
     {
-
         $this->schema->dropIfExists('desc');
     }
 }

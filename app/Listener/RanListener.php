@@ -15,7 +15,6 @@ use Swoft\Db\DbEvent;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
-use Swoft\Stdlib\Helper\StringHelper;
 
 /**
  * Class RanListener
