@@ -58,7 +58,8 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 
 ## Discuss
 
-- [swoft-cloud/community](https://gitter.im/swoft-cloud/community)
+- Gitter.im https://gitter.im/swoft-cloud/community
+- Reddit https://www.reddit.com/r/swoft/
 - QQ Group1: 548173319      
 - QQ Group2: 778656850
 
