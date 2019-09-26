@@ -44,8 +44,7 @@ class RpcExceptionHandler extends RpcErrorHandler
             $error = Error::new($e->getCode(), $e->getMessage(), null);
         } else {
             $message = sprintf(' %s At %s line %d', $e->getMessage(), $e->getFile(), $e->getLine());
-            $error   = Error::new($e->getCode(), $message, null);
-            
+            $error   = Error::new($e->getCode(), $message, null);   
         }
 
         Debug::log('Rpc server error(%s)', $e->getMessage());
