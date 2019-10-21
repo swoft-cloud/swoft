@@ -11,7 +11,7 @@ assignees: ''
 | ------------------- | -----
 | Bug report?         | yes/no
 | Feature request?    | yes/no
-| Swoft version       | x.y.z
+| Swoft version       | x.y.z (by `php bin/swoft -V`)
 | Swoole version      | x.y.z (by `php --ri swoole`)
 | PHP version         | x.y.z (by `php -v`)
 | Runtime environment | Win10/Mac/CentOS 7/Ubuntu/Docker etc.
