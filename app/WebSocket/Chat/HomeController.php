@@ -10,6 +10,7 @@
 
 namespace App\WebSocket\Chat;
 
+use App\WebSocket\Middleware\DemoMiddleware;
 use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
@@ -17,7 +18,7 @@ use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
 /**
  * Class HomeController
  *
- * @WsController()
+ * @WsController(middlewares={DemoMiddleware::class})
  */
 class HomeController
 {

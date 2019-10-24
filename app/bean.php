@@ -146,6 +146,12 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    /** @see \Swoft\WebSocket\Server\WsMessageDispatcher */
+    'wsMsgDispatcher' => [
+        'middlewares' => [
+            \App\WebSocket\Middleware\GlobalWsMiddleware::class
+        ],
+    ],
     /** @see \Swoft\Tcp\Server\TcpServer */
     'tcpServer'         => [
         'port'  => 18309,
