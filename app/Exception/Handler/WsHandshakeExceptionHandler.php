@@ -10,8 +10,6 @@
 
 namespace App\Exception\Handler;
 
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Error\Annotation\Mapping\ExceptionHandler;
 use Swoft\Http\Message\Response;
 use Swoft\WebSocket\Server\Exception\Handler\AbstractHandshakeErrorHandler;
@@ -32,19 +30,13 @@ class WsHandshakeExceptionHandler extends AbstractHandshakeErrorHandler
      * @param Response  $response
      *
      * @return Response
-     * @throws ReflectionException
-     * @throws ContainerException
      */
     public function handle(Throwable $e, Response $response): Response
     {
         // Debug is false
         if (!APP_DEBUG) {
-            return $response->withStatus(500)->withContent(sprintf(
-                '%s At %s line %d',
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine()
-            ));
+            return $response->withStatus(500)->withContent(sprintf('%s At %s line %d', $e->getMessage(), $e->getFile(),
+                $e->getLine()));
         }
 
         $data = [

@@ -10,6 +10,7 @@
 
 namespace App\Tcp\Controller;
 
+use App\Tcp\Middleware\DemoMiddleware;
 use Swoft\Tcp\Server\Annotation\Mapping\TcpController;
 use Swoft\Tcp\Server\Annotation\Mapping\TcpMapping;
 use Swoft\Tcp\Server\Request;
@@ -19,7 +20,7 @@ use function strrev;
 /**
  * Class DemoController
  *
- * @TcpController()
+ * @TcpController(middlewares={DemoMiddleware::class})
  */
 class DemoController
 {

@@ -10,8 +10,6 @@
 
 namespace App\Exception\Handler;
 
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Error\Annotation\Mapping\ExceptionHandler;
 use Swoft\Log\Debug;
 use Swoft\Rpc\Error;
@@ -33,8 +31,6 @@ class RpcExceptionHandler extends RpcErrorHandler
      * @param Response  $response
      *
      * @return Response
-     * @throws ReflectionException
-     * @throws ContainerException
      */
     public function handle(Throwable $e, Response $response): Response
     {
