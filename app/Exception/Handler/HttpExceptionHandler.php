@@ -35,9 +35,9 @@ class HttpExceptionHandler extends AbstractHttpErrorHandler
      */
     public function handle(Throwable $e, Response $response): Response
     {
-        // Log
+        // Log error message
         Log::error($e->getMessage());
-        CLog::error($e->getMessage());
+        CLog::error('%s. (At %s line %d)', $e->getMessage(), $e->getFile(), $e->getLine());
 
         // Debug is false
         if (!APP_DEBUG) {
