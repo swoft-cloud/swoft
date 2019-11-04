@@ -32,7 +32,7 @@ class AutoLoader extends SwoftComponent
     /**
      * @return array
      */
-    public function metadata(): array
+    protected function metadata(): array
     {
         return [];
     }
