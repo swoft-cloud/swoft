@@ -10,7 +10,6 @@
 
 namespace App\Http\Controller;
 
-use Swoft\Exception\SwoftException;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
@@ -27,14 +26,20 @@ class RespController
     /**
      * @RequestMapping()
      *
-     * @return Response
-     * @throws SwoftException
+     * @return array
      */
-    public function cookie(): Response
+    public function ary(): array
     {
-        /** @var Response $resp */
-        $resp = context()->getResponse();
+        return ['ary'];
+    }
 
-        return $resp->setCookie('c-name', 'c-value')->withData(['hello']);
+    /**
+     * @RequestMapping()
+     *
+     * @return string
+     */
+    public function str(): string
+    {
+        return 'string';
     }
 }

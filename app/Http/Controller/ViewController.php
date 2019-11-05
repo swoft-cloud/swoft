@@ -54,24 +54,4 @@ class ViewController
             'msg' => 'hello'
         ];
     }
-
-    /**
-     * @RequestMapping()
-     *
-     * @return array
-     */
-    public function ary(): array
-    {
-        return ['ary'];
-    }
-
-    /**
-     * @RequestMapping()
-     *
-     * @return string
-     */
-    public function str(): string
-    {
-        return 'string';
-    }
 }
