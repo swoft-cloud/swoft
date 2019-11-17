@@ -32,6 +32,18 @@ class SessionController
     }
 
     /**
+     * @RequestMapping("all")
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        $sess = HttpSession::current();
+
+        return $sess->toArray();
+    }
+
+    /**
      * @RequestMapping()
      * @param Response $response
      *
@@ -41,8 +53,9 @@ class SessionController
     {
         $sess = HttpSession::current();
         $sess->set('testKey', 'test-value');
+        $sess->set('testKey1', ['k' => 'v', 'v1', 3]);
 
-        return $response->withData(['set.testKey' => 'test-value']);
+        return $response->withData(['testKey', 'testKey1']);
     }
 
     /**
@@ -81,5 +94,20 @@ class SessionController
         $sess = HttpSession::current();
 
         return $response->withData(['destroy' => $sess->destroy()]);
+    }
+
+    // ------------ flash session usage
+
+    /**
+     * @RequestMapping()
+     *
+     * @return array
+     */
+    public function flash(): array
+    {
+        $sess = HttpSession::current();
+        $sess->setFlash('flash1', 'test-value');
+
+        return ['set.testKey' => 'test-value'];
     }
 }
