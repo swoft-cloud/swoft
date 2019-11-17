@@ -31,7 +31,7 @@ class TestCommand
     /**
      * @CommandMapping(name="ab")
      */
-    public function ab()
+    public function ab(): void
     {
         $type = input()->get('type', '');
         $uris = $this->uris();
@@ -40,6 +40,7 @@ class TestCommand
         if (empty($type)) {
             $exeUris = [];
             foreach ($uris as $name => $uriAry) {
+                /** @noinspection SlowArrayOperationsInLoopInspection */
                 $exeUris = array_merge($exeUris, $uriAry);
             }
         } else {

@@ -10,6 +10,7 @@
 
 namespace App\WebSocket\Test;
 
+use App\WebSocket\Middleware\DemoMiddleware;
 use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\MessageMapping;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsController;
@@ -24,7 +25,7 @@ use const WEBSOCKET_OPCODE_PONG;
 /**
  * Class HomeController
  *
- * @WsController()
+ * @WsController(middlewares={DemoMiddleware::class})
  */
 class TestController
 {

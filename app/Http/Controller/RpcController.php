@@ -13,7 +13,6 @@ namespace App\Http\Controller;
 use App\Rpc\Lib\UserInterface;
 use Exception;
 use Swoft\Co;
-use Swoft\Exception\SwoftException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Rpc\Client\Annotation\Mapping\Reference;
@@ -86,7 +85,6 @@ class RpcController
      * @RequestMapping()
      *
      * @return array
-     * @throws SwoftException
      */
     public function sendBigString(): array
     {
