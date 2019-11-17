@@ -60,18 +60,18 @@ class RedisController
      */
     public function set(): array
     {
-        $key   = 'key';
-        $value = uniqid();
+        $key = 'key1';
 
-        $this->redis->zAdd($key, [
+        $data = [
             'add'    => 11.1,
             'score2' => 11.1,
             'score3' => 11.21
-        ]);
+        ];
+        $this->redis->zAdd($key, $data);
 
-        $get = $this->redis->sMembers($key);
+        $res = Redis::zRangeByScore($key, '11.1', '11.21', ['withscores' => true]);
 
-        return [$get, $value];
+        return [$res, $res === $data];
     }
 
     /**
