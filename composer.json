@@ -33,6 +33,7 @@
     "swoft/limiter": "~2.0.0",
     "swoft/breaker": "~2.0.0",
     "swoft/crontab": "~2.0.0",
+    "swoft/session": "~2.0.0",
     "swoft/devtool": "~2.0.0"
   },
   "require-dev": {
