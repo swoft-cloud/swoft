@@ -10,7 +10,6 @@
 
 namespace App\Http\Controller;
 
-use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 
