@@ -23,7 +23,7 @@ use Swoft\Event\EventInterface;
  *
  * @Listener(DbEvent::SQL_RAN)
  */
-class RanListener implements EventHandlerInterface
+class DbRanListener implements EventHandlerInterface
 {
     /**
      * SQL ran
