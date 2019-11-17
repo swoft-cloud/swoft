@@ -34,12 +34,10 @@ class UserSavingListener implements EventHandlerInterface
         $user = $event->getTarget();
 
         /**
-            if ($user->getAge() > 100) {
-            // stopping saving
-            $event->stopPropagation(true);
-
-            $user->setAdd(100);
-            }
+         * if ($user->getAge() > 100) {
+         * // stopping saving
+         * $event->stopPropagation(true);
+         * }
          */
     }
 }
