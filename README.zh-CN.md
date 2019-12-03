@@ -66,6 +66,10 @@ Swoft 通过长达三年的积累和方向的探索，把 Swoft 打造成 PHP �
 - QQ Group2: 778656850
 - [swoft-cloud/community](https://gitter.im/swoft-cloud/community)
 
+## 免费技术支持
+
+![support](https://www.swoft.org/src/images/technical-support.png)
+
 ## Requirement
 
 - [PHP 7.1+](https://github.com/php/php-src/releases)
