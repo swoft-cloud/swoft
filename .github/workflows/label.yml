@@ -1,0 +1,38 @@
+# This workflow will triage pull requests and apply a label based on the
+# paths that are modified in the pull request.
+#
+# To use this workflow, you will need to set up a .github/labeler.yml
+# file with configuration.  For more information, see:
+# https://github.com/actions/labeler/blob/master/README.md
+
+name: Issue Labeler
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Db Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        # Github token
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        # keywords to look for in the issue
+        keywords: '["db", "database", "mysql", "pdo"]'
+        # assignees to be assigned when keyword is found
+        assignees: '["sakuraovq"]'
+        # labels to be set when keyword is found
+        labels: '["swoft: db"]' # optional
+    - name: Websocket Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        # Github token
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        # keywords to look for in the issue
+        keywords: '["websocket", "websocket-server", "ws-server"]'
+        # assignees to be assigned when keyword is found
+        assignees: '["inhere"]'
+        # labels to be set when keyword is found
+        labels: '["swoft: websocket"]' # optional
