@@ -40,7 +40,9 @@ return [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
-            'rpc' => bean('rpcServer')
+            // 'rpc' => bean('rpcServer'),
+            // 'tcp' => bean('tcpServer'),
+            // 'ws' => bean('wsServer')
         ],
         'process'  => [
 //            'monitor' => bean(MonitorProcess::class)
@@ -173,5 +175,11 @@ return [
     ],
     'cliRouter'         => [
         // 'disabledGroups' => ['demo', 'test'],
-    ]
+    ],
+    'wsConnectionManager' => [
+        'storage' => bean('wsConnectionStorage')
+    ],
+    'wsConnectionStorage' => [
+        'class' => \Swoft\Session\SwooleStorage::class,
+    ],
 ];
