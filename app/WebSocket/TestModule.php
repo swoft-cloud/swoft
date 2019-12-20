@@ -36,6 +36,6 @@ class TestModule
      */
     public function onOpen(Request $request, int $fd): void
     {
-        Session::mustGet()->push("Opened, welcome!(FD: $fd)");
+        Session::current()->push("Opened, welcome!(FD: $fd)");
     }
 }

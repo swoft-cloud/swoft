@@ -29,7 +29,7 @@ class HomeController
      */
     public function index(): void
     {
-        Session::mustGet()->push('hi, this is home.index');
+        Session::current()->push('hi, this is home.index');
     }
 
     /**
@@ -40,7 +40,7 @@ class HomeController
      */
     public function echo(string $data): void
     {
-        Session::mustGet()->push('(home.echo)Recv: ' . $data);
+        Session::current()->push('(home.echo)Recv: ' . $data);
     }
 
     /**

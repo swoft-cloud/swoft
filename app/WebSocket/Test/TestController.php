@@ -37,7 +37,7 @@ class TestController
      */
     public function index(): void
     {
-        Session::mustGet()->push('hi, this is test.index');
+        Session::current()->push('hi, this is test.index');
     }
 
     /**
@@ -51,7 +51,7 @@ class TestController
     {
         $data = $msg->getData();
         /** @var Connection $conn */
-        $conn = Session::mustGet();
+        $conn = Session::current();
 
         $fd = is_numeric($data) ? (int)$data : $conn->getFd();
 
@@ -73,7 +73,7 @@ class TestController
     {
         $fd = $req->getFd();
 
-        Session::mustGet()->push("(your FD: $fd)message data: " . json_encode($req->getMessage()->toArray()));
+        Session::current()->push("(your FD: $fd)message data: " . json_encode($req->getMessage()->toArray()));
     }
 
     /**
@@ -86,7 +86,7 @@ class TestController
      */
     public function injectMessage(Message $msg): void
     {
-        Session::mustGet()->push('message data: ' . json_encode($msg->toArray()));
+        Session::current()->push('message data: ' . json_encode($msg->toArray()));
     }
 
     /**
@@ -97,7 +97,7 @@ class TestController
      */
     public function echo(string $data): void
     {
-        Session::mustGet()->push('(echo)Recv: ' . $data);
+        Session::current()->push('(echo)Recv: ' . $data);
     }
 
     /**
@@ -113,7 +113,7 @@ class TestController
         $ufd = (int)$req->getMessage()->getData();
 
         if ($ufd < 1) {
-            Session::mustGet()->push('data must be an integer');
+            Session::current()->push('data must be an integer');
             return;
         }
 
@@ -130,7 +130,7 @@ class TestController
      */
     public function binary(string $data): string
     {
-        // Session::mustGet()->push('Binary: ' . $data, \WEBSOCKET_OPCODE_BINARY);
+        // Session::current()->push('Binary: ' . $data, \WEBSOCKET_OPCODE_BINARY);
         return 'Binary: ' . $data;
     }
 
@@ -141,7 +141,7 @@ class TestController
      */
     public function pong(): void
     {
-        Session::mustGet()->push('pong!', WEBSOCKET_OPCODE_PONG);
+        Session::current()->push('pong!', WEBSOCKET_OPCODE_PONG);
     }
 
     /**
