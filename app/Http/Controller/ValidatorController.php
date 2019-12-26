@@ -13,6 +13,7 @@ namespace App\Http\Controller;
 use Swoft\Http\Message\Request;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
+use Swoft\Http\Server\Annotation\Mapping\RequestMethod;
 use Swoft\Validator\Annotation\Mapping\Validate;
 
 /**
@@ -34,6 +35,10 @@ class ValidatorController
      */
     public function validateAll(Request $request): array
     {
+        $method = $request->getMethod();
+        if ($method == RequestMethod::GET) {
+            return $request->getParsedQuery();
+        }
         return $request->getParsedBody();
     }
 
@@ -49,6 +54,10 @@ class ValidatorController
      */
     public function validateType(Request $request): array
     {
+        $method = $request->getMethod();
+        if ($method == RequestMethod::GET) {
+            return $request->getParsedQuery();
+        }
         return $request->getParsedBody();
     }
 
@@ -64,6 +73,10 @@ class ValidatorController
      */
     public function validatePassword(Request $request): array
     {
+        $method = $request->getMethod();
+        if ($method == RequestMethod::GET) {
+            return $request->getParsedQuery();
+        }
         return $request->getParsedBody();
     }
 
@@ -71,6 +84,7 @@ class ValidatorController
      * Customize the validator with userValidator
      *
      * @RequestMapping()
+     *
      * @Validate(validator="userValidator")
      *
      * @param Request $request
@@ -79,6 +93,10 @@ class ValidatorController
      */
     public function validateCustomer(Request $request): array
     {
+        $method = $request->getMethod();
+        if ($method == RequestMethod::GET) {
+            return $request->getParsedQuery();
+        }
         return $request->getParsedBody();
     }
 }
