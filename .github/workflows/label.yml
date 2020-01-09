@@ -25,6 +25,17 @@ jobs:
         assignees: '["sakuraovq"]'
         # labels to be set when keyword is found
         labels: '["swoft: db"]' # optional
+    - name: Event Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        # Github token
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        # keywords to look for in the issue
+        keywords: '["event", "trigger"]'
+        # assignees to be assigned when keyword is found
+        assignees: '["inhere"]'
+        # labels to be set when keyword is found
+        labels: '["swoft: event"]' # optional
     - name: Http Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
