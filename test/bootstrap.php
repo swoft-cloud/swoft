@@ -10,7 +10,7 @@
 
 define('APP_DEBUG', 1);
 
-$vendor = dirname(__DIR__);
+$vendor = dirname(__DIR__) . '/vendor';
 
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require dirname(__DIR__) . '/vendor/autoload.php';
