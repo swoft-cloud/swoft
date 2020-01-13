@@ -156,4 +156,18 @@ class TestController
     {
         return '(home.ar)Recv: ' . $data;
     }
+
+    /**
+     * Message command is: 'test.ar'
+     *
+     * @MessageMapping("stop-worker")
+     */
+    public function testDie(): void
+    {
+        $wid = \server()->getPid('workerId');
+
+        \vdump($wid);
+
+        \server()->stopWorker($wid);
+    }
 }

@@ -9,3 +9,9 @@
  */
 
 define('APP_DEBUG', 1);
+
+$vendor = dirname(__DIR__);
+
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
+$loader->addPsr4("SwoftTest\\Testing\\", $vendor . '/swoft/framework/test/testing/');

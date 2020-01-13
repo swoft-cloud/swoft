@@ -150,6 +150,12 @@ return [
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    // 'wsConnectionManager' => [
+    //     'storage' => bean('wsConnectionStorage')
+    // ],
+    // 'wsConnectionStorage' => [
+    //     'class' => \Swoft\Session\SwooleStorage::class,
+    // ],
     /** @see \Swoft\WebSocket\Server\WsMessageDispatcher */
     'wsMsgDispatcher' => [
         'middlewares' => [
@@ -175,11 +181,5 @@ return [
     ],
     'cliRouter'         => [
         // 'disabledGroups' => ['demo', 'test'],
-    ],
-    'wsConnectionManager' => [
-        'storage' => bean('wsConnectionStorage')
-    ],
-    'wsConnectionStorage' => [
-        'class' => \Swoft\Session\SwooleStorage::class,
     ],
 ];
