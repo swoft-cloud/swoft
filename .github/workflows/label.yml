@@ -25,47 +25,45 @@ jobs:
         assignees: '["sakuraovq"]'
         # labels to be set when keyword is found
         labels: '["swoft: db"]' # optional
+    - name: AOP Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["aop", "Point"]'
+        assignees: '["stelin"]'
+        labels: '["swoft: aop"]'
+    - name: Config Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["env", "config"]'
+        assignees: '["stelin", "inhere"]'
+        labels: '["swoft: config"]'
     - name: Event Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
-        # Github token
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        # keywords to look for in the issue
         keywords: '["event", "trigger"]'
-        # assignees to be assigned when keyword is found
         assignees: '["inhere"]'
-        # labels to be set when keyword is found
-        labels: '["swoft: event"]' # optional
+        labels: '["swoft: event"]'
     - name: Http Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
-        # Github token
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        # keywords to look for in the issue
         keywords: '["http", "http-server", "http-client", "http-message"]'
-        # assignees to be assigned when keyword is found
         assignees: '["stelin", "inhere"]'
-        # labels to be set when keyword is found
-        labels: '["swoft: http"]' # optional
+        labels: '["swoft: http"]'
     - name: Rpc Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
-        # Github token
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        # keywords to look for in the issue
         keywords: '["rpc", "rpc-server", "rpc-client"]'
-        # assignees to be assigned when keyword is found
         assignees: '["stelin"]'
-        # labels to be set when keyword is found
-        labels: '["swoft: rpc"]' # optional
+        labels: '["swoft: rpc"]'
     - name: Websocket Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
-        # Github token
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        # keywords to look for in the issue
         keywords: '["websocket", "websocket-server", "ws-server"]'
-        # assignees to be assigned when keyword is found
         assignees: '["inhere"]'
-        # labels to be set when keyword is found
-        labels: '["swoft: websocket"]' # optional
+        labels: '["swoft: websocket"]'
