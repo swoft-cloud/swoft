@@ -50,7 +50,7 @@ jobs:
       uses: Naturalclar/issue-action@v1.0.0
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        keywords: '["http", "http-server", "http-client", "http-message"]'
+        keywords: '["http-server", "http-client", "http-message"]'
         assignees: '["stelin", "inhere"]'
         labels: '["swoft: http"]'
     - name: Rpc Issue Labeler
