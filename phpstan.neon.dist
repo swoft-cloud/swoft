@@ -3,6 +3,7 @@ includes:
 parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
     paths:
         - %currentWorkingDirectory%/app/
     autoload_files:
