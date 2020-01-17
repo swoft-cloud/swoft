@@ -6,7 +6,7 @@ parameters:
     paths:
         - %currentWorkingDirectory%/app/
     autoload_files:
-        - %currentWorkingDirectory%/test/bootstrap.php
+        - %currentWorkingDirectory%/bin/bootstrap.php
     autoload_directories:
         - %currentWorkingDirectory%/vendor/swoft/swoole-ide-helper/output/namespace/
     dynamicConstantNames:

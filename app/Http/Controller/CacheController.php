@@ -10,7 +10,7 @@
 
 namespace App\Http\Controller;
 
-use Psr\SimpleCache\InvalidArgumentException;
+use InvalidArgumentException;
 use Swoft\Cache\Cache;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;

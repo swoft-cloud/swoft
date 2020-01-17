@@ -11,6 +11,4 @@
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
-$loader->addPsr4("Swoft\\Cache\\", 'vendor/swoft/cache/src/');
-$loader->addPsr4("Swoft\\Swlib\\", 'vendor/swoft/swlib/src/');
-$loader->addPsr4("Swoft\\Serialize\\", 'vendor/swoft/serialize/src/');
+// $loader->addPsr4('Swoft\\Cache\\', 'vendor/swoft/cache/src/');
