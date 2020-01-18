@@ -32,6 +32,13 @@ jobs:
         keywords: '["aop", "Point"]'
         assignees: '["stelin"]'
         labels: '["swoft: aop"]'
+    - name: Validate Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["validator", "validate"]'
+        assignees: '["stelin", "JasonYH"]'
+        labels: '["swoft: validate"]'
     - name: Config Issue Labeler
       uses: Naturalclar/issue-action@v1.0.0
       with:
