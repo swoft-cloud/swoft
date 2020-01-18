@@ -11,6 +11,11 @@ parameters:
         - %currentWorkingDirectory%/vendor/swoft/swoole-ide-helper/output/namespace/
     dynamicConstantNames:
         - APP_DEBUG
+        - SWOFT_DEBUG
+    excludes_analyse:
+        - test/*
+        - runtime/*
+        - resource/*
     ignoreErrors:
         # Variable type
         - '#^Call to an undefined method Swoft\\Contract\\ContextInterface::get\S+\(\)\.$#'
@@ -19,6 +24,8 @@ parameters:
         - '#^Call to an undefined method Swoft\\Server\\Server::push\(\)\.$#'
         # - '#^Call to an undefined method Swoft\\Server\\Server::disconnect\(\)\.$#'
         - '#^Call to an undefined method\sPsr\\Http\\Message\\ServerRequestInterface::getUriPath\(\)#'
+        - '#.+onstant APP_DEBUG not found.#'
+        - '#^Call to static method \w+\(\) on an unknown class Swoft\\Cache\\Cache.#'
         # These are ignored for now
         -
             path: %currentWorkingDirectory%/app/Http/Controller/DbModelController.php
