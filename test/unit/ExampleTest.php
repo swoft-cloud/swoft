@@ -11,7 +11,12 @@
 namespace AppTest\Unit;
 
 use PHPUnit\Framework\TestCase;
+use function bean;
 
 class ExampleTest extends TestCase
 {
+    public function testDemo(): void
+    {
+        $this->assertNotEmpty(bean('cliApp'));
+    }
 }
