@@ -36,7 +36,10 @@ class SessionController
 
         $sess->set('times', $times);
 
-        return $response->withData(['times' => $times]);
+        return $response->withData([
+            'times'  => $times,
+            'sessId' => $sess->getSessionId()
+        ]);
     }
 
     /**
@@ -86,9 +89,9 @@ class SessionController
     public function del(): array
     {
         $sess = HttpSession::current();
-        $sess->set('testKey', 'test-value');
+        $ok = $sess->delete('testKey');
 
-        return ['set.testKey' => 'test-value'];
+        return ['delete' => $ok];
     }
 
     /**
@@ -102,6 +105,16 @@ class SessionController
         $sess = HttpSession::current();
 
         return $response->withData(['destroy' => $sess->destroy()]);
+    }
+
+    /**
+     * @RequestMapping()
+     *
+     * @return string
+     */
+    public function not(): string
+    {
+        return 'not-use';
     }
 
     // ------------ flash session usage

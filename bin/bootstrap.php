@@ -7,4 +7,8 @@
  * @contact  group@swoft.org
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
+
+// $loader->addPsr4('Swoft\\Cache\\', 'vendor/swoft/cache/src/');

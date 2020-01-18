@@ -17,7 +17,9 @@ services:
       - "18307:18307"
       - "18308:18308"
     volumes:
-      - ./:/var/www/swoft
+       - ./:/var/www/swoft
+#       - ./:/var/www/swoft:delegated
+#      - ./:/var/www/swoft:cached
       # - ./runtime/ng-conf:/etc/nginx
       # - ./runtime/logs:/var/log
 

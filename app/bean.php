@@ -40,7 +40,9 @@ return [
         'class'    => HttpServer::class,
         'port'     => 18306,
         'listener' => [
-            'rpc' => bean('rpcServer')
+            // 'rpc' => bean('rpcServer'),
+            // 'tcp' => bean('tcpServer'),
+            // 'ws' => bean('wsServer')
         ],
         'process'  => [
 //            'monitor' => bean(MonitorProcess::class)
@@ -134,20 +136,32 @@ return [
         'class'   => WebSocketServer::class,
         'port'    => 18308,
         'listener' => [
-            // 'rpc' => bean('rpcServer'),
+            'rpc' => bean('rpcServer'),
             // 'tcp' => bean('tcpServer'),
         ],
         'on'      => [
             // Enable http handle
             SwooleEvent::REQUEST => bean(RequestListener::class),
+            // Enable task must add task and finish event
+            SwooleEvent::TASK   => bean(TaskListener::class),
+            SwooleEvent::FINISH => bean(FinishListener::class)
         ],
         'debug'   => 1,
         // 'debug'   => env('SWOFT_DEBUG', 0),
         /* @see WebSocketServer::$setting */
         'setting' => [
+            'task_worker_num'       => 6,
+            'task_enable_coroutine' => true,
+            'worker_num'            => 6,
             'log_file' => alias('@runtime/swoole.log'),
         ],
     ],
+    // 'wsConnectionManager' => [
+    //     'storage' => bean('wsConnectionStorage')
+    // ],
+    // 'wsConnectionStorage' => [
+    //     'class' => \Swoft\Session\SwooleStorage::class,
+    // ],
     /** @see \Swoft\WebSocket\Server\WsMessageDispatcher */
     'wsMsgDispatcher' => [
         'middlewares' => [
@@ -173,5 +187,5 @@ return [
     ],
     'cliRouter'         => [
         // 'disabledGroups' => ['demo', 'test'],
-    ]
+    ],
 ];
