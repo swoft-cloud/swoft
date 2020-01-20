@@ -58,4 +58,15 @@ class HomeController
     {
         return context()->getResponse()->withContent('Hello' . ($name === '' ? '' : ", {$name}"));
     }
+
+    /**
+     * @RequestMapping("/wstest", method={"GET"})
+     *
+     * @return Response
+     * @throws Throwable
+     */
+    public function wsTest(): Response
+    {
+        return view('home/ws-test');
+    }
 }
