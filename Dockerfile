@@ -23,7 +23,7 @@ ARG work_user=www-data
 ENV APP_ENV=${app_env:-"prod"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
     PHPREDIS_VERSION=5.1.0 \
-    SWOOLE_VERSION=4.4.14 \
+    SWOOLE_VERSION=4.4.15 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 # Libs -y --no-install-recommends
