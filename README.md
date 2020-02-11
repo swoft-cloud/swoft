@@ -54,7 +54,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 ## Document
 
 - [中文文档](https://www.swoft.org/docs)
-- [English](https://en.swoft.org/docs)
+- [English](http://swoft.io/docs)
 
 ## Discuss
 
