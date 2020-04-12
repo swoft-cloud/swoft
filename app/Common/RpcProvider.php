@@ -10,10 +10,8 @@
 
 namespace App\Common;
 
-use ReflectionException;
 use Swoft\Bean\Annotation\Mapping\Bean;
 use Swoft\Bean\Annotation\Mapping\Inject;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Consul\Agent;
 use Swoft\Consul\Exception\ClientException;
 use Swoft\Consul\Exception\ServerException;
@@ -40,8 +38,6 @@ class RpcProvider implements ProviderInterface
      * @param Client $client
      *
      * @return array
-     * @throws ReflectionException
-     * @throws ContainerException
      * @throws ClientException
      * @throws ServerException
      * @example

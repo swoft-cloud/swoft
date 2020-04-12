@@ -10,6 +10,7 @@
 
 namespace App\Http\Controller;
 
+use App\Common\MyBean;
 use App\Model\Logic\RequestBean;
 use App\Model\Logic\RequestBeanTwo;
 use Swoft\Bean\BeanFactory;
@@ -27,7 +28,19 @@ use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 class BeanController
 {
     /**
-     * @RequestMapping()
+     * @RequestMapping("single")
+     *
+     * @return array
+     */
+    public function singleton(): array
+    {
+        $b = BeanFactory::getBean(MyBean::class);
+
+        return [$b->myMethod()];
+    }
+
+    /**
+     * @RequestMapping("req")
      *
      * @return array
      */
@@ -37,15 +50,18 @@ class BeanController
 
         /** @var RequestBean $request */
         $request = BeanFactory::getRequestBean('requestBean', $id);
+
+        $request->temp = ['rid' => $id];
+
         return $request->getData();
     }
 
     /**
      * @return array
      *
-     * @RequestMapping()
+     * @RequestMapping("req2")
      */
-    public function requestClass(): array
+    public function requestTwo(): array
     {
         $id = (string)Co::tid();
 
