@@ -10,6 +10,7 @@
 
 namespace App\Http\Controller;
 
+use App\Model\Data\GoodsData;
 use Swoft;
 use Swoft\Http\Message\ContentType;
 use Swoft\Http\Message\Response;
@@ -68,5 +69,16 @@ class HomeController
     public function wsTest(): Response
     {
         return view('home/ws-test');
+    }
+
+    /**
+     * @RequestMapping("/dataConfig", method={"GET"})
+     *
+     * @return array
+     * @throws Throwable
+     */
+    public function dataConfig(): array
+    {
+        return \bean(GoodsData::class)->getConfig();
     }
 }

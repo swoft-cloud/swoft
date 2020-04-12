@@ -42,6 +42,8 @@ class GlobalWsMiddleware implements MiddlewareInterface
 
         CLog::info('after handle');
 
+        \server()->log(__METHOD__, [], 'error');
+
         return $resp;
     }
 }

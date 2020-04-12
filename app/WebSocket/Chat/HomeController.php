@@ -55,4 +55,17 @@ class HomeController
     {
         return '(home.ar)Recv: ' . $data;
     }
+
+    /**
+     * Message command is: 'help'
+     *
+     * @param string $data
+     * @MessageMapping("help", root=true)
+     *
+     * @return string
+     */
+    public function help(string $data): string
+    {
+        return '(home.ar)Recv: ' . $data;
+    }
 }

@@ -10,8 +10,6 @@
 
 namespace Database\Migration;
 
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Db\Exception\DbException;
 use Swoft\Db\Schema\Blueprint;
 use Swoft\Devtool\Annotation\Mapping\Migration;
@@ -27,9 +25,7 @@ use Swoft\Devtool\Migration\Migration as BaseMigration;
 class Count extends BaseMigration
 {
     /**
-     * @throws ContainerException
      * @throws DbException
-     * @throws ReflectionException
      */
     public function up(): void
     {
@@ -49,8 +45,6 @@ class Count extends BaseMigration
     }
 
     /**
-     * @throws ReflectionException
-     * @throws ContainerException
      * @throws DbException
      */
     public function down(): void

@@ -14,8 +14,6 @@ use App\Model\Entity\Count2;
 use App\Model\Entity\Desc;
 use App\Model\Entity\User;
 use Exception;
-use ReflectionException;
-use Swoft\Bean\Exception\ContainerException;
 use Swoft\Db\DB;
 use Swoft\Db\Exception\DbException;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
@@ -217,9 +215,7 @@ class SelectDbController
 
     /**
      * @return bool
-     * @throws ContainerException
      * @throws DbException
-     * @throws ReflectionException
      */
     public function insertId2(): bool
     {
@@ -237,8 +233,6 @@ class SelectDbController
     }
 
     /**
-     * @throws ReflectionException
-     * @throws ContainerException
      * @throws DbException
      */
     public function desc(): array

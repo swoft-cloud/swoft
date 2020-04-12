@@ -12,9 +12,11 @@ namespace App\WebSocket;
 
 use App\WebSocket\Chat\HomeController;
 use Swoft\Http\Message\Request;
+use Swoft\Session\Session;
 use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
 use Swoft\WebSocket\Server\MessageParser\JsonParser;
+use function basename;
 use function server;
 
 /**
@@ -36,5 +38,26 @@ class ChatModule
     public function onOpen(Request $request, int $fd): void
     {
         server()->push($request->getFd(), "Opened, welcome!(FD: $fd)");
+
+        $fullClass = Session::current()->getParserClass();
+        $className = basename($fullClass);
+
+        $help = <<<TXT
+Message data parser: $className
+Send message example:
+
+```json
+{
+    "cmd": "home.index",
+    "data": "hello"
+}
+```
+
+Description:
+
+- cmd `home.index` => App\WebSocket\Chat\HomeController::index()
+TXT;
+
+        server()->push($fd, $help);
     }
 }
