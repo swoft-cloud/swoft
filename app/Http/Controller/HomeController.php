@@ -18,6 +18,7 @@ use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\View\Renderer;
 use Throwable;
+use function bean;
 use function context;
 
 /**
@@ -79,6 +80,6 @@ class HomeController
      */
     public function dataConfig(): array
     {
-        return \bean(GoodsData::class)->getConfig();
+        return bean(GoodsData::class)->getConfig();
     }
 }

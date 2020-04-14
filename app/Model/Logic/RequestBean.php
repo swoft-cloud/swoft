@@ -21,6 +21,9 @@ use Swoft\Bean\Annotation\Mapping\Bean;
  */
 class RequestBean
 {
+    /**
+     * @var array
+     */
     public $temp = [];
 
     /**
