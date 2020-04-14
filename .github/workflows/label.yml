@@ -1,0 +1,76 @@
+# This workflow will triage pull requests and apply a label based on the
+# paths that are modified in the pull request.
+#
+# To use this workflow, you will need to set up a .github/labeler.yml
+# file with configuration.  For more information, see:
+# https://github.com/actions/labeler/blob/master/README.md
+
+name: Issue Labeler
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Db Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        # Github token
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        # keywords to look for in the issue
+        keywords: '["db", "database", "mysql", "pdo"]'
+        # assignees to be assigned when keyword is found
+        assignees: '["sakuraovq"]'
+        # labels to be set when keyword is found
+        labels: '["swoft: db"]' # optional
+    - name: AOP Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["aop", "Point"]'
+        assignees: '["stelin"]'
+        labels: '["swoft: aop"]'
+    - name: Validate Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["validator", "validate"]'
+        assignees: '["stelin", "JasonYH"]'
+        labels: '["swoft: validator"]'
+    - name: Config Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["env", "config"]'
+        assignees: '["stelin", "inhere"]'
+        labels: '["swoft: config"]'
+    - name: Event Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["event", "trigger"]'
+        assignees: '["inhere"]'
+        labels: '["swoft: event"]'
+    - name: Http Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["http-server", "http-client", "http-message"]'
+        assignees: '["stelin", "inhere"]'
+        labels: '["swoft: http"]'
+    - name: Rpc Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["rpc", "rpc-server", "rpc-client"]'
+        assignees: '["stelin"]'
+        labels: '["swoft: rpc"]'
+    - name: Websocket Issue Labeler
+      uses: Naturalclar/issue-action@v1.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        keywords: '["websocket", "websocket-server", "ws-server"]'
+        assignees: '["inhere"]'
+        labels: '["swoft: websocket"]'
