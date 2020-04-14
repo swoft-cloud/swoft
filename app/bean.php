@@ -156,6 +156,7 @@ return [
             'task_enable_coroutine' => true,
             'worker_num'            => 6,
             'log_file' => alias('@runtime/swoole.log'),
+            // 'open_websocket_close_frame' => true,
         ],
     ],
     // 'wsConnectionManager' => [
