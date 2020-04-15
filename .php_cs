@@ -15,8 +15,8 @@ return PhpCsFixer\Config::create()
         '@PSR2' => true,
         'header_comment' => [
             'comment_type' => 'PHPDoc',
-            'header' => $header,
-            'separate' => 'bottom'
+            'header'       => $header,
+            'separate'     => 'bottom'
         ],
         'array_syntax' => [
             'syntax' => 'short'
