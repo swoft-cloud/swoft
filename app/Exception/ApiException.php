@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of Swoft.
  *
@@ -10,11 +10,13 @@
 
 namespace App\Exception;
 
+use Exception;
+
 /**
  * Class ApiException
  *
  * @since 2.0
  */
-class ApiException extends \Exception
+class ApiException extends Exception
 {
 }

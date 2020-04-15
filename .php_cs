@@ -14,17 +14,20 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
         'header_comment' => [
-            'commentType' => 'PHPDoc',
+            'comment_type' => 'PHPDoc',
             'header' => $header,
-            'separate' => 'none'
+            'separate' => 'bottom'
         ],
         'array_syntax' => [
             'syntax' => 'short'
         ],
+        'encoding' => true, // MUST use only UTF-8 without BOM
         'single_quote' => true,
         'class_attributes_separation' => true,
         'no_unused_imports' => true,
+        'global_namespace_import' => true,
         'standardize_not_equals' => true,
+        'declare_strict_types' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
