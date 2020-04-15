@@ -10,10 +10,10 @@
 
 namespace App\Aspect;
 
+use App\Common\MyBean;
 use Swoft\Aop\Annotation\Mapping\Aspect;
 use Swoft\Aop\Annotation\Mapping\Before;
 use Swoft\Aop\Annotation\Mapping\PointBean;
-use App\Common\MyBean;
 use function vdump;
 
 /**

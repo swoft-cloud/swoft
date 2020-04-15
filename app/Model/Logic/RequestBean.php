@@ -21,6 +21,9 @@ use Swoft\Bean\Annotation\Mapping\Bean;
  */
 class RequestBean
 {
+    /**
+     * @var array
+     */
     public $temp = [];
 
     /**
@@ -36,7 +39,7 @@ class RequestBean
      *
      * @return string
      */
-    public function getName(string $type):string
+    public function getName(string $type): string
     {
         return 'name';
     }

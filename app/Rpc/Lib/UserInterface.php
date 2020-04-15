@@ -41,7 +41,7 @@ interface UserInterface
     /**
      * @return void
      */
-    public function returnNull():void ;
+    public function returnNull(): void;
 
     /**
      * Exception

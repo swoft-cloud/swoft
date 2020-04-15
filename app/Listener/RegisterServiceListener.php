@@ -16,7 +16,6 @@ use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
 use Swoft\Http\Server\HttpServer;
-use Swoft\Log\Helper\CLog;
 use Swoft\Server\SwooleEvent;
 
 /**
@@ -63,7 +62,7 @@ class RegisterServiceListener implements EventHandlerInterface
 
 
         // Register
-//        $this->agent->registerService($service);
-//        CLog::info('Swoft http register service success by consul!');
+        //        $this->agent->registerService($service);
+        //        CLog::info('Swoft http register service success by consul!');
     }
 }

@@ -17,7 +17,6 @@ use Swoft\WebSocket\Server\Annotation\Mapping\OnOpen;
 use Swoft\WebSocket\Server\Annotation\Mapping\WsModule;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
-use function server;
 
 /**
  * Class EchoModule

@@ -16,6 +16,7 @@
     "ext-simplexml": "*",
     "ext-libxml": "*",
     "ext-mbstring": "*",
+    "swoft/cache": "~2.0.0",
     "swoft/db": "~2.0.0",
     "swoft/i18n": "~2.0.0",
     "swoft/view": "~2.0.0",
@@ -63,7 +64,7 @@
       "./vendor/bin/phpstan analyze",
       "./vendor/bin/phpunit -c phpunit.xml"
     ],
-    "cs-fix": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff",
-    "do-cs-fix": "./bin/php-cs-fixer fix"
+    "check-cs": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff",
+    "cs-fix": "./bin/php-cs-fixer fix"
   }
 }

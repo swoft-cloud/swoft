@@ -10,10 +10,10 @@
 
 namespace App\Annotation\Parser;
 
+use App\Annotation\Mapping\AlphaDash;
 use ReflectionException;
 use Swoft\Annotation\Annotation\Mapping\AnnotationParser;
 use Swoft\Annotation\Annotation\Parser\Parser;
-use App\Annotation\Mapping\AlphaDash;
 use Swoft\Validator\Exception\ValidatorException;
 use Swoft\Validator\ValidatorRegister;
 
@@ -25,7 +25,7 @@ use Swoft\Validator\ValidatorRegister;
 class AlphaDashParser extends Parser
 {
     /**
-     * @param int $type
+     * @param int    $type
      * @param object $annotationObject
      *
      * @return array
