@@ -16,6 +16,7 @@
     "ext-simplexml": "*",
     "ext-libxml": "*",
     "ext-mbstring": "*",
+    "swoft/cache": "~2.0.0",
     "swoft/db": "~2.0.0",
     "swoft/i18n": "~2.0.0",
     "swoft/view": "~2.0.0",

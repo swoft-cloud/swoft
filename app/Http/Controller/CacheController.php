@@ -30,7 +30,6 @@ class CacheController
      *
      * @return array
      * @throws InvalidArgumentException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function set(): array
     {
@@ -45,7 +44,6 @@ class CacheController
      *
      * @return array
      * @throws InvalidArgumentException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function get(): array
     {
@@ -62,7 +60,6 @@ class CacheController
      *
      * @return array
      * @throws InvalidArgumentException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function del(): array
     {
