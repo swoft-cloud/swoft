@@ -42,6 +42,7 @@ class TestController
 
     /**
      * Message command is: 'test.index'
+     *
      * @param Message $msg
      *
      * @return void

@@ -33,7 +33,7 @@ class CustomerValidator implements ValidatorInterface
     public function validate(array $data, array $params): array
     {
         $start = $data['start'] ?? null;
-        $end = $data['end'] ?? null;
+        $end   = $data['end'] ?? null;
         if ($start === null && $end === null) {
             throw new ValidatorException('Start time and end time cannot be empty');
         }

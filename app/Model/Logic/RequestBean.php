@@ -39,7 +39,7 @@ class RequestBean
      *
      * @return string
      */
-    public function getName(string $type):string
+    public function getName(string $type): string
     {
         return 'name';
     }

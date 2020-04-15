@@ -12,8 +12,8 @@ namespace App\Tcp\Middleware;
 
 use Swoft\Bean\Annotation\Mapping\Bean;
 use Swoft\Log\Helper\CLog;
-use Swoft\Tcp\Server\Contract\RequestHandlerInterface;
 use Swoft\Tcp\Server\Contract\MiddlewareInterface;
+use Swoft\Tcp\Server\Contract\RequestHandlerInterface;
 use Swoft\Tcp\Server\Contract\RequestInterface;
 use Swoft\Tcp\Server\Contract\ResponseInterface;
 

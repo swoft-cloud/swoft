@@ -68,6 +68,7 @@ class UserServiceV2 implements UserInterface
 
     /**
      * Exception
+     *
      * @throws Exception
      */
     public function exception(): void

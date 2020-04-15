@@ -12,6 +12,7 @@ namespace App\Rpc\Service;
 
 use App\Rpc\Lib\UserInterface;
 use Exception;
+use RuntimeException;
 use Swoft\Co;
 use Swoft\Rpc\Server\Annotation\Mapping\Service;
 
@@ -51,7 +52,6 @@ class UserService implements UserInterface
      */
     public function returnNull(): void
     {
-        return;
     }
 
     /**
@@ -59,17 +59,17 @@ class UserService implements UserInterface
      */
     public function getBigContent(): string
     {
-        $content = Co::readFile(__DIR__ . '/big.data');
-        return $content;
+        return Co::readFile(__DIR__ . '/big.data');
     }
 
     /**
      * Exception
+     *
      * @throws Exception
      */
     public function exception(): void
     {
-        throw new Exception('exception version');
+        throw new RuntimeException('exception version');
     }
 
     /**

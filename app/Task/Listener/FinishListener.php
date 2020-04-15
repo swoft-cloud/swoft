@@ -10,12 +10,12 @@
 
 namespace App\Task\Listener;
 
-use function context;
 use Swoft\Event\Annotation\Mapping\Listener;
 use Swoft\Event\EventHandlerInterface;
 use Swoft\Event\EventInterface;
 use Swoft\Log\Helper\CLog;
 use Swoft\Task\TaskEvent;
+use function context;
 
 /**
  * Class FinishListener

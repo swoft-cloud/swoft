@@ -12,13 +12,13 @@ namespace App\Http\Controller;
 
 use App\Model\Entity\User;
 use Exception;
-use function random_int;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 use Swoft\Log\Helper\Log;
 use Swoft\Redis\Redis;
 use Swoft\Stdlib\Helper\JsonHelper;
 use Swoft\Timer;
+use function random_int;
 
 /**
  * Class TimerController

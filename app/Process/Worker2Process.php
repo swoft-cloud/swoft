@@ -40,13 +40,13 @@ class Worker2Process implements ProcessInterface
 
             // Database
             $user = User::find(1)->toArray();
-            CLog::info('user='.json_encode($user));
+            CLog::info('user=' . json_encode($user));
 
             // Redis
             Redis::set('test', 'ok');
-            CLog::info('test='.Redis::get('test'));
+            CLog::info('test=' . Redis::get('test'));
 
-            CLog::info('worker-' . $workerId.' context='.context()->getWorkerId());
+            CLog::info('worker-' . $workerId . ' context=' . context()->getWorkerId());
 
             Coroutine::sleep(3);
         }

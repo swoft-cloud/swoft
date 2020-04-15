@@ -89,7 +89,7 @@ class SessionController
     public function del(): array
     {
         $sess = HttpSession::current();
-        $ok = $sess->delete('testKey');
+        $ok   = $sess->delete('testKey');
 
         return ['delete' => $ok];
     }
