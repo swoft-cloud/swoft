@@ -27,7 +27,7 @@ parameters:
         # - '#^Call to an undefined method Swoft\\Server\\Server::disconnect\(\)\.$#'
         - '#^Call to an undefined method\sPsr\\Http\\Message\\ServerRequestInterface::getUriPath\(\)#'
         - '#.+onstant APP_DEBUG not found.#'
-        - '#^Function view not found.#'
+        # - '#^Function view not found.#'
         # - '#^Call to static method \w+\(\) on an unknown class Swoft\\Cache\\Cache.#'
         # These are ignored for now
         -
