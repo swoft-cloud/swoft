@@ -21,6 +21,7 @@ install:
 
 before_script:
   - phpenv config-rm xdebug.ini
+  - bin/php-cs-fixer -V
   - composer config -g process-timeout 900 && composer update
   - composer require --dev phpstan/phpstan
 
