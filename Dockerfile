@@ -16,11 +16,12 @@ LABEL maintainer="inhere <in.798@qq.com>" version="2.0"
 # --build-arg timezone=Asia/Shanghai
 ARG timezone
 # app env: prod pre test dev
-ARG app_env=prod
+ARG app_env=test
 # default use www-data user
 ARG work_user=www-data
 
-ENV APP_ENV=${app_env:-"prod"} \
+# default APP_ENV = test
+ENV APP_ENV=${app_env:-"test"} \
     TIMEZONE=${timezone:-"Asia/Shanghai"} \
     PHPREDIS_VERSION=5.1.0 \
     SWOOLE_VERSION=4.4.17 \
@@ -29,7 +30,7 @@ ENV APP_ENV=${app_env:-"prod"} \
 # Libs -y --no-install-recommends
 RUN apt-get update \
     && apt-get install -y \
-        curl wget git zip unzip less vim procps lsof tcpdump htop openssl \
+  curl wget git zip unzip less vim procps lsof tcpdump htop openssl net-tools iputils-ping \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
@@ -39,7 +40,9 @@ RUN apt-get update \
         libfreetype6-dev \
 # Install PHP extensions
     && docker-php-ext-install \
-       bcmath gd pdo_mysql mbstring sockets zip sysvmsg sysvsem sysvshm
+       bcmath gd pdo_mysql mbstring sockets zip sysvmsg sysvsem sysvshm \
+# Clean apt cache
+    && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 Run curl -sS https://getcomposer.org/installer | php \
