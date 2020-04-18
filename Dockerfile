@@ -30,7 +30,7 @@ ENV APP_ENV=${app_env:-"test"} \
 # Libs -y --no-install-recommends
 RUN apt-get update \
     && apt-get install -y \
-  curl wget git zip unzip less vim procps lsof tcpdump htop openssl net-tools iputils-ping \
+        curl wget git zip unzip less vim procps lsof tcpdump htop openssl net-tools iputils-ping \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
