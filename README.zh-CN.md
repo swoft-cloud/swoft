@@ -27,7 +27,7 @@ Swoft 通过长达三年的积累和方向的探索，把 Swoft 打造成 PHP �
 
 ## 功能特色
 
- - 内置高性能网络服务器（Http/Websocket/RPC/TCP）
+- 内置高性能网络服务器（Http/Websocket/RPC/TCP）
 - 灵活的组件功能
 - 强大的注解功能
 - 多样化的命令终端（控制台）
@@ -62,8 +62,9 @@ Swoft 通过长达三年的积累和方向的探索，把 Swoft 打造成 PHP �
 
 ## 学习交流
 
-- QQ Group1: 548173319      
-- QQ Group2: 778656850
+- QQ Group3: 541038173
+- QQ Group2: 778656850(已满)
+- QQ Group1: 548173319(已满)
 - [swoft-cloud/community](https://gitter.im/swoft-cloud/community)
 
 ## 免费技术支持
@@ -142,6 +143,7 @@ Component Name   | Packagist Version
 -----------------|---------------------
 swoft-apollo  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/apollo.svg)](https://packagist.org/packages/swoft/apollo)
 swoft-breaker | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/breaker.svg)](https://packagist.org/packages/swoft/breaker)
+swoft-cache  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/cache.svg)](https://packagist.org/packages/swoft/cache)
 swoft-crontab | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/crontab.svg)](https://packagist.org/packages/swoft/crontab)
 swoft-consul  | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/consul.svg)](https://packagist.org/packages/swoft/consul)
 swoft-limiter | [![Latest Stable Version](http://img.shields.io/packagist/v/swoft/limiter.svg)](https://packagist.org/packages/swoft/limiter)
