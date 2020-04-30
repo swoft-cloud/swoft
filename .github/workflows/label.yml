@@ -20,7 +20,7 @@ jobs:
         # Github token
         github-token: "${{ secrets.GITHUB_TOKEN }}"
         # keywords to look for in the issue
-        keywords: '["db", "database", "mysql", "pdo"]'
+        keywords: '["db", "database", "mysql", "pdo", "model"]'
         # assignees to be assigned when keyword is found
         assignees: '["sakuraovq"]'
         # labels to be set when keyword is found
@@ -43,7 +43,7 @@ jobs:
       uses: Naturalclar/issue-action@v1.0.0
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-        keywords: '["env", "config"]'
+        keywords: '["配置", "config"]'
         assignees: '["stelin", "inhere"]'
         labels: '["swoft: config"]'
     - name: Event Issue Labeler
