@@ -26,7 +26,7 @@ if (file_exists($vendor . '/swoft/component/src/framework')) {
 $loader->addPsr4('AppTest\\Unit\\', $baseDir . '/test/unit/');
 $loader->addPsr4('AppTest\\Testing\\', $baseDir . '/test/testing/');
 $loader->addPsr4('SwoftTest\\Testing\\', $swoftFwDir . '/test/testing/');
-$loader->addPsr4('Swoft\\Swlib\\', $vendor . '/swoft/swlib/src/');
+// $loader->addPsr4('Swoft\\Swlib\\', $vendor . '/swoft/swlib/src/');
 
 $app = new TestApplication($baseDir);
 $app->run();
