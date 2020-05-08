@@ -38,6 +38,7 @@
     "swoft/devtool": "~2.0.0"
   },
   "require-dev": {
+    "swoft/swlib": "~2.0.0",
     "swoft/swoole-ide-helper": "dev-master",
     "phpunit/phpunit": "^7.5"
   },
