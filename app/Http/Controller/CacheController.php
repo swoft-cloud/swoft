@@ -12,7 +12,6 @@ namespace App\Http\Controller;
 
 use InvalidArgumentException;
 use Swoft\Cache\Cache;
-use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
 
@@ -63,9 +62,6 @@ class CacheController
      */
     public function del(): array
     {
-        /** @var Response $resp */
-        // $resp = context()->getResponse();
-
         return ['del' => Cache::delete('ckey')];
     }
 }
