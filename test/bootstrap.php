@@ -8,15 +8,24 @@
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-use SwoftTest\Testing\TestApplication;
+use AppTest\Testing\TestApplication;
 
 $baseDir = dirname(__DIR__);
 $vendor  = dirname(__DIR__) . '/vendor';
 
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require dirname(__DIR__) . '/vendor/autoload.php';
-$loader->addPsr4('SwoftTest\\Testing\\', $vendor . '/swoft/framework/test/testing/');
 
-$application = new TestApplication($baseDir);
-$application->setBeanFile($baseDir . '/app/bean.php');
-$application->run();
+$swoftFwDir = $vendor . '/swoft/framework';
+
+// in framework developing
+if (file_exists($vendor . '/swoft/component/src/framework')) {
+    $swoftFwDir = $vendor . '/swoft/component/src/framework';
+}
+
+$loader->addPsr4('AppTest\\Unit\\', $baseDir . '/test/unit/');
+$loader->addPsr4('AppTest\\Testing\\', $baseDir . '/test/testing/');
+$loader->addPsr4('SwoftTest\\Testing\\', $swoftFwDir . '/test/testing/');
+
+$app = new TestApplication($baseDir);
+$app->run();

@@ -1,0 +1,9 @@
+### test api
+GET http://{{host}}/hi
+Accept: text/plain
+
+### test api2
+GET http://{{host}}/hello
+Accept: text/plain
+
+###

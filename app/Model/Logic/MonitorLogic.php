@@ -34,19 +34,20 @@ class MonitorLogic
      */
     public function monitor(Process $process): void
     {
-        $process->name('swoft-monitor');
+        // \vdump($process->exportSocket());
+        // $process->name('swoft-monitor');
 
         while (true) {
             $connections = context()->getServer()->getSwooleServer()->connections;
             CLog::info('monitor = ' . json_encode($connections));
 
             // Database
-            $user = User::find(1)->toArray();
-            CLog::info('user=' . json_encode($user));
-
-            // Redis
-            Redis::set('test', 'ok');
-            CLog::info('test=' . Redis::get('test'));
+            // $user = User::find(1)->toArray();
+            // CLog::info('user=' . json_encode($user));
+            //
+            // // Redis
+            // Redis::set('test', 'ok');
+            // CLog::info('test=' . Redis::get('test'));
 
             Coroutine::sleep(3);
         }

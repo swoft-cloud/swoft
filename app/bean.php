@@ -41,11 +41,11 @@ return [
             // 'tcp' => bean('tcpServer'),
         ],
         'process'  => [
-            //            'monitor' => bean(MonitorProcess::class)
-            //            'crontab' => bean(CrontabProcess::class)
+            // 'monitor' => bean(\App\Process\MonitorProcess::class)
+            // 'crontab' => bean(CrontabProcess::class)
         ],
         'on'       => [
-            //            SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
+            // SwooleEvent::TASK   => bean(SyncTaskListener::class),  // Enable sync task
             SwooleEvent::TASK   => bean(TaskListener::class),  // Enable task must task and finish event
             SwooleEvent::FINISH => bean(FinishListener::class)
         ],
@@ -130,6 +130,9 @@ return [
     ],
     'rpcServer'          => [
         'class' => ServiceServer::class,
+        'listener' => [
+            'http' => bean('httpServer'),
+        ]
     ],
     'wsServer'           => [
         'class'    => WebSocketServer::class,

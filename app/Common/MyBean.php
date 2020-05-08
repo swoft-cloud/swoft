@@ -27,4 +27,9 @@ class MyBean
 
         return ['hi'];
     }
+
+    public function myMethod2(): string
+    {
+        return __METHOD__;
+    }
 }

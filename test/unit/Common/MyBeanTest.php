@@ -8,20 +8,23 @@
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-namespace AppTest\Unit;
+namespace AppTest\Unit\Common;
 
+use App\Common\MyBean;
 use PHPUnit\Framework\TestCase;
 use function bean;
 
 /**
- * Class ExampleTest
+ * Class MyBeanTest
  *
- * @package AppTest\Unit
+ * @package AppTest\Unit\Common
  */
-class ExampleTest extends TestCase
+class MyBeanTest extends TestCase
 {
-    public function testDemo(): void
+    public function testMyMethod2(): void
     {
-        $this->assertNotEmpty(bean('cliApp'));
+        $bean = bean(MyBean::class);
+
+        $this->assertSame(MyBean::class . '::myMethod2', $bean->myMethod2());
     }
 }
