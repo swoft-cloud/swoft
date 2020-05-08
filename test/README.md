@@ -24,30 +24,14 @@ php bin/swoft http:start -d
 
 ### Run api tests
 
-- use vendor phpunit
-
 ```bash
-vendor/bin/phpunit --testsuite apiTests
-```
-
-- use global installed phpunit
-
-```bash
-phpunit --testsuite apiTests
+php run.php -c phpunit.xml --testsuite apiTests
 ```
 
 ## Unit tests
 
 ### Run unit tests
 
-- use vendor phpunit
-
 ```bash
-vendor/bin/phpunit --testsuite unitTests
-```
-
-- use global installed phpunit
-
-```bash
-phpunit --testsuite unitTests
+php run.php -c phpunit.xml --testsuite unitTests
 ```
