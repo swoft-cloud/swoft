@@ -10,6 +10,7 @@
 
 namespace AppTest\Api;
 
+use App\Http\Controller\HomeController;
 use PHPUnit\Framework\TestCase;
 use Swoft\Swlib\HttpClient;
 
@@ -20,6 +21,8 @@ use Swoft\Swlib\HttpClient;
  */
 class ExampleApiTest extends TestCase
 {
+    public const HOST = 'http://127.0.0.1:18306';
+
     /**
      * @var HttpClient
      */
@@ -32,8 +35,10 @@ class ExampleApiTest extends TestCase
 
     public function testHi(): void
     {
-        $w = $this->http->get('http://127.0.0.1/hi');
+        /** @see HomeController::hi() */
+        $w = $this->http->get(self::HOST. '/hi');
 
+        $this->assertSame(200, $w->getStatusCode());
         $this->assertSame('hi', $w->getBody()->getContents());
     }
 }

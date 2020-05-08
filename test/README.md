@@ -25,7 +25,7 @@ php bin/swoft http:start -d
 ### Run api tests
 
 ```bash
-php run.php -c phpunit.xml --testsuite apiTests
+php test/run.php -c phpunit.xml --testsuite apiTests
 ```
 
 ## Unit tests
@@ -33,5 +33,5 @@ php run.php -c phpunit.xml --testsuite apiTests
 ### Run unit tests
 
 ```bash
-php run.php -c phpunit.xml --testsuite unitTests
+php test/run.php -c phpunit.xml --testsuite unitTests
 ```
