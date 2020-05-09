@@ -38,6 +38,7 @@
     "swoft/devtool": "~2.0.0"
   },
   "require-dev": {
+    "swoft/swlib": "~2.0.0",
     "swoft/swoole-ide-helper": "dev-master",
     "phpunit/phpunit": "^7.5"
   },
@@ -60,10 +61,9 @@
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
-    "test": [
-      "./vendor/bin/phpstan analyze",
-      "./vendor/bin/phpunit -c phpunit.xml"
-    ],
+    "phpstan": "./vendor/bin/phpstan analyze",
+    "api-tests": "php test/run.php -c phpunit.xml --testsuite apiTests",
+    "unit-tests": "php test/run.php -c phpunit.xml --testsuite unitTests",
     "check-cs": "./bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff",
     "cs-fix": "./bin/php-cs-fixer fix"
   }

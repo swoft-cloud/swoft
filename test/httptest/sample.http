@@ -1,0 +1,15 @@
+### test api
+GET http://{{host}}/hi
+Accept: text/html
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+### test api2
+GET http://{{host}}/hello
+Accept: text/plain
+
+###

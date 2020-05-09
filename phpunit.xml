@@ -8,14 +8,17 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false">
-    <testsuites>
-        <testsuite name="Tests">
-            <directory suffix="Test.php">./test</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-        </whitelist>
-    </filter>
+  <testsuites>
+    <testsuite name="unitTests">
+      <directory suffix="Test.php">./test/unit</directory>
+    </testsuite>
+    <testsuite name="apiTests">
+      <directory suffix="Test.php">./test/api</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">./app</directory>
+    </whitelist>
+  </filter>
 </phpunit>
