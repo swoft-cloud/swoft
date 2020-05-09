@@ -24,6 +24,8 @@ before_script:
   - bin/php-cs-fixer -V
   - composer config -g process-timeout 900 && composer update
   - composer require --dev phpstan/phpstan
+  # start http server for api-tests
+  - php bin/swoft http:start -d
 
 script:
   - composer check-cs
@@ -31,3 +33,6 @@ script:
   - composer api-tests
   - composer unit-tests
 #  - php bin/swoft dinfo:env
+
+after_script:
+  - php bin/swoft http:stop
