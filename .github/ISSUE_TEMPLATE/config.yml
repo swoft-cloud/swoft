@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Swoft Chinese Documents
+    url: https://swoft.org
+    about: Please ask and answer questions here.
+  - name: Swoft English Documents
+    url: http://swoft.io
+    about: Please report security vulnerabilities here.
