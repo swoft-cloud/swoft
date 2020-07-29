@@ -28,7 +28,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Flexible annotation function
 - Diversified command terminal(Console)
 - Powerful Aspect Oriented Programming（AOP）
-- Perfect Container management、Dependency Injection (DI)
+- Perfect Container management, Dependency Injection (DI)
 - Flexible event mechanism
 - Implementation of HTTP message based on PSR-7
 - Event Manager Based on PSR-14
@@ -39,7 +39,7 @@ Through three years of accumulation and direction exploration, Swoft has made Sw
 - Database is highly compatible Laravel
 - Cache Redis highly compatible Laravel
 - Efficient task processing
-- Efficient seconds corntab
+- Efficient seconds crontab
 - Process pool
 - Flexible exception handling
 - Powerful log system
