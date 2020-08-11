@@ -57,8 +57,8 @@ Swoft 通过长达三年的积累和方向的探索，把 Swoft 打造成 PHP �
 
 ## 在线文档
 
-- [中文文档](https://www.swoft.org/docs/2.x/zh-CN/README.html)
-- [English](https://www.swoft.org/docs/2.x/en)
+- [中文文档](https://www.swoft.org/documents/v2/index.html)
+- [English](http://swoft.io/docs/2.x/en)
 
 ## 学习交流
 
