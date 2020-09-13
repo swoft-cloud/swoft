@@ -18,7 +18,7 @@ use Swoft\Devtool\Migration\Migration as BaseMigration;
  *
  * @since 2.0
  *
- * @Migration(20190630164222)
+ * @Migration(time=20190630164222, pool="db.pool,db1.pool")
  */
 class User extends BaseMigration
 {
