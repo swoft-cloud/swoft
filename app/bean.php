@@ -84,6 +84,7 @@ return [
         'dsn'      => 'mysql:dbname=test2;host=127.0.0.1',
         'username' => 'root',
         'password' => 'swoft123456',
+        'charset'  => 'utf8mb4',
         //        'dbSelector' => bean(DbSelector::class)
     ],
     'db2.pool'           => [
@@ -94,7 +95,8 @@ return [
         'class'    => Database::class,
         'dsn'      => 'mysql:dbname=test2;host=127.0.0.1',
         'username' => 'root',
-        'password' => 'swoft123456'
+        'password' => 'swoft123456',
+        'charset'  => 'utf8mb4',
     ],
     'db3.pool'           => [
         'class'    => Pool::class,
