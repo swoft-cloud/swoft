@@ -12,6 +12,7 @@ namespace AppTest\Unit\Common;
 
 use App\Common\MyBean;
 use PHPUnit\Framework\TestCase;
+use Swoft\Log\Helper\Log;
 use function bean;
 
 /**
@@ -24,6 +25,9 @@ class MyBeanTest extends TestCase
     public function testMyMethod2(): void
     {
         $bean = bean(MyBean::class);
+
+        vdump('test message');
+        Log::info('test message');
 
         $this->assertSame(MyBean::class . '::myMethod2', $bean->myMethod2());
     }
