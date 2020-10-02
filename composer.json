@@ -40,7 +40,7 @@
   "require-dev": {
     "swoft/swlib": "~2.0.0",
     "swoft/swoole-ide-helper": "dev-master",
-    "phpunit/phpunit": "^7.5"
+    "phpunit/phpunit": "^9.4"
   },
   "autoload": {
     "psr-4": {
