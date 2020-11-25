@@ -12,3 +12,15 @@ function user_func(): string
 {
     return 'hello';
 }
+
+/**
+ * 生成guid
+ *
+ * @param int $workerId 节点ID [0,32)
+ * @param int $dataCenterId 数据中心ID [0,32)
+ * @return string
+ */
+function snowflakeGuid(int $workerId = 0, int $dataCenterId = 0): string
+{
+    return bean('snowflake')->id($workerId, $dataCenterId);
+}
