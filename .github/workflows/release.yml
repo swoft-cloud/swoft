@@ -1,0 +1,62 @@
+name: Tag-release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    name: Test on php ${{ matrix.php}}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.3]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set ENV for github-release
+        # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+        run: |
+          echo "RELEASE_TAG=${GITHUB_REF:10}" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$GITHUB_WORKFLOW" >> $GITHUB_ENV
+
+      # usage refer https://github.com/shivammathur/setup-php
+      - name: Setup PHP
+        timeout-minutes: 5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php}}
+          tools: pecl, php-cs-fixer, phpunit
+          extensions: mbstring, dom, fileinfo, mysql, openssl # , swoole-4.4.19 #optional, setup extensions
+          ini-values: post_max_size=56M, short_open_tag=On #optional, setup php.ini configuration
+          coverage: none #optional, setup coverage driver: xdebug, none
+
+      - name: Install dependencies # eg: v1.0.3
+        run: |
+          tag1=${GITHUB_REF#refs/*/}
+          echo "release tag: ${tag1}"
+          composer install --no-progress --no-suggest
+
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+#      - name: Build phar and send to github assets
+#        run: |
+#          echo $RELEASE_TAG
+#          echo $RELEASE_NAME
+#          php -d phar.readonly=0 bin/kite phar:pack -o kite-${RELEASE_TAG}.phar --no-progress
+#          php kite-${RELEASE_TAG}.phar -V
+
+      # https://github.com/actions/create-release
+      - uses: meeDamian/github-release@2.0
+        with:
+          gzip: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_TAG }}
+#          files: kite-${{ env.RELEASE_TAG }}.phar
