@@ -27,7 +27,7 @@
   },
   "require-dev": {
     "swoft/swoole-ide-helper": "dev-master",
-    "phpunit/phpunit": "^7.5",
+    "phpunit/phpunit": "^7.5 || ^8.0",
     "swoft/devtool": "~2.0.0"
   },
   "autoload": {
